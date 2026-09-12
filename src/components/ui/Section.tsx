@@ -17,7 +17,7 @@ export function Section({
   ...props
 }: SectionProps) {
   return (
-    <section className={cn("py-16 sm:py-24", className)} {...props}>
+    <section className={cn("py-20 sm:py-28", className)} {...props}>
       {contained ? <Container>{children}</Container> : children}
     </section>
   );

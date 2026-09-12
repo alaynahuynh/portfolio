@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Onest, Instrument_Sans, Caveat } from "next/font/google";
+import { Fraunces, Instrument_Sans, Caveat } from "next/font/google";
+import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-const onest = Onest({
-  variable: "--font-onest",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  axes: ["opsz", "SOFT"],
 });
 
 const instrumentSans = Instrument_Sans({
@@ -19,6 +22,17 @@ const instrumentSans = Instrument_Sans({
 const caveat = Caveat({
   variable: "--font-caveat",
   subsets: ["latin"],
+});
+
+/** Custom handwriting font made in Calligraphr from Alayna's own
+ * handwriting — used only for the sketchbook intro line (see
+ * font-alayna-handwriting in globals.css), not a replacement for the
+ * site's regular --font-handwriting (Caveat), which is still used
+ * everywhere else. */
+const alaynaHandwriting = localFont({
+  src: "../../public/fonts/AlaynaHandwriting-Regular.ttf",
+  variable: "--font-alayna",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${onest.variable} ${instrumentSans.variable} ${caveat.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${instrumentSans.variable} ${caveat.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">
@@ -49,6 +63,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <CustomCursor />
         </MotionConfig>
       </body>
     </html>

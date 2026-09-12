@@ -50,18 +50,22 @@ export function TwoDGallery() {
             href="/#creative-practice"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            ← Back to the workspace
+            ← Return to the book
           </Link>
-          <Heading level={1} className="mt-4">
+          <Heading level={1} className="mt-4 font-alayna-handwriting">
             2D Works
           </Heading>
-          <p className="mt-3 max-w-xl text-lg text-muted-foreground">
+          <p className="font-alayna-handwriting mt-3 max-w-xl text-lg text-muted-foreground">
             Painting, drawing, illustration, and visual exploration.
           </p>
 
           <div className="mt-14 columns-1 gap-10 sm:columns-2 lg:columns-3">
             {paintings.map((painting, i) => (
-              <div key={painting.slug} id={painting.slug} className="mb-10 scroll-mt-24 break-inside-avoid">
+              <div
+                key={painting.slug}
+                id={painting.slug}
+                className="mb-10 scroll-mt-24 break-inside-avoid"
+              >
                 <button
                   type="button"
                   ref={(el) => {
@@ -83,6 +87,15 @@ export function TwoDGallery() {
                 </button>
               </div>
             ))}
+          </div>
+
+          <div className="mt-16 text-center">
+            <Link
+              href="/#creative-practice"
+              className="text-sm font-medium text-sage-deep transition-colors hover:text-mauve-deep"
+            >
+              ← Return to the book
+            </Link>
           </div>
         </Container>
       </section>

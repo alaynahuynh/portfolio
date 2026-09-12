@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
+import { ObjectPhotoFan } from "@/components/sections/ObjectPhotoFan";
 import { threeDObjects } from "@/data/creative-practice";
 
 export const metadata: Metadata = {
@@ -23,50 +23,55 @@ export default function ThreeDWorksPage() {
   });
 
   return (
-    <section className="bg-desk py-24 sm:py-32">
+    <section className="overflow-x-hidden bg-desk py-24 sm:py-32">
       <Container>
         <Link
           href="/#creative-practice"
           className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          ← Back to the workspace
+          ← Return to the book
         </Link>
-        <Heading level={1} className="mt-4">
+        <Heading level={1} className="mt-4 font-alayna-handwriting">
           3D Works
         </Heading>
-        <p className="mt-3 max-w-xl text-lg text-muted-foreground">
-          Objects, models, sculpture, furniture, and physical experiments.
+        <p className="font-alayna-handwriting mt-3 max-w-xl text-lg text-muted-foreground">
+          I have always loved working with my hands, and building my own 3D projects.
         </p>
 
-        <div id={featured.slug} className="mt-16 scroll-mt-24 flex justify-center">
-          <div className="relative aspect-4/3 w-full max-w-2xl">
-            <Image
-              src={featured.src}
-              alt={featured.alt}
-              fill
-              sizes="(min-width: 768px) 640px, 90vw"
-              className="object-contain drop-shadow-xl"
-              priority
-            />
+        <div
+          id={featured.slug}
+          className="mt-16 scroll-mt-24 flex justify-center"
+        >
+          <div className="w-full max-w-2xl">
+            <ObjectPhotoFan images={featured.images} />
           </div>
         </div>
-        <p className="mt-4 text-center font-heading text-xl">{featured.title}</p>
+        <p className="mt-4 text-center font-heading text-xl">
+          {featured.title}
+        </p>
 
         <div className="mt-16 grid gap-12 sm:grid-cols-2">
           {rest.map((object) => (
-            <div key={object.slug} id={object.slug} className="flex scroll-mt-24 flex-col items-center">
-              <div className="relative aspect-square w-full max-w-xs">
-                <Image
-                  src={object.src}
-                  alt={object.alt}
-                  fill
-                  sizes="320px"
-                  className="object-contain drop-shadow-lg"
-                />
+            <div
+              key={object.slug}
+              id={object.slug}
+              className="flex scroll-mt-24 flex-col items-center"
+            >
+              <div className="w-full max-w-md">
+                <ObjectPhotoFan images={object.images} />
               </div>
               <p className="mt-4 font-heading text-lg">{object.title}</p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <Link
+            href="/#creative-practice"
+            className="text-sm font-medium text-sage-deep transition-colors hover:text-mauve-deep"
+          >
+            ← Return to the book
+          </Link>
         </div>
       </Container>
     </section>

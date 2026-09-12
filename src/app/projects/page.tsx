@@ -14,8 +14,8 @@ export default function ProjectsPage() {
       <Heading level={1}>Work</Heading>
 
       <div className="mt-12 grid gap-10 sm:grid-cols-2">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
+        {projects.map((project, index) => (
+          <ProjectCard key={project.slug} project={project} variant={(index % 3) as 0 | 1 | 2} />
         ))}
       </div>
     </Section>

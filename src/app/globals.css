@@ -7,64 +7,138 @@
 /* value once and it updates everywhere.                                */
 /* ------------------------------------------------------------------ */
 :root {
-  /* Surfaces */
-  --color-background: #faf7f9; /* warm off-white "paper" background */
-  --color-surface: #ffffff; /* cards, notes, envelopes sit on this */
-  --color-foreground: #2b2b2b; /* body text */
-  --color-muted-foreground: #6b6b6b;
-  --color-border: #e7dde2;
+  /* Surfaces — warm cream, never pure white */
+  --color-background: #fefff7; /* warm cream "paper" background */
+  --color-surface: #fffcf5; /* cards, panels sit on this — slightly lighter than background */
+  --color-muted: #f1e9da; /* secondary surface (secondary buttons, subtle fills) */
+  --color-foreground: #2e322a; /* body text — soft charcoal with a muted green undertone */
+  --color-muted-foreground: #5c6152; /* secondary text, still ≥4.5:1 on cream */
+  --color-border: #e8dfd3; /* warm neutral hairline, doesn't fight the palette */
 
-  /* Accent — soft pink, matches the original site's palette */
-  --color-accent: #f3e1e8;
-  --color-accent-hover: #e7c4d2;
-  --color-accent-secondary: #f6d4e0;
-  --color-accent-foreground: #2b2b2b;
+  /* Core portfolio palette — the site's actual brand colors, used
+     sitewide (hero through footer) so the whole experience reads as one
+     authored system rather than a hero with a differently-designed site
+     bolted on. Suggested hierarchy: earth = primary text/grounding,
+     sky = expressive brand color, meadow = interaction/accent, mist =
+     soft background/surface, olive = rare highlight only — don't use
+     all five with equal weight. */
+  --color-sky: #3cb5fc; /* expressive — sky/hero references, selected states, links */
+  --color-meadow: #769f3d; /* interaction/accent — buttons, active nav, arrows, small labels */
+  --color-mist: #c9ddc4; /* soft surface — secondary backgrounds, navbar-scrolled, transitions */
+  --color-earth: #745b36; /* primary text alternative to black, serif headlines, borders */
+  --color-olive: #beb318; /* rare highlight only — sparks, tiny accents, key metrics */
 
-  /* Primary (buttons, links, nav) */
-  --color-primary: #2b2b2b;
-  --color-primary-foreground: #faf7f9;
+  /* Impressionist garden palette — decorative/large-surface use.
+     These are pastel-light and NOT accessible for small text on cream;
+     use the *-deep variants below for links, focus states, and any text
+     that needs to sit directly on a light surface. Still used by
+     not-yet-migrated components (per-project accents, etc.) — being
+     phased out in favor of the core palette above as each area is
+     revisited, not deleted outright. */
+  --color-mauve: #c38fad; /* dusty mauve */
+  --color-mauve-deep: #8c5d78; /* accessible mauve — links, focus rings */
+  --color-blush: #e9c6ce; /* soft blush pink */
+  --color-mist-blue: #c7d7e7; /* mist blue */
+  --color-lake-blue: #93bad9; /* lake blue */
+  --color-lake-blue-deep: #3e6e96; /* accessible blue — text/icons on cream */
+  --color-sage: #9bb27b; /* soft sage green */
+  --color-sage-deep: #5f7a45; /* accessible sage — links, interface accents */
+  --color-butter: #cfc987; /* warm butter yellow — light/highlight only, never text */
+  --color-gold: #b08d46; /* restrained antique gold — book/foil details only */
 
-  /* Scrapbook accents used by illustrated sections (sticky note, mail) */
+  /* Per-project case-study accent — layered on top of the shared sage
+     green identity for a project's own eyebrows/annotations/detail
+     moments only (see CaseStudyData.accentColor), never the whole page.
+     ~5.16:1 contrast on --color-background, passes AA for text. */
+  --color-coursepilot-purple: #713bff;
+
+  /* Accent — soft blush/mauve, used for hover fills and highlight surfaces */
+  --color-accent: #e9c6ce;
+  --color-accent-hover: #c38fad;
+  --color-accent-secondary: #c7d7e7;
+  --color-accent-foreground: #2e322a;
+
+  /* Primary (buttons, links, nav) — deep sage carries the "interface
+     accent" role the brief calls out; gold stays reserved for the book. */
+  --color-primary: #5f7a45;
+  --color-primary-foreground: #faf6ec;
+
+  /* Scrapbook accents used by illustrated sections (sticky note, mail) —
+     legacy, only consumed by the pre-redesign homepage sections. Remove
+     once Hero/CreativeDesk/StickyNoteBio/AboutLetter/WorksCallout are
+     deleted. */
   --color-note-yellow: #f5e27a;
   --color-note-yellow-shadow: #d8c455;
-  --color-kraft: #d9b98d;
   --color-airmail-red: #d94f4f;
   --color-airmail-blue: #3f6fbf;
 
   /* Typography */
-  --font-heading: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans:
+    var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
   --font-handwriting: var(--font-caveat), cursive;
+  /* Alayna's own handwriting (Calligraphr) — only for the sketchbook
+     intro line, not a swap-in for --font-handwriting above. */
+  --font-alayna-handwriting: var(--font-alayna), cursive;
 
   /* Layout */
-  --container-max: 72rem; /* max width for page content */
-  --radius-default: 1.25rem; /* cards, images */
+  --container-max: 78rem; /* max width for page content */
+  --radius-default: 1rem; /* cards, images — soft but restrained, not app-bubbly */
   --radius-pill: 100rem; /* buttons, tags */
 
   /* Motion — one shared timing system so hero, cards, nav, and type all
      move the same way. `--ease-soft` is for anything settling into place
-     (hover lifts, dropdowns); `--ease-spring` has a touch of overshoot for
-     playful/artistic moments (magnetic type, paint blobs). */
+     (hover lifts, dropdowns, page settling). `--ease-draw` is an even,
+     ink-like pace for stroke/reveal animations (the AH logo). `--ease-spring`
+     keeps a touch of overshoot for tiny, restrained UI feedback only —
+     avoid it for environmental/nature motion (water, swans, pages), which
+     should read calm rather than bouncy; prefer --ease-soft there. */
   --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-draw: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* The one shared curve for scroll-reveal and large-imagery entrances
+     sitewide (text/image fade-ups, parallax settles) — see Reveal.tsx,
+     the first consumer. Distinct from --ease-soft (hover/dropdown
+     settling) so tuning one never ripples into the other. */
+  --ease-portfolio: cubic-bezier(0.22, 1, 0.36, 1);
   --duration-fast: 150ms;
   --duration-base: 300ms;
   --duration-slow: 600ms;
+  --duration-slower: 900ms; /* environmental/scroll-linked transitions */
 }
 
-/* No automatic dark mode: the paper/scrapbook aesthetic (yellow sticky
-   notes, cream backgrounds, hand-drawn illustrations) is intentionally
-   light-only, matching the original site. Revisit if a manual toggle is
-   ever wanted — see PROJECT_GUIDE.md. */
+/* No automatic dark mode: the painterly storybook aesthetic (cream paper,
+   garden palette, hand-drawn details) is intentionally light-only. Revisit
+   if a manual toggle is ever wanted. */
 
 /* Map tokens above into Tailwind utilities, e.g. bg-background,        */
 /* text-foreground, font-heading, etc.                                  */
 @theme inline {
   --color-background: var(--color-background);
   --color-surface: var(--color-surface);
+  --color-muted: var(--color-muted);
   --color-foreground: var(--color-foreground);
   --color-muted-foreground: var(--color-muted-foreground);
   --color-border: var(--color-border);
+
+  --color-sky: var(--color-sky);
+  --color-meadow: var(--color-meadow);
+  --color-mist: var(--color-mist);
+  --color-earth: var(--color-earth);
+  --color-olive: var(--color-olive);
+
+  --color-mauve: var(--color-mauve);
+  --color-mauve-deep: var(--color-mauve-deep);
+  --color-blush: var(--color-blush);
+  --color-mist-blue: var(--color-mist-blue);
+  --color-lake-blue: var(--color-lake-blue);
+  --color-lake-blue-deep: var(--color-lake-blue-deep);
+  --color-sage: var(--color-sage);
+  --color-sage-deep: var(--color-sage-deep);
+  --color-butter: var(--color-butter);
+  --color-gold: var(--color-gold);
+
+  --color-coursepilot-purple: var(--color-coursepilot-purple);
 
   --color-accent: var(--color-accent);
   --color-accent-hover: var(--color-accent-hover);
@@ -76,13 +150,13 @@
 
   --color-note-yellow: var(--color-note-yellow);
   --color-note-yellow-shadow: var(--color-note-yellow-shadow);
-  --color-kraft: var(--color-kraft);
   --color-airmail-red: var(--color-airmail-red);
   --color-airmail-blue: var(--color-airmail-blue);
 
   --font-heading: var(--font-heading);
   --font-sans: var(--font-sans);
   --font-handwriting: var(--font-handwriting);
+  --font-alayna-handwriting: var(--font-alayna-handwriting);
 
   --radius-default: var(--radius-default);
   --radius-pill: var(--radius-pill);
@@ -105,11 +179,28 @@
   h4 {
     font-family: var(--font-heading);
   }
+
+  /* Visible focus for every interactive element, including ones that
+     don't set their own focus-visible utility (nav links, mobile menu
+     button, future chapter controls). */
+  :focus-visible {
+    outline: 2px solid var(--color-mauve-deep);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* Alayna's own handwriting font reads tighter than Caveat at the same
+   size — a bit of extra word spacing keeps it legible instead of
+   crowded, everywhere font-alayna-handwriting is used. */
+.font-alayna-handwriting {
+  word-spacing: 0.2em;
 }
 
 /* Subtle graph-paper texture used behind the About/gallery sections. */
 .bg-graph-paper {
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       to right,
       color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
       transparent 1px
@@ -152,6 +243,317 @@
     );
 }
 
+/* Thick artist's-sketchbook page faces — warm cream cotton/watercolor
+   paper, not aged parchment: a fine irregular fiber grain (a real
+   photographed paper-texture image — see paper-texture.jpg — blended in
+   with `multiply` rather than a procedural fractal-noise SVG, which is
+   what this used before), a soft shadow falloff from the
+   spine (left edge, where BookPage's transformOrigin hinges), a much
+   fainter version of that same falloff on the other three edges (real
+   paper isn't lit perfectly evenly on every side the way a flat rigid
+   board reads), a stepped edge-of-pages illusion along the fore-edge
+   (the side opposite the spine) so a single flat div still reads as many
+   stacked leaves, and a soft close box-shadow so the sheet reads as a
+   thin lifted material rather than a stiff, flush-mounted panel.
+   On top of all that, two static "soft natural light" layers — a radial
+   vignette centered on the page, and a catch-light right at the spine
+   (layered above the spine *shadow* below it — a real folded sheet often
+   shows a sliver of highlight right at the ridge of the fold before it
+   recedes into shadow past it). The vignette leans on *darkening* the
+   edges rather than brightening the center: this paper color is already
+   close to white, so a "brighten toward white" layer has almost no
+   headroom left to work with and reads as invisible (measured — an
+   earlier soft-light version here moved center pixels by all of ~2%,
+   imperceptible against the grain). Darkening has the room brightening
+   doesn't, so that's what actually sells "center catches more light than
+   the edges." Both layers are still gentle, not a hard spotlight, and
+   completely static: no hover, no scroll-linked movement, just light
+   falling on paper. This replaces an earlier moving diagonal "shine"
+   that lived on BookCover specifically; that read as a screen effect
+   swept across the art rather than light resting on the object, and
+   didn't extend to the rest of the book's pages at all. */
+.page-parchment {
+  background-color: #fdf8ea;
+  background-image:
+    linear-gradient(to right, rgba(255, 252, 240, 0.26) 0%, transparent 7%),
+    radial-gradient(
+      ellipse 78% 68% at 50% 42%,
+      rgba(255, 255, 250, 0.12) 0%,
+      transparent 42%,
+      rgba(75, 58, 38, 0.09) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(50, 38, 22, 0.26) 0%,
+      rgba(50, 38, 22, 0.16) 4%,
+      rgba(50, 38, 22, 0.05) 10%,
+      transparent 18%
+    ),
+    linear-gradient(to left, rgba(70, 55, 35, 0.05) 0%, transparent 4%),
+    linear-gradient(to bottom, rgba(70, 55, 35, 0.05) 0%, transparent 4%),
+    linear-gradient(to top, rgba(70, 55, 35, 0.05) 0%, transparent 4%),
+    url("/images/creative-practice/paper-texture.jpg");
+  background-size: auto, auto, auto, auto, auto, auto, cover;
+  background-repeat: repeat, repeat, repeat, repeat, repeat, repeat, no-repeat;
+  background-position:
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    0 0,
+    center;
+  background-blend-mode:
+    normal, normal, normal, normal, normal, normal, multiply;
+  box-shadow:
+    0 2px 4px rgba(60, 45, 25, 0.14),
+    0 18px 40px -14px rgba(60, 45, 25, 0.45);
+}
+
+.page-edge-stack {
+  box-shadow:
+    0 2px 4px rgba(60, 45, 25, 0.14),
+    0 18px 40px -14px rgba(60, 45, 25, 0.45),
+    2px 0 0 0 #f2ebdc,
+    4px 0 0 0 #ece1cd,
+    6px 0 0 0 #e5d7bf,
+    8px 0 0 0 #dccaad;
+}
+
+/* The reverse side of the front cover leaf specifically (see BookPage's
+   `coverBack` prop), and the back cover page (BackCoverPage) — kraft-brown
+   instead of the cream `.page-parchment` every other page uses, so the
+   moment the cover first cracks open it reads as the same physical
+   material flipping over, not an inner page that happens to be first.
+   Uses an actual photo of blank kraft cover stock (cover-inside-kraft.jpg
+   — cropped to just the flat cover face, spiral binding excluded), with
+   a light, flat orange-brown wash laid over it at low opacity (plain
+   alpha compositing, not a contrast-boosting blend mode like `overlay` —
+   that came in too strong, closer to a full recolor than a nudge) to
+   pull it toward the front cover art's more saturated orange kraft tone;
+   the photo's own tone reads a bit more muted/grey than that art by
+   itself. */
+.page-cover-inside {
+  background-image:
+    linear-gradient(rgba(196, 108, 40, 0.16), rgba(196, 108, 40, 0.16)),
+    url("/images/creative-practice/cover-inside-kraft.jpg");
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 1px 2px rgba(40, 28, 14, 0.12),
+    0 10px 24px -16px rgba(40, 28, 14, 0.35);
+}
+
+/* Shadow a leaf catches near its own fold mid-turn — see BookPage.tsx and
+   the --flip-shade custom property CreativePracticeBook sets per leaf
+   each scroll tick (0 at rest on either side, peaking as the page passes
+   edge-on to the viewer), so the flip reads as a curling sheet catching
+   its own shade rather than a flat panel swinging on a hinge. */
+.page-flip-shade {
+  background: linear-gradient(
+    to right,
+    rgba(35, 25, 12, 0.4) 0%,
+    rgba(35, 25, 12, 0.12) 35%,
+    transparent 65%
+  );
+  opacity: var(--flip-shade, 0);
+  mix-blend-mode: multiply;
+}
+
+/* Restrained magical accents: a slow glow pulse for rune marks and a
+   slow drift for ambient dust motes. Both infinite but slow/low-contrast
+   on purpose ("elegant, not overwhelming") — the global reduced-motion
+   rule collapses these to their resting frame instantly. */
+@keyframes rune-glow {
+  0%,
+  100% {
+    opacity: 0.35;
+    filter: drop-shadow(0 0 1px currentColor);
+  }
+  50% {
+    opacity: 0.85;
+    filter: drop-shadow(0 0 5px currentColor);
+  }
+}
+
+@keyframes dust-drift {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.7;
+  }
+  85% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translate(6px, -22px);
+    opacity: 0;
+  }
+}
+
+/* RotatingWord: each incoming word is revealed by a jagged, brush-like
+   edge sweeping left to right, rather than a plain fade/slide — reads as
+   "being painted in." Both keyframe states use the same point count so
+   the jagged edge itself interpolates smoothly (not just the paint
+   region growing) — the anchor corners (0% 0% and 0% 100%) stay fixed
+   the whole time, only the ragged right edge sweeps across. */
+/* Hero flowers layer: a quick, tiny sway (a breeze across the grass),
+   distance set via --drift-x/--drift-y so it can share the same
+   keyframe as anything else that just needs a small back-and-forth
+   nudge. */
+@keyframes hero-cloud-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(var(--drift-x, 16px), var(--drift-y, -6px));
+  }
+}
+
+/* GrassField (CreativePracticeBook's background): each blade cluster
+   skews back and forth around its own base, amplitude set per cluster
+   via --sway so the field reads as uneven gusts rather than one uniform
+   pulse. transform-box: view-box on the `<g>` (see GrassField.tsx) is
+   what makes the origin coordinates line up with the SVG's own units. */
+@keyframes grass-sway {
+  0%,
+  100% {
+    transform: skewX(0deg);
+  }
+  50% {
+    transform: skewX(var(--sway, 4deg));
+  }
+}
+
+/* Hero sky + clouds: the sky and both cloud crops sit in one wrapper
+   (see HeroBackdrop) and share this single animation instance, so they
+   zoom in and back out as one rigid unit — never sliding or skewing,
+   and never able to drift apart into visibly separate layers the way
+   applying the same animation to several sibling elements could. */
+@keyframes hero-sky-zoom {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.035);
+  }
+}
+
+/* Hero dog bodies: near-imperceptible scale breathing so a body that
+   never otherwise moves still reads as alive. Uses the standalone
+   `scale` property (not `transform`) so it can run at the same time as
+   hero-body-shift below without one overwriting the other.
+   transform-origin is set per-instance to the body's own base so it
+   breathes from the ground up rather than floating. */
+@keyframes hero-dog-breathe {
+  0%,
+  100% {
+    scale: 1 1;
+  }
+  50% {
+    scale: 1 1.007;
+  }
+}
+
+/* A small idle weight-shift/lean for dogs whose ears don't read well as
+   a twitch target (e.g. Gobi's rounder, less articulated ears) — the
+   body leans a hair to one side and settles, like a dog resettling
+   itself, instead of the ears moving. Uses the standalone `rotate`
+   property so it composes with hero-dog-breathe's `scale`. */
+@keyframes hero-body-shift {
+  0%,
+  100% {
+    rotate: 0deg;
+  }
+  40% {
+    rotate: 1.1deg;
+  }
+  75% {
+    rotate: -0.6deg;
+  }
+}
+
+/* Hero dog ears: a quick, spring-like flick used for idle twitches and
+   the hover "perk up" cue — overshoots slightly then settles, rather
+   than a plain linear rotation. */
+@keyframes hero-ear-twitch {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(7deg);
+  }
+  65% {
+    transform: rotate(-2deg);
+  }
+}
+
+/* A single music note drifting up and away from the piano (see
+   HeroPiano) — fades in, rises, drifts a touch sideways, fades out.
+   One run per spawned note, not looped. */
+@keyframes hero-note-float {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.6) rotate(-6deg);
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--note-drift-x, 10px), -32px) scale(1) rotate(6deg);
+  }
+}
+
+/* The piano's lit artwork stays at full opacity once playing — this
+   only pulses its brightness a little, rather than fading the art in
+   and out, so the glow never dims below "fully on". */
+@keyframes hero-piano-glow {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.18);
+  }
+}
+
+@keyframes paint-reveal {
+  from {
+    clip-path: polygon(
+      0% 0%,
+      2% 0%,
+      -3% 15%,
+      4% 30%,
+      -2% 45%,
+      3% 60%,
+      -4% 75%,
+      2% 90%,
+      0% 100%,
+      0% 100%
+    );
+  }
+  to {
+    clip-path: polygon(
+      0% 0%,
+      102% 0%,
+      97% 15%,
+      104% 30%,
+      98% 45%,
+      103% 60%,
+      96% 75%,
+      102% 90%,
+      100% 100%,
+      0% 100%
+    );
+  }
+}
+
 /* Gentle bob for the hero scroll indicator's paint drip. */
 @keyframes drip {
   0%,
@@ -163,6 +565,127 @@
   }
 }
 
+/* CustomCursor: native cursor is hidden only on elements that opt in via
+   data-cursor, and only once CustomCursor has confirmed (client-side) that
+   the device has a precise pointer, hover support, and no reduced-motion
+   preference — see src/components/ui/CustomCursor.tsx. "explore" and
+   "turn" are excluded: they keep the native cursor and add a small pink
+   tab below it instead of replacing the cursor with a full label bubble. */
+.has-custom-cursor [data-cursor]:not([data-cursor="explore"]):not([data-cursor="turn"]) {
+  cursor: none;
+}
+
+/* AnimatedAHLogo: brush-like stroke draw for the A and H. Paths use
+   pathLength="1" so a single dasharray/dashoffset pair works regardless
+   of each path's actual geometric length. */
+@keyframes ah-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* The H flies out to the right into its resting position while it draws. */
+@keyframes ah-fly-right {
+  from {
+    transform: translateX(-24px);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+/* The H's middle line draws as a straight crossbar (a real "H"), then
+   droops down below the legs into a smile. Both path values use the same
+   command structure (one M + one Q) so the browser can interpolate `d`
+   directly. If a browser doesn't support animating `d`, this rule is
+   simply ignored and the element falls back to its plain `d` attribute
+   below — which is already the smile, so the resting logo is still
+   correct even without the morph playing. */
+@keyframes ah-crossbar-to-smile {
+  from {
+    d: path("M127,54 Q136,54 145,54");
+  }
+  to {
+    d: path("M124,80 Q136,94 148,80");
+  }
+}
+
+/* Floating nav (Header.tsx): the container softly lifts into place, an
+   ink outline traces itself around it, then each item (logo, links,
+   resume) fades/rises in on its own delay — see nav-stagger-item below.
+   All three stages overlap slightly rather than running strictly in
+   sequence, which reads as one continuous gesture instead of a
+   mechanical checklist. */
+@keyframes nav-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* An ink-colored outline reveals left-to-right via clip-path (not an
+   SVG stroke) so it stays correct at the pill's fluid, percentage-based
+   width — then holds a beat and fades, leaving only the nav's normal
+   CSS border behind. */
+@keyframes nav-trace {
+  0% {
+    opacity: 1;
+    clip-path: inset(0 100% 0 0 round 28px);
+  }
+  65% {
+    opacity: 1;
+    clip-path: inset(0 0 0 0 round 28px);
+  }
+  100% {
+    opacity: 0;
+    clip-path: inset(0 0 0 0 round 28px);
+  }
+}
+
+.nav-shell {
+  opacity: 0;
+  animation: nav-fade-up 380ms var(--ease-soft) forwards;
+  animation-play-state: paused;
+}
+
+.nav-shell.nav-ready {
+  animation-play-state: running;
+}
+
+.nav-trace {
+  animation: nav-trace 360ms var(--ease-draw) 200ms both;
+  animation-play-state: paused;
+}
+
+.nav-ready .nav-trace {
+  animation-play-state: running;
+}
+
+.nav-stagger-item {
+  opacity: 0;
+  animation: nav-item-in 320ms var(--ease-soft) forwards;
+  animation-play-state: paused;
+}
+
+.nav-ready .nav-stagger-item {
+  animation-play-state: running;
+}
+
+@keyframes nav-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Respect reduced-motion preferences globally: cut animation/transition
    duration to near-zero instead of disabling (keeps end states intact). */
 @media (prefers-reduced-motion: reduce) {
@@ -170,8 +693,21 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
+  }
+
+  /* The browser's View Transitions API (project-card → case-study hero
+     morph) runs outside the regular DOM tree via ::view-transition-*
+     pseudo-elements, so the universal `*` rule above never reaches it —
+     it needs its own override. */
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
