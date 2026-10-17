@@ -35,7 +35,7 @@ export const projects: Project[] = [
     slug: "case-study-01",
     title: "MyMuseum",
     role: "Product Design · UX Research · Development",
-    summary: "A multiplayer 3D platform for artists to create and share explorable galleries.",
+    summary: "Helping artists share their work as explorable, multiplayer 3D galleries instead of flat image feeds.",
     credibility: "Designed and built the end-to-end experience from concept to a working multiplayer product.",
     status: "in-progress",
     accent: "mauve",

@@ -386,6 +386,10 @@ export interface CaseStudyData {
     year: string;
     duration: string;
     role: string;
+    /** Optional 30-second "at a glance" summary — rendered in place of
+     * the features grid when set, so the problem, role, solution, and
+     * outcome are readable before any scrolling. */
+    summary?: { problem: string; role: string; solution: string; outcome: string };
     /** Optional heading override for the features grid (defaults to "Key features"). */
     featuresHeading?: string;
     /** Optional intro copy shown under the heading, above the grid. */
@@ -428,7 +432,17 @@ export interface CaseStudyData {
       competitor: string;
       narrative: string;
       image?: CaseStudyImageSpec;
+      /** Optional per-competitor breakdown (observed → learned → applied).
+       * When set, it replaces the single `competitor` / `narrative` /
+       * `image` block with one full-width, zoomable visual per competitor
+       * and short scannable findings beneath it; `narrative` becomes the
+       * section's lead-in. */
+      competitors?: CompetitorFinding[];
+      /** Optional line tying the competitor findings to the opportunity. */
+      opportunityContext?: string;
       opportunity: string;
+      /** Optional label above the flow (e.g. whether it's proposed or built). */
+      flowLabel?: string;
       flowSteps: string[];
       placeholder: boolean;
     };
@@ -508,6 +522,15 @@ export interface CaseStudyData {
     iaImage?: CaseStudyImageSpec;
     /** Optional row of early exploration sketches. */
     sketchImages?: CaseStudyImageSpec[];
+  };
+
+  /** Optional "key decisions" section — the few product decisions the
+   * case study is really about, each tied to the evidence behind it, the
+   * tradeoff it accepted, and an honest status line. */
+  keyDecisions?: {
+    heading?: string;
+    intro?: string;
+    items: CaseStudyDecision[];
   };
 
   productRequirements: { need: string; requirement: string }[];
@@ -662,6 +685,10 @@ export interface CaseStudyData {
     outcomes?: string[];
     stat?: CaseStudyStat;
     quote?: CaseStudyQuote;
+    /** Optional evidence ledger separating what's built, what's been
+     * functionally tested, what users have said, and what's still an
+     * assumption — so none of them reads as another. */
+    evidence?: { label: string; detail: string; open?: boolean }[];
     placeholder: boolean;
   };
 
@@ -690,4 +717,36 @@ export interface CaseStudyData {
    * nav entries than the default one-entry-per-subsection list.
    */
   navOverride?: { id: string; label: string }[];
+}
+
+/** One competitor in a competitive-discovery breakdown. */
+export interface CompetitorFinding {
+  name: string;
+  /** Annotated screenshot, if one exists — shown full-width and zoomable. */
+  image?: CaseStudyImageSpec;
+  strengths: string[];
+  limitations: string[];
+  /** How the finding shaped the product. */
+  applied: string;
+  /** 1-based numbers of the keyDecisions this finding fed into. */
+  shaped?: number[];
+}
+
+/** One key product decision: tension → evidence → decision → tradeoff → outcome. */
+export interface CaseStudyDecision {
+  title: string;
+  /** Short "X vs. Y" label for the tension being resolved. */
+  tension: string;
+  problem: string;
+  /** Each piece of evidence names its source (e.g. "Competitive analysis",
+   * "My own testing", "Design intent") so its weight is clear. */
+  evidence: { source: string; text: string }[];
+  decision: string;
+  tradeoff: string;
+  outcome: string;
+  /** Plain status line, e.g. "Built · functionally tested · not yet tested with artists". */
+  status: string;
+  /** Optional step chips shown as this decision's visual. */
+  steps?: string[];
+  images?: CaseStudyImageSpec[];
 }

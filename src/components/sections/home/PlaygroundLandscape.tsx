@@ -5,6 +5,7 @@ import Image from "next/image";
 import { DogInfoModal } from "@/components/sections/home/DogInfoModal";
 import { HeroDog } from "@/components/sections/home/HeroDog";
 import { HeroPiano } from "@/components/sections/home/HeroPiano";
+import { prefersReducedMotion } from "@/lib/motion";
 import {
   HERO_BACKDROP_LAYERS,
   GOBI_BODY,
@@ -69,7 +70,7 @@ export function PlaygroundLandscape() {
   function openSketchbook() {
     document
       .getElementById("sketchbook-start")
-      ?.scrollIntoView({ behavior: "smooth" });
+      ?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
   }
 
   return (

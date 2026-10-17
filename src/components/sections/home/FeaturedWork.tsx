@@ -21,138 +21,123 @@ const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
 /**
  * Selected Work: every project inside one retro browser window (blue-gray
- * title bar, window dots, an active "Selected Work" tab) spanning the
- * full viewport width; the projects stay inside the site Container. Projects
- * alternate image-left / image-right on large screens and stack image
- * above copy on mobile, with identical 16:10 thumbnails so all three
- * carry equal weight. Plain document flow — no pinned or scroll-driven
- * effects.
+ * title bar, window dots, an active "Selected Works" tab) spanning the
+ * full viewport width; the projects stay inside the site Container. The
+ * chrome is kept deliberately quiet so the screenshots lead.
+ *
+ * Projects alternate image-left / image-right on large screens and stack
+ * image above copy on mobile, with identical 16:10 thumbnails so all three
+ * carry equal weight. Each row is one link (the title's anchor is
+ * stretched over the whole row), so the title, thumbnail and CTA are all
+ * clickable with a single tab stop; keyboard focus outlines the full row.
+ * Plain document flow — no pinned or scroll-driven effects.
  */
 export function FeaturedWork() {
   return (
     <section id="work" className="scroll-mt-28 pb-20 sm:pb-28">
-      <Reveal
-        y={20}
-        duration={500}
-        className="overflow-hidden border-y border-border bg-background"
-      >
+      <Reveal y={20} duration={500} className="overflow-hidden bg-background">
         {/* Title bar + active tab */}
-        <div className="flex items-end gap-4 bg-[#c8d5dc] px-4 pt-3 sm:gap-6 sm:px-5">
-          <div
-            aria-hidden="true"
-            className="flex gap-2 self-center pt-0.5 pb-3"
-          >
+        <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5">
+          <div aria-hidden="true" className="flex gap-1.5 self-center pb-2.5 opacity-80">
             {WINDOW_DOTS.map((color) => (
               <span
                 key={color}
-                className="size-3 rounded-full shadow-[inset_0_0_0_0.5px_rgba(46,50,42,0.2)]"
+                className="size-2.5 rounded-full"
                 style={{ backgroundColor: color }}
               />
             ))}
           </div>
 
-          <div className="flex min-w-0 items-end">
-            {/* Active tab — rounded top, with the curved "flare" corners
-                where a real browser tab melts into the page below. */}
-            <div className="relative flex h-11 w-60 min-w-0 items-center gap-2.5 rounded-t-xl bg-background pr-2.5 pl-4 sm:w-72">
-              <span
-                aria-hidden="true"
-                className="absolute bottom-0 -left-3 size-3 bg-[radial-gradient(circle_at_0_0,transparent_11.5px,var(--color-background)_12px)]"
-              />
-              <span
-                aria-hidden="true"
-                className="absolute -right-3 bottom-0 size-3 bg-[radial-gradient(circle_at_100%_0,transparent_11.5px,var(--color-background)_12px)]"
-              />
-              <span className="flex-1 truncate text-sm font-medium text-foreground">
-                Selected Works
-              </span>
-              <span
-                aria-hidden="true"
-                className="flex size-6 shrink-0 items-center justify-center rounded-full text-base leading-none text-muted-foreground"
-              >
-                ×
-              </span>
-            </div>
+          {/* Active tab — rounded top, with the curved "flare" corners
+              where a real browser tab melts into the page below. */}
+          <div className="relative flex h-9 w-56 min-w-0 items-center gap-2 rounded-t-lg bg-background pr-2.5 pl-4 sm:w-64">
             <span
               aria-hidden="true"
-              className="mb-2.5 ml-5 hidden text-lg leading-none text-muted-foreground/70 sm:block"
+              className="absolute bottom-0 -left-2.5 size-2.5 bg-[radial-gradient(circle_at_0_0,transparent_9.5px,var(--color-background)_10px)]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -right-2.5 bottom-0 size-2.5 bg-[radial-gradient(circle_at_100%_0,transparent_9.5px,var(--color-background)_10px)]"
+            />
+            <span className="flex-1 truncate text-[13px] font-medium text-foreground/80">
+              Selected Works
+            </span>
+            <span
+              aria-hidden="true"
+              className="text-sm leading-none text-muted-foreground/60"
             >
-              +
+              ×
             </span>
           </div>
         </div>
 
-        <div className="mx-auto w-full max-w-[1600px] px-6 pt-8 pb-4 sm:px-12 sm:pt-14 lg:px-20 lg:pt-20 xl:px-28">
-          <div>
-            <h2 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              Selected Works
-            </h2>
+        <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-4 sm:px-12 sm:pt-14 lg:px-20 lg:pt-20 xl:px-28">
+          <h2 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            Selected Works
+          </h2>
 
-            <ol className="mt-8 divide-y divide-border sm:mt-12 lg:mt-16">
-              {projects.map((project, index) => {
-                const imageRight = index % 2 === 1;
-                return (
-                  <li
-                    key={project.slug}
-                    className="py-10 first:pt-0 sm:py-14 lg:py-20"
+          <ol className="mt-8 divide-y divide-border/70 sm:mt-12 lg:mt-16">
+            {projects.map((project, index) => {
+              const imageRight = index % 2 === 1;
+              const href = `/projects/${project.slug}`;
+              const linkable = project.hasCaseStudy;
+              return (
+                <li key={project.slug} className="py-10 first:pt-0 sm:py-14 lg:py-20">
+                  <Reveal
+                    y={15}
+                    duration={500}
+                    className={cn(
+                      "group/row relative grid gap-6 rounded-2xl sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-16 xl:gap-24",
+                      "outline-offset-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-mauve-deep",
+                    )}
                   >
-                    <Reveal
-                      y={15}
-                      duration={500}
-                      className="group/row grid gap-6 lg:grid-cols-2 lg:items-center lg:gap-20 xl:gap-28"
+                    <div
+                      className={cn(
+                        "rounded-xl p-1.5 sm:p-2 lg:p-2.5",
+                        imageRight && "lg:order-2",
+                      )}
+                      style={{
+                        backgroundColor: MAT_TINTS[index % MAT_TINTS.length],
+                      }}
                     >
-                      <div
-                        className={cn(
-                          "rounded-xl p-2.5 sm:p-4 lg:rounded-2xl lg:p-5",
-                          imageRight && "lg:order-2",
-                        )}
-                        style={{
-                          backgroundColor: MAT_TINTS[index % MAT_TINTS.length],
-                        }}
-                      >
-                        <div className="rounded-md shadow-sm">
-                          <SelectedWorkMedia project={project} index={index} />
-                        </div>
-                      </div>
+                      <SelectedWorkMedia project={project} index={index} />
+                    </div>
 
-                      <div
-                        className={cn(
-                          "max-w-md lg:max-w-lg",
-                          imageRight && "lg:order-1",
-                        )}
-                      >
-                        <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                          {project.title}
-                        </h3>
-                        <p className="mt-4 text-base text-muted-foreground sm:text-lg lg:mt-5 lg:text-xl">
-                          {project.summary}
-                        </p>
-                        <p className="mt-4 text-xs font-medium tracking-[0.12em] text-foreground/70 uppercase lg:mt-5 lg:text-sm">
-                          {project.role}
-                        </p>
-                        {project.hasCaseStudy && (
+                    <div className={cn("max-w-md lg:max-w-lg", imageRight && "lg:order-1")}>
+                      <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+                        {linkable ? (
                           <Link
-                            href={`/projects/${project.slug}`}
-                            prefetch={
-                              project.videoThumbnail ? false : undefined
-                            }
-                            aria-label={`View case study: ${project.title}`}
-                            className="group/link mt-8 inline-flex items-center gap-1.5 text-sm font-medium lg:mt-10 lg:text-base text-foreground transition-colors hover:text-sage-deep"
+                            href={href}
+                            prefetch={project.videoThumbnail ? false : undefined}
+                            className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none"
                           >
-                            View case study
-                            <ArrowRight
-                              aria-hidden="true"
-                              className="size-4 transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:translate-x-[2.5px] group-hover/row:-translate-y-[2.5px] group-focus-visible/link:translate-x-[2.5px] group-focus-visible/link:-translate-y-[2.5px]"
-                            />
+                            {project.title}
                           </Link>
+                        ) : (
+                          project.title
                         )}
-                      </div>
-                    </Reveal>
-                  </li>
-                );
-              })}
-            </ol>
-          </div>
+                      </h3>
+                      <p className="mt-3 text-base text-muted-foreground sm:text-lg lg:mt-4 lg:text-xl">
+                        {project.summary}
+                      </p>
+                      <p className="mt-4 text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase lg:mt-5 lg:text-[13px]">
+                        {project.role}
+                      </p>
+                      {linkable && (
+                        <span
+                          aria-hidden="true"
+                          className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-(--duration-base) group-hover/row:text-sage-deep lg:mt-9 lg:text-base"
+                        >
+                          View case study
+                          <ArrowRight className="size-4 transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:translate-x-1 group-has-[a:focus-visible]/row:translate-x-1" />
+                        </span>
+                      )}
+                    </div>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </Reveal>
     </section>

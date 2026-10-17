@@ -11,6 +11,17 @@ export const myMuseum: CaseStudyData = {
   // `--project-accent` wiring).
   accentColor: "var(--color-lake-blue-deep)",
 
+  navOverride: [
+    { id: "overview", label: "At a glance" },
+    { id: "discovery", label: "Problem" },
+    { id: "research", label: "Research" },
+    { id: "decisions", label: "Key decisions" },
+    { id: "final-design", label: "Final design" },
+    { id: "testing", label: "Testing" },
+    { id: "results", label: "Results" },
+    { id: "reflection", label: "Reflection" },
+  ],
+
   hero: {
     category:
       "Product Design · Interaction Design · 3D Web · Frontend Development",
@@ -36,6 +47,16 @@ export const myMuseum: CaseStudyData = {
     year: "2026",
     duration: "3 months",
     role: "Solo Product Designer + Developer",
+    summary: {
+      problem:
+        "Online art portfolios are viewed, not explored — work gets flattened into grids and feeds, and the platforms built for sharing it come with likes, follower counts, and pressure to post.",
+      role:
+        "Solo, over 3 months: competitive research, user flows, interface and 3D gallery design, and building the product end to end.",
+      solution:
+        "A live web platform where artists upload their work and get a walkable 3D museum to share, with a Grid View alternative and quiet multiplayer presence.",
+      outcome:
+        "Live with creator accounts, editing, publishing, sharing, 3D + Grid View, and realtime multiplayer. 23/23 functional checks pass; usability testing with artists and visitors is next.",
+    },
     features: [
       {
         name: "Automatic 3D Galleries",
@@ -58,7 +79,7 @@ export const myMuseum: CaseStudyData = {
   background: {
     heading: "What if an art portfolio felt like entering someone's world?",
     narrative:
-      "Online art portfolios are usually viewed, not explored. Traditional portfolio platforms are effective at displaying work, but creative projects are often reduced to grids of thumbnails and scrolling feeds. I wanted to explore whether viewing someone's artwork could instead feel more personal, spatial, and social — closer to walking through a gallery than browsing a profile. I also wanted artists to have a place to share work without introducing the pressures of traditional social platforms: likes, follower counts, engagement metrics, and constant posting. This became MyMuseum: a platform where artists upload their work and receive a walkable, personal gallery they can share with others.",
+      "Online art portfolios are usually viewed, not explored. Traditional portfolio platforms are effective at displaying work, but creative projects are often reduced to grids of thumbnails and scrolling feeds.\n\nI wanted to explore whether viewing someone's artwork could instead feel more personal, spatial, and social — closer to walking through a gallery than browsing a profile. I also wanted artists to have a place to share work without the pressures of traditional social platforms: likes, follower counts, engagement metrics, and constant posting.\n\nThis became MyMuseum: a platform where artists upload their work and receive a walkable, personal gallery they can share with others.",
     placeholder: false,
     principles: {
       title: "The experience I wanted to create",
@@ -85,23 +106,53 @@ export const myMuseum: CaseStudyData = {
   research: {
     heading: "Competitive discovery",
     intro:
-      "I reviewed existing virtual-gallery products to understand where MyMuseum could offer something meaningfully different, and paired that with repeated end-to-end product testing as the platform evolved.",
+      "I reviewed two virtual-gallery platforms to understand where MyMuseum could offer something meaningfully different.",
     participants:
-      "Discovery so far includes competitive analysis and manual product testing. Structured usability sessions with artists and visitors are the next research step.",
+      "Research so far is competitive analysis plus my own end-to-end product testing. I haven't run structured usability sessions with artists or visitors yet — that's the next step.",
 
     competitiveDiscovery: {
       competitor: "New Art City",
       narrative:
-        "New Art City proved that expressive, browser-based exhibitions were possible: the whole platform is built around creating and exploring shows, Recent Exhibitions and Events & Openings give visitors two different ways to discover artists, and built-in chat gives the space a real sense of social presence. But its open-ended building tools gave creators significant creative freedom at the cost of visitor navigation — locating a specific piece could take real exploration — and the tool itself felt more like a professional creative workspace than somewhere to just upload work. KunstMatrix showed the same trade-off from the opposite direction: polished, professional virtual galleries built for institutions rather than for an individual artist. Neither felt like something an artist of any age or skill level could pick up and use in a few minutes, which is the gap I wanted MyMuseum to fill.",
-      image: {
-        src: "/images/projects/mymuseum/research/new-art-city-comparison.png",
-        alt: "Annotated teardown of New Art City's homepage and 3D exhibition view: callouts note that the platform centers on creating and exploring exhibitions, that Recent Exhibitions and Events & Openings give two paths to discovery, that creators get significant creative freedom to design immersive spaces, that open-ended navigation can make specific artwork harder to locate, and that built-in chat supports social presence.",
-        width: 1924,
-        height: 1356,
-      },
+        "New Art City and KunstMatrix showed the same trade-off from opposite directions — one gave creators open-ended freedom, the other delivered institutional polish. I looked at what each did well, where it fell short for an individual artist, and what that meant for MyMuseum.",
+      competitors: [
+        {
+          name: "New Art City",
+          image: {
+            src: "/images/projects/mymuseum/research/new-art-city-comparison.png",
+            alt: "Annotated teardown of New Art City's homepage and 3D exhibition view: callouts note that the platform centers on creating and exploring exhibitions, that Recent Exhibitions and Events & Openings give two paths to discovery, that creators get significant creative freedom to design immersive spaces, that open-ended navigation can make specific artwork harder to locate, and that built-in chat supports social presence.",
+            width: 1924,
+            height: 1356,
+          },
+          strengths: [
+            "The whole platform is built around creating and exploring exhibitions.",
+            "Recent Exhibitions and Events & Openings give visitors two different ways to discover artists.",
+            "Built-in chat gives the space a real sense of social presence.",
+          ],
+          limitations: [
+            "Open-ended building tools give creators freedom at the cost of visitor navigation — finding a specific piece can take real exploration.",
+            "The tool feels more like a professional creative workspace than somewhere to just upload work.",
+          ],
+          applied:
+            "Proved expressive, social, browser-based exhibitions were possible — but creator freedom shouldn't come at the cost of visitors finding the work.",
+          shaped: [1, 2, 3],
+        },
+        {
+          name: "KunstMatrix",
+          strengths: ["Polished, professional virtual galleries."],
+          limitations: [
+            "Built for institutions rather than for an individual artist.",
+          ],
+          applied:
+            "Showed the same trade-off from the opposite direction: polish was there, but not for someone setting up their own show.",
+          shaped: [1],
+        },
+      ],
+      opportunityContext:
+        "Neither felt like something an artist of any age or skill level could pick up and use in a few minutes — that's the gap I wanted MyMuseum to fill.",
       opportunity:
         "Make creating a virtual gallery feel less like designing an exhibition and more like uploading a portfolio.",
-      flowSteps: ["Upload artwork", "Choose a style", "Museum generated", "Share"],
+      // The creator flow is shown with Decision 01 instead (see keyDecisions).
+      flowSteps: [],
       placeholder: false,
     },
 
@@ -145,33 +196,11 @@ export const myMuseum: CaseStudyData = {
       "How might I give artists enough freedom to make a museum feel like their own without sacrificing navigation and accessibility for visitors?",
   },
 
+  // The three tensions now live in `keyDecisions` below, with their
+  // evidence and tradeoffs, instead of as short cards here.
   ideation: {
-    whyThisTitle: "Three tensions shaped the product",
-
-    whyThis: [
-      {
-        title: "Freedom vs. structure",
-        painPoint:
-          "Complete spatial freedom could create highly personal museums, but it could also result in confusing layouts and force creators to learn exhibition design.",
-        solution:
-          "Automatically generate the underlying spatial structure while creators control artwork, gallery style, museum information, publication state, and identity.",
-      },
-      {
-        title: "Immersion vs. accessibility",
-        painPoint:
-          "Keyboard-controlled 3D exploration works well on desktop but does not translate naturally to every device.",
-        solution:
-          "Pair the 3D gallery with Grid View. On touch-oriented devices, make Grid View the easier starting point while keeping 3D optional.",
-      },
-      {
-        title: "Social presence vs. social pressure",
-        painPoint:
-          "Multiplayer could make galleries feel alive, but likes, follower counts, chat clutter, or engagement mechanics could turn the experience into another social feed.",
-        solution:
-          "Keep multiplayer presence subtle and environmental so visitors can occupy the same gallery without social metrics becoming the focus.",
-      },
-    ],
-
+    whyThisTitle: "",
+    whyThis: [],
     whyThisPlaceholder: false,
 
     flowsSectionTitle: "Mapping the two experiences",
@@ -181,7 +210,6 @@ export const myMuseum: CaseStudyData = {
     flows: [
       {
         name: "Creator flow",
-        layout: "featured",
         steps: [
           "Discover MyMuseum",
           "Create account",
@@ -206,7 +234,6 @@ export const myMuseum: CaseStudyData = {
       },
       {
         name: "Visitor flow",
-        layout: "featured",
         steps: [
           "Open a shared link or discover a museum",
           "Enter museum",
@@ -227,6 +254,112 @@ export const myMuseum: CaseStudyData = {
     ],
 
     flowsPlaceholder: false,
+  },
+
+  keyDecisions: {
+    heading: "Three decisions that shaped MyMuseum",
+    intro:
+      "Each one resolved a tension in the HMW above. Every decision gave something up, and none of them has been validated with real artists or visitors yet.",
+    items: [
+      {
+        title: "Make creating a museum feel like uploading a portfolio",
+        tension: "Freedom vs. structure",
+        problem:
+          "Complete spatial freedom could create highly personal museums, but it could also result in confusing layouts and force creators to learn exhibition design.",
+        evidence: [
+          {
+            source: "Competitive analysis",
+            text: "New Art City's open-ended building tools cost visitors navigation and felt like a professional workspace. KunstMatrix was polished but built for institutions.",
+          },
+          {
+            source: "My own testing",
+            text: "Once a museum was generated, creators had no way back in to fix a typo, swap a piece, or change its visibility.",
+          },
+        ],
+        decision:
+          "Automatically generate the spatial layout. Creators control their artwork, gallery style, museum details, visibility, and identity, and they can come back to edit any of it. Adding or removing a piece re-runs the same layout instead of asking them to place it.",
+        tradeoff:
+          "Artists can't hand-place work or design their own rooms. I gave up some expressiveness so that every museum stays easy to navigate and creating one doesn't require learning exhibition design.",
+        outcome:
+          "Built: upload → choose a style → museum generated → share, plus persistent editing that re-lays out the gallery on its own.",
+        status: "Built · functionally tested · not yet tested with artists",
+        steps: ["Upload artwork", "Choose a style", "Museum generated", "Share"],
+      },
+      {
+        title: "Make 3D an option, not a requirement",
+        tension: "Immersion vs. accessibility",
+        problem:
+          "Keyboard-controlled 3D exploration works well on desktop but does not translate naturally to every device.",
+        evidence: [
+          {
+            source: "My own testing",
+            text: "The interface could be responsive while keyboard-based 3D movement still had no natural touch equivalent.",
+          },
+          {
+            source: "Competitive analysis",
+            text: "In New Art City, finding one specific piece could take real exploration.",
+          },
+        ],
+        decision:
+          "Pair the 3D gallery with a Grid View of the same collection and the same artwork viewer. On touch devices, Grid View is the starting point and Enter 3D Gallery stays one tap away.",
+        tradeoff:
+          "Mobile visitors don't start in the immersive experience that makes MyMuseum distinctive. I chose reliable access to every artwork over a first impression that might not work on their device.",
+        outcome:
+          "Built: no artwork is 3D-only. The artist page holding Grid View was checked at a 390px mobile width, and the artwork viewer with keyboard-only navigation.",
+        status: "Built · functionally tested · not yet tested with visitors",
+        images: [
+          {
+            src: "/images/projects/mymuseum/final/grid-view.png",
+            alt: "Accessible grid view of a museum's full collection as cards with thumbnails, titles, and View artwork links, with an Enter 3D Gallery button.",
+            width: 1440,
+            height: 900,
+          },
+          {
+            src: "/images/projects/mymuseum/final/grid-view-controls.png",
+            alt: "The same grid view with its Controls menu open, showing a Return to 3D museum option alongside movement instructions.",
+            width: 1440,
+            height: 900,
+          },
+        ],
+      },
+      {
+        title: "Design for presence, not engagement",
+        tension: "Social presence vs. social pressure",
+        problem:
+          "Multiplayer could make galleries feel alive, but likes, follower counts, chat clutter, or engagement mechanics could turn the experience into another social feed.",
+        evidence: [
+          {
+            source: "Competitive analysis",
+            text: "New Art City's built-in chat gave its spaces a real sense of social presence, which showed me presence was worth keeping.",
+          },
+          {
+            source: "Design intent",
+            text: "I wanted artists to share work without likes, follower counts, or pressure to post. This is my own goal, not something users told me.",
+          },
+        ],
+        decision:
+          "Show other visitors as labeled avatars and a live visitor count, with no chat, likes, or follower counts. For something more personal, visitors can leave the artist an asynchronous note through Museum Mail, which artists can switch off.",
+        tradeoff:
+          "Visitors can't talk to each other in real time the way they can in a chat-first space. I traded spontaneous conversation for a calmer room where the artwork stays the focus.",
+        outcome:
+          "Built: realtime presence, verified with two live sessions in the same museum. Public multiplayer deployment is still a next step.",
+        status: "Built · tested across two live sessions · not yet tested with visitors",
+        images: [
+          {
+            src: "/images/projects/mymuseum/final/multiplayer-a.png",
+            alt: "Two visitor avatars, one labeled Visitor 965, standing together in a gallery doorway with a live visitor count in the corner.",
+            width: 1024,
+            height: 660,
+          },
+          {
+            src: "/images/projects/mymuseum/final/multiplayer-b.png",
+            alt: "The same shared museum from a second live session, with a different visitor avatar labeled Visitor 354.",
+            width: 1024,
+            height: 660,
+          },
+        ],
+      },
+    ],
   },
 
   productRequirements: [
@@ -266,12 +399,8 @@ export const myMuseum: CaseStudyData = {
     },
   ],
 
-  designPrinciples: [
-    "Creating a museum should not require 3D expertise.",
-    "Customization should never compromise navigation.",
-    "Multiplayer should make the gallery feel alive without turning it into social media.",
-    "The experience should work fully on both desktop and mobile, not just degrade gracefully on one of them.",
-  ],
+  // Dropped: these restated the three key decisions above.
+  designPrinciples: [],
 
   design: {
     processNarrative:
@@ -306,16 +435,6 @@ export const myMuseum: CaseStudyData = {
           },
         ],
       },
-      {
-        title: "Building the creator experience",
-        description:
-          "The upload, gallery-style selection, dashboard, editing, and publishing flow that turns a collection of artwork into a shareable museum.",
-      },
-      {
-        title: "Building the visitor experience",
-        description:
-          "The 3D gallery, artwork viewer, Grid View, and multiplayer presence that let a visitor explore a museum on their own terms.",
-      },
     ],
 
     visualElements: {
@@ -332,65 +451,8 @@ export const myMuseum: CaseStudyData = {
 
   finalProduct: {
     intro:
-      "The strongest real screens from MyMuseum today, organized around what each one lets someone do — each paired with its mobile equivalent where the flow carries over.",
+      "The rest of MyMuseum today, organized around what each screen lets someone do — paired with its mobile equivalent where the flow carries over. Grid View and multiplayer are shown with the decisions above.",
     stories: [
-      {
-        title: "Give every visitor an identity",
-        description:
-          "A drag-to-rotate avatar builder — shape, body color, expression, and decoration — so exploring a museum never feels anonymous, on desktop or mobile.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/avatar-editor.png",
-            alt: "MyMuseum avatar editor showing a rounded-cube character with glasses and a sprout decoration, with body color, expression, and decoration controls beside it.",
-            width: 1440,
-            height: 900,
-          },
-          {
-            src: "/images/projects/mymuseum/final/avatar-editor-mobile.png",
-            alt: "The same avatar editor stacked into a single mobile column, with the character preview above its customization controls.",
-            width: 390,
-            height: 844,
-          },
-        ],
-      },
-      {
-        title: "Browse an artist's collection",
-        description:
-          "A public profile lists every museum an artist has published, each opening straight into that museum.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/artist-profile.png",
-            alt: "Artist profile page for Alayna showing an avatar, bio, and three published museum cards with Enter museum links.",
-            width: 1440,
-            height: 900,
-          },
-          {
-            src: "/images/projects/mymuseum/final/artist-profile-mobile.png",
-            alt: "The same artist profile reflowed into a single mobile column, museum cards stacked vertically.",
-            width: 390,
-            height: 844,
-          },
-        ],
-      },
-      {
-        title: "Start building, gated behind an account",
-        description:
-          "The create flow leads with what it does before asking for anything — an account only appears once someone is ready to make a museum their own.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/create-signin.png",
-            alt: "Build your own gallery screen prompting sign-in, with Sign in and Create an account buttons before any museum is created.",
-            width: 1440,
-            height: 900,
-          },
-          {
-            src: "/images/projects/mymuseum/final/create-signin-mobile.png",
-            alt: "The same sign-in prompt on mobile, with the primary Create action highlighted in the bottom navigation bar.",
-            width: 390,
-            height: 844,
-          },
-        ],
-      },
       {
         title: "Walk through the gallery",
         description:
@@ -442,40 +504,59 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Browse an accessible grid instead",
+        title: "Browse an artist's collection",
         description:
-          "A grid view mirrors the same collection for anyone who'd rather browse than navigate a 3D space, with a one-click toggle back into the museum.",
+          "A public profile lists every museum an artist has published, each opening straight into that museum.",
         images: [
           {
-            src: "/images/projects/mymuseum/final/grid-view.png",
-            alt: "Accessible grid view of a museum's full collection as cards with thumbnails, titles, and View artwork links, with an Enter 3D Gallery button.",
+            src: "/images/projects/mymuseum/final/artist-profile.png",
+            alt: "Artist profile page for Alayna showing an avatar, bio, and three published museum cards with Enter museum links.",
             width: 1440,
             height: 900,
           },
           {
-            src: "/images/projects/mymuseum/final/grid-view-controls.png",
-            alt: "The same grid view with its Controls menu open, showing a Return to 3D museum option alongside movement instructions.",
-            width: 1440,
-            height: 900,
+            src: "/images/projects/mymuseum/final/artist-profile-mobile.png",
+            alt: "The same artist profile reflowed into a single mobile column, museum cards stacked vertically.",
+            width: 390,
+            height: 844,
           },
         ],
       },
       {
-        title: "Feel other visitors in the room",
+        title: "Give every visitor an identity",
         description:
-          "Live visitor counts and labeled avatars moving through the same museum in real time — two separate sessions in the same live room.",
+          "A drag-to-rotate avatar builder — shape, body color, expression, and decoration — so exploring a museum never feels anonymous, on desktop or mobile.",
         images: [
           {
-            src: "/images/projects/mymuseum/final/multiplayer-a.png",
-            alt: "Two visitor avatars, one labeled Visitor 965, standing together in a gallery doorway with a live visitor count in the corner.",
-            width: 1024,
-            height: 660,
+            src: "/images/projects/mymuseum/final/avatar-editor.png",
+            alt: "MyMuseum avatar editor showing a rounded-cube character with glasses and a sprout decoration, with body color, expression, and decoration controls beside it.",
+            width: 1440,
+            height: 900,
           },
           {
-            src: "/images/projects/mymuseum/final/multiplayer-b.png",
-            alt: "The same shared museum from a second live session, with a different visitor avatar labeled Visitor 354.",
-            width: 1024,
-            height: 660,
+            src: "/images/projects/mymuseum/final/avatar-editor-mobile.png",
+            alt: "The same avatar editor stacked into a single mobile column, with the character preview above its customization controls.",
+            width: 390,
+            height: 844,
+          },
+        ],
+      },
+      {
+        title: "Start building, gated behind an account",
+        description:
+          "The create flow leads with what it does before asking for anything — an account only appears once someone is ready to make a museum their own.",
+        images: [
+          {
+            src: "/images/projects/mymuseum/final/create-signin.png",
+            alt: "Build your own gallery screen prompting sign-in, with Sign in and Create an account buttons before any museum is created.",
+            width: 1440,
+            height: 900,
+          },
+          {
+            src: "/images/projects/mymuseum/final/create-signin-mobile.png",
+            alt: "The same sign-in prompt on mobile, with the primary Create action highlighted in the bottom navigation bar.",
+            width: 390,
+            height: 844,
           },
         ],
       },
@@ -484,6 +565,7 @@ export const myMuseum: CaseStudyData = {
   },
 
   testing: {
+    heading: "Testing the whole product loop myself",
     intro:
       "I repeatedly tested MyMuseum as it evolved from a 3D prototype into a persistent product, focusing on whether complete creator and visitor workflows worked with real accounts, stored artwork, publication states, sharing, and multiple users.",
 
@@ -547,24 +629,36 @@ export const myMuseum: CaseStudyData = {
     summary:
       "MyMuseum now supports creator accounts, museum ownership, artwork storage, editing, publication controls, stable sharing, responsive viewing modes, and realtime multiplayer infrastructure.",
 
-    outcomes: [
-      "Persistent creator accounts",
-      "Editable museums",
-      "Publishing + sharing",
-      "3D + Grid View",
-      "Realtime multiplayer",
-    ],
-
     stat: {
       value: "23/23",
       caption:
-        "Functional checks passed during the latest authenticated end-to-end verification.",
+        "Functional checks I ran during the latest authenticated end-to-end verification. They show the product works, not that it's easy to use.",
     },
 
-    quote: {
-      text: "Structured usability testing with artists and visitors.",
-      attribution: "Next validation step",
-    },
+    evidence: [
+      {
+        label: "Implemented",
+        detail:
+          "Creator accounts and ownership, automatic gallery layout and relayout, museum and artwork editing, publish/private visibility, stable share links with Copy Link, 3D gallery + Grid View, the artwork viewer, the avatar editor, realtime multiplayer presence, and Museum Mail.",
+      },
+      {
+        label: "Functionally tested",
+        detail:
+          "Full create → edit → publish → share runs with a real account; visibility and ownership checked anonymously and from a second account; two live sessions in the same museum; desktop and mobile interaction states.",
+      },
+      {
+        label: "User feedback",
+        detail:
+          "None yet. I haven't run usability sessions with artists or visitors, so nothing here claims people found MyMuseum easier or more enjoyable.",
+        open: true,
+      },
+      {
+        label: "Assumptions to validate",
+        detail:
+          "That artists will trade layout control for speed, that Grid View is the better starting point on touch devices, and that quiet presence feels better than chat or social metrics.",
+        open: true,
+      },
+    ],
 
     placeholder: false,
   },
@@ -585,14 +679,6 @@ export const myMuseum: CaseStudyData = {
     placeholder: false,
   },
 
-  whatIsComplete: [
-    { label: "Museum metadata editing", done: true },
-    { label: "Publish / private visibility", done: true },
-    { label: "Stable, shareable museum URLs", done: true },
-    { label: "Copy Link action", done: true },
-    { label: "Artwork editing", done: true },
-    { label: "Artwork addition / removal", done: true },
-    { label: "Automatic gallery relayout", done: true },
-    { label: "Cross-account authorization checks", done: true },
-  ],
+  // Folded into results.evidence ("Implemented") above.
+  whatIsComplete: [],
 };

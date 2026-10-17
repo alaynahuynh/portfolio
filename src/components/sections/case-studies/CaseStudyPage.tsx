@@ -5,8 +5,10 @@ import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 import type {
   CaseStudyData,
+  CaseStudyDecision,
   CaseStudyImageSpec,
   CaseStudyVideoSpec,
+  CompetitorFinding,
   IANode,
 } from "@/types/case-study";
 import {
@@ -17,6 +19,7 @@ import {
   CaseStudyBeforeAfter,
   CaseStudyFlowImage,
   CaseStudyVideo,
+  CaseStudyZoomImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -193,6 +196,276 @@ function EquationRow({ steps, result }: { steps: string[]; result: string }) {
   );
 }
 
+/** Competitive discovery, one competitor at a time: a full-width,
+ * zoomable research visual (when one exists) with its findings directly
+ * beneath, split into what worked / what fell short / what it meant for
+ * the product — then the opportunity those findings add up to. */
+function CompetitorBreakdown({
+  discovery,
+  productName,
+}: {
+  discovery: NonNullable<CaseStudyData["research"]["competitiveDiscovery"]>;
+  productName: string;
+}) {
+  return (
+    <div className="mt-16">
+      <Reveal>
+        <p className="max-w-2xl text-lg text-foreground">{discovery.narrative}</p>
+      </Reveal>
+
+      <div className="mt-14 space-y-16">
+        {(discovery.competitors ?? []).map((competitor, i) => (
+          <CompetitorBlock key={competitor.name} competitor={competitor} index={i} productName={productName} />
+        ))}
+      </div>
+
+      <Reveal className="mt-16 border-t border-border pt-12">
+        {discovery.opportunityContext && (
+          <p className="max-w-2xl text-muted-foreground">{discovery.opportunityContext}</p>
+        )}
+        <div className="mt-6 max-w-2xl border-l-2 border-sage-deep pl-6">
+          <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">Opportunity</p>
+          <p className="mt-2 text-xl text-foreground">{discovery.opportunity}</p>
+        </div>
+        {discovery.flowSteps.length > 0 && (
+          <div className="mt-10">
+            {discovery.flowLabel && (
+              <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                {discovery.flowLabel}
+              </p>
+            )}
+            <FlowDiagram steps={discovery.flowSteps} />
+          </div>
+        )}
+      </Reveal>
+    </div>
+  );
+}
+
+function CompetitorBlock({
+  competitor,
+  index,
+  productName,
+}: {
+  competitor: CompetitorFinding;
+  index: number;
+  productName: string;
+}) {
+  const columns = [
+    { label: "What worked", items: competitor.strengths },
+    { label: "Where it fell short", items: competitor.limitations },
+  ];
+  return (
+    <Reveal className={cn(index > 0 && "border-t border-border pt-16")}>
+      <p className="font-heading text-3xl text-sage-deep/50">{String(index + 1).padStart(2, "0")}</p>
+      <Heading level={3} size={3} className="mt-1">
+        {competitor.name}
+      </Heading>
+
+      {competitor.image && (
+        <div className="mt-8 xl:-mx-12">
+          <CaseStudyZoomImage image={competitor.image} />
+        </div>
+      )}
+
+      <div className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10">
+        {columns.map((col) => (
+          <div key={col.label}>
+            <Heading level={4} size={4} className="text-muted-foreground">
+              {col.label}
+            </Heading>
+            <ul className="mt-3 list-disc space-y-2 pl-4 text-sm text-muted-foreground marker:text-sage-deep">
+              {col.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <div>
+          <Heading level={4} size={4} className="text-sage-deep">
+            What it meant for {productName}
+          </Heading>
+          <p className="mt-3 text-sm text-foreground">{competitor.applied}</p>
+          {competitor.shaped && competitor.shaped.length > 0 && (
+            <p className="mt-4 text-sm text-muted-foreground">
+              Fed into{" "}
+              {competitor.shaped.map((n, i) => (
+                <span key={n}>
+                  {i > 0 && ", "}
+                  <a
+                    href={`#decision-${n}`}
+                    className="font-medium text-(--project-accent) underline underline-offset-4 hover:no-underline"
+                  >
+                    Decision {String(n).padStart(2, "0")}
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
+        </div>
+      </div>
+    </Reveal>
+  );
+}
+
+/** The 30-second read: problem / role / solution / outcome, then the key
+ * decisions as jump links — so a skimmer gets the whole arc before the
+ * long-form story starts. */
+function AtAGlance({
+  summary,
+  decisions,
+}: {
+  summary: NonNullable<CaseStudyData["overview"]["summary"]>;
+  decisions: CaseStudyDecision[];
+}) {
+  const rows = [
+    { label: "Problem", text: summary.problem },
+    { label: "My role", text: summary.role },
+    { label: "Solution", text: summary.solution },
+    { label: "Outcome", text: summary.outcome },
+  ];
+  return (
+    <Section id="overview" className="scroll-mt-28 pt-16 sm:pt-20">
+      <Reveal>
+        <SectionEyebrow>Overview</SectionEyebrow>
+        <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
+          At a glance
+        </Heading>
+      </Reveal>
+      <Reveal delay={60}>
+        <dl className="mt-10 grid gap-x-10 gap-y-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
+          {rows.map((row) => (
+            <div key={row.label}>
+              <dt className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">
+                {row.label}
+              </dt>
+              <dd className="mt-2 text-foreground">{row.text}</dd>
+            </div>
+          ))}
+        </dl>
+      </Reveal>
+      {decisions.length > 0 && (
+        <Reveal delay={100} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
+          <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+            {decisions.length} key decisions
+          </p>
+          <ol className="mt-5 grid gap-6 sm:grid-cols-3">
+            {decisions.map((decision, i) => (
+              <li key={decision.title}>
+                <a
+                  href={`#decision-${i + 1}`}
+                  className="group block rounded-(--radius-default) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--project-accent)"
+                >
+                  <span className="font-heading text-2xl text-(--project-accent)/60">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="mt-1 block font-medium text-foreground group-hover:underline group-hover:underline-offset-4">
+                    {decision.title}
+                  </span>
+                  <span className="mt-1 block text-sm text-muted-foreground">{decision.tension}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </Reveal>
+      )}
+    </Section>
+  );
+}
+
+/** One key decision: header, then problem + evidence on the left and the
+ * decision / tradeoff / outcome on the right, with its real product
+ * visual full-width beneath. */
+function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index: number }) {
+  return (
+    <article
+      id={`decision-${index + 1}`}
+      className={cn("scroll-mt-28", index > 0 && "border-t border-border pt-16 sm:pt-20")}
+    >
+      <Reveal>
+        <p className="text-sm font-medium tracking-wide text-(--project-accent) uppercase">
+          Decision {String(index + 1).padStart(2, "0")} · {decision.tension}
+        </p>
+        <Heading level={3} className="mt-3 max-w-3xl text-2xl sm:text-4xl">
+          {decision.title}
+        </Heading>
+      </Reveal>
+
+      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
+        <Reveal delay={60}>
+          <Heading level={4} size={4} className="text-muted-foreground">
+            The problem
+          </Heading>
+          <p className="mt-2 text-muted-foreground">{decision.problem}</p>
+
+          <Heading level={4} size={4} className="mt-8 text-muted-foreground">
+            Evidence
+          </Heading>
+          <ul className="mt-3 space-y-4">
+            {decision.evidence.map((item) => (
+              <li key={item.text} className="text-sm text-muted-foreground">
+                <span className="mb-1 block text-xs font-medium tracking-wide text-foreground uppercase">
+                  {item.source}
+                </span>
+                {item.text}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+
+        <Reveal delay={100}>
+          <div className="border-l-2 border-(--project-accent) pl-6">
+            <Heading level={4} size={4} className="text-(--project-accent)">
+              Decision
+            </Heading>
+            <p className="mt-2 text-lg text-foreground">{decision.decision}</p>
+          </div>
+          <dl className="mt-8 space-y-6 pl-6">
+            <div>
+              <dt className="font-medium text-foreground">Tradeoff</dt>
+              <dd className="mt-1 text-muted-foreground">{decision.tradeoff}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-foreground">Outcome</dt>
+              <dd className="mt-1 text-muted-foreground">{decision.outcome}</dd>
+            </div>
+          </dl>
+          <p className="mt-6 ml-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-border bg-surface px-3 py-1 text-xs text-muted-foreground">
+            <span className="size-1.5 rounded-full bg-(--project-accent)" aria-hidden="true" />
+            {decision.status}
+          </p>
+        </Reveal>
+      </div>
+
+      {decision.images && decision.images.length > 0 ? (
+        <Reveal delay={80} className="mt-12">
+          <CaseStudyImageRow images={decision.images} columns={2} />
+        </Reveal>
+      ) : (
+        decision.steps &&
+        decision.steps.length > 0 && (
+          <Reveal delay={80} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
+            <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              The creator flow this produced
+            </p>
+            <FlowDiagram steps={decision.steps} />
+          </Reveal>
+        )
+      )}
+    </article>
+  );
+}
+
+/** A landscape (desktop) screenshot followed by a portrait (mobile) one. */
+function isDevicePair(images: CaseStudyImageSpec[]) {
+  const [desktop, mobile] = images;
+  return (
+    images.length === 2 &&
+    desktop.width > desktop.height &&
+    mobile.height > mobile.width
+  );
+}
+
 function FlowDiagram({ steps }: { steps: string[] }) {
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -309,6 +582,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
     results,
     finalThoughts,
     whatIsComplete,
+    keyDecisions,
   } = data;
 
   // A project can supply a short curated nav instead — see
@@ -383,7 +657,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         <a
           href={hero.ctaHref}
           {...externalLinkProps(hero.ctaHref)}
-          className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) border border-dashed border-border px-5 py-2.5 text-sm font-medium text-muted-foreground"
+          className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-accent) px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
         >
           {hero.ctaLabel} →
         </a>
@@ -448,6 +722,9 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
       <CaseStudySectionMobileNav sections={navSections} />
 
+      {overview.summary ? (
+        <AtAGlance summary={overview.summary} decisions={keyDecisions?.items ?? []} />
+      ) : (
       <Section id="overview" className="scroll-mt-28">
         <Reveal>
           <SectionEyebrow>Overview</SectionEyebrow>
@@ -479,6 +756,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           ))}
         </div>
       </Section>
+      )}
 
       <Section id="discovery" className="scroll-mt-28 bg-muted">
         <Reveal className="flex flex-wrap items-center gap-3">
@@ -488,8 +766,10 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
           {background.heading ?? "The problem"}
         </Heading>
-        <Reveal delay={60} className="mt-6 max-w-xl text-muted-foreground">
-          <p>{background.narrative}</p>
+        <Reveal delay={60} className="mt-6 max-w-xl space-y-4 text-muted-foreground">
+          {background.narrative.split("\n\n").map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
         </Reveal>
         {background.stat && (
           <Reveal delay={100} className="mt-8 max-w-xs">
@@ -631,7 +911,9 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           )
         )}
 
-        {research.competitiveDiscovery ? (
+        {research.competitiveDiscovery?.competitors ? (
+          <CompetitorBreakdown discovery={research.competitiveDiscovery} productName={hero.title} />
+        ) : research.competitiveDiscovery ? (
           <Reveal delay={100} className="mt-16">
             <div className="flex flex-wrap items-center gap-3">
               <Heading level={3} size={4}>
@@ -965,6 +1247,32 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               </div>
             </div>
           )}
+        </Section>
+      )}
+
+      {keyDecisions && keyDecisions.items.length > 0 && (
+        <Section
+          id="decisions"
+          className="scroll-mt-28"
+          style={{
+            backgroundColor:
+              "color-mix(in srgb, var(--project-accent) 5%, var(--color-background))",
+          }}
+        >
+          <Reveal>
+            <SectionEyebrow accent>Key decisions</SectionEyebrow>
+            <Heading level={2} className="mt-2 max-w-3xl text-3xl sm:text-5xl">
+              {keyDecisions.heading ?? "Key decisions"}
+            </Heading>
+            {keyDecisions.intro && (
+              <p className="mt-4 max-w-xl text-muted-foreground">{keyDecisions.intro}</p>
+            )}
+          </Reveal>
+          <div className="mt-16 space-y-16 sm:space-y-20">
+            {keyDecisions.items.map((decision, i) => (
+              <DecisionBlock key={decision.title} decision={decision} index={i} />
+            ))}
+          </div>
         </Section>
       )}
 
@@ -1364,22 +1672,34 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             >
               <p>{finalProduct.intro}</p>
             </Reveal>
-            <div className="mt-10 space-y-16">
+            <div className="mt-12 space-y-20">
               {finalProduct.stories.map((story, i) => (
                 <Reveal key={story.title} delay={Math.min(i * 40, 200)}>
                   <Heading level={3} size={3}>
                     {String(i + 1).padStart(2, "0")} — {story.title}
                   </Heading>
-                  <p className="mt-2 max-w-xl text-sm text-muted-foreground">
+                  <p className="mt-2 max-w-xl text-muted-foreground">
                     {story.description}
                   </p>
-                  {story.images && story.images.length > 0 && (
-                    <div className="mt-6">
-                      <CaseStudyImageRow
-                        images={story.images}
-                        columns={2}
-                      />
+                  {story.images && isDevicePair(story.images) ? (
+                    // Desktop + mobile pair: columns sized to the two
+                    // aspect ratios so both screens render at the same
+                    // height, instead of the phone screen dwarfing the
+                    // desktop one in equal-width columns.
+                    <div className="mt-8 grid items-start gap-6 sm:grid-cols-[minmax(0,3.4fr)_minmax(0,1fr)]">
+                      <CaseStudyContentImage image={story.images[0]} className="max-w-none" />
+                      <CaseStudyContentImage image={story.images[1]} className="max-w-60 sm:max-w-none" />
                     </div>
+                  ) : (
+                    story.images &&
+                    story.images.length > 0 && (
+                      <div className="mt-8">
+                        <CaseStudyImageRow
+                          images={story.images}
+                          columns={2}
+                        />
+                      </div>
+                    )
                   )}
                   {story.videos && story.videos.length > 0 && (
                     <div className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -1631,32 +1951,37 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
             {testing.iterations.filter((it) => !it.isTechnicalNote).length >
               0 && (
-              <div className="mt-12 space-y-4">
+              <div className="mt-12 border-b border-border">
                 {testing.iterations
                   .filter((it) => !it.isTechnicalNote)
                   .map((iteration, i) => (
                     <Reveal
                       key={iteration.title}
                       delay={Math.min(i * 40, 200)}
-                      className="rounded-(--radius-default) border border-dashed border-border bg-surface p-6"
+                      className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
                     >
-                      <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">
-                        {String(i + 1).padStart(2, "0")} — {iteration.title}
-                      </p>
-                      <p className="mt-2 text-sm text-muted-foreground italic">
-                        <span className="font-medium not-italic text-foreground">
-                          Testing revealed:{" "}
-                        </span>
-                        {iteration.feedback}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground italic">
-                        <span className="font-medium not-italic text-foreground">
-                          Design change:{" "}
-                        </span>
-                        {iteration.finalIteration}
-                      </p>
+                      <div>
+                        <p className="font-heading text-2xl text-sage-deep/50">
+                          {String(i + 1).padStart(2, "0")}
+                        </p>
+                        <Heading level={3} size={4} className="mt-1">
+                          {iteration.title}
+                        </Heading>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                          What testing showed
+                        </p>
+                        <p className="mt-2 text-sm text-muted-foreground">{iteration.feedback}</p>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">
+                          What I changed
+                        </p>
+                        <p className="mt-2 text-sm text-foreground">{iteration.finalIteration}</p>
+                      </div>
                       {iteration.beforeAfter && (
-                        <div className="mt-5">
+                        <div className="mt-2 lg:col-span-3">
                           <CaseStudyBeforeAfter
                             before={iteration.beforeAfter.before}
                             after={iteration.beforeAfter.after}
@@ -1719,8 +2044,43 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </Reveal>
         )}
 
+        {results.evidence && results.evidence.length > 0 && (
+          <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-16">
+            {results.stat && (
+              <Reveal delay={80} className="self-start">
+                <StatCallout value={results.stat.value} caption={results.stat.caption} />
+              </Reveal>
+            )}
+            <Reveal delay={120}>
+              <Heading level={3} size={4}>
+                What&apos;s proven, and what isn&apos;t yet
+              </Heading>
+              <dl className="mt-4 divide-y divide-border border-y border-border">
+                {results.evidence.map((row) => (
+                  <div key={row.label} className="grid gap-2 py-5 sm:grid-cols-[11rem_minmax(0,1fr)] sm:gap-8">
+                    <dt className="flex items-center gap-2 text-sm font-medium text-foreground">
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          "size-2 shrink-0 rounded-full",
+                          row.open
+                            ? "border border-muted-foreground"
+                            : "bg-(--project-accent)",
+                        )}
+                      />
+                      {row.label}
+                    </dt>
+                    <dd className="text-sm text-muted-foreground">{row.detail}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Reveal>
+          </div>
+        )}
+
+        {(results.quote || (results.stat && !results.evidence)) && (
         <div className="mt-10 grid gap-8 sm:grid-cols-2">
-          {results.stat && (
+          {results.stat && !results.evidence && (
             <Reveal delay={100}>
               <StatCallout
                 value={results.stat.value}
@@ -1737,6 +2097,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             </Reveal>
           )}
         </div>
+        )}
       </Section>
       )}
 
