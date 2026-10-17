@@ -9,6 +9,10 @@ interface MagneticTextProps {
   className?: string;
   /** Scales both reaction radius and displacement (0–1). 1 = full strength (default), lower = subtler. */
   intensity?: number;
+  /** Force a visual line break after this many words (e.g. 1 puts a
+   * `<br>` between the first and second word) — purely visual, the
+   * sr-only full-text span is unaffected. Omit for normal word-wrapping. */
+  breakAfter?: number;
 }
 
 /**
@@ -22,7 +26,7 @@ interface MagneticTextProps {
  * classes stay on regardless, since without a listener `transform` never
  * changes, so no transition ever fires.
  */
-export function MagneticText({ text, as: Tag = "h1", className, intensity = 1 }: MagneticTextProps) {
+export function MagneticText({ text, as: Tag = "h1", className, intensity = 1, breakAfter }: MagneticTextProps) {
   const charRefs = useRef(new Map<string, HTMLSpanElement>());
   const latestPointer = useRef<{ x: number; y: number } | null>(null);
   const frameScheduled = useRef(false);
@@ -96,7 +100,7 @@ export function MagneticText({ text, as: Tag = "h1", className, intensity = 1 }:
                 </span>
               ))}
             </span>
-            {wordIndex < words.length - 1 ? " " : null}
+            {wordIndex < words.length - 1 ? (breakAfter && wordIndex === breakAfter - 1 ? <br aria-hidden="true" /> : " ") : null}
           </Fragment>
         ))}
       </span>

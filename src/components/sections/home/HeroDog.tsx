@@ -26,7 +26,13 @@ interface HeroDogProps {
   tailFrames?: Placement[];
   /** Indices into tailFrames for one wag sweep; index 0 must be the resting frame. */
   wagSequence?: number[];
-  onClick: () => void;
+  /** Omit for a purely decorative placement (no hit box, no hover/click
+   * behavior at all) — e.g. the small static preview in the hero's
+   * Playground tab, where the dogs sit inside a link to the Playground
+   * section itself, so they can't also be their own nested interactive
+   * element (a button inside an anchor is invalid). Idle life (ear
+   * twitches, body shift, face blips, tail wags) still runs either way. */
+  onClick?: () => void;
 }
 
 const EAR_TWITCH_MS = 380;
@@ -34,7 +40,12 @@ const BODY_SHIFT_MS = 900;
 const FACE_BLIP_MS = 2200;
 const WAG_STEP_MS = 170;
 
-function useRandomInterval(callback: () => void, minMs: number, maxMs: number, enabled: boolean) {
+function useRandomInterval(
+  callback: () => void,
+  minMs: number,
+  maxMs: number,
+  enabled: boolean,
+) {
   const callbackRef = useRef(callback);
   useEffect(() => {
     callbackRef.current = callback;
@@ -44,10 +55,13 @@ function useRandomInterval(callback: () => void, minMs: number, maxMs: number, e
     if (!enabled) return;
     let timer: number;
     function tick() {
-      timer = window.setTimeout(() => {
-        callbackRef.current();
-        tick();
-      }, minMs + Math.random() * (maxMs - minMs));
+      timer = window.setTimeout(
+        () => {
+          callbackRef.current();
+          tick();
+        },
+        minMs + Math.random() * (maxMs - minMs),
+      );
     }
     tick();
     return () => clearTimeout(timer);
@@ -97,7 +111,9 @@ export function HeroDog({
   const idleFaceCursor = useRef(0);
 
   useEffect(() => {
-    canHoverRef.current = window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+    canHoverRef.current = window.matchMedia(
+      "(pointer: fine) and (hover: hover)",
+    ).matches;
     if (bodyImgRef.current) {
       bodyImgRef.current.style.animationDelay = `${(-Math.random() * 5).toFixed(2)}s`;
     }
@@ -110,14 +126,17 @@ export function HeroDog({
 
   const faces = useMemo(() => {
     const map = new Map<string, Placement>();
-    for (const f of [restFace, ...idleFaces, hoverFace, clickFace ?? hoverFace]) map.set(f.src, f);
+    for (const f of [restFace, ...idleFaces, hoverFace, clickFace ?? hoverFace])
+      map.set(f.src, f);
     return Array.from(map.values());
   }, [restFace, idleFaces, hoverFace, clickFace]);
 
   function triggerTwitch() {
     if (hovering) return; // hover already holds the alert pose
     setTwitching(false);
-    requestAnimationFrame(() => requestAnimationFrame(() => setTwitching(true)));
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => setTwitching(true)),
+    );
     window.setTimeout(() => setTwitching(false), EAR_TWITCH_MS);
   }
 
@@ -183,6 +202,7 @@ export function HeroDog({
   }
 
   function handleClick() {
+    if (!onClick) return;
     showFaceBriefly((clickFace ?? hoverFace).src);
     if (!reduced) playWag();
     onClick();
@@ -190,16 +210,23 @@ export function HeroDog({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={handleClick}
-        onMouseEnter={handlePointerEnter}
-        onMouseLeave={handlePointerLeave}
-        data-cursor="explore"
-        aria-label={`Meet ${name}`}
-        className="absolute block bg-transparent"
-        style={{ left: hitBox.left, top: hitBox.top, width: hitBox.width, height: hitBox.height }}
-      />
+      {onClick && (
+        <button
+          type="button"
+          onClick={handleClick}
+          onMouseEnter={handlePointerEnter}
+          onMouseLeave={handlePointerLeave}
+          data-cursor="explore"
+          aria-label={`Meet ${name}`}
+          className="absolute block bg-transparent"
+          style={{
+            left: hitBox.left,
+            top: hitBox.top,
+            width: hitBox.width,
+            height: hitBox.height,
+          }}
+        />
+      )}
 
       <Image
         ref={bodyImgRef}
@@ -219,7 +246,10 @@ export function HeroDog({
           transformOrigin: "50% 100%",
           animation: reduced
             ? undefined
-            : [`hero-dog-breathe 5.2s ease-in-out infinite`, shifting && `hero-body-shift ${BODY_SHIFT_MS}ms ease-out`]
+            : [
+                `hero-dog-breathe 5.2s ease-in-out infinite`,
+                shifting && `hero-body-shift ${BODY_SHIFT_MS}ms ease-out`,
+              ]
                 .filter(Boolean)
                 .join(", "),
         }}
@@ -239,7 +269,8 @@ export function HeroDog({
             left: ear.left,
             top: ear.top,
             width: ear.widthPct,
-            opacity: ear.src === (earsAlertOn ? earsAlert.src : earsRest.src) ? 1 : 0,
+            opacity:
+              ear.src === (earsAlertOn ? earsAlert.src : earsRest.src) ? 1 : 0,
             transformOrigin: earOrigin,
             // Ears with their own twitch play that; otherwise, when this dog
             // leans instead (bodyShift), they ride the exact same shift as

@@ -1,33 +1,51 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ViewTransition } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { ProjectPlaceholderArt } from "@/components/sections/ProjectPlaceholderArt";
+import { VNHHoldAndRise } from "@/components/sections/home/VNHHoldAndRise";
 import { cn } from "@/lib/utils";
 import { PROJECTS_STATUS } from "@/data/projects";
 import type { Project } from "@/types";
 
-/** Pauses/resumes a looping preview video when it scrolls off/on screen —
- * no reason to keep decoding a video the visitor isn't looking at. */
-function useOffscreenPause(ref: React.RefObject<HTMLVideoElement | null>) {
+/** Defers a looping preview video's `src` (and thus its download) until it
+ * first scrolls into view, then pauses/resumes it on later scrolls off/on
+ * screen — a video with `autoPlay` starts buffering the instant its `src`
+ * is set, whether or not it's actually on screen yet, so the video must
+ * stay `src`-less until this fires at least once. Returns whether the
+ * caller should render the real `src` yet. */
+export function useLazyVideo(ref: React.RefObject<HTMLVideoElement | null>) {
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const hasLoadedRef = useRef(false);
+
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) void el.play();
-        else el.pause();
+        if (entry.isIntersecting) {
+          if (!hasLoadedRef.current) {
+            hasLoadedRef.current = true;
+            setShouldLoad(true);
+          } else {
+            void el.play();
+          }
+        } else if (hasLoadedRef.current) {
+          el.pause();
+        }
       },
       { threshold: 0.1 },
     );
     observer.observe(el);
     return () => observer.disconnect();
   }, [ref]);
+
+  return shouldLoad;
 }
 
 /** `accent` swaps the numeral to a sparse earth-brown highlight — used
@@ -36,7 +54,7 @@ function useOffscreenPause(ref: React.RefObject<HTMLVideoElement | null>) {
  * this one small decorative mark. */
 function IndexMark({ index, accent = false }: { index: number; accent?: "earth" | false }) {
   return (
-    <p className={cn("font-mono text-sm tracking-[0.2em]", accent === "earth" ? "text-earth" : "text-foreground/70")}>
+    <p className={cn("font-sans font-medium tabular-nums text-sm tracking-[0.2em]", accent === "earth" ? "text-earth" : "text-foreground/70")}>
       {String(index + 1).padStart(2, "0")}
     </p>
   );
@@ -45,12 +63,19 @@ function IndexMark({ index, accent = false }: { index: number; accent?: "earth" 
 /** Understated case-study CTA — a text link with a small arrow nudge on
  * hover, never a button. Every spread's background is now light enough
  * for dark (`text-foreground`) copy, so this no longer needs a `light`
- * variant. */
+ * variant. `prefetch={false}` for any project whose case study embeds a
+ * video — Next's default viewport-triggered prefetch has no way to know
+ * the destination page is unusually heavy, so it would otherwise fetch
+ * that route's data/JS the moment this link merely scrolls into view,
+ * before the visitor shows any real intent to click through. (The
+ * homepage's own copy of this project's preview video has the matching
+ * fix in CoursePilotSpread — see useLazyVideo below.) */
 function CaseStudyLink({ project, label = "Read the case study" }: { project: Project; label?: string }) {
   return project.hasCaseStudy ? (
     <Link
       href={`/projects/${project.slug}`}
-      className="group/link mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-foreground/70"
+      prefetch={project.videoThumbnail ? false : undefined}
+      className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-foreground/70"
     >
       {label}
       <ArrowRight aria-hidden="true" className="size-4 transition-transform group-hover/link:translate-x-1" />
@@ -59,11 +84,44 @@ function CaseStudyLink({ project, label = "Read the case study" }: { project: Pr
     <span
       aria-disabled="true"
       title="Case study coming soon"
-      className="mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-foreground/50"
+      className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/50"
     >
       {PROJECTS_STATUS.pendingCtaLabel}
       <ArrowRight aria-hidden="true" className="size-4" />
     </span>
+  );
+}
+
+/** The live product/site CTA — only rendered when a real `liveUrl` exists
+ * (see Project.liveUrl's own doc comment). No disabled/"coming soon"
+ * fallback here, unlike CaseStudyLink: a real case study is always
+ * reachable at /projects/[slug] even before its content is fully written,
+ * but there's no honest placeholder destination for a product that isn't
+ * live yet — so the CTA simply doesn't render until one exists. */
+function LiveLinkCTA({ project, label }: { project: Project; label: string }) {
+  if (!project.liveUrl) return null;
+  return (
+    <Link
+      href={project.liveUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group/live inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-foreground/70"
+    >
+      {label}
+      <ArrowUpRight aria-hidden="true" className="size-4 transition-transform group-hover/live:translate-x-0.5 group-hover/live:-translate-y-0.5" />
+    </Link>
+  );
+}
+
+/** Shared CTA row: case-study link plus an optional live-product/site
+ * link, wrapped so the two share consistent spacing regardless of
+ * whether the live link is present. */
+function ProjectCTARow({ project, liveLabel }: { project: Project; liveLabel: string }) {
+  return (
+    <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2">
+      <CaseStudyLink project={project} label="View Case Study" />
+      <LiveLinkCTA project={project} label={liveLabel} />
+    </div>
   );
 }
 
@@ -131,7 +189,8 @@ function MyMuseumSpread({ project, index }: { project: Project; index: number })
             </Heading>
             <p className="mt-5 text-lg text-foreground">{project.summary}</p>
             <p className="mt-4 text-sm font-medium tracking-wide text-foreground/70 uppercase">{project.role}</p>
-            <CaseStudyLink project={project} label="View Case Study" />
+            {project.credibility && <p className="mt-4 text-sm text-foreground/80">{project.credibility}</p>}
+            <ProjectCTARow project={project} liveLabel="View Live Product" />
           </div>
         </Reveal>
       </div>
@@ -150,7 +209,7 @@ function MyMuseumSpread({ project, index }: { project: Project; index: number })
  */
 function CoursePilotSpread({ project, index }: { project: Project; index: number }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  useOffscreenPause(videoRef);
+  const videoReady = useLazyVideo(videoRef);
 
   return (
     <section
@@ -170,7 +229,10 @@ function CoursePilotSpread({ project, index }: { project: Project; index: number
                 {project.tags.join(" · ")}
               </p>
             )}
-            <CaseStudyLink project={project} label="View Case Study" />
+            {project.credibility && <p className="mt-4 text-sm text-foreground/80">{project.credibility}</p>}
+            <div className="mt-8">
+              <CaseStudyLink project={project} label="View Case Study" />
+            </div>
           </div>
         </Reveal>
 
@@ -179,8 +241,16 @@ function CoursePilotSpread({ project, index }: { project: Project; index: number
             {project.videoThumbnail ? (
               <video
                 ref={videoRef}
-                src={project.videoThumbnail.src}
+                // No `src` (and no `autoPlay`) until useLazyVideo confirms
+                // this has actually scrolled into view — a video element
+                // starts fetching the moment a real `src` lands on it,
+                // `autoPlay` or not, so withholding both is what actually
+                // stops the download from starting the instant the
+                // homepage loads.
+                src={videoReady ? project.videoThumbnail.src : undefined}
                 poster={project.videoThumbnail.poster}
+                preload={videoReady ? undefined : "none"}
+                autoPlay={videoReady}
                 muted
                 loop
                 playsInline
@@ -226,22 +296,11 @@ function CoursePilotSpread({ project, index }: { project: Project; index: number
  *
  * Sized with the same `lg:min-h-[85vh]` as MyMuseumSpread/CoursePilotSpread
  * (not a full `min-h-screen`) so all three cards read at the same height.
- * When CreativePracticeBook renders this as its pinned "previous panel"
- * during the cover transition, that panel's own wrapper is exactly 100vh
- * (the wave transition's fixed unit — see that component's module
- * comment) — shorter than this section now renders, so that wrapper
- * gives itself the same `dominantColor` background and vertically centers
- * this section inside it, keeping the pinned view fully colored with no
- * gap rather than changing any of the transition's own math.
- *
- * This is the last project before CreativePracticeBook, so it's exported
- * (unlike MyMuseumSpread/CoursePilotSpread) — CreativePracticeBook's own
- * transition track renders a second, frozen copy of this same spread as
- * the "previous panel" backdrop behind its incoming cream page (see its
- * module comment for the full stacking story). This copy, the real one
- * in the normal page flow, is otherwise a plain full-bleed section like
- * every other project spread — no sticky pin, no scroll hijacking; it
- * just scrolls past normally, same as MyMuseum and CoursePilot.
+ * The last project in FeaturedWork's list — a plain full-bleed section
+ * like every other project spread, no sticky pin or scroll hijacking; it
+ * just scrolls past normally, same as MyMuseum and CoursePilot. (The
+ * sketchbook further down the homepage — see PlaygroundBook — is its own
+ * separate pinned section, not a continuation of this one.)
  */
 export function VNHSpread({ project, index }: { project: Project; index: number }) {
   return (
@@ -277,7 +336,8 @@ export function VNHSpread({ project, index }: { project: Project; index: number 
             </Heading>
             <p className="mt-5 text-lg text-foreground">{project.summary}</p>
             <p className="mt-4 text-sm font-medium tracking-wide text-foreground/70 uppercase">{project.role}</p>
-            <CaseStudyLink project={project} label="View Case Study" />
+            {project.credibility && <p className="mt-4 text-sm text-foreground/80">{project.credibility}</p>}
+            <ProjectCTARow project={project} liveLabel="View Live Site" />
           </div>
         </Reveal>
       </div>
@@ -299,5 +359,8 @@ export function ProjectPlaceholder({ project, index }: { project: Project; index
   if (project.slug === "case-study-02") {
     return <CoursePilotSpread project={project} index={index} />;
   }
-  return <VNHSpread project={project} index={index} />;
+  // The last project — its own hold-then-rise closing beat (see
+  // VNHHoldAndRise) rather than a plain spread, matching how it used to
+  // work before this rendered just like any other project.
+  return <VNHHoldAndRise project={project} index={index} />;
 }

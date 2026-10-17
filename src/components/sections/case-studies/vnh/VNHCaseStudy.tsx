@@ -271,7 +271,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
   const orderingFlow = ideation.flows[0];
 
   return (
-    <div style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
+    <div className="bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
         <Link href="/projects" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
@@ -303,6 +303,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal delay={180}>
           <a
             href={hero.ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) border border-dashed border-border px-5 py-2.5 text-sm font-medium text-muted-foreground"
           >
             {hero.ctaLabel} →

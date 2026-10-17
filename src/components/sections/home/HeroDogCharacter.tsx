@@ -34,7 +34,13 @@ interface HeroDogCharacterProps {
  * is skipped entirely under reduced motion. The hover-proximity boost
  * only attaches for precise, hover-capable pointers.
  */
-export function HeroDogCharacter({ name, body, ears, tail, onClick }: HeroDogCharacterProps) {
+export function HeroDogCharacter({
+  name,
+  body,
+  ears,
+  tail,
+  onClick,
+}: HeroDogCharacterProps) {
   const wrapperRef = useRef<HTMLButtonElement>(null);
   const earsRef = useRef<HTMLImageElement>(null);
   const tailRef = useRef<HTMLImageElement>(null);
@@ -44,7 +50,9 @@ export function HeroDogCharacter({ name, body, ears, tail, onClick }: HeroDogCha
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
-    const fine = window.matchMedia("(pointer: fine) and (hover: hover)").matches;
+    const fine = window.matchMedia(
+      "(pointer: fine) and (hover: hover)",
+    ).matches;
     let pointer: { x: number; y: number } | null = null;
     let boost = 1;
     let raf = 0;
@@ -53,7 +61,9 @@ export function HeroDogCharacter({ name, body, ears, tail, onClick }: HeroDogCha
       pointer = { x: e.clientX, y: e.clientY };
     }
     if (fine) {
-      window.addEventListener("pointermove", handlePointerMove, { passive: true });
+      window.addEventListener("pointermove", handlePointerMove, {
+        passive: true,
+      });
     }
 
     function frame(t: number) {
@@ -118,7 +128,12 @@ export function HeroDogCharacter({ name, body, ears, tail, onClick }: HeroDogCha
         unoptimized
         sizes="120px"
         className="pointer-events-none absolute block h-auto"
-        style={{ left: ears.left, top: ears.top, width: ears.widthPct, transformOrigin: "50% 92%" }}
+        style={{
+          left: ears.left,
+          top: ears.top,
+          width: ears.widthPct,
+          transformOrigin: "50% 92%",
+        }}
       />
 
       {tail && (
@@ -131,7 +146,12 @@ export function HeroDogCharacter({ name, body, ears, tail, onClick }: HeroDogCha
           unoptimized
           sizes="120px"
           className="pointer-events-none absolute block h-auto"
-          style={{ left: tail.left, top: tail.top, width: tail.widthPct, transformOrigin: "20% 85%" }}
+          style={{
+            left: tail.left,
+            top: tail.top,
+            width: tail.widthPct,
+            transformOrigin: "20% 85%",
+          }}
         />
       )}
     </>

@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const STAGES = ["Cover", "2D Works", "3D Works", "About", "Contact", "The End"];
+const STAGES = ["Cover", "2D Works", "3D Works", "The End"];
 
 interface ChapterControlsProps {
   stage: number;

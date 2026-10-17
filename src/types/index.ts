@@ -15,6 +15,15 @@ export interface Project {
   tagline?: string;
   /** Optional short discipline/skill tags (e.g. "Product Design", "UX Research") shown as a metadata row on the homepage preview. */
   tags?: string[];
+  /** Optional one-line credibility/proof statement — what was actually
+   * designed/built and how, shown between the discipline row and the
+   * case-study CTA. Only real, verifiable claims — no invented outcomes. */
+  credibility?: string;
+  /** Optional link to the live, shipped product/site — only set once a
+   * real, working URL exists. Renders a "View Live Product/Site ↗" CTA
+   * next to the case-study link; omitted (not a disabled/fake link)
+   * while unset. */
+  liveUrl?: string;
   /** Every entry is "in-progress" for now; extend when a real case study replaces one. */
   status: "in-progress";
   /** Drives the abstract placeholder art + accent pill color for this card. */

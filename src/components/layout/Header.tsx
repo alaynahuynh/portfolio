@@ -7,43 +7,41 @@ import { Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { AnimatedAHLogo } from "@/components/ui/AnimatedAHLogo";
 import { NavItem } from "@/components/layout/NavItem";
-import { CreativePracticeNavItem } from "@/components/layout/CreativePracticeNavItem";
 import { ResumeLink } from "@/components/ui/ResumeLink";
 import { navLinks } from "@/lib/site-config";
 import { prefersReducedMotion } from "@/lib/motion";
-import { CHAPTER_NAV_EVENT, creativePracticeChapters } from "@/lib/chapter-nav";
 import { cn } from "@/lib/utils";
-import { HERO_FRAME } from "@/components/sections/home/hero-frame";
 
-/** Fixed scroll-pixel threshold before the pill firms up — set to the
- * exact same value as HERO_FRAME.shrinkEndPx (hero-frame.ts) so the
- * navbar settles into its "past the hero" look in sync with the hero
- * itself finishing its shrink-to-frame transition, not on some
- * unrelated timer. Not viewport-relative anymore: the hero's own scroll
- * ranges are fixed pixel amounts too (see hero-frame.ts), so this stays
- * a plain constant. */
-const SCROLL_SHRINK_THRESHOLD = HERO_FRAME.shrinkEndPx;
+/** Fixed scroll-pixel threshold before the pill firms up — the hero is a
+ * plain static section now (see Hero.tsx), so this is just "has the
+ * visitor started scrolling," not synced to any hero animation. */
+const SCROLL_SHRINK_THRESHOLD = 24;
 
-/** `/#work` → "work", used both to key each NavItem and to match it against the active section/route. */
+/** `/#work` → "work", used both to key each NavItem and to match it against
+ * the active section/route. A plain route link (no hash, e.g. "/about")
+ * keys off its own href instead. */
 function keyOf(href: string) {
   return href.split("#")[1] ?? href;
+}
+
+/** "Work" and "Playground" are in-page homepage sections (`/#work`,
+ * `/#sketchbook`) — "About" is the one real standalone route and
+ * navigates normally. */
+function isSectionAnchor(href: string) {
+  return href.startsWith("/#");
 }
 
 /**
  * Floating glass nav. Fixed to the viewport, centered, and deliberately
  * narrower than the page — it reads as a piece of frosted glass hovering
- * over the painted hero rather than a conventional edge-to-edge bar.
+ * over the page rather than a conventional edge-to-edge bar.
  *
- * Three pieces of state:
+ * Two pieces of state:
  * - `scrolled` — past a small threshold, the pill firms up (more opaque,
  *   more blur, tighter padding) and a scroll-progress stroke along its
  *   bottom edge grows. Both driven by one rAF-throttled scroll listener;
  *   the progress stroke is updated via direct style mutation (not
  *   `useState`) so it doesn't re-render on every scroll tick.
- * - `ready` — gates the one-time entrance choreography (see .nav-shell /
- *   .nav-trace / .nav-stagger-item in globals.css) so it plays as a real
- *   transition right after mount instead of the nav just appearing
- *   already-visible.
  * - `activeKey` — which nav item shows the pink "current" state: always
  *   exactly whichever item was last *clicked in the nav itself*
  *   (`clickedKey`), on any route — deliberately not pathname-matched and
@@ -64,7 +62,6 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoPlay, setLogoPlay] = useState(0);
   const [scrolled, setScrolled] = useState(false);
-  const [ready, setReady] = useState(false);
   const [clickedKey, setClickedKey] = useState<string | null>(null);
 
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -83,12 +80,6 @@ export function Header() {
   // happens per real hover no matter how many spurious re-enters the
   // remount itself causes.
   const isHoveringLogoRef = useRef(false);
-  // A chapter picked from the "Creative Practice" dropdown while on a
-  // different route — Header persists across client-side navigations
-  // (see the scrollRestoration effect below), so it holds onto the
-  // choice and fires it once pathname actually becomes "/" and the
-  // book has had a chance to mount.
-  const pendingChapterRef = useRef<string | null>(null);
 
   // A real page load/reload should always open at the top, with the nav's
   // entrance actually visible — not wherever the browser would otherwise
@@ -173,26 +164,6 @@ export function Header() {
     };
   }, []);
 
-  // Entrance: there's no loading screen to gate this on anymore, so just
-  // let the one-time nav-fade-up/nav-trace/nav-stagger-item choreography
-  // (see globals.css) play right after mount. The rAF tick still matters —
-  // it lets the initial "not ready" (opacity: 0) state actually paint
-  // first, so flipping to ready produces a real transition instead of the
-  // nav just appearing already-visible.
-  useEffect(() => {
-    if (prefersReducedMotion()) {
-      // One-time client-side capability probe (matchMedia isn't available at
-      // SSR time) — not a reactive sync loop, so the cascading-render concern
-      // this lint rule guards against doesn't apply here.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setReady(true);
-      return;
-    }
-
-    const raf = requestAnimationFrame(() => setReady(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
   // Clears any in-flight click-flash timer on unmount so it can't fire
   // setState after Header is gone.
   useEffect(() => {
@@ -217,45 +188,13 @@ export function Header() {
     }, CLICK_FLASH_MS);
   }
 
-  // Flushes a chapter picked while on another route, once navigation
-  // back to "/" has actually landed. requestAnimationFrame gives
-  // CreativePracticeBook a tick to mount and lay out its (CSS-vh-sized)
-  // track before it computes a scroll target off of it.
-  useEffect(() => {
-    if (pathname !== "/" || !pendingChapterRef.current) return;
-    const key = pendingChapterRef.current;
-    pendingChapterRef.current = null;
-    const raf = requestAnimationFrame(() => {
-      window.dispatchEvent(new CustomEvent(CHAPTER_NAV_EVENT, { detail: { key } }));
-    });
-    return () => cancelAnimationFrame(raf);
-  }, [pathname]);
-
-  /** Shared by the desktop dropdown and the mobile submenu — see lib/chapter-nav.ts.
-   * `key` here is a page inside the book (cover/2d/3d/about). The pink
-   * click-flash targets whatever was actually clicked: "about" and the
-   * dropdown's own "2d"/"3d" each flash themselves (so a dropdown item
-   * behaves exactly like any other nav button), while "cover" — the
-   * trigger word "Sketchbook" itself, not a dropdown item — flashes the
-   * top-level "creative-practice" nav key instead. */
-  function handleSelectChapter(key: string) {
-    if (pathname === "/") {
-      window.dispatchEvent(new CustomEvent(CHAPTER_NAV_EVENT, { detail: { key } }));
-    } else {
-      pendingChapterRef.current = key;
-    }
-    flashClicked(key === "cover" ? "creative-practice" : key);
-    setMenuOpen(false);
-  }
-
   /** Plain-section nav items ("Work") scroll here directly rather than
    * relying on next/link's hash-based navigation — that only scrolls
    * when the URL's hash string actually *changes*. Once a visitor has
    * clicked "Work" once (hash → "#work"), scrolling away by any other
-   * means (a manual scroll, or the scrollToStage/CHAPTER_NAV_EVENT paths
-   * above, neither of which touch the hash) leaves the hash sitting at
-   * "#work" — so a second click, with an identical target hash, silently
-   * no-ops instead of scrolling back. */
+   * means (a manual scroll) leaves the hash sitting at "#work" — so a
+   * second click, with an identical target hash, silently no-ops instead
+   * of scrolling back. */
   function scrollToSection(id: string) {
     document.getElementById(id)?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
   }
@@ -266,9 +205,8 @@ export function Header() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-5 sm:pt-6">
       <div
         className={cn(
-          "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-sky/25 bg-white/45 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] lg:w-[56%]",
-          scrolled && "border-border bg-white/70 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
-          ready && "nav-ready",
+          "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-border/70 bg-background/55 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] lg:w-[56%]",
+          scrolled && "border-border bg-background/85 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
         )}
       >
         {/* One-time entrance flourish: an ink outline traces the pill's own border, then fades. */}
@@ -324,35 +262,7 @@ export function Header() {
               {navLinks.map((link, i) => {
                 const key = keyOf(link.href);
                 const active = activeKey === key;
-                if (key === "creative-practice") {
-                  return (
-                    <CreativePracticeNavItem
-                      key={link.href}
-                      href={link.href}
-                      label={link.label}
-                      active={active}
-                      activeKey={activeKey}
-                      index={i + 1}
-                      onSelectChapter={handleSelectChapter}
-                      scrolled={scrolled}
-                    />
-                  );
-                }
-                if (key === "about") {
-                  return (
-                    <NavItem
-                      key={link.href}
-                      href={link.href}
-                      label={link.label}
-                      active={active}
-                      index={i + 1}
-                      onClick={(event) => {
-                        if (pathname === "/") event.preventDefault();
-                        handleSelectChapter("about");
-                      }}
-                    />
-                  );
-                }
+                const anchor = isSectionAnchor(link.href);
                 return (
                   <NavItem
                     key={link.href}
@@ -361,7 +271,7 @@ export function Header() {
                     active={active}
                     index={i + 1}
                     onClick={(event) => {
-                      if (pathname === "/") {
+                      if (anchor && pathname === "/") {
                         event.preventDefault();
                         scrollToSection(key);
                       }
@@ -412,21 +322,18 @@ export function Header() {
         <div
           id="mobile-nav"
           ref={panelRef}
-          className="pointer-events-auto absolute inset-x-4 top-[calc(100%+0.5rem)] rounded-[24px] border border-white/60 bg-white/90 shadow-[0_16px_40px_-14px_rgba(46,50,42,0.4)] backdrop-blur-lg md:hidden"
+          className="pointer-events-auto absolute inset-x-4 top-[calc(100%+0.5rem)] rounded-[24px] border border-border bg-background/95 shadow-[0_16px_40px_-14px_rgba(46,50,42,0.4)] backdrop-blur-lg md:hidden"
         >
           <div className="flex flex-col gap-1 p-3">
-            {navLinks.map((link) => (
-              <div key={link.href}>
+            {navLinks.map((link) => {
+              const key = keyOf(link.href);
+              const anchor = isSectionAnchor(link.href);
+              return (
                 <Link
+                  key={link.href}
                   href={link.href}
                   onClick={(event) => {
-                    const key = keyOf(link.href);
-                    if (key === "about" || key === "creative-practice") {
-                      if (pathname === "/") event.preventDefault();
-                      handleSelectChapter(key === "about" ? "about" : "cover");
-                      return;
-                    }
-                    if (pathname === "/") {
+                    if (anchor && pathname === "/") {
                       event.preventDefault();
                       scrollToSection(key);
                     }
@@ -437,25 +344,8 @@ export function Header() {
                 >
                   {link.label}
                 </Link>
-                {keyOf(link.href) === "creative-practice" && (
-                  <div className="ml-4 flex flex-col gap-0.5 border-l border-border pl-3">
-                    {creativePracticeChapters.map((chapter) => (
-                      <Link
-                        key={chapter.key}
-                        href={link.href}
-                        onClick={(event) => {
-                          if (pathname === "/") event.preventDefault();
-                          handleSelectChapter(chapter.key);
-                        }}
-                        className="rounded-xl px-4 py-2 text-left text-sm tracking-wide text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
-                      >
-                        {chapter.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
             <ResumeLink
               onClick={() => setMenuOpen(false)}
               className="block rounded-2xl px-4 py-3 text-base tracking-wide text-meadow transition-colors hover:bg-accent"

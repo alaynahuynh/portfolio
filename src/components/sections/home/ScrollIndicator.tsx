@@ -22,7 +22,7 @@ export function ScrollIndicator() {
         />
         <circle cx="10" cy="50" r="3.5" fill="currentColor" className="text-accent-hover" />
       </svg>
-      <span className="font-handwriting text-lg text-muted-foreground">explore</span>
+      <span className="font-alayna-handwriting text-lg text-muted-foreground">explore</span>
     </div>
   );
 }

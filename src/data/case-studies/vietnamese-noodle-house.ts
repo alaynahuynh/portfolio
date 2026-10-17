@@ -37,7 +37,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
       "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site was hosted on HostGator, broke on mobile, and looked nothing like the restaurant it represented. I led a full UX audit and redesign — a warm, photography-forward identity rebuilt across every page, with a two-step ordering flow at its center.",
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
-    ctaHref: "#",
+    ctaHref: "https://vietnoodlehouse.com/",
   },
 
   overview: {

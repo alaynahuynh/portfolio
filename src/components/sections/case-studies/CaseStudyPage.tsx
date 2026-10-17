@@ -27,6 +27,11 @@ import {
  * own `--project-accent` (set once on the page wrapper — see
  * CaseStudyPage below) — reserved for the handful of "detail/annotation/
  * important moment" eyebrows a project calls out, not every section. */
+/** External CTAs (e.g. a live product) open in a new tab; in-page "#" ones don't. */
+function externalLinkProps(href: string) {
+  return /^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : {};
+}
+
 function SectionEyebrow({
   children,
   accent,
@@ -341,6 +346,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
   return (
     <div
+      className="bg-background"
       style={
         {
           "--project-accent": data.accentColor ?? "var(--color-sage-deep)",
@@ -376,6 +382,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
         <a
           href={hero.ctaHref}
+          {...externalLinkProps(hero.ctaHref)}
           className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) border border-dashed border-border px-5 py-2.5 text-sm font-medium text-muted-foreground"
         >
           {hero.ctaLabel} →
@@ -407,11 +414,15 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </p>
         )}
 
-        {hero.image && (
+        {hero.video ? (
+          <div className="mt-10">
+            <CaseStudyVideo video={hero.video} />
+          </div>
+        ) : hero.image ? (
           <div className="mt-10">
             <CaseStudyFullImage image={hero.image} eager />
           </div>
-        )}
+        ) : null}
 
         <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
           <div>
@@ -1426,6 +1437,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             </div>
             <a
               href={hero.ctaHref}
+              {...externalLinkProps(hero.ctaHref)}
               className="inline-flex shrink-0 items-center gap-2 rounded-(--radius-default) border border-dashed border-border px-5 py-2.5 text-sm font-medium text-muted-foreground"
             >
               {hero.ctaLabel} →

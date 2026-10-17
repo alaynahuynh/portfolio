@@ -293,7 +293,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
   const iterationStory = design.iterationStory;
 
   return (
-    <div style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
+    <div className="bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
         <Link href="/projects" className="text-sm text-muted-foreground transition-colors hover:text-foreground">

@@ -7,8 +7,6 @@ import { BookPage } from "@/components/sections/home/BookPage";
 import { BookHoverTilt } from "@/components/sections/home/BookHoverTilt";
 import { TwoDSpread } from "@/components/sections/home/TwoDSpread";
 import { ThreeDSpread } from "@/components/sections/home/ThreeDSpread";
-import { AboutScrapbookPage } from "@/components/sections/home/AboutScrapbookPage";
-import { ContactBookPage } from "@/components/sections/home/ContactBookPage";
 import { BackCoverPage } from "@/components/sections/home/BackCoverPage";
 
 const OPEN_ANGLE = 160; // degrees a leaf rotates through when "opened"
@@ -33,14 +31,15 @@ interface BookPageSpec {
 }
 
 // Every page in the book, in flip order. Exported as STAGE_KEYS so
-// CreativePracticeBook can resolve a chapter-nav key (e.g. "about") to a
-// stage index without duplicating this list.
+// PlaygroundBook can resolve a target key to a stage index without
+// duplicating this list. About and Contact used to live here as book
+// pages — they're now a real /about route and a plain homepage section,
+// respectively (see AboutBridge.tsx and Contact.tsx), so the book itself
+// is just the sketchbook proper: cover, 2D work, 3D work, back cover.
 const PAGES: BookPageSpec[] = [
   { key: "cover", front: <BookCover />, transparentFront: true, coverBack: true },
   { key: "2d", front: <PageContent><TwoDSpread /></PageContent> },
   { key: "3d", front: <PageContent><ThreeDSpread /></PageContent> },
-  { key: "about", front: <PageContent><AboutScrapbookPage /></PageContent> },
-  { key: "contact", front: <PageContent><ContactBookPage /></PageContent> },
   { key: "back-cover", front: <BackCoverPage />, transparentFront: true },
 ];
 export const STAGE_COUNT = PAGES.length;
@@ -54,8 +53,10 @@ export interface SketchbookBookHandle {
    * motion. This is how CreativePracticeBook keeps the open page in sync
    * with scroll position on every frame, including for an instant jump
    * (a scroll with `behavior: "auto"` still lands here on the next
-   * frame's scroll event). */
-  setProgress: (progress: number) => void;
+   * frame's scroll event). `closeProgress` (0..1) then shuts the book
+   * again once the last page is reached — every turned leaf swings back
+   * together onto the cover. */
+  setProgress: (progress: number, closeProgress?: number) => void;
 }
 
 interface SketchbookBookProps {
@@ -103,12 +104,15 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
   const [stage, setStage] = useState(0);
 
   const apply = useCallback(
-    (progress: number) => {
+    (progress: number, closeProgress: number) => {
+      // Closing swings every turned leaf back at once, so it eases as one
+      // motion on top of each leaf's own open amount.
+      const closeEased = easeInOutCubic(closeProgress);
       for (let i = 0; i < LEAF_COUNT; i++) {
         const el = leafRefs.current[i];
         if (!el) continue;
         const t = clamp(progress - i, 0, 1);
-        const eased = easeInOutCubic(t);
+        const eased = easeInOutCubic(t) * (1 - closeEased);
         // A flat rigid rotateY reads as a stiff card swinging on a hinge.
         // Real paper isn't rigid — it lifts slightly off the page beneath
         // as a hand turns it, peaking right as it passes edge-on (shade is
@@ -128,10 +132,12 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
         const shade = Math.sin(eased * Math.PI);
         const skewDeg = -3 * shade;
         el.style.transform = `rotateY(${(-eased * OPEN_ANGLE).toFixed(1)}deg) skewY(${skewDeg.toFixed(2)}deg)`;
-        el.style.zIndex = t > 0.5 ? "0" : String(PAGES.length - i);
+        // Past halfway shut the stack is back on the right, where the
+        // cover has to land on top again.
+        el.style.zIndex = t > 0.5 && closeEased <= 0.5 ? "0" : String(PAGES.length - i);
         el.style.setProperty("--flip-shade", shade.toFixed(3));
         const previousCleared = i === 0 || clamp(progress - (i - 1), 0, 1) > 0.5;
-        el.style.pointerEvents = previousCleared && t < 0.5 ? "auto" : "none";
+        el.style.pointerEvents = previousCleared && t < 0.5 && closeProgress === 0 ? "auto" : "none";
       }
       const nearest = clamp(Math.round(progress), 0, STAGE_COUNT - 1);
       if (nearest !== stageRef.current) {
@@ -144,8 +150,8 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
   );
 
   const setProgress = useCallback(
-    (progress: number) => {
-      apply(clamp(progress, 0, STAGE_COUNT - 1));
+    (progress: number, closeProgress = 0) => {
+      apply(clamp(progress, 0, STAGE_COUNT - 1), clamp(closeProgress, 0, 1));
     },
     [apply],
   );

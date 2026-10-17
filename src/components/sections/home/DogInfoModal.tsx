@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
 import { X } from "lucide-react";
 
@@ -26,6 +27,21 @@ interface DogInfoModalProps {
  * scroll is locked while open. Shared by both dogs so their content
  * (real for one, still-pending for the other) can't drift into two
  * different dialog implementations.
+ *
+ * Rendered through a portal straight to `document.body`, not inline
+ * where this component is mounted. HeroArtScene (where both dogs live)
+ * sits inside Hero's shrinking frame — a `motion.div` with its own
+ * `transform` and `mask-image` — and a `position: fixed` element nested
+ * under either one stops being positioned against the real viewport: it
+ * becomes relative to that ancestor's own box instead, and gets capped
+ * inside that ancestor's local stacking order no matter how high its own
+ * z-index is set. In practice that meant this modal's backdrop/dialog
+ * rendered clipped to the hero's frame and painted *underneath* the
+ * hero's own heading text. A portal sidesteps the whole class of bug —
+ * this is a real child of `<body>`, so no ancestor's transform/mask/
+ * filter/stacking context can ever reach it, regardless of where in the
+ * tree it's triggered from (the hero today, ClosingMeadow, or anywhere
+ * else this gets reused).
  */
 export function DogInfoModal({ open, onClose, name, subtitle, description, photos }: DogInfoModalProps) {
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -48,7 +64,7 @@ export function DogInfoModal({ open, onClose, name, subtitle, description, photo
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -86,6 +102,7 @@ export function DogInfoModal({ open, onClose, name, subtitle, description, photo
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

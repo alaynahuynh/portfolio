@@ -76,9 +76,7 @@
   --font-heading: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-sans:
     var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-handwriting: var(--font-caveat), cursive;
-  /* Alayna's own handwriting (Calligraphr) — only for the sketchbook
-     intro line, not a swap-in for --font-handwriting above. */
+  /* Alayna's own handwriting (Calligraphr) — the only handwriting face. */
   --font-alayna-handwriting: var(--font-alayna), cursive;
 
   /* Layout */
@@ -155,7 +153,6 @@
 
   --font-heading: var(--font-heading);
   --font-sans: var(--font-sans);
-  --font-handwriting: var(--font-handwriting);
   --font-alayna-handwriting: var(--font-alayna-handwriting);
 
   --radius-default: var(--radius-default);
@@ -171,6 +168,20 @@
     background: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-sans);
+  }
+
+  /* Sitewide paper grain: the sketchbook's own paper-texture.jpg, pinned
+     to the viewport (one stretched sheet, so no tile seams) and multiplied
+     into the cream at reduced strength so it reads as paper, not gray. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: url("/images/creative-practice/paper-texture.jpg") center / cover;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
   }
 
   h1,
@@ -190,8 +201,7 @@
   }
 }
 
-/* Alayna's own handwriting font reads tighter than Caveat at the same
-   size — a bit of extra word spacing keeps it legible instead of
+/* Alayna's own handwriting font reads tight at small sizes — a bit of extra word spacing keeps it legible instead of
    crowded, everywhere font-alayna-handwriting is used. */
 .font-alayna-handwriting {
   word-spacing: 0.2em;
@@ -241,6 +251,19 @@
       color-mix(in srgb, #efe6d8 92%, white) 0%,
       #e9dfcd 100%
     );
+}
+
+/* Full-page version of the sketchbook's paper (same cream and
+   paper-texture.jpg as .page-parchment, without the book-page spine and
+   edge shading), for the 2D/3D works pages the book links to. The texture
+   is pinned to the viewport so one sheet covers any page length. */
+.bg-sketchbook-paper {
+  background-color: #fdf8ea;
+  background-image: url("/images/creative-practice/paper-texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-blend-mode: multiply;
 }
 
 /* Thick artist's-sketchbook page faces — warm cream cotton/watercolor
@@ -523,6 +546,118 @@
   }
 }
 
+/* Ring that radiates out from the About photo browser's refresh button,
+   hinting that it's clickable. */
+@keyframes refresh-ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  80%,
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* Periodic half-turn of the refresh icon — a "try me" nudge between
+   long rests. */
+@keyframes refresh-nudge {
+  0%,
+  70% {
+    transform: rotate(0deg);
+  }
+  85% {
+    transform: rotate(200deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hero cluster (the Monitor/Playground/About trio) — the small lift +
+   deeper shadow confirming the object itself responded to hover/focus,
+   independent of whatever its destination label is doing. Runs
+   everywhere (not gated to hover-capable devices): :hover simply never
+   sticks on touch, so this is harmless there, and :focus-visible still
+   matters on every input type. */
+.hero-cluster-object {
+  transition:
+    transform var(--duration-base) var(--ease-soft),
+    box-shadow var(--duration-base) var(--ease-soft);
+  box-shadow: 0 2px 8px -4px rgba(46, 50, 42, 0.25);
+}
+.hero-cluster-link:hover .hero-cluster-object,
+.hero-cluster-link:focus-visible .hero-cluster-object {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -10px rgba(46, 50, 42, 0.38);
+}
+
+/* Hero cluster destination label. Devices that can't hover (touch) get
+   a plain, permanently-visible caption below the object — there's no
+   hover to reveal a hidden one, and making someone tap blind just to
+   find out what an object does defeats the point of labeling it at
+   all. Devices with real hover support (checked directly via the
+   feature query, not guessed from viewport width) get the floating
+   dark pill instead, revealed on hover/focus. */
+.hero-cluster-tooltip {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  margin-top: 0.5rem;
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-muted-foreground);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-cluster-tooltip {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--color-foreground);
+    color: var(--color-background);
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+
+  .hero-cluster-link:hover .hero-cluster-tooltip,
+  .hero-cluster-link:focus-visible .hero-cluster-tooltip {
+    opacity: 1;
+  }
+}
+
+/* The monitor screen's blinking text cursor — a static, always-on
+   cursor under reduced motion rather than letting the universal
+   reduced-motion rule below collapse it to a near-instant blink that
+   settles opacity:0 (i.e. invisible). Purely decorative either way: no
+   content depends on it actually blinking. */
+@keyframes hero-cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+.hero-monitor-cursor {
+  animation: hero-cursor-blink 1.1s steps(1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-monitor-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 @keyframes paint-reveal {
   from {
     clip-path: polygon(
@@ -646,33 +781,25 @@
   }
 }
 
+/* Autoplay on paint — no JS gate. Gating this behind a post-hydration
+   "ready" flag meant the pill sat invisible (opacity: 0, its resting
+   state below) for however long hydration took on a slow connection,
+   which could read as "no nav at all" for seconds. A plain CSS
+   animation starts timing from first paint regardless of when (or
+   whether) JS ever runs, so the nav is guaranteed to reach its visible
+   end state within its own animation duration. */
 .nav-shell {
   opacity: 0;
   animation: nav-fade-up 380ms var(--ease-soft) forwards;
-  animation-play-state: paused;
-}
-
-.nav-shell.nav-ready {
-  animation-play-state: running;
 }
 
 .nav-trace {
   animation: nav-trace 360ms var(--ease-draw) 200ms both;
-  animation-play-state: paused;
-}
-
-.nav-ready .nav-trace {
-  animation-play-state: running;
 }
 
 .nav-stagger-item {
   opacity: 0;
   animation: nav-item-in 320ms var(--ease-soft) forwards;
-  animation-play-state: paused;
-}
-
-.nav-ready .nav-stagger-item {
-  animation-play-state: running;
 }
 
 @keyframes nav-item-in {

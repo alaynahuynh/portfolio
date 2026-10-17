@@ -23,10 +23,8 @@ export const PROJECTS_STATUS = {
  * research brief and `case-study-03` (Vietnamese Noodle House) from a
  * completed client redesign — both render via their own bespoke
  * case-study layouts. `case-study-01` (MyMuseum) is a real, built-and-
- * tested product (see data/case-studies/my-museum.ts) that simply
- * hasn't been deployed publicly yet — its `summary` below and the case
- * study's own `hero.disclosure` should stay honest about that until it
- * ships.
+ * tested product (see data/case-studies/my-museum.ts), now live at
+ * https://mymuseum-eta.vercel.app/.
  *
  * Order is the homepage's display order — MyMuseum leads (per the
  * user's direction), followed by CoursePilot then Vietnamese Noodle
@@ -36,32 +34,26 @@ export const projects: Project[] = [
   {
     slug: "case-study-01",
     title: "MyMuseum",
-    role: "Product Designer & Frontend Developer",
-    summary:
-      "A multiplayer 3D gallery platform where artists turn their work into personal museums — built and tested end-to-end, with the live site not yet deployed publicly.",
+    role: "Product Design · UX Research · Development",
+    summary: "A multiplayer 3D platform for artists to create and share explorable galleries.",
+    credibility: "Designed and built the end-to-end experience from concept to a working multiplayer product.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "var(--color-sky)",
     hasCaseStudy: true,
-    // The case study's own hero screenshot — the live 3D gallery behind
-    // the landing page's "Create a world for your work" heading — shown
-    // at its own real aspect ratio, same convention as VNH's thumbnail
-    // below. See data/case-studies/my-museum.ts's `hero.image`.
-    imageThumbnail: {
-      src: "/images/projects/mymuseum/final/hero.png",
-      alt: "MyMuseum's live 3D gallery behind its landing page, reading 'Create a world for your work' over a walkable room hung with paintings.",
-      width: 1440,
-      height: 900,
-    },
+    // Same walkthrough clip used as the case study's own hero video —
+    // see data/case-studies/my-museum.ts's `hero.video`.
+    videoThumbnail: { src: "/videos/projects/mymuseum/walkthrough.mp4", width: 1920, height: 1036 },
+    liveUrl: "https://mymuseum-eta.vercel.app/",
   },
   {
     slug: "case-study-02",
     title: "CoursePilot",
-    role: "Solo UX / Product Design Concept",
-    summary:
-      "An AI companion for Canvas that helps students prioritize coursework and build a realistic study plan — research, requirements, flows, and IA are done; screens and testing are next.",
-    tagline: "Turning scattered course information into a clear plan.",
-    tags: ["Product Design", "UX Research", "AI"],
+    role: "Product Design · User Research · Prototyping",
+    summary: "Helping students turn scattered course information into an actionable plan.",
+    credibility:
+      "Designed from student research around deadlines, planning behavior, Canvas friction, and trust in AI.",
+    tags: ["Product Design", "User Research", "Prototyping"],
     status: "in-progress",
     accent: "lake-blue-deep",
     // CoursePilot's dominant color — olive, with earth as a sparse
@@ -76,9 +68,10 @@ export const projects: Project[] = [
   {
     slug: "case-study-03",
     title: "Vietnamese Noodle House",
-    role: "Product Designer",
-    summary:
-      "A full website redesign for a family-owned restaurant with two locations and a food truck — rebuilt as a responsive, photography-forward site with a two-step ordering flow at its center.",
+    role: "Client Work · UX/UI Design · Development",
+    summary: "Redesigning a restaurant's digital ordering experience within existing POS constraints.",
+    credibility:
+      "Designed and built for a real restaurant while working within existing MenuDrive/Lavu platform constraints.",
     tagline: "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
     tags: ["Product Design", "UX Audit", "Website Redesign"],
     status: "in-progress",
@@ -100,6 +93,8 @@ export const projects: Project[] = [
       width: 1440,
       height: 900,
     },
+    // The real, live site — CoursePilot (concept stage) has no live link.
+    liveUrl: "https://vietnoodlehouse.com/",
   },
 ];
 

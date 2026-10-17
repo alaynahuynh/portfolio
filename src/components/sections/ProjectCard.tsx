@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Heading } from "@/components/ui/Heading";
@@ -7,12 +10,51 @@ import { cn } from "@/lib/utils";
 import { PROJECTS_STATUS } from "@/data/projects";
 import type { Project } from "@/types";
 
+/** Defers a looping preview video's `src` (and thus its download) until it
+ * first scrolls into view, then pauses/resumes it on later scrolls off/on
+ * screen — see the matching hook in ProjectPlaceholder.tsx's
+ * CoursePilotSpread, which this grid card mirrors. */
+function useLazyVideo(ref: React.RefObject<HTMLVideoElement | null>) {
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const hasLoadedRef = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (!hasLoadedRef.current) {
+            hasLoadedRef.current = true;
+            setShouldLoad(true);
+          } else {
+            void el.play();
+          }
+        } else if (hasLoadedRef.current) {
+          el.pause();
+        }
+      },
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return shouldLoad;
+}
+
 export function ProjectCard({ project, variant = 0 }: { project: Project; variant?: 0 | 1 | 2 }) {
   const accent = ACCENT_CLASSES[project.accent];
   const thumbnail = project.videoThumbnail ?? project.imageThumbnail;
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoReady = useLazyVideo(videoRef);
 
   return (
-    <Link href={`/projects/${project.slug}`} className="group block">
+    <Link
+      href={`/projects/${project.slug}`}
+      prefetch={project.videoThumbnail ? false : undefined}
+      className="group block"
+    >
       <div
         className={cn(
           "relative overflow-hidden rounded-(--radius-default) border-2 border-border bg-muted transition-shadow duration-(--duration-base) ease-(--ease-soft) group-hover:shadow-[0_16px_32px_-16px_rgba(46,50,42,0.35)]",
@@ -22,9 +64,14 @@ export function ProjectCard({ project, variant = 0 }: { project: Project; varian
       >
         {project.videoThumbnail ? (
           <video
-            src={project.videoThumbnail.src}
+            ref={videoRef}
+            // Withheld until useLazyVideo confirms this card has actually
+            // scrolled into view — see the matching note in
+            // ProjectPlaceholder.tsx's CoursePilotSpread.
+            src={videoReady ? project.videoThumbnail.src : undefined}
             poster={project.videoThumbnail.poster}
-            autoPlay
+            preload={videoReady ? undefined : "none"}
+            autoPlay={videoReady}
             muted
             loop
             playsInline

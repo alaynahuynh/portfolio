@@ -370,6 +370,8 @@ export interface CaseStudyData {
     ctaHref: string;
     /** Optional full-width hero image/major visual. */
     image?: CaseStudyImageSpec;
+    /** Optional full-width hero video — shown instead of `image` when set. */
+    video?: CaseStudyVideoSpec;
     /** Optional "Platform: Web" style line. */
     platform?: string;
     /** Optional tool list, e.g. ["Figma", "Next.js"]. */

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans, Caveat } from "next/font/google";
+import { Fraunces, Instrument_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
@@ -12,6 +12,10 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   subsets: ["latin"],
   axes: ["opsz", "SOFT"],
+  // Previously normal-only — the hero monitor's screen text sets the
+  // name in italic Fraunces, which needs the real italic font files
+  // loaded (not a browser-synthesized oblique of the upright weight).
+  style: ["normal", "italic"],
 });
 
 const instrumentSans = Instrument_Sans({
@@ -19,16 +23,9 @@ const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
 });
 
-const caveat = Caveat({
-  variable: "--font-caveat",
-  subsets: ["latin"],
-});
-
 /** Custom handwriting font made in Calligraphr from Alayna's own
- * handwriting — used only for the sketchbook intro line (see
- * font-alayna-handwriting in globals.css), not a replacement for the
- * site's regular --font-handwriting (Caveat), which is still used
- * everywhere else. */
+ * handwriting — the site's only handwriting face (see
+ * font-alayna-handwriting in globals.css). */
 const alaynaHandwriting = localFont({
   src: "../../public/fonts/AlaynaHandwriting-Regular.ttf",
   variable: "--font-alayna",
@@ -48,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${instrumentSans.variable} ${caveat.variable} ${alaynaHandwriting.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${instrumentSans.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">

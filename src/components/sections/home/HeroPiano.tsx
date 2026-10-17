@@ -118,10 +118,16 @@ export function HeroPiano({ regular, touched }: HeroPianoProps) {
         onMouseLeave={() => setHovering(false)}
         data-cursor="turn"
         aria-pressed={playing}
-        aria-label={playing ? "Pause background music" : "Play background music"}
+        aria-label={
+          playing ? "Pause background music" : "Play background music"
+        }
         title={trackMissing ? "No music track added yet" : undefined}
         className="absolute block"
-        style={{ left: regular.left, top: regular.top, width: regular.widthPct }}
+        style={{
+          left: regular.left,
+          top: regular.top,
+          width: regular.widthPct,
+        }}
       >
         <Image
           src={regular.src}

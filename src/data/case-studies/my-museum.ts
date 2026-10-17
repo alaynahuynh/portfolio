@@ -19,18 +19,16 @@ export const myMuseum: CaseStudyData = {
       "Turning online art portfolios into spaces people can actually explore together.",
     description:
       "I designed and built a multiplayer 3D gallery platform where artists can turn their work into personal museums and invite visitors to explore them together.",
-    statusLabel: "Built & tested",
-    ctaLabel: "Live experience — coming soon",
-    ctaHref: "#",
+    statusLabel: "Live",
+    ctaLabel: "Build Your Own Museum",
+    ctaHref: "https://mymuseum-eta.vercel.app/",
     platform: "Web",
     tools: ["Figma", "Next.js", "React Three Fiber", "Claude Code", "Blender"],
-    disclosure:
-      "MyMuseum is built and tested, but not yet deployed publicly — this case study documents the completed, working product ahead of launch.",
-    image: {
-      src: "/images/projects/mymuseum/final/hero.png",
-      alt: "MyMuseum's live 3D gallery behind its landing page, reading 'Create a world for your work' over a walkable room hung with paintings.",
-      width: 1440,
-      height: 900,
+    video: {
+      src: "/videos/projects/mymuseum/walkthrough.mp4",
+      alt: "Walkthrough of MyMuseum's live 3D gallery experience.",
+      width: 1920,
+      height: 1036,
     },
   },
 
@@ -229,50 +227,6 @@ export const myMuseum: CaseStudyData = {
     ],
 
     flowsPlaceholder: false,
-
-    ia: {
-      label: "MyMuseum",
-      children: [
-        {
-          label: "Explore",
-          children: [
-            { label: "Featured museums" },
-            { label: "Live museums" },
-          ],
-        },
-        {
-          label: "Create Museum",
-          children: [
-            { label: "Museum details" },
-            { label: "Artwork" },
-            { label: "Gallery style" },
-          ],
-        },
-        {
-          label: "My Museums",
-          children: [
-            { label: "View" },
-            { label: "Edit" },
-            { label: "Publish / Private" },
-            { label: "Share" },
-          ],
-        },
-        {
-          label: "Museum",
-          children: [
-            { label: "3D Gallery" },
-            { label: "Grid View" },
-            { label: "Artwork Viewer" },
-          ],
-        },
-      ],
-    },
-    iaImage: {
-      src: "/images/projects/mymuseum/site-map.png",
-      alt: "Site map of MyMuseum showing the top-level structure from landing page and sign-in through Home, branching into My Museums, Explore, and Profile sections and their sub-pages.",
-      width: 4432,
-      height: 2996,
-    },
   },
 
   productRequirements: [

@@ -1,5 +1,3 @@
-import { siteConfig } from "@/lib/site-config";
-
 /**
  * The book's back cover — the closing beat once the visitor has flipped
  * all the way through. `transparentFront` (like BookCover) means
@@ -9,10 +7,10 @@ import { siteConfig } from "@/lib/site-config";
  * globals.css) rather than a flat fill, so it reads as the same
  * physical cover material, not a plain color block.
  *
- * The site's copyright line lives here rather than in a page footer —
- * this is the true "last page" a visitor reaches, so it's the natural
- * place for the closing copyright instead of something scrolled past
- * further down the DOM.
+ * No copyright line here anymore — the book lives on the homepage, where
+ * Footer.tsx already renders the site's real copyright at the true
+ * bottom of the page; duplicating it here would just repeat the same
+ * line twice on one page.
  */
 export function BackCoverPage() {
   return (
@@ -35,10 +33,6 @@ export function BackCoverPage() {
 
       <p className="font-alayna-handwriting text-2xl text-[#5c4a30] sm:text-3xl">
         Thanks for flipping through ◡̈
-      </p>
-
-      <p className="absolute bottom-12 text-xs text-[#5c4a30]/70 sm:bottom-16">
-        © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
       </p>
     </div>
   );

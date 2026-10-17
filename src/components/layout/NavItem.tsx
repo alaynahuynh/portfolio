@@ -10,7 +10,7 @@ interface NavItemProps {
   active: boolean;
   /** Stagger position within the entrance sequence (see .nav-stagger-item in globals.css). */
   index: number;
-  /** Override the default anchor navigation — used by Header for links that jump into a specific book page rather than scrolling to a real anchor. */
+  /** Override the default anchor navigation — used by Header for the "Work" link, which scrolls to an in-page section on the homepage instead of following its href as a normal route link. */
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 

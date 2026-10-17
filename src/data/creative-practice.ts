@@ -117,6 +117,8 @@ export interface Object3DImage {
   width: number;
   height: number;
   alt: string;
+  /** Short view name shown on the main photo, e.g. "Back". */
+  label?: string;
 }
 
 export interface Object3D {
@@ -125,7 +127,7 @@ export interface Object3D {
   /**
    * All photos of this piece, different angles — the first is the cover
    * image used for previews/compositions, the full collection is shown
-   * in a slider on the full 3D works page.
+   * as main photo + thumbnails on the full 3D works page.
    */
   images: Object3DImage[];
   size: "large" | "medium" | "small";
@@ -139,24 +141,28 @@ export const threeDObjects: Object3D[] = [
     images: [
       {
         src: "/creative-practice/3d/eye-table-1.jpg",
+        label: "Three-quarter view",
         width: 1600,
         height: 1200,
         alt: "Handmade round table with a painted blue eye across the tabletop and dark reddish wooden legs, three-quarter view",
       },
       {
         src: "/creative-practice/3d/eye-table-2.jpg",
+        label: "Tabletop",
         width: 1200,
         height: 1600,
         alt: "Top-down view of the eye table's painted tabletop, showing the iris and pupil detail",
       },
       {
         src: "/creative-practice/3d/eye-table-3.jpg",
+        label: "Tabletop, angled",
         width: 1200,
         height: 1600,
         alt: "Top-down view of the eye table's painted tabletop from a slightly different angle",
       },
       {
         src: "/creative-practice/3d/eye-table-4.jpg",
+        label: "Leg detail",
         width: 1200,
         height: 1600,
         alt: "Close-up detail of the eye table's carved wooden legs",
@@ -171,18 +177,21 @@ export const threeDObjects: Object3D[] = [
     images: [
       {
         src: "/creative-practice/3d/pig-lamp-1.jpg",
+        label: "Front",
         width: 1600,
         height: 1420,
         alt: "Pink pig-shaped handmade lamp with a curled tail and an exposed bulb held inside a curved frame, front view",
       },
       {
         src: "/creative-practice/3d/pig-lamp-2.jpg",
+        label: "Front, lit",
         width: 1600,
         height: 1420,
         alt: "Pig lamp viewed from the front at a slightly different angle, lit bulb visible inside the frame",
       },
       {
         src: "/creative-practice/3d/pig-lamp-3.jpg",
+        label: "Back",
         width: 1572,
         height: 1600,
         alt: "Back view of the pig lamp showing the wooden support structure and cord",
@@ -197,18 +206,21 @@ export const threeDObjects: Object3D[] = [
     images: [
       {
         src: "/creative-practice/3d/monkey-sculpture-1.jpg",
+        label: "Front",
         width: 1200,
         height: 1600,
         alt: "Small light-colored hand-sculpted monkey seated with one finger raised near its mouth, front view",
       },
       {
         src: "/creative-practice/3d/monkey-sculpture-2.jpg",
+        label: "Side",
         width: 1200,
         height: 1600,
         alt: "Side view of the hand-sculpted monkey sculpture",
       },
       {
         src: "/creative-practice/3d/monkey-sculpture-3.jpg",
+        label: "Back",
         width: 1200,
         height: 1600,
         alt: "Back view of the hand-sculpted monkey sculpture",
