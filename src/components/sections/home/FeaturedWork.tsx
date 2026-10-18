@@ -95,14 +95,29 @@ export function FeaturedWork() {
                   >
                     <div
                       className={cn(
-                        "rounded-xl p-1.5 sm:p-2 lg:p-2.5",
+                        "group/media rounded-xl p-1.5 sm:p-2 lg:p-2.5",
                         imageRight && "lg:order-2",
                       )}
                       style={{
                         backgroundColor: MAT_TINTS[index % MAT_TINTS.length],
                       }}
                     >
-                      <SelectedWorkMedia project={project} index={index} />
+                      {linkable ? (
+                        // Sits above the title link's row-wide overlay so the
+                        // thumbnail gets its own hover (and still navigates).
+                        // Hidden from AT/tab order — the title link covers that.
+                        <Link
+                          href={href}
+                          prefetch={project.videoThumbnail ? false : undefined}
+                          tabIndex={-1}
+                          aria-hidden="true"
+                          className="relative z-10 block"
+                        >
+                          <SelectedWorkMedia project={project} index={index} />
+                        </Link>
+                      ) : (
+                        <SelectedWorkMedia project={project} index={index} />
+                      )}
                     </div>
 
                     <div className={cn("max-w-md lg:max-w-lg", imageRight && "lg:order-1")}>

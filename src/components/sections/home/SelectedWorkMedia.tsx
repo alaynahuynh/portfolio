@@ -32,7 +32,7 @@ export function SelectedWorkMedia({ project, index }: { project: Project; index:
             playsInline
             preload="none"
             aria-hidden="true"
-            className="absolute inset-0 size-full object-cover object-top transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
+            className="absolute inset-0 size-full object-cover object-top transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/media:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
           />
         ) : project.imageThumbnail ? (
           <Image
@@ -40,13 +40,13 @@ export function SelectedWorkMedia({ project, index }: { project: Project; index:
             alt={project.imageThumbnail.alt}
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
-            className="object-cover object-top transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
+            className="object-cover object-top transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/media:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
           />
         ) : (
           <ProjectPlaceholderArt
             accent={project.accent}
             variant={(index % 3) as 0 | 1 | 2}
-            className="absolute inset-0 size-full transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
+            className="absolute inset-0 size-full transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/media:scale-[1.015] group-has-[a:focus-visible]/row:scale-[1.015]"
           />
         )}
       </div>
