@@ -14,6 +14,8 @@ const MAT_TINTS = [
   "color-mix(in srgb, var(--color-mist-blue) 60%, var(--color-background))",
   // Vietnamese Noodle House — warm cream / light terracotta
   "color-mix(in srgb, var(--color-earth) 12%, var(--color-muted))",
+  // Pig Lamp — soft blush
+  "color-mix(in srgb, var(--color-blush) 45%, var(--color-background))",
 ];
 
 /** Muted traffic-light dots for the browser title bar. */

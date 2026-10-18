@@ -70,9 +70,11 @@ export const projects: Project[] = [
     // data/case-studies/course-pilot.ts's `accentColor`.
     dominantColor: "var(--color-olive)",
     hasCaseStudy: true,
-    // A still of CoursePilot's own Plan My Night response — the walkthrough
-    // video opens on the stock Canvas dashboard, which isn't her design.
-    imageThumbnail: {
+    // Homepage card plays the walkthrough (it now opens with CoursePilot
+    // already open inside Canvas).
+    videoThumbnail: { src: "/videos/projects/coursepilot/starttoend.mp4", width: 2000, height: 1422 },
+    // Still frame for the "Next project" card at the end of each case study.
+    cover: {
       src: "/images/projects/coursepilot/final/plan-my-night-2000.png",
       alt: "CoursePilot's Plan My Night response inside Canvas: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
       width: 2000,
@@ -110,6 +112,23 @@ export const projects: Project[] = [
     },
     // The real, live site — CoursePilot (concept stage) has no live link.
     liveUrl: "https://vietnoodlehouse.com/",
+  },
+  {
+    slug: "pig-lamp",
+    statusTag: "Industrial design · Clinic collaboration",
+    title: "Pig Lamp",
+    role: "Industrial Design · Fabrication",
+    summary: "A laser-cut wood lamp from a project creating customized lamps for autistic children.",
+    status: "in-progress",
+    accent: "mauve",
+    dominantColor: "var(--color-blush)",
+    hasCaseStudy: true,
+    imageThumbnail: {
+      src: "/images/projects/pig-lamp-cover.jpg",
+      alt: "The pig lamp: a pink laser-cut wood pig silhouette whose body opens into a cage of curved ribs around a bulb.",
+      width: 1600,
+      height: 1000,
+    },
   },
 ];
 

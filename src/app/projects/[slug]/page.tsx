@@ -25,7 +25,7 @@ interface ProjectPageProps {
 }
 
 export function generateStaticParams() {
-  return projects.map((project) => ({ slug: project.slug }));
+  return projects.filter((project) => project.slug in CASE_STUDIES).map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({
