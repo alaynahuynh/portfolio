@@ -32,6 +32,17 @@ const FRAME_SURFACE =
 /** Captions sit quietly beneath the frame rather than in a tinted bar. */
 const CAPTION = "mt-3 text-xs leading-relaxed text-muted-foreground";
 
+/**
+ * Screenshots have a fixed pixel width; stretched wider than about 60% of
+ * it in CSS pixels they look soft on retina (2x) screens. Capping each
+ * frame there keeps every image crisp — a low-res source simply renders
+ * a little smaller (centered) instead of blurry.
+ */
+const RETINA_DENSITY = 1.65;
+export function sharpMaxWidth(image: CaseStudyImageSpec) {
+  return Math.round(image.width / RETINA_DENSITY);
+}
+
 interface FrameProps {
   image: CaseStudyImageSpec;
   sizes: string;
@@ -41,7 +52,7 @@ interface FrameProps {
 
 function Frame({ image, sizes, eager, className }: FrameProps) {
   return (
-    <figure className={className}>
+    <figure className={cn("mx-auto", className)} style={{ maxWidth: sharpMaxWidth(image) }}>
       <div className={FRAME_SURFACE}>
         <Image
           src={image.src}
@@ -130,8 +141,9 @@ export function CaseStudyZoomImage({ image, className }: SingleImageProps) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Enlarge image: ${image.alt}`}
+        style={{ maxWidth: sharpMaxWidth(image) }}
         className={cn(
-          "group relative block w-full cursor-zoom-in rounded-(--radius-default) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep",
+          "group relative mx-auto block w-full cursor-zoom-in rounded-(--radius-default) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep",
           className,
         )}
       >

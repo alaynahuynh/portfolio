@@ -44,6 +44,13 @@ export const projects: Project[] = [
     // Same walkthrough clip used as the case study's own hero video —
     // see data/case-studies/my-museum.ts's `hero.video`.
     videoThumbnail: { src: "/videos/projects/mymuseum/walkthrough.mp4", width: 1920, height: 1036 },
+    // A still from the same walkthrough, for the "Next project" card.
+    cover: {
+      src: "/images/projects/mymuseum/final/cover.jpg",
+      alt: "MyMuseum's landing page: a 3D gallery with visitor avatars around a sculpture, under the headline 'Create a world for your work.'",
+      width: 1920,
+      height: 1036,
+    },
     liveUrl: "https://mymuseum-eta.vercel.app/",
   },
   {
@@ -64,10 +71,10 @@ export const projects: Project[] = [
     // A still of CoursePilot's own Plan My Night response — the walkthrough
     // video opens on the stock Canvas dashboard, which isn't her design.
     imageThumbnail: {
-      src: "/images/projects/coursepilot/iteration-plan-my-night-final.png",
+      src: "/images/projects/coursepilot/final/plan-my-night-2000.png",
       alt: "CoursePilot's Plan My Night response inside Canvas: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
-      width: 1440,
-      height: 1024,
+      width: 2000,
+      height: 1422,
     },
   },
   {

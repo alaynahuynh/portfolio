@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { CaseStudyPage } from "@/components/sections/case-studies/CaseStudyPage";
 import { CoursePilotCaseStudy } from "@/components/sections/case-studies/coursepilot/CoursePilotCaseStudy";
 import { VNHCaseStudy } from "@/components/sections/case-studies/vnh/VNHCaseStudy";
+import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
 import { getProjectBySlug, projects } from "@/data/projects";
 import { coursePilot } from "@/data/case-studies/course-pilot";
 import { myMuseum } from "@/data/case-studies/my-museum";
@@ -47,12 +48,19 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   // CoursePilot and VNH each have their own editorial layout instead of
   // the shared generic CaseStudyPage template — see CoursePilotCaseStudy.tsx
   // and VNHCaseStudy.tsx.
-  if (slug === "coursepilot") {
-    return <CoursePilotCaseStudy data={caseStudy} />;
-  }
-  if (slug === "vietnamese-noodle-house") {
-    return <VNHCaseStudy data={caseStudy} />;
-  }
+  const body =
+    slug === "coursepilot" ? (
+      <CoursePilotCaseStudy data={caseStudy} />
+    ) : slug === "vietnamese-noodle-house" ? (
+      <VNHCaseStudy data={caseStudy} />
+    ) : (
+      <CaseStudyPage data={caseStudy} />
+    );
 
-  return <CaseStudyPage data={caseStudy} />;
+  return (
+    <>
+      {body}
+      <NextCaseStudy slug={slug} />
+    </>
+  );
 }

@@ -128,14 +128,14 @@ const OLD_MENU_MOBILE = img(
 const HOME_DESKTOP_FAVORITES = img(
   "home/desktop-favorites.png",
   "The 'Customer Favorites' section of the redesigned homepage on desktop, with real photography for each dish.",
-  1440,
-  460,
+  2880,
+  1536,
 );
 const HOME_DESKTOP_GALLERY = img(
   "home/desktop-gallery.png",
   "The 'A Look Inside Our Restaurants' photo gallery on desktop.",
-  1440,
-  1120,
+  2880,
+  1648,
 );
 
 const MENU_DESKTOP_TOP = img(

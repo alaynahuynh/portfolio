@@ -562,10 +562,10 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             <Reveal delay={60}>
               <CaseStudyFullImage
                 image={{
-                  src: "/images/projects/coursepilot/iteration-plan-my-night-final.png",
+                  src: "/images/projects/coursepilot/final/plan-my-night-2000.png",
                   alt: "CoursePilot's Plan My Night response: top tasks with due dates, estimated time, and Why this? links; a suggested 3-hour schedule; Add to My Calendar and Adjust Plan buttons; and source links.",
-                  width: 1440,
-                  height: 1024,
+                  width: 2000,
+                  height: 1422,
                 }}
                 className="mt-6"
               />

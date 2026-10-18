@@ -104,8 +104,8 @@ export const myMuseum: CaseStudyData = {
           image: {
             src: "/images/projects/mymuseum/research/new-art-city-comparison.png",
             alt: "Annotated teardown of New Art City's homepage and 3D exhibition view: callouts note that the platform centers on creating and exploring exhibitions, that Recent Exhibitions and Events & Openings give two paths to discovery, that creators get significant creative freedom to design immersive spaces, that open-ended navigation can make specific artwork harder to locate, and that built-in chat supports social presence.",
-            width: 1924,
-            height: 1356,
+            width: 3848,
+            height: 2712,
           },
           strengths: [
             "Recent Exhibitions and Events & Openings give visitors two ways to discover artists.",

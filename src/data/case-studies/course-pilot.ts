@@ -687,8 +687,8 @@ export const coursePilot: CaseStudyData = {
           image: {
             src: "/images/projects/coursepilot/trust/why-this.png",
             alt: "Cropped task row showing a “Why this?” link next to the due date and estimated time",
-            width: 720,
-            height: 68,
+            width: 1020,
+            height: 98,
           },
         },
         {
@@ -697,8 +697,8 @@ export const coursePilot: CaseStudyData = {
           image: {
             src: "/images/projects/coursepilot/trust/grades-used.png",
             alt: "Cropped grades-used table listing each assignment's score and points behind a grade calculation",
-            width: 720,
-            height: 178,
+            width: 1040,
+            height: 260,
           },
         },
         {
@@ -707,8 +707,8 @@ export const coursePilot: CaseStudyData = {
           image: {
             src: "/images/projects/coursepilot/trust/sources.png",
             alt: "Cropped sources list linking a recommendation back to its originating Canvas assignments and announcements",
-            width: 720,
-            height: 82,
+            width: 1020,
+            height: 100,
           },
         },
         {

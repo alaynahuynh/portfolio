@@ -51,4 +51,7 @@ export interface Project {
    * the /projects grid and the homepage's Featured Work preview, sized
    * to its own real intrinsic aspect ratio. */
   imageThumbnail?: { src: string; alt: string; width: number; height: number };
+  /** Still image for the "Next project" card at the end of each case
+   * study — falls back to `imageThumbnail` when unset. */
+  cover?: { src: string; alt: string; width: number; height: number };
 }
