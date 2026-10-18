@@ -33,6 +33,10 @@ export interface Project {
    * homepage's Selected Work section, matching the same color used as
    * `accentColor` on its case-study page (see src/data/case-studies/*). */
   dominantColor?: string;
+  /** Soft tinted mat behind this project's thumbnail in the homepage's
+   * Selected Work list — also the fill of the hero CTA button on its
+   * case-study page, so the two read as the same project color. */
+  matTint?: string;
   /** True once /projects/[slug] renders a real case study component for
    * this project instead of the generic placeholder — lets preview
    * surfaces like the homepage's ProjectPlaceholder know whether to

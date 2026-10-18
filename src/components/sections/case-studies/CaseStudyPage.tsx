@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getProjectBySlug } from "@/data/projects";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -938,6 +939,8 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       style={
         {
           "--project-accent": data.accentColor ?? "var(--color-sage-deep)",
+          // The homepage thumbnail mat color, reused as the hero CTA fill.
+          "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)",
         } as React.CSSProperties
       }
     >
@@ -971,7 +974,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         <a
           href={hero.ctaHref}
           {...externalLinkProps(hero.ctaHref)}
-          className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-accent) px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
+          className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
         >
           {hero.ctaLabel} →
         </a>
@@ -1920,6 +1923,29 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                       {story.videos.map((video) => (
                         <CaseStudyVideo key={video.src} video={video} />
                       ))}
+                    </div>
+                  )}
+                  {story.followUpImages && story.followUpImages.length > 0 && (
+                    <div className="mt-10">
+                      {story.followUpLabel && (
+                        <p className="max-w-xl text-muted-foreground">{story.followUpLabel}</p>
+                      )}
+                      {/* Columns sized to each still's aspect ratio so a
+                          portrait crop and a wide screen share one height. */}
+                      <div
+                        className="mt-6 grid items-start gap-6 sm:grid-cols-(--follow-up-cols)"
+                        style={
+                          {
+                            "--follow-up-cols": story.followUpImages
+                              .map((image) => `minmax(0,${image.width / image.height}fr)`)
+                              .join(" "),
+                          } as React.CSSProperties
+                        }
+                      >
+                        {story.followUpImages.map((image) => (
+                          <CaseStudyContentImage key={image.src} image={image} className="max-w-none" />
+                        ))}
+                      </div>
                     </div>
                   )}
                 </Reveal>

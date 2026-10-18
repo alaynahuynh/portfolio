@@ -105,6 +105,10 @@ export interface CaseStudyVisualStory {
   images?: CaseStudyImageSpec[];
   /** Optional short muted/looping clips (a gameplay/prototype moment) shown alongside this story's images. */
   videos?: CaseStudyVideoSpec[];
+  /** A second row of stills showing the other side of the same feature
+   * (e.g. what the recipient sees), introduced by `followUpLabel`. */
+  followUpLabel?: string;
+  followUpImages?: CaseStudyImageSpec[];
 }
 
 /** One outcome-oriented feature in a `finalExperience` section — led by

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getProjectBySlug } from "@/data/projects";
 import Image from "next/image";
 import { ViewTransition } from "react";
 import { Section } from "@/components/ui/Section";
@@ -193,7 +194,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
   const prototypeHref = /^https?:\/\//.test(hero.ctaHref) ? hero.ctaHref : null;
 
   return (
-    <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
+    <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)", "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
         <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
@@ -229,7 +230,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
               href={prototypeHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-accent) px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
+              className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
             >
               {hero.ctaLabel} →
             </a>

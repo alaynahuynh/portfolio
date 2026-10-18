@@ -32,10 +32,10 @@ const img = (name: string, alt: string, width: number, height: number): CaseStud
 });
 
 const HERO = img(
-  "lit-glow.jpg",
+  "lit-glow-wide.jpg",
   "The pink pig lamp switched on in a dim room, glowing warm yellow through the cage of ribs that forms its body.",
   2000,
-  1754,
+  1124,
 );
 const SKETCH_PARTS = img(
   "sketch-parts.jpg",
@@ -79,18 +79,31 @@ const PROTOTYPE_LIT = img(
   1500,
   2000,
 );
-const IN_CONTEXT = img(
-  "in-context.jpg",
-  "The finished pink pig lamp on a table in front of a wall painted with flowers and butterflies.",
-  2000,
-  1206,
+/** Studio shots of the finished lamp — the same photos shown on the 3D
+ * works page (data/creative-practice.ts). */
+const studio = (name: string, alt: string, width: number, height: number): CaseStudyImageSpec => ({
+  src: `/creative-practice/3d/${name}`,
+  alt,
+  width,
+  height,
+});
+const STUDIO_SIDE = studio(
+  "pig-lamp-1.jpg",
+  "The finished pink pig lamp against a plain studio backdrop, side view: curled tail, dark hooves, and the bulb held inside its cage of ribs.",
+  1600,
+  1420,
 );
-const FINAL_SIDE = img("final-side.jpg", "The finished lamp painted pink with dark hooves, seen from the side.", 2000, 1734);
-const FINAL_END = img(
-  "final-end.jpg",
-  "End view of the finished lamp: the slotted ring and ribs tying the two leg panels together around the bulb.",
-  2000,
-  1979,
+const STUDIO_OTHER_SIDE = studio(
+  "pig-lamp-2.jpg",
+  "The pig lamp from its other side on a studio backdrop, with the bulb visible inside the ribs.",
+  1600,
+  1420,
+);
+const STUDIO_END = studio(
+  "pig-lamp-3.jpg",
+  "End view of the pig lamp on a studio backdrop: the slotted ring and ribs tying the two leg panels together around the socket.",
+  1572,
+  1600,
 );
 const LIT_DIM = img("lit-dim.jpg", "The finished lamp switched on in low light, glowing through its ribs.", 1500, 2000);
 
@@ -177,7 +190,9 @@ export default function PigLampPage() {
       </Section>
 
       {/* ------------------------------------------------------ OVERVIEW */}
-      <Section>
+      {/* Tighter top padding: this sits directly under the hero photo, so the
+          default section spacing read as a blank gap. */}
+      <Section className="pt-10 sm:pt-14">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <Reveal>
             <Label>The project</Label>
@@ -299,17 +314,17 @@ export default function PigLampPage() {
         </Reveal>
         <Reveal delay={40}>
           <div className="mt-12">
-            <CaseStudyZoomImage image={IN_CONTEXT} />
+            <CaseStudyZoomImage image={STUDIO_SIDE} />
           </div>
         </Reveal>
         <Reveal delay={60}>
           <div className="mt-6 grid items-start gap-4 sm:grid-cols-3 sm:gap-6">
             <div>
-              <CaseStudyContentImage image={FINAL_SIDE} className="max-w-none" sizes="(min-width: 640px) 33vw, 100vw" />
-              <Caption>Side.</Caption>
+              <CaseStudyContentImage image={STUDIO_OTHER_SIDE} className="max-w-none" sizes="(min-width: 640px) 33vw, 100vw" />
+              <Caption>Other side.</Caption>
             </div>
             <div>
-              <CaseStudyContentImage image={FINAL_END} className="max-w-none" sizes="(min-width: 640px) 33vw, 100vw" />
+              <CaseStudyContentImage image={STUDIO_END} className="max-w-none" sizes="(min-width: 640px) 33vw, 100vw" />
               <Caption>End: rings and ribs tie the two sides together.</Caption>
             </div>
             <div>

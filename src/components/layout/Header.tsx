@@ -252,7 +252,7 @@ export function Header() {
               className="h-[34px] w-auto"
               speed={logoPlay > 0 ? 1.5 : 1}
             />
-            <span className="font-heading text-lg whitespace-nowrap text-foreground">
+            <span className="font-alayna-handwriting text-[1.75rem] leading-none whitespace-nowrap text-foreground">
               Alayna Huynh
             </span>
           </Link>

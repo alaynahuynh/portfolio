@@ -5,19 +5,6 @@ import { SelectedWorkMedia } from "@/components/sections/home/SelectedWorkMedia"
 import { projects } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
-/** Soft tinted mats behind each thumbnail — mixed from existing palette
- * tokens toward the cream background, in project order. */
-const MAT_TINTS = [
-  // MyMuseum — soft sage
-  "color-mix(in srgb, var(--color-sage) 30%, var(--color-background))",
-  // CoursePilot — pale mist blue
-  "color-mix(in srgb, var(--color-mist-blue) 60%, var(--color-background))",
-  // Vietnamese Noodle House — warm cream / light terracotta
-  "color-mix(in srgb, var(--color-earth) 12%, var(--color-muted))",
-  // Pig Lamp — soft blush
-  "color-mix(in srgb, var(--color-blush) 45%, var(--color-background))",
-];
-
 /** Muted traffic-light dots for the browser title bar. */
 const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
@@ -99,7 +86,8 @@ export function FeaturedWork() {
                         imageRight && "lg:order-2",
                       )}
                       style={{
-                        backgroundColor: MAT_TINTS[index % MAT_TINTS.length],
+                        // Shared with the case-study CTA — see `matTint` in data/projects.ts.
+                        backgroundColor: project.matTint,
                       }}
                     >
                       {linkable ? (

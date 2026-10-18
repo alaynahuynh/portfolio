@@ -33,6 +33,8 @@ export const PROJECTS_STATUS = {
 export const projects: Project[] = [
   {
     slug: "mymuseum",
+    // Homepage thumbnail mat + case-study CTA fill — soft sage.
+    matTint: "color-mix(in srgb, var(--color-sage) 30%, var(--color-background))",
     statusTag: "Live product",
     title: "MyMuseum",
     role: "Product Design · UX Research · Development",
@@ -56,6 +58,8 @@ export const projects: Project[] = [
   },
   {
     slug: "coursepilot",
+    // Homepage thumbnail mat + case-study CTA fill — pale mist blue.
+    matTint: "color-mix(in srgb, var(--color-mist-blue) 60%, var(--color-background))",
     statusTag: "Figma prototype",
     title: "CoursePilot",
     role: "Product Design · User Research · Prototyping",
@@ -83,6 +87,8 @@ export const projects: Project[] = [
   },
   {
     slug: "vietnamese-noodle-house",
+    // Homepage thumbnail mat + case-study CTA fill — warm cream / light terracotta.
+    matTint: "color-mix(in srgb, var(--color-earth) 12%, var(--color-muted))",
     statusTag: "Shipped · Client work",
     title: "Vietnamese Noodle House",
     role: "Client Work · UX/UI Design · Development",
@@ -115,6 +121,8 @@ export const projects: Project[] = [
   },
   {
     slug: "pig-lamp",
+    // Homepage thumbnail mat + case-study CTA fill — soft blush.
+    matTint: "color-mix(in srgb, var(--color-blush) 45%, var(--color-background))",
     statusTag: "Industrial design · Clinic collaboration",
     title: "Pig Lamp",
     role: "Industrial Design · Fabrication",

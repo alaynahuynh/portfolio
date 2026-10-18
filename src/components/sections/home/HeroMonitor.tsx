@@ -47,10 +47,11 @@ export function HeroMonitor({ className }: { className?: string }) {
           </div>
         </div>
 
-        {/* Power LED + button */}
+        {/* Power LED + button — the LED switches to a lighter, glowing blue on
+            hover/focus, like the monitor turning on. */}
         <span
           aria-hidden="true"
-          className="absolute right-[18.5%] bottom-[5.5%] size-[1.3cqw] rounded-full bg-lake-blue-deep transition-shadow group-hover:shadow-[0_0_1.2cqw_var(--color-lake-blue)] group-focus-visible:shadow-[0_0_1.2cqw_var(--color-lake-blue)]"
+          className="absolute right-[18.5%] bottom-[5.5%] size-[1.3cqw] rounded-full border-[0.5px] border-lake-blue-deep bg-lake-blue-deep transition-[background-color,box-shadow] duration-(--duration-base) group-hover:bg-[#aacbe5] group-hover:shadow-[0_0_0.5cqw_#aacbe5] group-focus-visible:bg-[#aacbe5] group-focus-visible:shadow-[0_0_0.5cqw_#aacbe5]"
         />
         <span
           aria-hidden="true"

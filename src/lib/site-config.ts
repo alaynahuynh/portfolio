@@ -11,7 +11,7 @@ export const siteConfig = {
    * (see heroSupportingLine below), not compete with the primary identity. */
   heroEyebrow: "Product Designer",
   /** The hero's main statement (shown in the About Me Notepad window) — what she does, not just where she studied. */
-  positioningStatement: "I design and build digital products — a 3D gallery platform, an AI course assistant, and a live restaurant website.",
+  positioningStatement: "I like making things, figuring out how they work, and turning ideas into something people can actually use.",
   /** Small supporting line under the main statement — where "I build, too" lives, deliberately smaller/quieter than the statement above it. */
   heroSupportingLine: "I prototype and build, too.",
   /** Subtitle on the hero monitor's screen, under the name. */

@@ -385,27 +385,12 @@ export const myMuseum: CaseStudyData = {
         title: "Walk through the gallery",
         description:
           "Third-person navigation between rooms, with a prompt the moment artwork is close enough to view.",
-        images: [
+        videos: [
           {
-            src: "/images/projects/mymuseum/final/gallery-threshold.png",
-            alt: "Symmetrical museum threshold framed by white columns, leading into a room labeled THE FAIR ROOM with a sculpture on a plinth ahead.",
-            width: 1440,
-            height: 900,
-            caption: "Arriving at a room threshold.",
-          },
-          {
-            src: "/images/projects/mymuseum/final/gallery-west-wing.png",
-            alt: "Wide view down the west wing of the museum, showing a framed portrait, a sculpture, and a second gallery visible through an archway.",
-            width: 1440,
-            height: 900,
-            caption: "Looking down the west wing into the next gallery.",
-          },
-          {
-            src: "/images/projects/mymuseum/final/artwork-prompt.png",
-            alt: "An avatar standing beside a hung painting with a 'Press E to view Adrift' interaction prompt at the bottom of the screen.",
-            width: 1440,
-            height: 900,
-            caption: "Artwork opens on a deliberate action, not just by walking past it.",
+            src: "/videos/projects/mymuseum/final-walk.mp4",
+            alt: "A yellow block avatar walks through dark-blue gallery rooms past framed artwork, plants, and white columns, with a 'Press E to view' prompt appearing whenever a piece is close.",
+            width: 1920,
+            height: 1036,
           },
         ],
       },
@@ -413,13 +398,71 @@ export const myMuseum: CaseStudyData = {
         title: "Inspect a piece up close",
         description:
           "Stepping up to a piece opens a focused viewer with its full details, and Previous/Next carries that same viewer through the rest of the collection.",
+        videos: [
+          {
+            src: "/videos/projects/mymuseum/final-inspect.mp4",
+            alt: "The artwork viewer pages from 'Porch' to 'Ah Ma' with Previous/Next, then the visitor switches to Grid View, opens 'Misty Falls' from the grid, and returns to the 3D museum.",
+            width: 1920,
+            height: 1036,
+            caption: "Paging through pieces in the viewer, then opening one from Grid View.",
+          },
+        ],
+      },
+      {
+        title: "Publish a museum in minutes",
+        description:
+          "Name the museum, pick a gallery theme, and add up to 10 pieces with their details. One click generates a museum sized to the collection, ready to enter or share by link.",
+        videos: [
+          {
+            src: "/videos/projects/mymuseum/final-create.mp4",
+            alt: "Creating 'Some of my favorites': the creator fills in the museum name, description, and their name, picks the Muted Sage theme, titles three uploaded pieces, and clicks Create My Museum. On the 'museum is ready' screen they click Copy museum link, which confirms 'Link copied', then walk into the new museum and open pieces in the viewer.",
+            width: 1920,
+            height: 1036,
+            caption: "From an empty form to walking through the finished museum. Sped up; file picking cut.",
+          },
+        ],
+      },
+      {
+        title: "Share it, or keep it private",
+        description:
+          "A museum is shareable the moment it's published: the success screen hands over a permanent link to copy. Creators who aren't ready can switch a museum to Private, which takes it off Explore and makes the link work only for them.",
         images: [
           {
-            src: "/images/projects/mymuseum/final/artwork-viewer.png",
-            alt: "Focused artwork viewer showing 'The Watcher,' a carved side table with a painted eye, its title, medium, and description, numbered 1 of 15.",
+            src: "/images/projects/mymuseum/final/museum-ready-share.png",
+            alt: "'Your museum is ready' screen for 'Some of my favorites': it's live at a shareable link, with Enter Museum and Copy museum link buttons.",
             width: 1440,
-            height: 900,
-            caption: "Title, medium, and description, with Previous/Next through all 15 pieces.",
+            height: 860,
+            caption: "Right after publishing: enter the museum, or copy its link to send.",
+          },
+        ],
+        videos: [
+          {
+            src: "/videos/projects/mymuseum/final-private-toggle.mp4",
+            alt: "From My Museums, the creator opens Edit on 'Some of my favorites' and flips the Visibility switch from 'Published — anyone with the link can visit' to 'Private — only you can see this museum.'",
+            width: 1920,
+            height: 1000,
+            caption: "Switching a museum to Private from its edit page.",
+          },
+        ],
+      },
+      {
+        title: "Find museums and artists",
+        description:
+          "Explore lists every published museum and the artists behind them, so visitors who don't arrive by a shared link still have a way in. Private museums never show up here.",
+        images: [
+          {
+            src: "/images/projects/mymuseum/final/explore-museums.png",
+            alt: "Explore museums page, Museums tab: cards for 'My favorite works!' by Aahuynh, 'footsies' by jeanz, and 'The Monet Collection' by Monet, each with a cover image, date, description, and Enter museum link.",
+            width: 1920,
+            height: 1036,
+            caption: "Published museums, most recently opened first.",
+          },
+          {
+            src: "/images/projects/mymuseum/final/explore-artists.png",
+            alt: "Explore artists page, Artists tab: cards for four creators, each showing their shape avatar, display name, handle, and museum count.",
+            width: 1920,
+            height: 1036,
+            caption: "Artists, shown by the avatars they made.",
           },
         ],
       },
@@ -483,6 +526,23 @@ export const myMuseum: CaseStudyData = {
             caption: "Or about a specific piece, from the artwork viewer.",
           },
         ],
+        followUpLabel: "On the artist's side, a dot on their avatar signals new mail, and each note in the inbox shows which museum and piece it's about.",
+        followUpImages: [
+          {
+            src: "/images/projects/mymuseum/final/mail-notification-menu.png",
+            alt: "Account menu opened from the artist's avatar, which has an unread dot; the Museum Mail item also shows a dot, alongside Customize Avatar, Public Profile, Settings, and Log out.",
+            width: 508,
+            height: 666,
+            caption: "A dot flags new mail.",
+          },
+          {
+            src: "/images/projects/mymuseum/final/mail-inbox.png",
+            alt: "\"Your mail\" inbox listing three unread notes from Monet, each labeled with its museum and piece — My Little World · Still Life, Innocence, and Scenes — and a date.",
+            width: 1484,
+            height: 846,
+            caption: "Each note names the museum and piece it's about.",
+          },
+        ],
       },
     ],
     placeholder: false,
@@ -506,14 +566,14 @@ export const myMuseum: CaseStudyData = {
         src: "/images/projects/mymuseum/history/aug-one-room.jpg",
         alt: "Early version: a visitor's humanoid avatar alone in a large, mostly empty dark room.",
         width: 2940,
-        height: 1706,
+        height: 1660,
         caption: "One room size for every museum.",
       },
       {
         src: "/images/projects/mymuseum/history/aug-humanoid-avatar.jpg",
         alt: "Early avatar editor: a humanoid character with options for skin tone, hairstyle, hair color, top, bottom, and shoes.",
         width: 2940,
-        height: 1706,
+        height: 1660,
         caption: "Humanoid avatars. Both images are the earliest saved version (August) — the tested prototype itself wasn't saved, but these still have the same rooms and avatars.",
       },
     ],
