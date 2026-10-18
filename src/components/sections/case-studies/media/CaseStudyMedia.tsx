@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Maximize2 } from "lucide-react";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
+import { useLazyVideo } from "@/components/sections/home/ProjectPlaceholder";
 import { cn } from "@/lib/utils";
 import type {
   CaseStudyImageSpec,
@@ -297,6 +298,9 @@ interface VideoProps {
  */
 export function CaseStudyVideo({ video, className }: VideoProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  // Loads only once scrolled near, and pauses off-screen — a long case
+  // study can hold several clips without downloading them all up front.
+  const shouldLoad = useLazyVideo(videoRef);
   const pauseAtEndMs = video.pauseAtEndMs;
 
   function handleEnded() {
@@ -313,7 +317,7 @@ export function CaseStudyVideo({ video, className }: VideoProps) {
       <div className={FRAME_SURFACE}>
         <video
           ref={videoRef}
-          src={video.src}
+          src={shouldLoad ? video.src : undefined}
           poster={video.poster}
           width={video.width}
           height={video.height}

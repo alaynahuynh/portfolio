@@ -368,6 +368,15 @@ function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index
           <FlowDiagram steps={decision.steps} />
         </Reveal>
       )}
+      {decision.videos && decision.videos.length > 0 && (
+        <Reveal delay={80} className="mt-12">
+          <div className={cn("grid items-start gap-6", decision.videos.length > 1 && "sm:grid-cols-2 lg:grid-cols-3")}>
+            {decision.videos.map((video) => (
+              <CaseStudyVideo key={video.src} video={video} />
+            ))}
+          </div>
+        </Reveal>
+      )}
       {decision.images && decision.images.length > 0 && (
         <Reveal delay={80} className={decision.steps?.length ? "mt-6" : "mt-12"}>
           {/* Under the flow steps, a lone image is supporting evidence
@@ -583,6 +592,346 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       },
     ].filter((section): section is CaseStudyNavSection => Boolean(section));
 
+  // The testing section can sit right after the problem (when testing an
+  // early prototype drove the design) or near the end; iterations marked
+  // `later` render in their own section after the final design.
+  const renderTesting = (t: {
+    id: string;
+    eyebrow: string;
+    heading: string;
+    intro: string;
+    tasks: string[];
+    iterations: CaseStudyData["testing"]["iterations"];
+    validateNext?: CaseStudyData["testing"]["validateNext"];
+    closing?: string;
+    className?: string;
+    images?: CaseStudyImageSpec[];
+    changedLabel?: string;
+  }) => (
+        <Section id={t.id} className={cn("scroll-mt-28", t.className)}>
+          <Reveal className="flex flex-wrap items-center gap-3">
+            <SectionEyebrow>{t.eyebrow}</SectionEyebrow>
+            {t.id === "testing" && testing.placeholder && !t.validateNext && <PlaceholderTag />}
+          </Reveal>
+          <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
+            {t.heading}
+          </Heading>
+          <Reveal delay={60} className="mt-4 max-w-xl text-muted-foreground">
+            <p>{t.intro}</p>
+          </Reveal>
+
+          {t.validateNext && t.validateNext.length > 0 ? (
+            <div className="mt-10 grid gap-8 sm:grid-cols-2">
+              {t.validateNext.map((item, i) => (
+                <Reveal key={item.title} delay={i * 60}>
+                  <p className="text-sm font-semibold text-sage-deep">
+                    {String(i + 1).padStart(2, "0")}
+                  </p>
+                  <p className="mt-2 font-medium text-foreground">
+                    {item.title}
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {item.question}
+                  </p>
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <>
+              {t.tasks.length > 0 && (
+              <ol className="mt-6 grid list-decimal gap-2 pl-5 text-muted-foreground sm:grid-cols-2">
+                {t.tasks.map((task) => (
+                  <li key={task}>{task}</li>
+                ))}
+              </ol>
+              )}
+              {t.images && t.images.length > 0 && (
+                <div className="mt-10 grid items-start gap-6 sm:grid-cols-2">
+                  {t.images.map((image) => (
+                    <CaseStudyContentImage key={image.src} image={image} className="max-w-none" sizes="(min-width: 640px) 50vw, 100vw" />
+                  ))}
+                </div>
+              )}
+
+              {t.iterations.filter((it) => !it.isTechnicalNote).length >
+                0 && (
+                <div className="mt-12 border-b border-border">
+                  {t.iterations
+                    .filter((it) => !it.isTechnicalNote)
+                    .map((iteration, i) => (
+                      <Reveal
+                        key={iteration.title}
+                        delay={Math.min(i * 40, 200)}
+                        className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
+                      >
+                        <div>
+                          <p className="font-heading text-2xl text-sage-deep/50">
+                            {String(i + 1).padStart(2, "0")}
+                          </p>
+                          <Heading level={3} size={4} className="mt-1">
+                            {iteration.title}
+                          </Heading>
+                        </div>
+                        <div>
+                          <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                            What testing showed
+                          </p>
+                          <p className="mt-2 text-sm text-muted-foreground">{iteration.feedback}</p>
+                        </div>
+                        {iteration.finalIteration && (
+                          <div>
+                            <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
+                              {t.changedLabel ?? "What I changed"}
+                            </p>
+                            <p className="mt-2 text-sm text-foreground">{iteration.finalIteration}</p>
+                          </div>
+                        )}
+                        {iteration.beforeAfter && (
+                          <div className="mt-2 lg:col-span-3">
+                            <CaseStudyBeforeAfter
+                              before={iteration.beforeAfter.before}
+                              after={iteration.beforeAfter.after}
+                              beforeLabel={iteration.beforeAfter.beforeLabel}
+                              afterLabel={iteration.beforeAfter.afterLabel}
+                            />
+                          </div>
+                        )}
+                        {iteration.videos && iteration.videos.length > 0 && (
+                          <div
+                            className={cn(
+                              "grid items-start gap-6 lg:col-span-3",
+                              iteration.videos.length > 1 && "sm:grid-cols-2 lg:grid-cols-3",
+                            )}
+                          >
+                            {iteration.videos.map((video) => (
+                              <CaseStudyVideo key={video.src} video={video} />
+                            ))}
+                          </div>
+                        )}
+                      </Reveal>
+                    ))}
+                </div>
+              )}
+
+              {t.iterations.filter((it) => it.isTechnicalNote).length >
+                0 && (
+                <div className="mt-6 space-y-3">
+                  {t.iterations
+                    .filter((it) => it.isTechnicalNote)
+                    .map((iteration) => (
+                      <div
+                        key={iteration.title}
+                        className="rounded-(--radius-default) border border-border bg-surface p-4 text-sm"
+                      >
+                        <p className="font-medium text-foreground">
+                          Technical note — {iteration.title}
+                        </p>
+                        <p className="mt-1 text-muted-foreground">
+                          {iteration.feedback} {iteration.finalIteration}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {t.closing && (
+            <Reveal>
+              <p className="mt-14 max-w-[45rem] text-sm text-muted-foreground">{t.closing}</p>
+            </Reveal>
+          )}
+        </Section>
+  );
+  const testingEarly = testing.placement === "after-problem" || testing.placement === "before-decisions";
+  const testingMain = renderTesting({
+    id: "testing",
+    eyebrow: testingEarly ? "Usability testing" : "Testing & iterations",
+    heading: testing.heading ?? "Putting it in front of users",
+    intro: testing.intro,
+    tasks: testing.tasks,
+    iterations: testing.iterations.filter((it) => !it.later),
+    validateNext: testing.validateNext,
+    closing: testing.closingStatement,
+    className: testingEarly ? "cs-band" : undefined,
+    images: testing.images,
+    changedLabel: testing.changedLabel,
+  });
+  const laterIterations = testing.iterations.filter((it) => it.later);
+  const testingLater =
+    laterIterations.length > 0
+      ? renderTesting({
+          id: "iterations",
+          eyebrow: "Iterations",
+          heading: testing.laterHeading ?? "Iterating on the product",
+          intro: testing.laterIntro ?? "",
+          tasks: testing.laterTasks ?? [],
+          iterations: laterIterations,
+        })
+      : null;
+
+  // Flows normally sit with ideation; "after-decisions" moves them below
+  // the key decisions, for when the mapped flows show the redesign.
+  const flowsLate = ideation.flowsPlacement === "after-decisions";
+  const flowsSection = (
+        <Section id="user-flows" className="scroll-mt-28">
+          <Reveal className="flex flex-wrap items-center gap-3">
+            <SectionEyebrow>Ideation</SectionEyebrow>
+            {ideation.flowsPlaceholder && <PlaceholderTag />}
+          </Reveal>
+          <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
+            {ideation.flowsSectionTitle ?? "User flows"}
+          </Heading>
+          {ideation.flowsIntro && (
+            <Reveal delay={60} className="mt-4 max-w-xl text-muted-foreground">
+              <p>{ideation.flowsIntro}</p>
+            </Reveal>
+          )}
+
+          {ideation.flows.some((flow) => flow.layout) ? (
+            <div className="mt-14 space-y-20 sm:space-y-24">
+              {ideation.flows.map((flow, i) => {
+                if (flow.layout === "featured" && flow.image) {
+                  return (
+                    <Reveal key={flow.name} delay={i * 60}>
+                      <Heading level={3} size={4} className="text-center">
+                        {flow.name}
+                      </Heading>
+                      <div className="mt-6">
+                        <CaseStudyFlowImage
+                          image={flow.image}
+                          className="max-w-2xl"
+                        />
+                      </div>
+                      {flow.takeaway && (
+                        <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
+                          {flow.takeaway}
+                        </p>
+                      )}
+                    </Reveal>
+                  );
+                }
+
+                if (
+                  (flow.layout === "text-left" || flow.layout === "text-right") &&
+                  flow.image
+                ) {
+                  const imageFirst = flow.layout === "text-right";
+                  return (
+                    <Reveal key={flow.name} delay={i * 60}>
+                      <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
+                        <div className={cn(imageFirst && "sm:order-2")}>
+                          <Heading level={3} size={4}>
+                            {flow.name}
+                          </Heading>
+                          {flow.description && (
+                            <p className="mt-3 text-muted-foreground">
+                              {flow.description}
+                            </p>
+                          )}
+                        </div>
+                        <div className={cn(imageFirst && "sm:order-1")}>
+                          <CaseStudyFlowImage image={flow.image} />
+                        </div>
+                      </div>
+                    </Reveal>
+                  );
+                }
+
+                return (
+                  <Reveal key={flow.name} delay={i * 60}>
+                    <Heading
+                      level={3}
+                      size={4}
+                      className={cn(flow.image && "text-center")}
+                    >
+                      {flow.name}
+                    </Heading>
+                    {flow.image ? (
+                      <div className="mt-5">
+                        <CaseStudyFlowImage image={flow.image} />
+                      </div>
+                    ) : (
+                      <div className="mt-4">
+                        <FlowDiagram steps={flow.steps} />
+                      </div>
+                    )}
+                    {flow.takeaway && (
+                      <p className="mt-4 text-sm text-muted-foreground">
+                        {flow.takeaway}
+                      </p>
+                    )}
+                  </Reveal>
+                );
+              })}
+            </div>
+          ) : (
+            <div
+              className={cn(
+                "mt-10",
+                ideation.flows.every((flow) => flow.image)
+                  ? "grid gap-10 sm:grid-cols-2"
+                  : "space-y-10",
+              )}
+            >
+              {ideation.flows.map((flow, i) => (
+                <Reveal key={flow.name} delay={i * 60}>
+                  <Heading
+                    level={3}
+                    size={4}
+                    className={cn(flow.image && "text-center")}
+                  >
+                    {flow.name}
+                  </Heading>
+                  {flow.image ? (
+                    // Dense diagrams: open in the lightbox to read up close.
+                    <div className="mt-5">
+                      <CaseStudyZoomImage image={flow.image} />
+                    </div>
+                  ) : (
+                    <div className="mt-4">
+                      <FlowDiagram steps={flow.steps} />
+                    </div>
+                  )}
+                  {flow.takeaway && (
+                    <p className="mt-4 text-sm text-muted-foreground">
+                      {flow.takeaway}
+                    </p>
+                  )}
+                </Reveal>
+              ))}
+            </div>
+          )}
+
+          {ideation.sketchImages && ideation.sketchImages.length > 0 && (
+            <Reveal className="mt-16">
+              <Heading level={3} size={4}>
+                Early sketches
+              </Heading>
+              <div className="mt-6">
+                <CaseStudyImageRow images={ideation.sketchImages} />
+              </div>
+            </Reveal>
+          )}
+
+          {ideation.ia && (
+            <Reveal className="mt-16 border-t border-border pt-10">
+              <Heading level={4} size={4} className="text-muted-foreground">
+                Information architecture
+              </Heading>
+              <ul className="mt-4 space-y-1">
+                <IATree node={ideation.ia} />
+              </ul>
+              {ideation.iaImage && (
+                <div className="mt-6">
+                  <CaseStudyContentImage image={ideation.iaImage} />
+                </div>
+              )}
+            </Reveal>
+          )}
+        </Section>
+  );
+
   return (
     <div
       className="case-study bg-background"
@@ -758,6 +1107,8 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         )}
       </Section>
 
+      {testing.placement === "after-problem" && testingMain}
+
       <Section id="research" className="scroll-mt-28">
         <Reveal className="flex flex-wrap items-center gap-3">
           <SectionEyebrow>Research</SectionEyebrow>
@@ -804,7 +1155,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   {finding.designResponse && (
                     <div>
                       <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
-                        What the build covers — and doesn&rsquo;t
+                        How the design responded
                       </p>
                       <p className="mt-2 text-sm text-foreground">
                         {finding.designResponse}
@@ -1228,162 +1579,9 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Section>
       )}
 
-      <Section id="user-flows" className="scroll-mt-28">
-        <Reveal className="flex flex-wrap items-center gap-3">
-          <SectionEyebrow>Ideation</SectionEyebrow>
-          {ideation.flowsPlaceholder && <PlaceholderTag />}
-        </Reveal>
-        <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
-          {ideation.flowsSectionTitle ?? "User flows"}
-        </Heading>
-        {ideation.flowsIntro && (
-          <Reveal delay={60} className="mt-4 max-w-xl text-muted-foreground">
-            <p>{ideation.flowsIntro}</p>
-          </Reveal>
-        )}
+      {!flowsLate && flowsSection}
 
-        {ideation.flows.some((flow) => flow.layout) ? (
-          <div className="mt-14 space-y-20 sm:space-y-24">
-            {ideation.flows.map((flow, i) => {
-              if (flow.layout === "featured" && flow.image) {
-                return (
-                  <Reveal key={flow.name} delay={i * 60}>
-                    <Heading level={3} size={4} className="text-center">
-                      {flow.name}
-                    </Heading>
-                    <div className="mt-6">
-                      <CaseStudyFlowImage
-                        image={flow.image}
-                        className="max-w-2xl"
-                      />
-                    </div>
-                    {flow.takeaway && (
-                      <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
-                        {flow.takeaway}
-                      </p>
-                    )}
-                  </Reveal>
-                );
-              }
-
-              if (
-                (flow.layout === "text-left" || flow.layout === "text-right") &&
-                flow.image
-              ) {
-                const imageFirst = flow.layout === "text-right";
-                return (
-                  <Reveal key={flow.name} delay={i * 60}>
-                    <div className="grid gap-8 sm:grid-cols-2 sm:items-center">
-                      <div className={cn(imageFirst && "sm:order-2")}>
-                        <Heading level={3} size={4}>
-                          {flow.name}
-                        </Heading>
-                        {flow.description && (
-                          <p className="mt-3 text-muted-foreground">
-                            {flow.description}
-                          </p>
-                        )}
-                      </div>
-                      <div className={cn(imageFirst && "sm:order-1")}>
-                        <CaseStudyFlowImage image={flow.image} />
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              }
-
-              return (
-                <Reveal key={flow.name} delay={i * 60}>
-                  <Heading
-                    level={3}
-                    size={4}
-                    className={cn(flow.image && "text-center")}
-                  >
-                    {flow.name}
-                  </Heading>
-                  {flow.image ? (
-                    <div className="mt-5">
-                      <CaseStudyFlowImage image={flow.image} />
-                    </div>
-                  ) : (
-                    <div className="mt-4">
-                      <FlowDiagram steps={flow.steps} />
-                    </div>
-                  )}
-                  {flow.takeaway && (
-                    <p className="mt-4 text-sm text-muted-foreground">
-                      {flow.takeaway}
-                    </p>
-                  )}
-                </Reveal>
-              );
-            })}
-          </div>
-        ) : (
-          <div
-            className={cn(
-              "mt-10",
-              ideation.flows.every((flow) => flow.image)
-                ? "grid gap-10 sm:grid-cols-2"
-                : "space-y-10",
-            )}
-          >
-            {ideation.flows.map((flow, i) => (
-              <Reveal key={flow.name} delay={i * 60}>
-                <Heading
-                  level={3}
-                  size={4}
-                  className={cn(flow.image && "text-center")}
-                >
-                  {flow.name}
-                </Heading>
-                {flow.image ? (
-                  // Dense diagrams: open in the lightbox to read up close.
-                  <div className="mt-5">
-                    <CaseStudyZoomImage image={flow.image} />
-                  </div>
-                ) : (
-                  <div className="mt-4">
-                    <FlowDiagram steps={flow.steps} />
-                  </div>
-                )}
-                {flow.takeaway && (
-                  <p className="mt-4 text-sm text-muted-foreground">
-                    {flow.takeaway}
-                  </p>
-                )}
-              </Reveal>
-            ))}
-          </div>
-        )}
-
-        {ideation.sketchImages && ideation.sketchImages.length > 0 && (
-          <Reveal className="mt-16">
-            <Heading level={3} size={4}>
-              Early sketches
-            </Heading>
-            <div className="mt-6">
-              <CaseStudyImageRow images={ideation.sketchImages} />
-            </div>
-          </Reveal>
-        )}
-
-        {ideation.ia && (
-          <Reveal className="mt-16 border-t border-border pt-10">
-            <Heading level={4} size={4} className="text-muted-foreground">
-              Information architecture
-            </Heading>
-            <ul className="mt-4 space-y-1">
-              <IATree node={ideation.ia} />
-            </ul>
-            {ideation.iaImage && (
-              <div className="mt-6">
-                <CaseStudyContentImage image={ideation.iaImage} />
-              </div>
-            )}
-          </Reveal>
-        )}
-      </Section>
+      {testing.placement === "before-decisions" && testingMain}
 
       {keyDecisions && keyDecisions.items.length > 0 && (
         <Section
@@ -1410,6 +1608,8 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </div>
         </Section>
       )}
+
+      {flowsLate && flowsSection}
 
       {(productRequirements.length > 0 ||
         (designPrinciplesDetailed && designPrinciplesDetailed.length > 0)) && (
@@ -1927,117 +2127,8 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Section>
       )}
 
-      <Section id="testing" className="scroll-mt-28">
-        <Reveal className="flex flex-wrap items-center gap-3">
-          <SectionEyebrow>Testing & iterations</SectionEyebrow>
-          {testing.placeholder && !testing.validateNext && <PlaceholderTag />}
-        </Reveal>
-        <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
-          {testing.heading ?? "Putting it in front of users"}
-        </Heading>
-        <Reveal delay={60} className="mt-4 max-w-xl text-muted-foreground">
-          <p>{testing.intro}</p>
-        </Reveal>
-
-        {testing.validateNext && testing.validateNext.length > 0 ? (
-          <div className="mt-10 grid gap-8 sm:grid-cols-2">
-            {testing.validateNext.map((item, i) => (
-              <Reveal key={item.title} delay={i * 60}>
-                <p className="text-sm font-semibold text-sage-deep">
-                  {String(i + 1).padStart(2, "0")}
-                </p>
-                <p className="mt-2 font-medium text-foreground">
-                  {item.title}
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  {item.question}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-        ) : (
-          <>
-            <ol className="mt-6 grid list-decimal gap-2 pl-5 text-muted-foreground sm:grid-cols-2">
-              {testing.tasks.map((task) => (
-                <li key={task}>{task}</li>
-              ))}
-            </ol>
-
-            {testing.iterations.filter((it) => !it.isTechnicalNote).length >
-              0 && (
-              <div className="mt-12 border-b border-border">
-                {testing.iterations
-                  .filter((it) => !it.isTechnicalNote)
-                  .map((iteration, i) => (
-                    <Reveal
-                      key={iteration.title}
-                      delay={Math.min(i * 40, 200)}
-                      className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
-                    >
-                      <div>
-                        <p className="font-heading text-2xl text-sage-deep/50">
-                          {String(i + 1).padStart(2, "0")}
-                        </p>
-                        <Heading level={3} size={4} className="mt-1">
-                          {iteration.title}
-                        </Heading>
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                          What testing showed
-                        </p>
-                        <p className="mt-2 text-sm text-muted-foreground">{iteration.feedback}</p>
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
-                          What I changed
-                        </p>
-                        <p className="mt-2 text-sm text-foreground">{iteration.finalIteration}</p>
-                      </div>
-                      {iteration.beforeAfter && (
-                        <div className="mt-2 lg:col-span-3">
-                          <CaseStudyBeforeAfter
-                            before={iteration.beforeAfter.before}
-                            after={iteration.beforeAfter.after}
-                            beforeLabel={iteration.beforeAfter.beforeLabel}
-                            afterLabel={iteration.beforeAfter.afterLabel}
-                          />
-                        </div>
-                      )}
-                    </Reveal>
-                  ))}
-              </div>
-            )}
-
-            {testing.iterations.filter((it) => it.isTechnicalNote).length >
-              0 && (
-              <div className="mt-6 space-y-3">
-                {testing.iterations
-                  .filter((it) => it.isTechnicalNote)
-                  .map((iteration) => (
-                    <div
-                      key={iteration.title}
-                      className="rounded-(--radius-default) border border-border bg-surface p-4 text-sm"
-                    >
-                      <p className="font-medium text-foreground">
-                        Technical note — {iteration.title}
-                      </p>
-                      <p className="mt-1 text-muted-foreground">
-                        {iteration.feedback} {iteration.finalIteration}
-                      </p>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </>
-        )}
-
-        {testing.closingStatement && (
-          <Reveal>
-            <p className="mt-14 max-w-[45rem] text-sm text-muted-foreground">{testing.closingStatement}</p>
-          </Reveal>
-        )}
-      </Section>
+      {!testingEarly && testingMain}
+      {testingLater}
 
       {results && (
       <Section id="results" className="scroll-mt-28">

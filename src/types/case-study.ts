@@ -328,6 +328,13 @@ export interface CaseStudyIteration {
    * than a major product-design iteration — renders more compactly and
    * without a numbered badge. */
   isTechnicalNote?: boolean;
+  /** Renders in a separate later "Iterations" section (after the final
+   * design) instead of the main testing section — for refinements made
+   * while building the product, after the initial testing round. */
+  later?: boolean;
+  /** Optional short clips shown in a row under the iteration (e.g. one
+   * per variant the change introduced). */
+  videos?: CaseStudyVideoSpec[];
 }
 
 export interface CaseStudyStat {
@@ -511,6 +518,8 @@ export interface CaseStudyData {
     /** Optional heading override for this section (defaults to
      * "User flows"). */
     flowsSectionTitle?: string;
+    /** "after-decisions" renders the flows below the key decisions. */
+    flowsPlacement?: "default" | "after-decisions";
     /** Optional short intro shown above the user flows. */
     flowsIntro?: string;
     flows: UserFlow[];
@@ -658,6 +667,20 @@ export interface CaseStudyData {
      * sentence (e.g. a functional-verification result or a pointer at
      * implementation feasibility) rather than a second write-up. */
     closingStatement?: string;
+    /** Where the testing section renders: "after-problem" (right after
+     * the problem), "before-decisions" (after research/define/flows, just
+     * before key decisions — for testing an early prototype that drove
+     * the design), or the default near the end. */
+    placement?: "after-problem" | "before-decisions" | "end";
+    /** Heading / intro / tasks for the later iterations section (see
+     * CaseStudyIteration.later). */
+    /** Optional images shown under the tasks (e.g. what participants saw). */
+    images?: CaseStudyImageSpec[];
+    /** Label for the response column (default "What I changed"). */
+    changedLabel?: string;
+    laterHeading?: string;
+    laterIntro?: string;
+    laterTasks?: string[];
   };
 
   /** Optional "the final experience" section: the strongest real final
@@ -756,4 +779,6 @@ export interface CaseStudyDecision {
   /** Optional step chips shown as this decision's visual. */
   steps?: string[];
   images?: CaseStudyImageSpec[];
+  /** Optional clips shown in a row under the decision. */
+  videos?: CaseStudyVideoSpec[];
 }
