@@ -34,8 +34,8 @@ export default function ThreeDWorksPage() {
         <Heading level={1} className="mt-4 font-alayna-handwriting">
           3D Works
         </Heading>
-        <p className="font-alayna-handwriting mt-3 max-w-xl text-lg text-muted-foreground">
-          I have always loved working with my hands, and building my own 3D projects.
+        <p className="font-alayna-handwriting mt-3 max-w-xl text-2xl md:text-3xl text-muted-foreground">
+         Some of my 3D works.
         </p>
 
         <div className="mx-auto mt-16 max-w-[1200px] space-y-4 sm:mt-20 sm:space-y-5">

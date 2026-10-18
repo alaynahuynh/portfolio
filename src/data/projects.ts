@@ -19,10 +19,10 @@ export const PROJECTS_STATUS = {
  * Three UI/UX case-study entries. All three now have a full case study
  * page (see src/app/projects/[slug]/page.tsx → CaseStudyPage, driven by
  * src/data/case-studies/*), each sourced from real material — nothing
- * invented. `case-study-02` (CoursePilot) is sourced from a real
- * research brief and `case-study-03` (Vietnamese Noodle House) from a
+ * invented. `coursepilot` (CoursePilot) is sourced from a real
+ * research brief and `vietnamese-noodle-house` (Vietnamese Noodle House) from a
  * completed client redesign — both render via their own bespoke
- * case-study layouts. `case-study-01` (MyMuseum) is a real, built-and-
+ * case-study layouts. `mymuseum` (MyMuseum) is a real, built-and-
  * tested product (see data/case-studies/my-museum.ts), now live at
  * https://mymuseum-eta.vercel.app/.
  *
@@ -32,11 +32,11 @@ export const PROJECTS_STATUS = {
  */
 export const projects: Project[] = [
   {
-    slug: "case-study-01",
+    slug: "mymuseum",
     title: "MyMuseum",
     role: "Product Design · UX Research · Development",
-    summary: "Helping artists share their work as explorable, multiplayer 3D galleries instead of flat image feeds.",
-    credibility: "Designed and built the end-to-end experience from concept to a working multiplayer product.",
+    summary: "Helping artists share their work as walkable 3D galleries instead of flat image feeds.",
+    credibility: "Designed and built the end-to-end experience, from concept to a live product.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "var(--color-sky)",
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     liveUrl: "https://mymuseum-eta.vercel.app/",
   },
   {
-    slug: "case-study-02",
+    slug: "coursepilot",
     title: "CoursePilot",
     role: "Product Design · User Research · Prototyping",
     summary: "Helping students turn scattered course information into an actionable plan.",
@@ -61,15 +61,20 @@ export const projects: Project[] = [
     // data/case-studies/course-pilot.ts's `accentColor`.
     dominantColor: "var(--color-olive)",
     hasCaseStudy: true,
-    // Same walkthrough clip used as the case study's own hero video —
-    // see CoursePilotCaseStudy.tsx.
-    videoThumbnail: { src: "/videos/projects/coursepilot/starttoend.mp4", width: 2000, height: 1422 },
+    // A still of CoursePilot's own Plan My Night response — the walkthrough
+    // video opens on the stock Canvas dashboard, which isn't her design.
+    imageThumbnail: {
+      src: "/images/projects/coursepilot/iteration-plan-my-night-final.png",
+      alt: "CoursePilot's Plan My Night response inside Canvas: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
+      width: 1440,
+      height: 1024,
+    },
   },
   {
-    slug: "case-study-03",
+    slug: "vietnamese-noodle-house",
     title: "Vietnamese Noodle House",
     role: "Client Work · UX/UI Design · Development",
-    summary: "Redesigning a restaurant's digital ordering experience within existing POS constraints.",
+    summary: "Redesigning a family restaurant's website so customers can find the menu and order from the right location.",
     credibility:
       "Designed and built for a real restaurant while working within existing MenuDrive/Lavu platform constraints.",
     tagline: "Rebuilding a family restaurant's website so it finally works as hard as the food does.",

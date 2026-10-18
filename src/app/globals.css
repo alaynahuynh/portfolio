@@ -416,12 +416,6 @@
   }
 }
 
-/* RotatingWord: each incoming word is revealed by a jagged, brush-like
-   edge sweeping left to right, rather than a plain fade/slide — reads as
-   "being painted in." Both keyframe states use the same point count so
-   the jagged edge itself interpolates smoothly (not just the paint
-   region growing) — the anchor corners (0% 0% and 0% 100%) stay fixed
-   the whole time, only the ragged right edge sweeps across. */
 /* Hero flowers layer: a quick, tiny sway (a breeze across the grass),
    distance set via --drift-x/--drift-y so it can share the same
    keyframe as anything else that just needs a small back-and-forth
@@ -811,6 +805,50 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Case study surface                                                  */
+/* Case study pages swap the sitewide cream "paper" for a near-white,  */
+/* more structured surface: crisper text contrast, neutral hairlines,  */
+/* and tighter radii so screenshots and diagrams read as the focus.    */
+/* Re-scoping the tokens (rather than editing every component) keeps   */
+/* all three case study layouts on one consistent system.            */
+/* ------------------------------------------------------------------ */
+.case-study {
+  --color-background: #fcfcfa; /* near-white with a whisper of warmth */
+  --color-surface: #ffffff;
+  --color-muted: #f6f4ef; /* light warm neutral for small fills only */
+  --color-foreground: #1f231c;
+  --color-muted-foreground: #4b5045;
+  --color-border: #e4e2dc;
+  --radius-default: 0.5rem;
+}
+.case-study :is(h1, h2, h3) {
+  text-wrap: balance;
+}
+.case-study p {
+  text-wrap: pretty;
+}
+
+/* Alternating section band — replaces the large cream blocks with a
+   white band bounded by hairlines. Adjacent bands share one rule. */
+.cs-band {
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
+}
+.cs-band + .cs-band {
+  border-top-width: 0;
+}
+
+/* Smooth scrolling (see SmoothScroll.tsx). Only the parts of lenis.css
+   this site needs — its `html { height: auto }` rule would break the
+   h-full/min-h-full sticky-footer layout. */
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
 }
 
 /* Respect reduced-motion preferences globally: cut animation/transition

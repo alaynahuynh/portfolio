@@ -19,7 +19,7 @@ import type { CaseStudyData } from "@/types/case-study";
  * real screenshots it's paired with.
  */
 export const vietnameseNoodleHouse: CaseStudyData = {
-  slug: "case-study-03",
+  slug: "vietnamese-noodle-house",
 
   // Earth (warm dark brown) — the accessible small-text/border accent
   // used throughout this page. Meadow green (VNH's dominant homepage
@@ -34,7 +34,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     tagline:
       "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
     description:
-      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site was hosted on HostGator, broke on mobile, and looked nothing like the restaurant it represented. I led a full UX audit and redesign — a warm, photography-forward identity rebuilt across every page, with a two-step ordering flow at its center.",
+      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location.",
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
     ctaHref: "https://vietnoodlehouse.com/",
@@ -43,7 +43,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   overview: {
     year: "2026",
     duration: "Ongoing client engagement",
-    role: "Product Designer",
+    role: "Solo UX/UI Designer & Developer",
     featuresHeading: "What shipped",
     featuresIntro:
       "A full rebuild across Home, Menu, Locations, Food Truck, About, and Contact.",
@@ -109,22 +109,22 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     findingsPlaceholder: true,
     keyFindings: [
       {
-        title: "Two locations, one wrong click",
+        title: "Two look-alike ordering buttons",
         whatParticipantsSaid:
-          "North Syracuse and Camillus each have their own online-ordering link. Nothing on the old site helped a customer tell them apart before clicking through.",
+          "The homepage's main actions were two ordering buttons — \"Camillus\" and \"N Syracuse\" — styled identically except for border color, with no address, hours, or map beside them. A customer had to already know which town their restaurant is in.",
         whyItMatters:
-          "Ordering from the wrong location's link means food ordered from a place a customer isn't at — a real, costly mistake, not a cosmetic one.",
+          "Each button opens a different location's ordering page — and the owners told me customers were already placing orders at the wrong location.",
         designResponse:
-          "An explicit two-step select-then-confirm flow, redesigned separately for desktop and mobile (see the Locations section below).",
+          "Location cards with address, map, and hours, then a confirmation that repeats the address before handing off to ordering.",
       },
       {
-        title: "A menu with no way to get around it",
+        title: "The menu wasn't part of the website",
         whatParticipantsSaid:
-          "Seven categories and roughly 50 items lived on one long scrolling page with no way to jump between sections.",
+          "View Menu just opened an 11-page PDF in the browser's PDF viewer. On a phone, the text ran off the right edge of the screen, and there was no way to jump to a category except paging through the document.",
         whyItMatters:
-          "On a page that long, customers lose track of where they are and give up before finding what they came for.",
+          "The menu is core content for a restaurant site, but as a PDF it couldn't match the site's identity or adapt to a phone screen.",
         designResponse:
-          "A sticky category nav with scroll-spy auto-highlighting, so the current section is always visible.",
+          "Rebuilt the menu as a real page — seven categories, ~50 items — with a sticky category nav that highlights where you are.",
       },
       {
         title: "The mobile hero worked against the business priority",
@@ -185,7 +185,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
           "Continue to that location's online ordering",
         ],
         takeaway:
-          "Desktop had room to show the confirmation inline below the grid; mobile needed a different pattern entirely — see the Locations deep-dive below.",
+          "Desktop had room to show the confirmation inline below the grid; mobile needed a different pattern entirely.",
       },
     ],
     flowsPlaceholder: false,
@@ -208,6 +208,9 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     placeholder: false,
   },
 
+  // Not rendered by VNHCaseStudy.tsx — what's left to validate is
+  // folded into finalThoughts.nextSteps. Kept only to satisfy the shared
+  // CaseStudyData shape.
   testing: {
     heading: "What I'd want to validate next",
     intro:
@@ -215,46 +218,20 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     tasks: [],
     iterations: [],
     placeholder: false,
-    validateNext: [
-      {
-        title: "Does the two-step flow actually reduce wrong-location orders?",
-        question:
-          "Once there's order-volume data by location, I'd want to confirm the explicit confirm step is measurably reducing mistaken orders, not just adding a click.",
-      },
-      {
-        title: "Does the bottom sheet read as clearly on mobile as the inline card does on desktop?",
-        question:
-          "I'd want real usage data (or a moderated session) on whether the mobile bottom sheet is understood as fast as the desktop inline confirmation.",
-      },
-      {
-        title: "Is email actually landing?",
-        question:
-          "Now that the contact form sends through Resend, I'd want to confirm delivery rates and spam placement over time, not just that it fires successfully.",
-      },
-    ],
   },
 
   finalThoughts: {
-    pullQuote:
-      "The riskiest part of this redesign wasn't the visual identity — it was two links that looked identical and led to two different places.",
+    pullQuote: "Designing for clarity meant thinking beyond the visuals.",
+    // Two paragraphs, split on the blank line by VNHCaseStudy.
     whatILearned:
-      "The most consequential decision in this whole redesign wasn't a color or a typeface — it was making sure a customer never orders from the wrong location by accident. It also reframed the contact form fix for me: 'looks like it works' and 'actually works' are different bars, and only one of them is worth shipping.",
+      "Working on Vietnamese Noodle House taught me that redesigning a website isn't just about making it look better. It's about understanding how people use it and making sure the experience works for both customers and the business.\n\nOne of my biggest takeaways was learning to think beyond the interface itself. Whether someone is choosing a restaurant location or submitting a contact form, a successful interaction should be clear, reliable, and easy to complete.",
+    nextStepsHeading: "What's next",
     nextSteps:
-      "Add location-level order analytics to validate the two-step flow, extend the sticky-nav pattern anywhere else the site grows a long page, and keep the food truck page current as its schedule becomes more dynamic.",
+      "Now that the redesigned website is live, I want to understand how customers are using it. My next steps are gathering feedback from the restaurant owner, evaluating the location-selection experience on mobile and desktop, and identifying opportunities to improve the site based on actual usage.",
     proudestOf:
-      "Solving the two-location ordering risk with two different, breakpoint-appropriate solutions to the same underlying problem, instead of forcing one pattern to work everywhere.",
+      "Turning an existing restaurant website into a more cohesive, responsive experience while working around real business and ordering-platform constraints.",
     placeholder: false,
   },
 
-  whatIsComplete: [
-    { label: "UX audit of the live site", done: true },
-    { label: "Visual identity", done: true },
-    { label: "Home", done: true },
-    { label: "Menu + sticky nav", done: true },
-    { label: "Locations ordering flow", done: true },
-    { label: "About", done: true },
-    { label: "Food Truck", done: true },
-    { label: "Contact (real email delivery)", done: true },
-    { label: "Mobile responsiveness, site-wide", done: true },
-  ],
+  whatIsComplete: [],
 };

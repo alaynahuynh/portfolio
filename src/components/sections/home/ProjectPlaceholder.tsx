@@ -353,10 +353,10 @@ export function VNHSpread({ project, index }: { project: Project; index: number 
  * repeated template.
  */
 export function ProjectPlaceholder({ project, index }: { project: Project; index: number }) {
-  if (project.slug === "case-study-01") {
+  if (project.slug === "mymuseum") {
     return <MyMuseumSpread project={project} index={index} />;
   }
-  if (project.slug === "case-study-02") {
+  if (project.slug === "coursepilot") {
     return <CoursePilotSpread project={project} index={index} />;
   }
   // The last project — its own hold-then-rise closing beat (see

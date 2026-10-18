@@ -5,6 +5,7 @@ import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
@@ -33,7 +34,12 @@ const alaynaHandwriting = localFont({
 });
 
 export const metadata: Metadata = {
-  title: siteConfig.title,
+  // Unset until the site has a real domain — see siteConfig.url.
+  metadataBase: siteConfig.url ? new URL(siteConfig.url) : undefined,
+  title: {
+    default: siteConfig.title,
+    template: `%s — ${siteConfig.name}`,
+  },
   description: siteConfig.description,
 };
 
@@ -61,6 +67,7 @@ export default function RootLayout({
           </main>
           <Footer />
           <CustomCursor />
+          <SmoothScroll />
         </MotionConfig>
       </body>
     </html>

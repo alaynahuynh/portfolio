@@ -44,7 +44,7 @@ export function TwoDSpread() {
           2D Works
         </Heading>
         <p className="font-alayna-handwriting mt-4 max-w-md text-3xl text-muted-foreground">
-          Painting, drawing, illustration, and visual exploration.
+          Paintings, drawings, and illustrations.
         </p>
         <Link
           href="/creative-practice/2d"

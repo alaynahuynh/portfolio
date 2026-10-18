@@ -7,6 +7,7 @@ import type { CaseStudyData, CaseStudyImageSpec } from "@/types/case-study";
 import {
   CaseStudyContentImage,
   CaseStudyFullImage,
+  CaseStudyZoomImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -16,35 +17,48 @@ import {
 /**
  * Vietnamese Noodle House's own editorial case study — a bespoke layout
  * (not the generic CaseStudyPage template), same pattern as
- * CoursePilotCaseStudy.tsx. This project's real shape is Problem →
- * Process → Solution → Outcome, built around a live UX audit and a
- * completed rebuild, not a from-scratch product's research/define/
- * ideation stages — so it doesn't reuse the generic template.
+ * CoursePilotCaseStudy.tsx. This project's real shape is audit → rebuild
+ * → one interaction-design centerpiece, not a from-scratch product's
+ * research/define/ideation stages — so it doesn't reuse the generic
+ * template.
  *
- * Every screenshot path/dimension below is hardcoded directly (the same
- * convention CoursePilotCaseStudy uses for its hero video and reflection
- * image) rather than routed through the shared CaseStudyData image
- * fields, since the real per-section pairings here (a hero pair, a
- * before pair, a locations quad, etc.) don't match that shape either.
- * The narrative copy still comes from vietnamese-noodle-house.ts.
+ * Screenshots are hardcoded here rather than routed through the shared
+ * CaseStudyData image fields, since the real per-section pairings (a hero
+ * pair, a before pair, a locations quad, etc.) don't match that shape.
+ * Narrative copy still comes from vietnamese-noodle-house.ts.
+ *
+ * Desktop/mobile pairs are only used where both screenshots are similarly
+ * tall; a short desktop strip next to a very tall phone capture leaves a
+ * large empty gap, so those sections show the desktop view alone.
  */
 
 const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "overview", label: "Overview" },
   { id: "problem", label: "Problem" },
-  { id: "process", label: "Process" },
-  { id: "home", label: "Home" },
+  { id: "process", label: "Audit" },
+  { id: "locations", label: "Ordering flow" },
   { id: "menu", label: "Menu" },
-  { id: "locations", label: "Locations" },
-  { id: "about", label: "About" },
-  { id: "food-truck", label: "Food Truck" },
-  { id: "supporting", label: "Supporting pages" },
+  { id: "home", label: "Homepage" },
+  { id: "supporting", label: "Other pages" },
   { id: "reflection", label: "Reflection" },
 ];
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-sm font-medium tracking-wide text-(--project-accent) uppercase">
+    <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50 text-(--project-accent)">
+      {children}
+    </p>
+  );
+}
+
+function Label({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
+  return (
+    <p
+      className={cn(
+        "text-xs font-semibold tracking-[0.14em] uppercase",
+        accent ? "text-(--project-accent)" : "text-muted-foreground",
+      )}
+    >
       {children}
     </p>
   );
@@ -75,15 +89,40 @@ const HERO_MOBILE = img(
 
 const BEFORE_DESKTOP = img(
   "before/old-site-desktop.png",
-  "The old Vietnamese Noodle House website on desktop: a plain gray box standing in for a hero, and dated ordering buttons.",
+  "The old Vietnamese Noodle House website on desktop: a plain gray box standing in for a hero, then two ordering buttons labeled Camillus and N Syracuse, identical except for border color.",
   1440,
   1200,
 );
 const BEFORE_MOBILE = img(
   "before/old-site-mobile.png",
-  "The old website on mobile: an overflowing header, a broken gray placeholder where the hero image should be, and unstyled ordering buttons.",
+  "The old website on mobile: a broken logo image, a gray placeholder where the hero image should be, and the two ordering buttons stacked with no address or hours.",
   1226,
   2340,
+);
+
+const OLD_ORDERING_DESKTOP = img(
+  "before/old-ordering-desktop.png",
+  "The old homepage's ordering section on desktop: a gray placeholder hero, then Camillus Online Ordering and N Syracuse Online Ordering buttons, identical dark pills except for a green or orange border, each marked Pick-up Only.",
+  2940,
+  1590,
+);
+const OLD_ORDERING_MOBILE = img(
+  "before/old-ordering-mobile.png",
+  "The same ordering buttons on the old mobile site, stacked, with no address, hours, or map for either location.",
+  964,
+  1412,
+);
+const OLD_MENU_DESKTOP = img(
+  "before/old-menu-pdf-desktop.png",
+  "The old site's menu on desktop: View Menu opened Menu_online_fallwinter-23-24.pdf, an 11-page PDF, in the browser's PDF viewer.",
+  2940,
+  1460,
+);
+const OLD_MENU_MOBILE = img(
+  "before/old-menu-pdf-mobile.png",
+  "The same PDF menu on a phone: page 3 of 11, with item descriptions running off the right edge of the screen.",
+  968,
+  1348,
 );
 
 const HOME_DESKTOP_FAVORITES = img(
@@ -92,40 +131,16 @@ const HOME_DESKTOP_FAVORITES = img(
   1440,
   460,
 );
-const HOME_MOBILE_FAVORITES = img(
-  "home/mobile-favorites.png",
-  "The 'Customer Favorites' section on mobile.",
-  780,
-  1980,
-);
 const HOME_DESKTOP_GALLERY = img(
   "home/desktop-gallery.png",
   "The 'A Look Inside Our Restaurants' photo gallery on desktop.",
   1440,
   1120,
 );
-const HOME_MOBILE_GALLERY = img(
-  "home/mobile-gallery.png",
-  "The 'A Look Inside Our Restaurants' photo gallery on mobile.",
-  780,
-  900,
-);
-const HOME_DESKTOP_LOCATIONS_BAND = img(
-  "home/desktop-locations-band.png",
-  "The 'Two Locations' teal band on the homepage, on desktop.",
-  1440,
-  640,
-);
-const HOME_MOBILE_LOCATIONS_BAND = img(
-  "home/mobile-locations-band.png",
-  "The 'Two Locations' teal band on the homepage, on mobile.",
-  780,
-  1710,
-);
 
 const MENU_DESKTOP_TOP = img(
   "menu/desktop-top.png",
-  "The top of the redesigned menu page on desktop: the Appetizers category with a real photo for Fried Eggrolls.",
+  "The top of the redesigned menu page on desktop: dietary legend, the category nav, and the Appetizers category with a real photo for Fried Eggrolls.",
   1440,
   950,
 );
@@ -142,28 +157,15 @@ const MENU_MOBILE_STICKY = img(
   1688,
 );
 
-const ABOUT_DESKTOP = img(
-  "about/desktop.png",
-  "The redesigned About page on desktop, with photography filling the space that used to be an empty gap beside the text.",
-  1440,
-  1159,
-);
-const ABOUT_MOBILE = img(
-  "about/mobile.png",
-  "The redesigned About page on mobile.",
-  780,
-  3160,
-);
-
 const LOCATIONS_DESKTOP_CARDS = img(
   "locations/desktop-cards.png",
-  "Step 1 on desktop: two location cards, North Syracuse and Camillus, side by side.",
+  "Step 1 on desktop: two location cards, North Syracuse and Camillus, side by side, each with its address, a map, hours, and an order button.",
   1440,
   1061,
 );
 const LOCATIONS_DESKTOP_CONFIRM = img(
   "locations/desktop-confirmation.png",
-  "Step 2 on desktop: a confirmation panel for the selected location shown inline below the card grid, before continuing to that location's online ordering.",
+  "Step 2 on desktop: the selected Camillus card is highlighted and a 'You're ordering from Camillus' panel with its address appears below the grid, with Continue to online ordering and Choose a different location.",
   1440,
   1313,
 );
@@ -175,61 +177,35 @@ const LOCATIONS_MOBILE_CARDS = img(
 );
 const LOCATIONS_MOBILE_SHEET = img(
   "locations/mobile-bottom-sheet.png",
-  "Step 2 on mobile: a bottom sheet covering the list with the confirmation for the selected location, instead of a second card stacked underneath.",
+  "Step 2 on mobile: a bottom sheet over the list reading 'You're ordering from Camillus' with the address, Continue to order, and Change location.",
   780,
   1688,
 );
 
+const ABOUT_DESKTOP = img(
+  "about/desktop.png",
+  "The redesigned About page on desktop, with a restaurant photo filling the space that used to be an empty gap beside the text.",
+  1440,
+  1159,
+);
 const FOOD_TRUCK_DESKTOP_TOP = img(
   "food-truck/desktop-top.png",
-  "The top of the new Food Truck page on desktop: a teal hero and the 'Where We'll Be' schedule.",
+  "The new Food Truck page on desktop: a teal hero and the 'Where We'll Be' schedule of upcoming stops.",
   1440,
   1500,
 );
-const FOOD_TRUCK_MOBILE_TOP = img(
-  "food-truck/mobile-top.png",
-  "The top of the new Food Truck page on mobile.",
-  780,
-  3120,
-);
-const FOOD_TRUCK_DESKTOP_GALLERY = img(
-  "food-truck/desktop-gallery.png",
-  "The 'Truck In Action' photo gallery on the Food Truck page, on desktop.",
-  1440,
-  540,
-);
-const FOOD_TRUCK_MOBILE_GALLERY = img(
-  "food-truck/mobile-gallery.png",
-  "The 'Truck In Action' photo gallery on the Food Truck page, on mobile.",
-  780,
-  1200,
-);
-
 const CONTACT_DESKTOP = img(
   "contact/desktop.png",
-  "The redesigned Contact page on desktop.",
+  "The Contact page on desktop: both locations' hours and phone numbers beside a Send a Message form.",
   1440,
   1651,
-);
-const CONTACT_MOBILE = img(
-  "contact/mobile.png",
-  "The redesigned Contact page on mobile, showing the location info and the message form.",
-  780,
-  3240,
-);
-const MOBILE_NAV_OPEN = img(
-  "nav/mobile-nav-open.png",
-  "The mobile navigation menu open, showing the site's full page list on small screens.",
-  780,
-  1688,
 );
 
 // --------------------------------------------------------------- HELPERS
 
-/** Two images side by side, sized by their real aspect ratios instead of
- * an even split — used for the hero (wide desktop + tall mobile) and
- * every other desktop/mobile pairing on this page so a portrait phone
- * screenshot never gets stretched into a landscape column. */
+/** Wide desktop + tall mobile side by side, sized by their real aspect
+ * ratios so a portrait phone screenshot never gets stretched. Only used
+ * where the two captures are similarly tall (see the file comment). */
 function DesktopMobilePair({
   desktop,
   mobile,
@@ -244,42 +220,78 @@ function DesktopMobilePair({
   return (
     <div className="grid items-start gap-8 sm:grid-cols-3">
       <div className="sm:col-span-2">
-        <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">{desktopLabel}</p>
-        <CaseStudyContentImage image={desktop} className="mx-auto max-w-none" />
+        <Label>{desktopLabel}</Label>
+        <CaseStudyContentImage image={desktop} className="mt-3 max-w-none" />
       </div>
       <div className="sm:col-span-1">
-        <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">{mobileLabel}</p>
-        <CaseStudyContentImage image={mobile} className="mx-auto max-w-xs" />
+        <Label>{mobileLabel}</Label>
+        <CaseStudyContentImage image={mobile} className="mt-3 max-w-xs" />
       </div>
     </div>
   );
 }
 
-function ProblemColumn({ index, title, children }: { index: number; title: string; children: React.ReactNode }) {
+/** An old-site "before" row: desktop and mobile captures sized by their
+ * aspect ratios so both render at the same height, with a short caption. */
+function BeforePair({
+  desktop,
+  mobile,
+  caption,
+}: {
+  desktop: CaseStudyImageSpec;
+  mobile: CaseStudyImageSpec;
+  caption: React.ReactNode;
+}) {
   return (
-    <div className="border-l border-border pl-6">
-      <p className="text-sm font-medium text-muted-foreground">0{index}</p>
-      <h3 className="mt-3 text-lg font-semibold text-foreground">{title}</h3>
-      <p className="mt-2 text-muted-foreground">{children}</p>
+    <div>
+      <Label>Before — old site</Label>
+      <div
+        className="mt-3 grid items-start gap-4 sm:gap-6"
+        style={{
+          gridTemplateColumns: `minmax(0, ${desktop.width / desktop.height}fr) minmax(0, ${mobile.width / mobile.height}fr)`,
+        }}
+      >
+        <CaseStudyZoomImage image={desktop} />
+        <CaseStudyZoomImage image={mobile} />
+      </div>
+      <p className="mt-4 max-w-2xl text-sm text-muted-foreground">{caption}</p>
     </div>
   );
 }
 
+const SUPPORTING_PAGES = [
+  {
+    title: "About — filling an empty page",
+    copy: "The old About page was text-only, with a large empty gap on desktop. Real photography of the restaurant makes it read as considered rather than unfinished.",
+    image: ABOUT_DESKTOP,
+  },
+  {
+    title: "Food Truck — a page that didn't exist",
+    copy: "The truck travels around Syracuse but had no page on the old site. I built one from scratch in the same identity, centered on where it'll be next.",
+    image: FOOD_TRUCK_DESKTOP_TOP,
+  },
+  {
+    title: "Contact — a form that actually sends",
+    copy: "It looks much like the old one, but the old form showed “Message sent!” without delivering anything. It now sends through Resend and fails visibly if it's ever misconfigured.",
+    image: CONTACT_DESKTOP,
+  },
+];
+
 export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
-  const { hero, overview, background, research, ideation, testing, finalThoughts, whatIsComplete } = data;
+  const { hero, overview, background, research, ideation, finalThoughts } = data;
   const keyFindings = research.keyFindings ?? [];
   const orderingFlow = ideation.flows[0];
 
   return (
-    <div className="bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
+    <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/projects" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
           ← Back to Work
         </Link>
 
         <Reveal>
-          <p className="mt-10 text-sm font-medium tracking-wide text-muted-foreground uppercase">{hero.category}</p>
+          <p className="mt-10 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">{hero.category}</p>
           <Heading level={1} className="mt-2 text-5xl sm:text-7xl">
             {hero.title}
           </Heading>
@@ -305,23 +317,23 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             href={hero.ctaHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) border border-dashed border-border px-5 py-2.5 text-sm font-medium text-muted-foreground"
+            className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-accent) px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
           >
             {hero.ctaLabel} →
           </a>
         </Reveal>
 
-        <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
+        <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-border pt-6">
           <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Year</dt>
+            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Year</dt>
             <dd className="mt-1 text-foreground">{overview.year}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Duration</dt>
+            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Duration</dt>
             <dd className="mt-1 text-foreground">{overview.duration}</dd>
           </div>
           <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Role</dt>
+            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Role</dt>
             <dd className="mt-1 text-foreground">{overview.role}</dd>
           </div>
         </dl>
@@ -329,12 +341,6 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal delay={200}>
           <div className="mt-14">
             <DesktopMobilePair desktop={HERO_DESKTOP} mobile={HERO_MOBILE} />
-            <p className="mx-auto mt-6 max-w-2xl text-sm text-muted-foreground">
-              Ordering online is the business priority, so Order Online is the primary filled action on both
-              breakpoints. On mobile specifically, I fixed a contrast issue where the heading sat directly on the
-              brightest part of the photo with no scrim behind it, and repositioned a decorative callout tag that was
-              crowding the headline.
-            </p>
           </div>
         </Reveal>
       </Section>
@@ -345,31 +351,47 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       <Section id="overview" className="scroll-mt-28">
         <Reveal>
           <Eyebrow>Overview</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
             {overview.featuresIntro}
           </Heading>
         </Reveal>
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {overview.features.map((feature, i) => (
-            <Reveal
-              key={feature.name}
-              delay={i * 60}
-              className="rounded-(--radius-default) border border-border bg-surface p-6"
-            >
-              <Heading level={3} size={4}>
-                {feature.name}
-              </Heading>
-              <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={60}>
+          <dl className="mt-12 grid gap-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <dt><Label>Client</Label></dt>
+              <dd className="mt-2 text-sm text-muted-foreground">
+                A family-owned restaurant with two locations — North Syracuse and Camillus — and a food truck.
+              </dd>
+            </div>
+            <div>
+              <dt><Label>My role</Label></dt>
+              <dd className="mt-2 text-sm text-muted-foreground">
+                Solo — I audited the old site, then designed and built the new one across every page, desktop and
+                mobile.
+              </dd>
+            </div>
+            <div>
+              <dt><Label>Constraint</Label></dt>
+              <dd className="mt-2 text-sm text-muted-foreground">
+                Online ordering stays on the restaurant&rsquo;s existing ordering platforms (MenuDrive/Lavu), with a
+                separate link per location — the site has to route people to the right one.
+              </dd>
+            </div>
+            <div>
+              <dt><Label accent>Status</Label></dt>
+              <dd className="mt-2 text-sm text-muted-foreground">
+                Live at vietnoodlehouse.com. Real-world impact hasn&rsquo;t been measured yet.
+              </dd>
+            </div>
+          </dl>
+        </Reveal>
       </Section>
 
       {/* -------------------------------------------------------- PROBLEM */}
-      <Section id="problem" className="scroll-mt-28 bg-muted/40">
+      <Section id="problem" className="scroll-mt-28 cs-band">
         <Reveal>
           <Eyebrow>The problem</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
             {background.heading}
           </Heading>
         </Reveal>
@@ -377,26 +399,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{background.narrative}</p>
         </Reveal>
 
-        <div className="mt-16 grid gap-10 sm:grid-cols-3">
-          <Reveal delay={80}>
-            <ProblemColumn index={1} title="Not mobile-responsive">
-              The layout broke, text was unstyled, and the hero image was broken or showing a placeholder.
-            </ProblemColumn>
-          </Reveal>
-          <Reveal delay={120}>
-            <ProblemColumn index={2} title="Generic, dated identity">
-              A templated look on desktop that said nothing about the food or the family behind it.
-            </ProblemColumn>
-          </Reveal>
-          <Reveal delay={160}>
-            <ProblemColumn index={3} title="Hosted on HostGator">
-              Legacy hosting with no real path to the responsive, photography-forward site the brand needed.
-            </ProblemColumn>
-          </Reveal>
-        </div>
-
-        <Reveal delay={200}>
-          <div className="mt-16">
+        <Reveal delay={80}>
+          <div className="mt-14">
             <DesktopMobilePair
               desktop={BEFORE_DESKTOP}
               mobile={BEFORE_MOBILE}
@@ -404,9 +408,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               mobileLabel="Old site — Mobile"
             />
             <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
-              The desktop version was merely generic. The mobile version — the version most customers actually
-              encounter first — was broken and effectively unusable. That gap was the strongest evidence for why this
-              needed a redesign.
+              Desktop was generic; mobile — where most customers land first — was broken. On both, the main actions
+              were two ordering buttons that differ only by town name and border color.
             </p>
           </div>
         </Reveal>
@@ -415,8 +418,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* -------------------------------------------------------- PROCESS */}
       <Section id="process" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Process</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
+          <Eyebrow>Audit</Eyebrow>
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
             {research.heading}
           </Heading>
         </Reveal>
@@ -428,13 +431,16 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <div className="mt-14">
           {keyFindings.map((finding, i) => (
             <Reveal key={finding.title} delay={i * 30}>
-              <div className="grid gap-3 border-t border-border py-8 first:border-t-0 first:pt-0 sm:grid-cols-[4.5rem_1fr] sm:gap-8">
+              <div className="grid gap-4 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
                 <p className="text-sm font-medium text-(--project-accent)">0{i + 1}</p>
                 <div>
                   <h3 className="text-xl font-semibold text-foreground sm:text-2xl">{finding.title}</h3>
-                  <p className="mt-3 max-w-xl text-muted-foreground">{finding.whatParticipantsSaid}</p>
-                  <p className="mt-2 max-w-xl text-sm text-muted-foreground italic">{finding.whyItMatters}</p>
-                  <p className="mt-2 max-w-xl text-sm font-medium text-foreground">→ {finding.designResponse}</p>
+                  <p className="mt-3 text-muted-foreground">{finding.whatParticipantsSaid}</p>
+                  <p className="mt-2 text-sm text-muted-foreground italic">{finding.whyItMatters}</p>
+                </div>
+                <div className="lg:pt-1">
+                  <Label accent>What I changed</Label>
+                  <p className="mt-2 text-foreground">{finding.designResponse}</p>
                 </div>
               </div>
             </Reveal>
@@ -461,196 +467,179 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         )}
       </Section>
 
-      {/* ----------------------------------------------------------- HOME */}
-      <Section id="home" className="scroll-mt-28 bg-muted/40">
-        <Reveal>
-          <Eyebrow>Solution</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
-            The homepage, rebuilt around photography
-          </Heading>
-        </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            {data.designPrinciples[0]} The hero already shown above carries into every section below it — real
-            photography of the food, the space, and the two locations, on both breakpoints.
-          </p>
-        </Reveal>
-        <div className="mt-14 space-y-16">
-          <Reveal>
-            <p className="mb-4 text-sm font-medium text-foreground">Customer Favorites</p>
-            <DesktopMobilePair desktop={HOME_DESKTOP_FAVORITES} mobile={HOME_MOBILE_FAVORITES} />
-          </Reveal>
-          <Reveal delay={40}>
-            <p className="mb-4 text-sm font-medium text-foreground">A Look Inside Our Restaurants</p>
-            <DesktopMobilePair desktop={HOME_DESKTOP_GALLERY} mobile={HOME_MOBILE_GALLERY} />
-          </Reveal>
-          <Reveal delay={80}>
-            <p className="mb-4 text-sm font-medium text-foreground">Two Locations</p>
-            <DesktopMobilePair desktop={HOME_DESKTOP_LOCATIONS_BAND} mobile={HOME_MOBILE_LOCATIONS_BAND} />
-          </Reveal>
-        </div>
-      </Section>
-
-      {/* ----------------------------------------------------------- MENU */}
-      <Section id="menu" className="scroll-mt-28">
-        <Reveal>
-          <Eyebrow>Solving long-menu navigation</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
-            Seven categories, ~50 items, one page — with a nav that keeps up
-          </Heading>
-        </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            The menu is long by nature — I didn&rsquo;t want to paginate it or hide items behind extra clicks. Instead
-            I added a sticky category nav with scroll-spy auto-highlighting, so the current section is always visible
-            no matter how far down the page a customer has scrolled.
-          </p>
-        </Reveal>
-
-        <div className="mt-14">
-          <Reveal>
-            <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Desktop — top of the menu</p>
-            <CaseStudyFullImage image={MENU_DESKTOP_TOP} className="mx-auto max-w-3xl" />
-          </Reveal>
-        </div>
-
-        <div className="mt-14 grid gap-8 sm:grid-cols-2">
-          <Reveal delay={40}>
-            <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Mobile — top of page</p>
-            <CaseStudyContentImage image={MENU_MOBILE_TOP} className="mx-auto max-w-xs" />
-          </Reveal>
-          <Reveal delay={80}>
-            <p className="mb-3 text-xs font-medium tracking-wide text-(--project-accent) uppercase">
-              Mobile — sticky nav mid-scroll
-            </p>
-            <CaseStudyContentImage image={MENU_MOBILE_STICKY} className="mx-auto max-w-xs" />
-            <p className="mt-3 max-w-xs text-xs text-muted-foreground">
-              This is a designed behavior, not just a static screen: as the page scrolls, the nav pins to the top and
-              the active category updates on its own.
-            </p>
-          </Reveal>
-        </div>
-      </Section>
-
       {/* ------------------------------------------------------ LOCATIONS */}
-      <Section id="locations" className="scroll-mt-28 bg-muted/40">
+      <Section id="locations" className="scroll-mt-28 cs-band">
         <Reveal>
           <Eyebrow>Centerpiece — interaction design</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-4xl sm:text-6xl">
-            Designing the two-step confirmation flow
+          <Heading level={2} className="mt-4 max-w-3xl text-4xl sm:text-6xl">
+            Making sure every order reaches the right kitchen
           </Heading>
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            With two physical locations and two different online-ordering links, picking the wrong one has a real
-            cost — an order placed at the wrong place, not just a wrong click. I designed an explicit{" "}
-            <span className="font-medium text-foreground">select, then confirm</span> flow so a customer always sees
-            which location they&rsquo;re about to order from before committing.
+            Each location has its own ordering link, and the old site asked customers to choose between two
+            town names with nothing else to go on. The owners told me customers were already ordering from the
+            wrong location. I designed a{" "}
+            <span className="font-medium text-foreground">select, then confirm</span> flow: each location card shows
+            the address, a map, and hours, and choosing one repeats the address back before handing off to ordering.
           </p>
         </Reveal>
 
-        {orderingFlow && (
-          <Reveal delay={60}>
-            <p className="mt-4 max-w-[45rem] text-sm text-muted-foreground italic">{orderingFlow.takeaway}</p>
-          </Reveal>
-        )}
+        <Reveal delay={60}>
+          <div className="mt-14">
+            <BeforePair
+              desktop={OLD_ORDERING_DESKTOP}
+              mobile={OLD_ORDERING_MOBILE}
+              caption="Two dark pills that differ only by town name and border color — no address, hours, or map to tell a customer which restaurant is theirs. Each opens a different location's ordering page."
+            />
+          </div>
+        </Reveal>
 
-        <div className="mt-16 space-y-4">
+        <div className="mt-16 border-t border-border pt-14">
           <Reveal delay={80}>
-            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Desktop</p>
+            <Label accent>After — Desktop</Label>
           </Reveal>
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
             <Reveal delay={100}>
               <p className="mb-3 text-sm font-medium text-foreground">Step 1 — Select a location</p>
-              <CaseStudyContentImage image={LOCATIONS_DESKTOP_CARDS} className="max-w-none" />
+              <CaseStudyZoomImage image={LOCATIONS_DESKTOP_CARDS} />
             </Reveal>
             <Reveal delay={140}>
               <p className="mb-3 text-sm font-medium text-(--project-accent)">Step 2 — Confirm</p>
-              <CaseStudyContentImage image={LOCATIONS_DESKTOP_CONFIRM} className="max-w-none" />
+              <CaseStudyZoomImage image={LOCATIONS_DESKTOP_CONFIRM} />
             </Reveal>
           </div>
           <Reveal delay={160}>
-            <p className="max-w-2xl text-sm text-muted-foreground">
+            <p className="mt-4 max-w-2xl text-sm text-muted-foreground">
               Desktop has room to show the confirmation inline, right below the card grid — a natural next step in the
               same view.
             </p>
           </Reveal>
         </div>
 
-        <div className="mt-16 space-y-4 border-t border-border pt-14">
+        <div className="mt-16 border-t border-border pt-14">
           <Reveal delay={80}>
-            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Mobile</p>
+            <Label accent>After — Mobile</Label>
           </Reveal>
-          <div className="grid gap-8 sm:grid-cols-2">
+          <div className="mt-4 grid items-start gap-8 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.3fr)] sm:gap-10">
             <Reveal delay={100}>
               <p className="mb-3 text-sm font-medium text-foreground">Step 1 — Select a location</p>
-              <CaseStudyContentImage image={LOCATIONS_MOBILE_CARDS} className="mx-auto max-w-xs" />
+              <CaseStudyContentImage image={LOCATIONS_MOBILE_CARDS} className="max-w-xs" />
             </Reveal>
             <Reveal delay={140}>
               <p className="mb-3 text-sm font-medium text-(--project-accent)">Step 2 — Confirm</p>
-              <CaseStudyContentImage image={LOCATIONS_MOBILE_SHEET} className="mx-auto max-w-xs" />
+              <CaseStudyContentImage image={LOCATIONS_MOBILE_SHEET} className="max-w-xs" />
+            </Reveal>
+            <Reveal delay={160}>
+              <p className="text-muted-foreground sm:pt-9">
+                On mobile, a second full card stacked underneath read as duplicated information rather than a next
+                step. So I redesigned this step as a bottom sheet that covers the list instead of extending it — the
+                same information, but a sequence that&rsquo;s actually clear on a small screen.
+              </p>
+              {orderingFlow?.takeaway && (
+                <p className="mt-4 text-sm text-muted-foreground italic">{orderingFlow.takeaway}</p>
+              )}
             </Reveal>
           </div>
-          <Reveal delay={160}>
-            <p className="mx-auto max-w-2xl text-sm text-muted-foreground">
-              On mobile, a second full card stacked underneath read as duplicated information rather than a next
-              step. So I redesigned this step as a bottom sheet that covers the list instead of extending it — the
-              same information, but a sequence that&rsquo;s actually clear on a small screen.
-            </p>
-          </Reveal>
         </div>
 
         <Reveal delay={180}>
-          <p className="mx-auto mt-16 max-w-2xl text-center text-lg font-medium text-foreground">
-            Same problem, same two steps — two breakpoint-appropriate solutions instead of one pattern forced to work
-            everywhere.
-          </p>
+          <div className="mt-16 grid gap-8 border-t border-border pt-12 sm:grid-cols-2 sm:gap-12">
+            <div>
+              <Label>The tradeoff</Label>
+              <p className="mt-3 text-muted-foreground">
+                Ordering online is the business&rsquo;s top priority, and this flow adds one confirmation tap in front
+                of it. I accepted that because wrong-location orders were already happening, and each one costs the
+                customer and the restaurant far more than a tap — the extra step is a single button that already
+                names the location they picked.
+              </p>
+            </div>
+            <div>
+              <Label accent>How I&rsquo;d know it worked</Label>
+              <p className="mt-3 text-muted-foreground">
+                I haven&rsquo;t measured it yet. The owners&rsquo; reports are the baseline: the next step is
+                location-level analytics on the hand-off, plus checking with them whether wrong-location orders have
+                dropped.
+              </p>
+            </div>
+          </div>
         </Reveal>
       </Section>
 
-      {/* ------------------------------------------------------------ ABOUT */}
-      <Section id="about" className="scroll-mt-28">
+      {/* ----------------------------------------------------------- MENU */}
+      <Section id="menu" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Filling content gaps</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
-            An About page that was more empty space than story
+          <Eyebrow>From PDF to a real menu</Eyebrow>
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+            The menu wasn&rsquo;t part of the website — it was a PDF
           </Heading>
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            The old About page was text-only, with a large empty gap on desktop where nothing else lived. I added
-            real photography so the page reads as considered rather than unfinished.
+            On the old site, View Menu simply opened an 11-page PDF in the browser&rsquo;s PDF viewer. It didn&rsquo;t
+            share the site&rsquo;s design, didn&rsquo;t adapt to a phone, and the only way to find a dish was to page
+            through the document.
           </p>
         </Reveal>
-        <div className="mt-14">
+
+        <Reveal delay={60}>
+          <div className="mt-14">
+            <BeforePair
+              desktop={OLD_MENU_DESKTOP}
+              mobile={OLD_MENU_MOBILE}
+              caption="On a phone, the PDF's item descriptions run off the right edge of the screen."
+            />
+          </div>
+        </Reveal>
+
+        <Reveal delay={80}>
+          <p className="mt-16 max-w-[45rem] border-t border-border pt-14 text-lg text-muted-foreground">
+            I rebuilt it as a real page: seven categories and ~50 items, with photos and dietary tags. Rather than
+            paginate it, I added a sticky category nav with scroll-spy auto-highlighting, so the current section is
+            always visible no matter how far down a customer has scrolled.
+          </p>
+        </Reveal>
+
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-6">
           <Reveal>
-            <DesktopMobilePair desktop={ABOUT_DESKTOP} mobile={ABOUT_MOBILE} />
+            <Label accent>After — Desktop</Label>
+            <CaseStudyZoomImage image={MENU_DESKTOP_TOP} className="mt-3" />
+          </Reveal>
+          <Reveal delay={40}>
+            <Label accent>After — Mobile, top of page</Label>
+            <CaseStudyContentImage image={MENU_MOBILE_TOP} className="mt-3 max-w-xs" />
+          </Reveal>
+          <Reveal delay={80}>
+            <Label accent>After — Mobile, sticky nav mid-scroll</Label>
+            <CaseStudyContentImage image={MENU_MOBILE_STICKY} className="mt-3 max-w-xs" />
+            <p className="mt-3 text-xs text-muted-foreground">
+              As the page scrolls, the nav pins to the top and the active category updates on its own.
+            </p>
           </Reveal>
         </div>
       </Section>
 
-      {/* ------------------------------------------------------- FOOD TRUCK */}
-      <Section id="food-truck" className="scroll-mt-28 bg-muted/40">
+      {/* ----------------------------------------------------------- HOME */}
+      <Section id="home" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Expanding scope</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
-            Giving the food truck a web presence it never had
+          <Eyebrow>Visual identity</Eyebrow>
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+            A homepage that looks like the restaurant
           </Heading>
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            The food truck travels around the Syracuse area but had no page on the old site at all. As part of the
-            redesign I built one from scratch, matching the same visual identity as the rest of the site instead of
-            treating it as an afterthought.
+            {data.designPrinciples[0]} Order Online is the primary filled action on every breakpoint; on mobile I
+            added a scrim behind the hero heading, which used to sit on the brightest part of the photo, and moved a
+            callout tag that was crowding it.
           </p>
         </Reveal>
-        <div className="mt-14 space-y-16">
+        <div className="mt-14 space-y-6">
           <Reveal>
-            <DesktopMobilePair desktop={FOOD_TRUCK_DESKTOP_TOP} mobile={FOOD_TRUCK_MOBILE_TOP} />
+            <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />
           </Reveal>
           <Reveal delay={40}>
-            <p className="mb-4 text-sm font-medium text-foreground">Truck In Action</p>
-            <DesktopMobilePair desktop={FOOD_TRUCK_DESKTOP_GALLERY} mobile={FOOD_TRUCK_MOBILE_GALLERY} />
+            <CaseStudyFullImage image={HOME_DESKTOP_GALLERY} />
           </Reveal>
         </div>
       </Section>
@@ -658,97 +647,48 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ----------------------------------------------------- SUPPORTING */}
       <Section id="supporting" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Supporting pages</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-2xl text-3xl sm:text-5xl">
-            Reliability over appearance
+          <Eyebrow>Other pages</Eyebrow>
+          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+            Smaller fixes that made the site feel finished
           </Heading>
         </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            The contact form isn&rsquo;t visually different from the old one, but it used to show &ldquo;Message
-            sent!&rdquo; on every submission without ever actually delivering email anywhere. I rebuilt it to send
-            through Resend, and to fail honestly and visibly if it&rsquo;s ever misconfigured again, rather than
-            silently dropping messages.
-          </p>
-        </Reveal>
-        <div className="mt-14">
-          <Reveal>
-            <DesktopMobilePair desktop={CONTACT_DESKTOP} mobile={CONTACT_MOBILE} />
-          </Reveal>
+        <div className="mt-14 grid gap-12 lg:grid-cols-3 lg:gap-8">
+          {SUPPORTING_PAGES.map((page, i) => (
+            <Reveal key={page.title} delay={i * 40}>
+              <CaseStudyZoomImage image={page.image} />
+              <h3 className="mt-5 text-lg font-semibold text-foreground">{page.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{page.copy}</p>
+            </Reveal>
+          ))}
         </div>
-
-        <Reveal delay={80}>
-          <div className="mt-16 border-t border-border pt-12">
-            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Mobile-first details</p>
-            <div className="mt-6 grid max-w-xs gap-6">
-              <div>
-                <CaseStudyContentImage image={MOBILE_NAV_OPEN} className="max-w-xs" />
-                <p className="mt-2 text-xs text-muted-foreground">The mobile navigation menu, open.</p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
       </Section>
 
       {/* ------------------------------------------------------ REFLECTION */}
-      <Section id="reflection" className="scroll-mt-28 bg-muted/40">
+      <Section id="reflection" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Outcome</Eyebrow>
+          <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
             {finalThoughts.pullQuote}
           </Heading>
         </Reveal>
         <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{finalThoughts.whatILearned}</p>
+          <div className="mt-6 max-w-[45rem] space-y-4 text-lg text-muted-foreground">
+            {finalThoughts.whatILearned.split("\n\n").map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
         </Reveal>
 
         <div className="mt-14 grid gap-10 sm:grid-cols-2">
           <Reveal delay={80}>
-            <p className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">Most proud of</p>
+            <Label accent>What I&rsquo;m most proud of</Label>
             <p className="mt-3 text-muted-foreground">{finalThoughts.proudestOf}</p>
           </Reveal>
           <Reveal delay={100}>
-            <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">Next steps</p>
+            <Label>{finalThoughts.nextStepsHeading ?? "Next steps"}</Label>
             <p className="mt-3 text-muted-foreground">{finalThoughts.nextSteps}</p>
           </Reveal>
         </div>
-
-        {testing.validateNext && (
-          <Reveal delay={140}>
-            <div className="mt-16 border-t border-border pt-10">
-              <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-                {testing.heading}
-              </p>
-              <div className="mt-8 grid gap-8 sm:grid-cols-3">
-                {testing.validateNext.map((item) => (
-                  <div key={item.title}>
-                    <p className="font-medium text-foreground">{item.title}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{item.question}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        )}
-
-        <Reveal delay={180}>
-          <ul className="mt-16 flex flex-wrap gap-2 border-t border-border pt-10">
-            {whatIsComplete.map((item) => (
-              <li
-                key={item.label}
-                className={cn(
-                  "inline-flex items-center gap-1.5 rounded-(--radius-pill) border px-3 py-1 text-sm",
-                  item.done
-                    ? "border-transparent bg-mist-blue text-sage-deep"
-                    : "border-border bg-surface text-muted-foreground",
-                )}
-              >
-                <span aria-hidden="true">{item.done ? "✓" : "○"}</span>
-                {item.label}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
       </Section>
     </div>
   );

@@ -56,8 +56,8 @@ export function TwoDGallery() {
         <Heading level={1} className="mt-4 font-alayna-handwriting">
           2D Works
         </Heading>
-        <p className="font-alayna-handwriting mt-3 max-w-xl text-lg text-muted-foreground">
-          Painting, drawing, illustration, and visual exploration.
+        <p className="font-alayna-handwriting mt-3 max-w-xl text-2xl md:text-3xl text-muted-foreground">
+          Some of my paintings, drawings, and illustrations.
         </p>
 
         <div className="mx-auto mt-16 max-w-[1200px] space-y-4 sm:mt-20 sm:space-y-5">

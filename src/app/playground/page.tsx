@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { siteConfig } from "@/lib/site-config";
 import { PlaygroundBook } from "@/components/sections/home/PlaygroundBook";
 
 export const metadata: Metadata = {
-  title: `Playground — ${siteConfig.name}`,
+  title: "Playground",
 };
 
 /**

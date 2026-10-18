@@ -34,7 +34,7 @@ const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
  */
 export function FeaturedWork() {
   return (
-    <section id="work" className="scroll-mt-28 pb-20 sm:pb-28">
+    <section id="work" className="scroll-mt-28">
       <Reveal y={20} duration={500} className="overflow-hidden bg-background">
         {/* Title bar + active tab */}
         <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5">

@@ -7,6 +7,7 @@ import { HeroWorkLink } from "@/components/sections/home/HeroWorkLink";
 import { HeroHalftone } from "@/components/sections/home/HeroHalftone";
 import { HintArrow } from "@/components/ui/HintArrow";
 import { cn } from "@/lib/utils";
+import { siteConfig } from "@/lib/site-config";
 
 /** Shared link treatment: a gentle lift + soft drop shadow on hover/focus. */
 const OBJECT_LINK =
@@ -73,7 +74,7 @@ export function Hero() {
 
           <Link
             href="/about"
-            aria-label="About me: I turn complex problems into thoughtful, playful digital experiences"
+            aria-label={`About me: ${siteConfig.positioningStatement}`}
             className={cn(
               OBJECT_LINK,
               WINDOW_LINK,
@@ -101,6 +102,7 @@ export function Hero() {
               right of the monitor stand (sm+), led by a small arrow
               curving up toward the monitor.
               On mobile it sits centered below the stack. */}
+
           <p className="pointer-events-none mt-6 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-sage-deep select-none sm:text-[1.1875rem] sm:absolute sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start">
             <HintArrow className="h-[1.1em] w-auto shrink-0 -translate-y-[0.3em]" />
             Click around to explore

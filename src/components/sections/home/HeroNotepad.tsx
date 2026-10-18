@@ -17,7 +17,7 @@ export function HeroNotepad({ className }: { className?: string }) {
     >
       <div className={cn("m-[2px] bg-surface", RETRO_WELL)}>
         <p className="min-h-[7em] px-[7cqw] py-[1.4em] font-sans text-[clamp(0.9375rem,5.5cqw,1.5rem)] leading-snug text-foreground">
-          {siteConfig.heroNotepadText}
+          {siteConfig.positioningStatement}
         </p>
       </div>
     </HeroRetroWindow>

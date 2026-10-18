@@ -389,7 +389,6 @@ export interface CaseStudyData {
     /** Optional 30-second "at a glance" summary — rendered in place of
      * the features grid when set, so the problem, role, solution, and
      * outcome are readable before any scrolling. */
-    summary?: { problem: string; role: string; solution: string; outcome: string };
     /** Optional heading override for the features grid (defaults to "Key features"). */
     featuresHeading?: string;
     /** Optional intro copy shown under the heading, above the grid. */
@@ -401,6 +400,8 @@ export interface CaseStudyData {
     /** Optional heading override (defaults to "The problem"). */
     heading?: string;
     narrative: string;
+    /** Optional focused design challenge, set apart beneath the narrative. */
+    challenge?: string;
     stat?: CaseStudyStat;
     placeholder: boolean;
     /** Optional "the experience I wanted to create" principles, shown
@@ -652,9 +653,10 @@ export interface CaseStudyData {
      * that hasn't run usability testing yet but has concrete questions
      * it would test. Framed as open questions, never as findings. */
     validateNext?: CaseStudyValidationItem[];
-    /** Optional short closing line shown below `validateNext` — a single
-     * forward-looking sentence (e.g. pointing at implementation
-     * feasibility) rather than a second write-up. */
+    /** Optional short closing line shown at the end of the Testing
+     * section (below `validateNext` or the iterations) — a single
+     * sentence (e.g. a functional-verification result or a pointer at
+     * implementation feasibility) rather than a second write-up. */
     closingStatement?: string;
   };
 
@@ -708,6 +710,13 @@ export interface CaseStudyData {
   whatIsComplete: ProgressItem[];
 
   /**
+   * Optional at-a-glance scope breakdown (e.g. "Prototyped" / "Researched,
+   * not yet designed" / "Not yet done") so a reader can tell finished,
+   * prototyped, and future work apart without reading the whole page.
+   */
+  projectStatus?: { label: string; items: string[] }[];
+
+  /**
    * Optional override for the sticky section nav — a short, curated
    * list of {id, label} pairs (ids must match real section element ids
    * rendered by CaseStudyPage) used verbatim instead of the default
@@ -728,8 +737,6 @@ export interface CompetitorFinding {
   limitations: string[];
   /** How the finding shaped the product. */
   applied: string;
-  /** 1-based numbers of the keyDecisions this finding fed into. */
-  shaped?: number[];
 }
 
 /** One key product decision: tension → evidence → decision → tradeoff → outcome. */
@@ -745,7 +752,7 @@ export interface CaseStudyDecision {
   tradeoff: string;
   outcome: string;
   /** Plain status line, e.g. "Built · functionally tested · not yet tested with artists". */
-  status: string;
+  status?: string;
   /** Optional step chips shown as this decision's visual. */
   steps?: string[];
   images?: CaseStudyImageSpec[];

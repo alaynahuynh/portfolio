@@ -1,11 +1,12 @@
 import type { CaseStudyData } from "@/types/case-study";
 
 /**
- * Paste your Figma prototype's share link here once you have it — used
- * for every "Explore Prototype" CTA on this page (hero + final
- * experience). Left empty (falls back to "#") rather than a guessed URL.
+ * Paste your Figma prototype's share link here once you have it. While
+ * it's empty the "Explore Prototype" CTA doesn't render at all — never a
+ * dead "#" link or a guessed URL.
  */
-const FIGMA_PROTOTYPE_URL = "";
+const FIGMA_PROTOTYPE_URL =
+  "https://www.figma.com/proto/c5uDoRYFrhstqHvJTzUVbq/Untitled?node-id=226-14336&page-id=174%3A3539&starting-point-node-id=226%3A14336&t=RNFbRCqgp1YYD79c-1";
 
 /**
  * CoursePilot — the one project with a real source document (the
@@ -17,7 +18,7 @@ const FIGMA_PROTOTYPE_URL = "";
  * `testing.validateNext` is framed as open questions, never findings.
  */
 export const coursePilot: CaseStudyData = {
-  slug: "case-study-02",
+  slug: "coursepilot",
 
   // CoursePilot's case-study accent — brown (earth). The homepage
   // spread's full-bleed background is now olive (`--color-olive`,
@@ -35,7 +36,7 @@ export const coursePilot: CaseStudyData = {
       "I designed an AI assistant inside Canvas that helps students find course information, prioritize work, and build realistic study plans.",
     statusLabel: "Interactive prototype",
     ctaLabel: "Explore Prototype",
-    ctaHref: FIGMA_PROTOTYPE_URL || "#",
+    ctaHref: FIGMA_PROTOTYPE_URL,
     platform: "Canvas-integrated desktop experience",
     disclosure:
       "Conceptual Canvas integration — designed as a Figma prototype, not an official Canvas or university product.",
@@ -154,6 +155,14 @@ export const coursePilot: CaseStudyData = {
         whyItMatters: "An AI assistant is only useful if students believe the information is reliable.",
         designResponse:
           "Recommendations and answers expose their source, inputs, or reasoning — “Why this?”, Grades used, Sources, View in syllabus.",
+      },
+      {
+        title: "Explanations should be small, and plans editable",
+        whatParticipantsSaid:
+          "Students wanted to know why the AI prioritized certain assignments — but preferred a small expandable dropdown over a large paragraph, and wanted to change priorities themselves.",
+        whyItMatters: "Students want transparency without cluttering the interface.",
+        designResponse:
+          "A compact “Why this?” link on each recommended task, and Adjust Plan to change the plan before acting on it.",
       },
     ],
 
@@ -475,16 +484,16 @@ export const coursePilot: CaseStudyData = {
           beforeLabel: "Early — conversational response",
           afterLabel: "Final — structured schedule",
           before: {
-            src: "/images/projects/coursepilot/iteration-plan-my-night-early.png",
+            src: "/images/projects/coursepilot/iteration/plan-my-night-early.png",
             alt: "Early Plan My Night response: a plain conversational paragraph listing a suggested 3-hour schedule as text.",
-            width: 1440,
-            height: 1024,
+            width: 990,
+            height: 750,
           },
           after: {
-            src: "/images/projects/coursepilot/iteration-plan-my-night-final.png",
+            src: "/images/projects/coursepilot/iteration/plan-my-night-final.png",
             alt: "Final Plan My Night response: a structured card UI with top tasks, due dates, a suggested 3-hour plan, and source links.",
-            width: 1440,
-            height: 1024,
+            width: 990,
+            height: 750,
           },
         },
         {
@@ -492,16 +501,16 @@ export const coursePilot: CaseStudyData = {
           beforeLabel: "Early — conversational response",
           afterLabel: "Final — structured breakdown",
           before: {
-            src: "/images/projects/coursepilot/iteration-grade-calc-early.png",
+            src: "/images/projects/coursepilot/iteration/grade-calc-early.png",
             alt: "Early grade calculation response: a plain conversational paragraph stating the required exam score and listing recent grades as text.",
-            width: 1440,
-            height: 1024,
+            width: 990,
+            height: 750,
           },
           after: {
-            src: "/images/projects/coursepilot/iteration-grade-calc-final.png",
+            src: "/images/projects/coursepilot/iteration/grade-calc-final.png",
             alt: "Final grade calculation response: a structured card UI with the required exam score, current grade, exam weight, a grades-used table, and source links.",
-            width: 1440,
-            height: 1024,
+            width: 990,
+            height: 750,
           },
         },
       ],
@@ -592,18 +601,20 @@ export const coursePilot: CaseStudyData = {
         {
           label: "CoursePilot popup",
           image: {
-            src: "/images/projects/coursepilot/canvas-dashboard-popup.png",
-            alt: "Canvas dashboard with the CoursePilot popup open",
-            width: 1446,
-            height: 1024,
+            src: "/images/projects/coursepilot/final/canvas-popup-open.png",
+            alt: "CoursePilot popup open over the Canvas dashboard: a welcome summary of 2 assignments due, 1 update, and 1 overdue, with Plan My Day, Catch Me Up, and Grades quick actions and an Ask anything input.",
+            width: 2000,
+            height: 1422,
           },
         },
         {
           label: "Full CoursePilot workspace",
-          // Needed: a clean "New Chat" / welcome-state screenshot of the
-          // full workspace (distinct from the in-progress Plan My Night
-          // screen used as the hero moment below).
-          neededAsset: "/images/projects/coursepilot/final/workspace-new-chat.png",
+          image: {
+            src: "/images/projects/coursepilot/final/workspace-new-chat.png",
+            alt: "Full CoursePilot workspace in its New Chat state: recent chats in a sidebar, a How can we help? prompt, suggested questions, and an Ask anything input.",
+            width: 2000,
+            height: 1422,
+          },
         },
       ],
       callouts: [
@@ -616,16 +627,9 @@ export const coursePilot: CaseStudyData = {
       heading: "Conversation in. Actionable interface out.",
       copy: "Students don't need to learn special commands. They can describe their situation naturally, while CoursePilot structures the response around the decision they need to make.",
       prompt: "I have 3 hours tonight. What should I work on?",
-      // A video, not the static final screen already shown in Design
-      // Evolution — same underlying interaction, different medium, so it
-      // isn't just the same image repeated at a bigger size.
-      video: {
-        src: "/videos/projects/coursepilot/plan-my-night-clickthrough.mov",
-        alt: "Click-through of the Plan My Night flow in CoursePilot, from the student's question to a structured, editable plan",
-        width: 2000,
-        height: 1422,
-        pauseAtEndMs: 1000,
-      },
+      // No separate visual here: the plan itself is the "after" in Design
+      // Evolution and plays in the hero video, so this moment shows what
+      // students do with it next (see `interactionDesign.images`).
       callouts: [
         { title: "Priority", description: "Tasks are ordered using more than due date alone." },
         { title: "Estimated effort", description: "The response accounts for how much time the student actually has." },
@@ -641,7 +645,12 @@ export const coursePilot: CaseStudyData = {
         name: "Catch Me Up",
         heading: "Understand what changed without checking every course.",
         copy: "CoursePilot brings assignments, announcements, and recent course changes into one summary so students can quickly understand what needs attention.",
-        neededAsset: "/images/projects/coursepilot/final/catch-me-up.png",
+        image: {
+          src: "/images/projects/coursepilot/final/catch-me-up.png",
+          alt: "Catch Me Up response to “Catch me up on this week”: 2 assignments due and 1 announcement, listed with due dates, estimated time, and the Canvas sources they came from.",
+          width: 2000,
+          height: 1422,
+        },
         callouts: [
           { title: "Needs attention", description: "Surfaces the most time-sensitive coursework first." },
           { title: "Important updates", description: "Separates course changes and announcements from assignments." },
@@ -654,46 +663,20 @@ export const coursePilot: CaseStudyData = {
         heading: "Answers that don't hide the source.",
         copy: "For straightforward course questions, CoursePilot keeps the response concise and provides a direct path back to the original Canvas material.",
         steps: ["“What's the late work policy?”", "Concise answer", "Source", "View in syllabus"],
-        neededAsset: "/images/projects/coursepilot/final/syllabus-answer.png",
+        image: {
+          src: "/images/projects/coursepilot/final/syllabus-answer.png",
+          alt: "Answer to “What is the late assignment policy for Art History?”: a short summary, the quoted Late Work Policy from the syllabus, its source path, and a View in syllabus link.",
+          width: 2000,
+          height: 1422,
+        },
         callouts: [
           { title: "Answer", description: "Concise response to the student's question." },
           { title: "Source", description: "Shows where the information came from." },
           { title: "View in syllabus", description: "Lets the student verify the original material." },
         ],
-        size: "medium",
+        size: "large",
       },
     ],
-
-    synthesis: {
-      heading: "Different questions call for different responses.",
-      items: [
-        {
-          label: "Planning",
-          result: "Prioritized schedule",
-          image: {
-            src: "/images/projects/coursepilot/final/response-planning.png",
-            alt: "Cropped Plan My Night response showing the top-tasks list with due dates, estimated time, and “Why this?” links",
-            width: 730,
-            height: 260,
-          },
-        },
-        {
-          label: "Grade question",
-          result: "Calculation breakdown",
-          image: {
-            src: "/images/projects/coursepilot/final/response-grade.png",
-            alt: "Cropped grade-calculation response showing the required exam score alongside current grade, exam weight, and target grade",
-            width: 730,
-            height: 172,
-          },
-        },
-        {
-          label: "Policy question",
-          result: "Concise source-backed answer",
-          neededAsset: "/images/projects/coursepilot/final/syllabus-answer.png",
-        },
-      ],
-    },
 
     trust: {
       copy: "The goal wasn’t to make AI look certain. It was to make important answers inspectable.",
@@ -731,9 +714,12 @@ export const coursePilot: CaseStudyData = {
         {
           title: "View in syllabus",
           description: "Lets students verify the original material.",
-          // Needed: no syllabus/policy screen exists yet — see
-          // secondaryMoments' "Answers that don't hide the source" above.
-          neededAsset: "/images/projects/coursepilot/final/syllabus-answer.png",
+          image: {
+            src: "/images/projects/coursepilot/trust/view-in-syllabus.png",
+            alt: "Cropped source row under a syllabus answer: Art History → Syllabus → Late Work Policy, with a View in syllabus link",
+            width: 995,
+            height: 62,
+          },
         },
         // No uncertainty state exists yet, so no "Uncertainty" item is
         // listed here — nothing to show would mean inventing one.
@@ -742,10 +728,22 @@ export const coursePilot: CaseStudyData = {
     interactionDesign: {
       heading: "Acting without losing context",
       copy: "Actions such as adjusting a recommendation or adding a calendar event happen in lightweight overlays so students can make changes without losing the original conversation.",
-      details: ["Adjust Plan overlay", "Add to Calendar confirmation", "Success confirmation"],
-      // Needed once exported: adjust-plan.mp4, add-calendar.mp4 (muted,
-      // looping — see CaseStudyVideo). Until then this renders as plain
-      // labels rather than invented clips.
+      images: [
+        {
+          src: "/images/projects/coursepilot/final/adjust-plan.png",
+          alt: "Adjust your plan overlay: each task with minus and plus time controls, an Anything else CoursePilot should consider? field, a 2 hr 35 planned, 25 min remaining summary, and Cancel and Update Plan buttons.",
+          width: 704,
+          height: 576,
+          caption: "Adjust Plan — students change time per task before anything is saved.",
+        },
+        {
+          src: "/images/projects/coursepilot/final/add-to-calendar.png",
+          alt: "Add plan to calendar overlay listing the three time blocks for Friday, May 16, a calendar picker with Canvas Calendar and Google Calendar, and Cancel and Add Plan buttons.",
+          width: 704,
+          height: 648,
+          caption: "Add to Calendar — the exact events are reviewed before they're added.",
+        },
+      ],
     },
   },
 
@@ -759,6 +757,34 @@ export const coursePilot: CaseStudyData = {
       "Those decisions are still the ones I'd keep refining — not by adding more AI features, but by getting sharper about when CoursePilot should stay quiet and let a student just work.",
     placeholder: false,
   },
+
+  // Recruiter-facing scope summary — what exists as a Figma prototype vs.
+  // what research called for but hasn't been designed vs. what hasn't
+  // started. Keep in sync with the screens actually shown on the page.
+  projectStatus: [
+    {
+      label: "Prototyped in Figma",
+      items: [
+        "Canvas entry point, popup, and full workspace",
+        "Plan My Night, with Adjust Plan and Add to Calendar",
+        "Catch Me Up",
+        "Sourced syllabus answers",
+        "Grade calculation",
+      ],
+    },
+    {
+      label: "Researched, not yet designed",
+      items: [
+        "Uncertainty and error states",
+        "Privacy and data-access controls",
+        "Academic-integrity refusals",
+      ],
+    },
+    {
+      label: "Not yet done",
+      items: ["Usability testing", "Canvas API feasibility review", "Engineering — this is a design prototype, not built software"],
+    },
+  ],
 
   whatIsComplete: [
     { label: "Research plan", done: true },

@@ -14,9 +14,9 @@ import type { CaseStudyData } from "@/types/case-study";
  * has real content from a completed client redesign, rendered by its own
  * bespoke layout (see VNHCaseStudy.tsx) the same way CoursePilot is. */
 const CASE_STUDIES: Record<string, CaseStudyData> = {
-  "case-study-01": myMuseum,
-  "case-study-02": coursePilot,
-  "case-study-03": vietnameseNoodleHouse,
+  "mymuseum": myMuseum,
+  "coursepilot": coursePilot,
+  "vietnamese-noodle-house": vietnameseNoodleHouse,
 };
 
 interface ProjectPageProps {
@@ -47,10 +47,10 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   // CoursePilot and VNH each have their own editorial layout instead of
   // the shared generic CaseStudyPage template — see CoursePilotCaseStudy.tsx
   // and VNHCaseStudy.tsx.
-  if (slug === "case-study-02") {
+  if (slug === "coursepilot") {
     return <CoursePilotCaseStudy data={caseStudy} />;
   }
-  if (slug === "case-study-03") {
+  if (slug === "vietnamese-noodle-house") {
     return <VNHCaseStudy data={caseStudy} />;
   }
 

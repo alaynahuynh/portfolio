@@ -45,7 +45,7 @@ function SectionEyebrow({
   return (
     <p
       className={cn(
-        "text-sm font-medium tracking-wide uppercase",
+        "flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50",
         accent ? "text-(--project-accent)" : "text-sage-deep",
       )}
     >
@@ -82,7 +82,7 @@ function MediaText({
         {eyebrow && (
           <p
             className={cn(
-              "text-xs font-medium tracking-wide uppercase",
+              "text-xs font-semibold tracking-[0.14em] uppercase",
               accent ? "text-(--project-accent)" : "text-sage-deep",
             )}
           >
@@ -209,11 +209,13 @@ function CompetitorBreakdown({
 }) {
   return (
     <div className="mt-16">
-      <Reveal>
-        <p className="max-w-2xl text-lg text-foreground">{discovery.narrative}</p>
-      </Reveal>
+      {discovery.narrative && (
+        <Reveal>
+          <p className="max-w-2xl text-lg text-foreground">{discovery.narrative}</p>
+        </Reveal>
+      )}
 
-      <div className="mt-14 space-y-16">
+      <div className={cn("space-y-16", discovery.narrative && "mt-14")}>
         {(discovery.competitors ?? []).map((competitor, i) => (
           <CompetitorBlock key={competitor.name} competitor={competitor} index={i} productName={productName} />
         ))}
@@ -224,13 +226,13 @@ function CompetitorBreakdown({
           <p className="max-w-2xl text-muted-foreground">{discovery.opportunityContext}</p>
         )}
         <div className="mt-6 max-w-2xl border-l-2 border-sage-deep pl-6">
-          <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">Opportunity</p>
+          <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">Opportunity</p>
           <p className="mt-2 text-xl text-foreground">{discovery.opportunity}</p>
         </div>
         {discovery.flowSteps.length > 0 && (
           <div className="mt-10">
             {discovery.flowLabel && (
-              <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+              <p className="mb-3 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                 {discovery.flowLabel}
               </p>
             )}
@@ -286,90 +288,9 @@ function CompetitorBlock({
             What it meant for {productName}
           </Heading>
           <p className="mt-3 text-sm text-foreground">{competitor.applied}</p>
-          {competitor.shaped && competitor.shaped.length > 0 && (
-            <p className="mt-4 text-sm text-muted-foreground">
-              Fed into{" "}
-              {competitor.shaped.map((n, i) => (
-                <span key={n}>
-                  {i > 0 && ", "}
-                  <a
-                    href={`#decision-${n}`}
-                    className="font-medium text-(--project-accent) underline underline-offset-4 hover:no-underline"
-                  >
-                    Decision {String(n).padStart(2, "0")}
-                  </a>
-                </span>
-              ))}
-            </p>
-          )}
         </div>
       </div>
     </Reveal>
-  );
-}
-
-/** The 30-second read: problem / role / solution / outcome, then the key
- * decisions as jump links — so a skimmer gets the whole arc before the
- * long-form story starts. */
-function AtAGlance({
-  summary,
-  decisions,
-}: {
-  summary: NonNullable<CaseStudyData["overview"]["summary"]>;
-  decisions: CaseStudyDecision[];
-}) {
-  const rows = [
-    { label: "Problem", text: summary.problem },
-    { label: "My role", text: summary.role },
-    { label: "Solution", text: summary.solution },
-    { label: "Outcome", text: summary.outcome },
-  ];
-  return (
-    <Section id="overview" className="scroll-mt-28 pt-16 sm:pt-20">
-      <Reveal>
-        <SectionEyebrow>Overview</SectionEyebrow>
-        <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
-          At a glance
-        </Heading>
-      </Reveal>
-      <Reveal delay={60}>
-        <dl className="mt-10 grid gap-x-10 gap-y-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
-          {rows.map((row) => (
-            <div key={row.label}>
-              <dt className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">
-                {row.label}
-              </dt>
-              <dd className="mt-2 text-foreground">{row.text}</dd>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
-      {decisions.length > 0 && (
-        <Reveal delay={100} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
-          <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-            {decisions.length} key decisions
-          </p>
-          <ol className="mt-5 grid gap-6 sm:grid-cols-3">
-            {decisions.map((decision, i) => (
-              <li key={decision.title}>
-                <a
-                  href={`#decision-${i + 1}`}
-                  className="group block rounded-(--radius-default) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--project-accent)"
-                >
-                  <span className="font-heading text-2xl text-(--project-accent)/60">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="mt-1 block font-medium text-foreground group-hover:underline group-hover:underline-offset-4">
-                    {decision.title}
-                  </span>
-                  <span className="mt-1 block text-sm text-muted-foreground">{decision.tension}</span>
-                </a>
-              </li>
-            ))}
-          </ol>
-        </Reveal>
-      )}
-    </Section>
   );
 }
 
@@ -383,7 +304,7 @@ function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index
       className={cn("scroll-mt-28", index > 0 && "border-t border-border pt-16 sm:pt-20")}
     >
       <Reveal>
-        <p className="text-sm font-medium tracking-wide text-(--project-accent) uppercase">
+        <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] text-(--project-accent) uppercase before:h-px before:w-6 before:bg-current before:opacity-50">
           Decision {String(index + 1).padStart(2, "0")} · {decision.tension}
         </p>
         <Heading level={3} className="mt-3 max-w-3xl text-2xl sm:text-4xl">
@@ -404,7 +325,7 @@ function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index
           <ul className="mt-3 space-y-4">
             {decision.evidence.map((item) => (
               <li key={item.text} className="text-sm text-muted-foreground">
-                <span className="mb-1 block text-xs font-medium tracking-wide text-foreground uppercase">
+                <span className="mb-1 block text-xs font-semibold tracking-[0.14em] text-foreground uppercase">
                   {item.source}
                 </span>
                 {item.text}
@@ -430,31 +351,75 @@ function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index
               <dd className="mt-1 text-muted-foreground">{decision.outcome}</dd>
             </div>
           </dl>
-          <p className="mt-6 ml-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-border bg-surface px-3 py-1 text-xs text-muted-foreground">
-            <span className="size-1.5 rounded-full bg-(--project-accent)" aria-hidden="true" />
-            {decision.status}
-          </p>
+          {decision.status && (
+            <p className="mt-6 ml-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-border bg-surface px-3 py-1 text-xs text-muted-foreground">
+              <span className="size-1.5 rounded-full bg-(--project-accent)" aria-hidden="true" />
+              {decision.status}
+            </p>
+          )}
         </Reveal>
       </div>
 
-      {decision.images && decision.images.length > 0 ? (
-        <Reveal delay={80} className="mt-12">
-          <CaseStudyImageRow images={decision.images} columns={2} />
+      {decision.steps && decision.steps.length > 0 && (
+        <Reveal delay={80} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
+          <p className="mb-4 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+            The creator flow this produced
+          </p>
+          <FlowDiagram steps={decision.steps} />
         </Reveal>
-      ) : (
-        decision.steps &&
-        decision.steps.length > 0 && (
-          <Reveal delay={80} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
-            <p className="mb-4 text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              The creator flow this produced
-            </p>
-            <FlowDiagram steps={decision.steps} />
-          </Reveal>
-        )
+      )}
+      {decision.images && decision.images.length > 0 && (
+        <Reveal delay={80} className={decision.steps?.length ? "mt-6" : "mt-12"}>
+          {/* Under the flow steps, a lone image is supporting evidence
+              (e.g. a lo-fi wireframe), so it stays at content width. */}
+          {decision.steps?.length && decision.images.length === 1 ? (
+            <CaseStudyContentImage image={decision.images[0]} />
+          ) : (
+            <StoryImages images={decision.images} />
+          )}
+        </Reveal>
       )}
     </article>
   );
 }
+
+/** Screenshot layout sized by count: one image runs full width, three
+ * lead with a full-width image over a pair, anything else is a 2-up row. */
+function StoryImages({ images }: { images: CaseStudyImageSpec[] }) {
+  if (images.length === 1) {
+    return <CaseStudyFullImage image={images[0]} />;
+  }
+  if (isDevicePair(images)) {
+    // Columns sized to the two aspect ratios so both screens share a height.
+    return (
+      <div className="grid items-start gap-6 sm:grid-cols-[minmax(0,3.4fr)_minmax(0,1fr)]">
+        <CaseStudyContentImage
+          image={images[0]}
+          className="max-w-none"
+          sizes={DEVICE_PAIR_DESKTOP_SIZES}
+        />
+        <CaseStudyContentImage
+          image={images[1]}
+          className="max-w-60 sm:max-w-none"
+          sizes={DEVICE_PAIR_MOBILE_SIZES}
+        />
+      </div>
+    );
+  }
+  if (images.length === 3) {
+    return (
+      <div className="space-y-6">
+        <CaseStudyFullImage image={images[0]} />
+        <CaseStudyImageRow images={images.slice(1)} columns={2} />
+      </div>
+    );
+  }
+  return <CaseStudyImageRow images={images} columns={2} />;
+}
+
+/** Device-pair columns are 3.4fr / 1fr of the content width. */
+const DEVICE_PAIR_DESKTOP_SIZES = "(min-width: 1280px) 960px, (min-width: 640px) 78vw, 100vw";
+const DEVICE_PAIR_MOBILE_SIZES = "(min-width: 1280px) 290px, (min-width: 640px) 23vw, 240px";
 
 /** A landscape (desktop) screenshot followed by a portrait (mobile) one. */
 function isDevicePair(images: CaseStudyImageSpec[]) {
@@ -620,7 +585,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
 
   return (
     <div
-      className="bg-background"
+      className="case-study bg-background"
       style={
         {
           "--project-accent": data.accentColor ?? "var(--color-sage-deep)",
@@ -629,13 +594,13 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
     >
       <Section className="pt-24 pb-0 sm:pt-32">
         <Link
-          href="/projects"
+          href="/#work"
           className="text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           ← Back to Work
         </Link>
 
-        <p className="mt-8 text-sm font-medium tracking-wide text-muted-foreground uppercase">
+        <p className="mt-8 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
           {hero.category}
         </p>
         <Heading level={1} className="mt-2">
@@ -666,25 +631,10 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           <p className="mt-4 max-w-xl text-xs text-muted-foreground/80">{hero.disclosure}</p>
         )}
 
-        {(hero.platform || (hero.tools && hero.tools.length > 0)) && (
+        {hero.tools && hero.tools.length > 0 && (
           <p className="mt-5 text-sm text-muted-foreground">
-            {hero.platform && (
-              <span>
-                <span className="text-foreground">Platform:</span>{" "}
-                {hero.platform}
-              </span>
-            )}
-            {hero.platform && hero.tools && hero.tools.length > 0 && (
-              <span className="px-2" aria-hidden="true">
-                ·
-              </span>
-            )}
-            {hero.tools && hero.tools.length > 0 && (
-              <span>
-                <span className="text-foreground">Tools:</span>{" "}
-                {hero.tools.join(", ")}
-              </span>
-            )}
+            <span className="text-foreground">Tools:</span>{" "}
+            {hero.tools.join(", ")}
           </p>
         )}
 
@@ -698,33 +648,27 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </div>
         ) : null}
 
-        <dl className="mt-10 grid max-w-md grid-cols-3 gap-6 border-t border-border pt-6">
-          <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              Year
-            </dt>
-            <dd className="mt-1 text-foreground">{overview.year}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              Duration
-            </dt>
-            <dd className="mt-1 text-foreground">{overview.duration}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
-              Role
-            </dt>
-            <dd className="mt-1 text-foreground">{overview.role}</dd>
-          </div>
+        <dl className="mt-10 grid max-w-3xl gap-6 border-t border-border pt-6 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] sm:gap-10">
+          {[
+            { label: "Role", value: overview.role },
+            { label: "Duration", value: overview.duration },
+            { label: "Platform", value: hero.platform },
+          ]
+            .filter((item) => item.value)
+            .map((item) => (
+              <div key={item.label}>
+                <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                  {item.label}
+                </dt>
+                <dd className="mt-1.5 text-foreground">{item.value}</dd>
+              </div>
+            ))}
         </dl>
       </Section>
 
       <CaseStudySectionMobileNav sections={navSections} />
 
-      {overview.summary ? (
-        <AtAGlance summary={overview.summary} decisions={keyDecisions?.items ?? []} />
-      ) : (
+      {overview.features.length > 0 && (
       <Section id="overview" className="scroll-mt-28">
         <Reveal>
           <SectionEyebrow>Overview</SectionEyebrow>
@@ -758,19 +702,29 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       </Section>
       )}
 
-      <Section id="discovery" className="scroll-mt-28 bg-muted">
+      <Section id="discovery" className="scroll-mt-28 cs-band">
         <Reveal className="flex flex-wrap items-center gap-3">
-          <SectionEyebrow>Background</SectionEyebrow>
+          <SectionEyebrow>The problem</SectionEyebrow>
           {background.placeholder && <PlaceholderTag />}
         </Reveal>
-        <Heading level={2} className="mt-2 text-3xl sm:text-5xl">
+        <Heading level={2} className="mt-4 max-w-3xl text-3xl leading-tight sm:text-5xl">
           {background.heading ?? "The problem"}
         </Heading>
-        <Reveal delay={60} className="mt-6 max-w-xl space-y-4 text-muted-foreground">
+        <Reveal delay={60} className="mt-8 max-w-2xl space-y-4 text-lg text-muted-foreground">
           {background.narrative.split("\n\n").map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </Reveal>
+        {background.challenge && (
+          <Reveal delay={100} className="mt-12 max-w-2xl border-l-2 border-sage-deep pl-6">
+            <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
+              Design challenge
+            </p>
+            <p className="mt-3 font-heading text-2xl leading-snug text-foreground sm:text-3xl">
+              {background.challenge}
+            </p>
+          </Reveal>
+        )}
         {background.stat && (
           <Reveal delay={100} className="mt-8 max-w-xs">
             <StatCallout
@@ -813,7 +767,9 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Heading>
         <Reveal delay={60} className="mt-4 max-w-xl text-muted-foreground">
           <p>{research.intro}</p>
-          <p className="mt-2 text-sm">{research.participants}</p>
+          {research.participants && (
+            <p className="mt-2 text-sm">{research.participants}</p>
+          )}
         </Reveal>
 
         {research.keyFindings && research.keyFindings.length > 0 ? (
@@ -821,18 +777,40 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             <Heading level={3} size={4}>
               Key findings
             </Heading>
-            <div className="mt-8 grid gap-x-10 gap-y-10 sm:grid-cols-2">
+            {/* Same three-column row as the testing iterations: what was
+                heard, then — kept visibly separate — what is and isn't built. */}
+            <div className="mt-6 border-b border-border">
               {research.keyFindings.map((finding, i) => (
-                <div key={finding.title}>
-                  <p className="font-heading text-3xl text-sage-deep/50">
-                    {String(i + 1).padStart(2, "0")}
-                  </p>
-                  <Heading level={4} size={4} className="mt-1">
-                    {finding.title}
-                  </Heading>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {finding.whatParticipantsSaid}
-                  </p>
+                <div
+                  key={finding.title}
+                  className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
+                >
+                  <div>
+                    <p className="font-heading text-2xl text-sage-deep/50">
+                      {String(i + 1).padStart(2, "0")}
+                    </p>
+                    <Heading level={4} size={4} className="mt-1">
+                      {finding.title}
+                    </Heading>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                      What artists said
+                    </p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {finding.whatParticipantsSaid}
+                    </p>
+                  </div>
+                  {finding.designResponse && (
+                    <div>
+                      <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
+                        What the build covers — and doesn&rsquo;t
+                      </p>
+                      <p className="mt-2 text-sm text-foreground">
+                        {finding.designResponse}
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -851,7 +829,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             const details = (
               <dl className="space-y-4">
                 <div>
-                  <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     What participants said
                   </dt>
                   <dd className="mt-1 text-muted-foreground">
@@ -859,7 +837,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                  <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                     Why this matters
                   </dt>
                   <dd className="mt-1 text-muted-foreground">
@@ -867,7 +845,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-xs font-medium tracking-wide text-sage-deep uppercase">
+                  <dt className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
                     Design response
                   </dt>
                   <dd className="mt-1 text-foreground">
@@ -964,7 +942,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               <table className="w-full min-w-[34rem] border-collapse text-left">
                 <thead>
                   <tr className="border-b border-border/60">
-                    <th className="px-5 py-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                    <th className="px-5 py-3 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                       Area
                     </th>
                     {research.landscape.columns.map((col, idx) => {
@@ -973,7 +951,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                         <th
                           key={col}
                           className={cn(
-                            "px-5 py-3 text-xs font-medium tracking-wide uppercase",
+                            "px-5 py-3 text-xs font-semibold tracking-[0.14em] uppercase",
                             isSubject ? "text-foreground" : "text-muted-foreground",
                           )}
                         >
@@ -1007,7 +985,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             </div>
 
             <div className="mt-16 max-w-xl">
-              <p className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">
+              <p className="text-xs font-semibold tracking-[0.14em] text-(--project-accent) uppercase">
                 {research.landscape.gap.eyebrow}
               </p>
               <Heading level={3} size={3} className="mt-4">
@@ -1035,7 +1013,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   key={key}
                   className="rounded-(--radius-default) border border-border bg-surface p-5"
                 >
-                  <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">
+                  <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
                     {label}
                   </p>
                   <ul className="mt-2 space-y-1.5 text-sm text-muted-foreground">
@@ -1063,7 +1041,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               <Reveal
                 key={insight}
                 delay={i * 40}
-                className="flex gap-3 rounded-(--radius-default) bg-surface p-5"
+                className="flex gap-3 rounded-(--radius-default) border border-border bg-surface p-5"
               >
                 <span className="shrink-0 text-sm font-semibold text-sage-deep">
                   {String(i + 1).padStart(2, "0")}
@@ -1102,7 +1080,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             delay={140}
             className="mt-10 max-w-2xl border-l-2 border-(--project-accent) pl-6"
           >
-            <p className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">
+            <p className="text-xs font-semibold tracking-[0.14em] text-(--project-accent) uppercase">
               How might we
             </p>
             <p className="mt-2 text-xl text-foreground">{define.hmw}</p>
@@ -1158,7 +1136,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   define.secondaryPersona && "sm:grid-cols-2",
                 )}
               >
-                <div className="rounded-(--radius-default) border border-border bg-surface p-8">
+                <div className="rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
                   <Heading level={3} size={4}>
                     {define.personaName}
                   </Heading>
@@ -1174,7 +1152,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   </ul>
                 </div>
                 {define.secondaryPersona && (
-                  <div className="rounded-(--radius-default) border border-border bg-surface p-8">
+                  <div className="rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
                     <Heading level={3} size={4}>
                       {define.secondaryPersona.name}
                     </Heading>
@@ -1205,7 +1183,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               delay={100}
               className="mt-6 max-w-2xl border-l-2 border-sage-deep pl-6"
             >
-              <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">
+              <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
                 How might we
               </p>
               <p className="mt-2 text-xl text-foreground">{define.hmw}</p>
@@ -1225,7 +1203,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   <Reveal
                     key={item.title}
                     delay={i * 60}
-                    className="rounded-(--radius-default) bg-surface p-6"
+                    className="rounded-(--radius-default) border border-border bg-surface p-6"
                   >
                     <Heading level={4} size={4}>
                       {item.title}
@@ -1247,32 +1225,6 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               </div>
             </div>
           )}
-        </Section>
-      )}
-
-      {keyDecisions && keyDecisions.items.length > 0 && (
-        <Section
-          id="decisions"
-          className="scroll-mt-28"
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--project-accent) 5%, var(--color-background))",
-          }}
-        >
-          <Reveal>
-            <SectionEyebrow accent>Key decisions</SectionEyebrow>
-            <Heading level={2} className="mt-2 max-w-3xl text-3xl sm:text-5xl">
-              {keyDecisions.heading ?? "Key decisions"}
-            </Heading>
-            {keyDecisions.intro && (
-              <p className="mt-4 max-w-xl text-muted-foreground">{keyDecisions.intro}</p>
-            )}
-          </Reveal>
-          <div className="mt-16 space-y-16 sm:space-y-20">
-            {keyDecisions.items.map((decision, i) => (
-              <DecisionBlock key={decision.title} decision={decision} index={i} />
-            ))}
-          </div>
         </Section>
       )}
 
@@ -1386,8 +1338,9 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   {flow.name}
                 </Heading>
                 {flow.image ? (
+                  // Dense diagrams: open in the lightbox to read up close.
                   <div className="mt-5">
-                    <CaseStudyFlowImage image={flow.image} />
+                    <CaseStudyZoomImage image={flow.image} />
                   </div>
                 ) : (
                   <div className="mt-4">
@@ -1431,6 +1384,32 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
           </Reveal>
         )}
       </Section>
+
+      {keyDecisions && keyDecisions.items.length > 0 && (
+        <Section
+          id="decisions"
+          className="scroll-mt-28"
+          style={{
+            backgroundColor:
+              "color-mix(in srgb, var(--project-accent) 5%, var(--color-background))",
+          }}
+        >
+          <Reveal>
+            <SectionEyebrow accent>Key decisions</SectionEyebrow>
+            <Heading level={2} className="mt-2 max-w-3xl text-3xl sm:text-5xl">
+              {keyDecisions.heading ?? "Key decisions"}
+            </Heading>
+            {keyDecisions.intro && (
+              <p className="mt-4 max-w-xl text-muted-foreground">{keyDecisions.intro}</p>
+            )}
+          </Reveal>
+          <div className="mt-16 space-y-16 sm:space-y-20">
+            {keyDecisions.items.map((decision, i) => (
+              <DecisionBlock key={decision.title} decision={decision} index={i} />
+            ))}
+          </div>
+        </Section>
+      )}
 
       {(productRequirements.length > 0 ||
         (designPrinciplesDetailed && designPrinciplesDetailed.length > 0)) && (
@@ -1596,7 +1575,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                 <Reveal
                   key={screen}
                   delay={i * 40}
-                  className="flex aspect-video items-center justify-center rounded-(--radius-default) bg-mist-blue/40 p-4 text-center text-sm font-medium text-sage-deep"
+                  className="flex aspect-video items-center justify-center rounded-(--radius-default) border border-border bg-muted p-4 text-center text-sm font-medium text-sage-deep"
                 >
                   {screen}
                 </Reveal>
@@ -1661,17 +1640,23 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         )}
 
         {finalProduct && (
-          <div className="mt-20 border-t border-border pt-16">
-            <Reveal className="flex flex-wrap items-center gap-3">
-              <SectionEyebrow>The final experience</SectionEyebrow>
-              {finalProduct.placeholder && <PlaceholderTag />}
-            </Reveal>
-            <Reveal
-              delay={60}
-              className="mt-4 max-w-xl text-muted-foreground"
-            >
-              <p>{finalProduct.intro}</p>
-            </Reveal>
+          // Without an intro, the stories follow the section's own
+          // heading directly instead of opening a second sub-section.
+          <div className={finalProduct.intro ? "mt-20 border-t border-border pt-16" : undefined}>
+            {finalProduct.intro && (
+              <>
+                <Reveal className="flex flex-wrap items-center gap-3">
+                  <SectionEyebrow>The final experience</SectionEyebrow>
+                  {finalProduct.placeholder && <PlaceholderTag />}
+                </Reveal>
+                <Reveal
+                  delay={60}
+                  className="mt-4 max-w-xl text-muted-foreground"
+                >
+                  <p>{finalProduct.intro}</p>
+                </Reveal>
+              </>
+            )}
             <div className="mt-12 space-y-20">
               {finalProduct.stories.map((story, i) => (
                 <Reveal key={story.title} delay={Math.min(i * 40, 200)}>
@@ -1681,28 +1666,57 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   <p className="mt-2 max-w-xl text-muted-foreground">
                     {story.description}
                   </p>
-                  {story.images && isDevicePair(story.images) ? (
+                  {story.images?.length === 1 && story.videos?.length === 1 ? (
+                    // One still + one clip of the same moment: side by
+                    // side so the screenshot and its motion read together.
+                    // Columns sized to the two aspect ratios so both render
+                    // at the same height.
+                    <div
+                      className="mt-8 grid items-start gap-6 sm:grid-cols-(--story-cols)"
+                      style={
+                        {
+                          "--story-cols": `minmax(0,${story.images[0].width / story.images[0].height}fr) minmax(0,${story.videos[0].width / story.videos[0].height}fr)`,
+                        } as React.CSSProperties
+                      }
+                    >
+                      <CaseStudyContentImage image={story.images[0]} className="max-w-none" />
+                      <CaseStudyVideo video={story.videos[0]} />
+                    </div>
+                  ) : story.images && isDevicePair(story.images) ? (
                     // Desktop + mobile pair: columns sized to the two
                     // aspect ratios so both screens render at the same
                     // height, instead of the phone screen dwarfing the
                     // desktop one in equal-width columns.
                     <div className="mt-8 grid items-start gap-6 sm:grid-cols-[minmax(0,3.4fr)_minmax(0,1fr)]">
-                      <CaseStudyContentImage image={story.images[0]} className="max-w-none" />
-                      <CaseStudyContentImage image={story.images[1]} className="max-w-60 sm:max-w-none" />
+                      <CaseStudyContentImage
+                        image={story.images[0]}
+                        className="max-w-none"
+                        sizes={DEVICE_PAIR_DESKTOP_SIZES}
+                      />
+                      <CaseStudyContentImage
+                        image={story.images[1]}
+                        className="max-w-60 sm:max-w-none"
+                        sizes={DEVICE_PAIR_MOBILE_SIZES}
+                      />
                     </div>
                   ) : (
                     story.images &&
                     story.images.length > 0 && (
                       <div className="mt-8">
-                        <CaseStudyImageRow
-                          images={story.images}
-                          columns={2}
-                        />
+                        <StoryImages images={story.images} />
                       </div>
                     )
                   )}
-                  {story.videos && story.videos.length > 0 && (
-                    <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  {!(story.images?.length === 1 && story.videos?.length === 1) &&
+                    story.videos &&
+                    story.videos.length > 0 && (
+                    <div
+                      className={cn(
+                        "grid gap-6",
+                        story.images?.length ? "mt-6" : "mt-8",
+                        story.videos.length > 1 && "sm:grid-cols-2",
+                      )}
+                    >
                       {story.videos.map((video) => (
                         <CaseStudyVideo key={video.src} video={video} />
                       ))}
@@ -1816,7 +1830,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   delay={Math.min(i * 40, 200)}
                   className={i > 0 ? "border-t border-border pt-20" : undefined}
                 >
-                  <p className="text-xs font-medium tracking-wide text-(--project-accent) uppercase">
+                  <p className="text-xs font-semibold tracking-[0.14em] text-(--project-accent) uppercase">
                     {featureLabel}
                   </p>
                   <Heading level={3} size={3} className="mt-2 max-w-xl">
@@ -1969,13 +1983,13 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                         </Heading>
                       </div>
                       <div>
-                        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                        <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
                           What testing showed
                         </p>
                         <p className="mt-2 text-sm text-muted-foreground">{iteration.feedback}</p>
                       </div>
                       <div>
-                        <p className="text-xs font-medium tracking-wide text-sage-deep uppercase">
+                        <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
                           What I changed
                         </p>
                         <p className="mt-2 text-sm text-foreground">{iteration.finalIteration}</p>
@@ -2003,7 +2017,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   .map((iteration) => (
                     <div
                       key={iteration.title}
-                      className="rounded-(--radius-default) bg-surface p-4 text-sm"
+                      className="rounded-(--radius-default) border border-border bg-surface p-4 text-sm"
                     >
                       <p className="font-medium text-foreground">
                         Technical note — {iteration.title}
@@ -2016,6 +2030,12 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               </div>
             )}
           </>
+        )}
+
+        {testing.closingStatement && (
+          <Reveal>
+            <p className="mt-14 max-w-[45rem] text-sm text-muted-foreground">{testing.closingStatement}</p>
+          </Reveal>
         )}
       </Section>
 
@@ -2149,7 +2169,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       </Section>
 
       {whatIsComplete.length > 0 && (
-        <Section className="bg-muted">
+        <Section className="cs-band">
           <Reveal>
             <SectionEyebrow>Where this stands</SectionEyebrow>
             <Heading level={2} className="mt-2 text-3xl sm:text-5xl">

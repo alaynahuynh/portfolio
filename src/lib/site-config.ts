@@ -10,23 +10,22 @@ export const siteConfig = {
    * Designer," not "+ Developer": development should read as an advantage
    * (see heroSupportingLine below), not compete with the primary identity. */
   heroEyebrow: "Product Designer",
-  /** The hero's main statement — what she does, not just where she studied. */
-  positioningStatement: "I design digital products that make complex experiences intuitive, engaging, and human.",
+  /** The hero's main statement (shown in the About Me Notepad window) — what she does, not just where she studied. */
+  positioningStatement: "I design and build digital products — a 3D gallery platform, an AI course assistant, and a live restaurant website.",
   /** Small supporting line under the main statement — where "I build, too" lives, deliberately smaller/quieter than the statement above it. */
   heroSupportingLine: "I prototype and build, too.",
   /** Subtitle on the hero monitor's screen, under the name. */
   heroScreenSubtitle: "Product Designer · University of Michigan",
-  /** Intro line in the hero's Notepad window. */
-  heroNotepadText: "I turn complex problems into thoughtful, playful digital experiences.",
   /** Hero credential line — school/degree, shown below the positioning statement. */
   credential: "University of Michigan · BSI in UX Design",
-  /** Hero availability line — shown below the credential. Update once the search window changes. */
-  availability: "Available for Summer 2027 Product Design internships",
   /** SEO meta description (see layout.tsx) — the actual positioning
    * statement, not a generic "portfolio of a UX student" line, so
    * search results and link previews say what she actually does. */
-  description: "Alayna Huynh — I design digital products that make complex experiences intuitive, engaging, and human.",
-  url: "https://example.com",
+  description: "Alayna Huynh — product designer at the University of Michigan. I design and build digital products.",
+  /** The live site's base URL (e.g. "https://alaynahuynh.com"). Used as
+   * metadataBase so link previews resolve absolute image URLs — leave
+   * empty until the real domain is known. */
+  url: "",
   email: "aahuynh@umich.edu",
 };
 

@@ -24,15 +24,24 @@ export function HeroMonitor({ className }: { className?: string }) {
               className="pointer-events-none absolute inset-0 bg-[url('/images/hero/monitor-screen-texture.jpg')] bg-cover bg-center opacity-[0.16] mix-blend-multiply"
             />
             <div className="relative px-[6%] pt-[8%]">
-              <p className="font-heading text-[clamp(1.5rem,7.6cqw,3.5rem)] leading-none font-medium tracking-tight text-foreground">
+              {/* The homepage's one h1 — styling unchanged. */}
+              <h1 className="font-heading text-[clamp(1.5rem,7.6cqw,3.5rem)] leading-none font-medium tracking-tight text-foreground">
                 {siteConfig.name}
                 <span
                   aria-hidden="true"
                   className="hero-monitor-cursor ml-[0.08em] inline-block h-[0.82em] w-[0.06em] translate-y-[0.04em] bg-lake-blue-deep"
                 />
-              </p>
+              </h1>
               <p className="mt-[0.7em] font-sans text-[clamp(0.6875rem,2cqw,1rem)] font-medium text-lake-blue-deep">
                 {siteConfig.heroScreenSubtitle}
+              </p>
+            </div>
+            {/* A visible way into the work, in the screen's lower-right —
+                the one corner the Notepad and Playground windows never
+                overlap on desktop. */}
+            <div className="absolute right-[5%] bottom-[7%] hidden text-right @md:block">
+              <p className="inline-flex items-center gap-[0.4em] border-b border-current pb-[0.1em] font-sans text-[clamp(0.75rem,2.1cqw,1.0625rem)] font-semibold text-lake-blue-deep">
+                View selected work <span aria-hidden="true">↓</span>
               </p>
             </div>
           </div>

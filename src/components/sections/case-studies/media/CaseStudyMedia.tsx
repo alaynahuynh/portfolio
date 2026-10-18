@@ -5,7 +5,10 @@ import Image from "next/image";
 import { Maximize2 } from "lucide-react";
 import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { cn } from "@/lib/utils";
-import type { CaseStudyImageSpec, CaseStudyVideoSpec } from "@/types/case-study";
+import type {
+  CaseStudyImageSpec,
+  CaseStudyVideoSpec,
+} from "@/types/case-study";
 
 /**
  * Reusable, responsive image system for case study pages. Every layout
@@ -22,6 +25,13 @@ import type { CaseStudyImageSpec, CaseStudyVideoSpec } from "@/types/case-study"
  * captioning is a property of the image itself.
  */
 
+/** Hairline-bordered white surface with a small radius and no shadow —
+ * the visual itself carries the weight, not its container. */
+const FRAME_SURFACE =
+  "overflow-hidden rounded-(--radius-default) border border-border bg-surface";
+/** Captions sit quietly beneath the frame rather than in a tinted bar. */
+const CAPTION = "mt-3 text-xs leading-relaxed text-muted-foreground";
+
 interface FrameProps {
   image: CaseStudyImageSpec;
   sizes: string;
@@ -31,26 +41,23 @@ interface FrameProps {
 
 function Frame({ image, sizes, eager, className }: FrameProps) {
   return (
-    <figure
-      className={cn(
-        "overflow-hidden rounded-(--radius-default) border border-border bg-surface shadow-sm",
-        className,
-      )}
-    >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        width={image.width}
-        height={image.height}
-        sizes={sizes}
-        loading={eager ? "eager" : "lazy"}
-        preload={eager}
-        className="h-auto w-full object-contain"
-      />
+    <figure className={className}>
+      <div className={FRAME_SURFACE}>
+        <Image
+          src={image.src}
+          alt={image.alt}
+          width={image.width}
+          height={image.height}
+          sizes={sizes}
+          // Screenshots carry small UI text that the default q75 smears.
+          quality={90}
+          loading={eager ? "eager" : "lazy"}
+          preload={eager}
+          className="block h-auto w-full object-contain"
+        />
+      </div>
       {image.caption && (
-        <figcaption className="border-t border-border bg-muted px-4 py-2.5 text-xs text-muted-foreground">
-          {image.caption}
-        </figcaption>
+        <figcaption className={CAPTION}>{image.caption}</figcaption>
       )}
     </figure>
   );
@@ -67,7 +74,11 @@ interface SingleImageProps {
  * 1. Full-width case study image — hero images, final designs, large
  * flowcharts, major visuals. Spans the full readable content width.
  */
-export function CaseStudyFullImage({ image, eager, className }: SingleImageProps) {
+export function CaseStudyFullImage({
+  image,
+  eager,
+  className,
+}: SingleImageProps) {
   return (
     <Frame
       image={image}
@@ -83,12 +94,20 @@ export function CaseStudyFullImage({ image, eager, className }: SingleImageProps
  * sketches, wireframes. Capped narrower than full-width so it reads as
  * supporting evidence rather than a hero visual.
  */
-export function CaseStudyContentImage({ image, eager, className }: SingleImageProps) {
+export function CaseStudyContentImage({
+  image,
+  eager,
+  className,
+  sizes = "(min-width: 1024px) 768px, 100vw",
+}: SingleImageProps & {
+  /** Override when a layout widens the image past its default cap. */
+  sizes?: string;
+}) {
   return (
     <Frame
       image={image}
       eager={eager}
-      sizes="(min-width: 1024px) 768px, 100vw"
+      sizes={sizes}
       className={cn("mx-auto w-full max-w-3xl", className)}
     />
   );
@@ -116,10 +135,14 @@ export function CaseStudyZoomImage({ image, className }: SingleImageProps) {
           className,
         )}
       >
-        <Frame image={image} sizes="(min-width: 1280px) 1200px, 100vw" className="w-full" />
+        <Frame
+          image={image}
+          sizes="(min-width: 1280px) 1200px, 100vw"
+          className="w-full"
+        />
         <span
           aria-hidden="true"
-          className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/90 px-3 py-1.5 text-xs font-medium text-muted-foreground shadow-sm transition-colors group-hover:text-foreground"
+          className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/95 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm transition-colors group-hover:text-foreground"
         >
           <Maximize2 className="size-3.5" />
           Enlarge
@@ -152,7 +175,11 @@ interface ImageRowProps {
  * stacked on mobile. `items-start` keeps each image at its own natural
  * height instead of stretching to match its tallest sibling.
  */
-export function CaseStudyImageRow({ images, columns, className }: ImageRowProps) {
+export function CaseStudyImageRow({
+  images,
+  columns,
+  className,
+}: ImageRowProps) {
   const cols = columns ?? (images.length >= 3 ? 3 : 2);
   return (
     <div
@@ -189,13 +216,20 @@ interface ImageWithTextProps {
  * 5. Image + text — an image beside a short explanation, stacking
  * vertically on mobile.
  */
-export function CaseStudyImageWithText({ image, children, imagePosition = "left", className }: ImageWithTextProps) {
+export function CaseStudyImageWithText({
+  image,
+  children,
+  imagePosition = "left",
+  className,
+}: ImageWithTextProps) {
   return (
     <div className={cn("grid gap-8 sm:grid-cols-2 sm:items-center", className)}>
       <div className={cn(imagePosition === "right" && "sm:order-2")}>
         <Frame image={image} sizes="(min-width: 640px) 50vw, 100vw" />
       </div>
-      <div className={cn(imagePosition === "right" && "sm:order-1")}>{children}</div>
+      <div className={cn(imagePosition === "right" && "sm:order-1")}>
+        {children}
+      </div>
     </div>
   );
 }
@@ -213,9 +247,15 @@ export function CaseStudyFlowImage({ image, className }: SingleImageProps) {
       href={image.src}
       target="_blank"
       rel="noopener noreferrer"
-      className={cn("mx-auto block w-full max-w-[640px] transition-opacity hover:opacity-80", className)}
+      className={cn(
+        "mx-auto block w-full max-w-[640px] transition-opacity hover:opacity-80",
+        className,
+      )}
     >
-      <Frame image={image} sizes="(min-width: 1024px) 600px, (min-width: 640px) 50vw, 100vw" />
+      <Frame
+        image={image}
+        sizes="(min-width: 1024px) 600px, (min-width: 640px) 50vw, 100vw"
+      />
     </a>
   );
 }
@@ -257,30 +297,25 @@ export function CaseStudyVideo({ video, className }: VideoProps) {
   }
 
   return (
-    <figure
-      className={cn(
-        "overflow-hidden rounded-(--radius-default) border border-border bg-surface shadow-sm",
-        className,
-      )}
-    >
-      <video
-        ref={videoRef}
-        src={video.src}
-        poster={video.poster}
-        width={video.width}
-        height={video.height}
-        autoPlay
-        muted
-        loop={!pauseAtEndMs}
-        onEnded={pauseAtEndMs ? handleEnded : undefined}
-        playsInline
-        aria-label={video.alt}
-        className="h-auto w-full object-contain"
-      />
+    <figure className={className}>
+      <div className={FRAME_SURFACE}>
+        <video
+          ref={videoRef}
+          src={video.src}
+          poster={video.poster}
+          width={video.width}
+          height={video.height}
+          autoPlay
+          muted
+          loop={!pauseAtEndMs}
+          onEnded={pauseAtEndMs ? handleEnded : undefined}
+          playsInline
+          aria-label={video.alt}
+          className="block h-auto w-full object-contain"
+        />
+      </div>
       {video.caption && (
-        <figcaption className="border-t border-border bg-muted px-4 py-2.5 text-xs text-muted-foreground">
-          {video.caption}
-        </figcaption>
+        <figcaption className={CAPTION}>{video.caption}</figcaption>
       )}
     </figure>
   );
@@ -302,11 +337,15 @@ export function CaseStudyBeforeAfter({
   return (
     <div className={cn("grid gap-6 sm:grid-cols-2", className)}>
       <div>
-        <p className="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">{beforeLabel}</p>
+        <p className="mb-3 text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+          {beforeLabel}
+        </p>
         <Frame image={before} sizes={sizes} />
       </div>
       <div>
-        <p className="mb-3 text-xs font-medium tracking-wide text-sage-deep uppercase">{afterLabel}</p>
+        <p className="mb-3 text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
+          {afterLabel}
+        </p>
         <Frame image={after} sizes={sizes} />
       </div>
     </div>

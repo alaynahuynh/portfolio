@@ -3,6 +3,8 @@ import { AboutPhotoBrowser } from "@/components/sections/AboutPhotoBrowser";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { HintArrow } from "@/components/ui/HintArrow";
+import { resumeUrl } from "@/lib/resume";
+import { siteConfig, socialLinks } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "About",
@@ -41,21 +43,49 @@ export default function AboutPage() {
 
             <div className="mt-6 space-y-4 text-lg text-muted-foreground">
               <p>
-                Ever since I was a kid, I&apos;ve loved making things — drawing, painting, and building with my hands.
+                I&apos;ve always loved making things. Growing up, that meant drawing, painting, and building whatever I
+                could with my hands. These days, that same curiosity has found its way into digital experiences.
               </p>
               <p>
-                Somewhere along the way, I became curious about why certain products and interfaces just feel right to
-                use. That curiosity led me to product design, where I get to combine creativity, problem-solving, and
-                an understanding of people.
+                What I love about product design is getting to think about both how something feels and how it works. I
+                enjoy experimenting, figuring out what makes an interaction intuitive, and turning ideas into things
+                people can actually use.
               </p>
               <p>
-                I still paint and make things outside of a screen, and that hands-on way of thinking shapes how I
-                design digitally.
+                Outside of designing for screens, I still love painting and making things by hand. I think working
+                across physical and digital mediums has made me more curious about the little details that shape an
+                experience.
               </p>
               <p>
-                I&apos;m currently studying UX design at the University of Michigan, and I&apos;m happiest when
-                I&apos;m creating something that feels thoughtful, useful, and human.
+                I&apos;m currently studying UX Design at the University of Michigan, and I&apos;m especially drawn to
+                projects that bring creativity, technology, and people together.
               </p>
+            </div>
+
+            <div className="mt-8 border-t border-border pt-6">
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <li>
+                  <a href={`mailto:${siteConfig.email}`} className="text-foreground underline underline-offset-4 hover:text-sage-deep">
+                    {siteConfig.email}
+                  </a>
+                </li>
+                {resumeUrl && (
+                  <li>
+                    <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-sage-deep">
+                      Resume
+                    </a>
+                  </li>
+                )}
+                {socialLinks
+                  .filter((link) => link.label === "LinkedIn")
+                  .map((link) => (
+                    <li key={link.href}>
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-sage-deep">
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+              </ul>
             </div>
           </div>
         </div>
