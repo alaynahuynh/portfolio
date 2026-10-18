@@ -87,12 +87,6 @@ const HERO_MOBILE = img(
   1688,
 );
 
-const BEFORE_DESKTOP = img(
-  "before/old-site-desktop.png",
-  "The old Vietnamese Noodle House website on desktop: a plain gray box standing in for a hero, then two ordering buttons labeled Camillus and N Syracuse, identical except for border color.",
-  1440,
-  1200,
-);
 const BEFORE_MOBILE = img(
   "before/old-site-mobile.png",
   "The old website on mobile: a broken logo image, a gray placeholder where the hero image should be, and the two ordering buttons stacked with no address or hours.",
@@ -395,24 +389,20 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             {background.heading}
           </Heading>
         </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{background.narrative}</p>
-        </Reveal>
-
-        <Reveal delay={80}>
-          <div className="mt-14">
-            <DesktopMobilePair
-              desktop={BEFORE_DESKTOP}
-              mobile={BEFORE_MOBILE}
-              desktopLabel="Old site — Desktop"
-              mobileLabel="Old site — Mobile"
-            />
-            <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
-              Desktop was generic; mobile — where most customers land first — was broken. On both, the main actions
-              were two ordering buttons that differ only by town name and border color.
+        {/* Only the broken mobile view here — the old desktop ordering
+            buttons get their own close-up in the ordering-flow section. */}
+        <div className="mt-6 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-16">
+          <Reveal delay={40}>
+            <p className="max-w-[45rem] text-lg text-muted-foreground">{background.narrative}</p>
+          </Reveal>
+          <Reveal delay={80}>
+            <Label>Old site — Mobile</Label>
+            <CaseStudyZoomImage image={BEFORE_MOBILE} className="mt-3" />
+            <p className="mt-3 text-xs text-muted-foreground">
+              A broken logo, a gray box where the hero photo should be, and unstyled buttons.
             </p>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
       </Section>
 
       {/* -------------------------------------------------------- PROCESS */}

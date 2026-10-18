@@ -104,6 +104,12 @@ export function FeaturedWork() {
                     </div>
 
                     <div className={cn("max-w-md lg:max-w-lg", imageRight && "lg:order-1")}>
+                      {project.statusTag && (
+                        <p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-muted-foreground lg:mb-4">
+                          <span aria-hidden="true" className="size-1.5 rounded-full bg-sage-deep" />
+                          {project.statusTag}
+                        </p>
+                      )}
                       <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
                         {linkable ? (
                           <Link

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { resumeUrl } from "@/lib/resume";
 import { cn } from "@/lib/utils";
 
@@ -34,8 +33,9 @@ export function ResumeLink({
   }
 
   return (
-    <Link href={resumeUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={className}>
+    // A plain <a>: the résumé is a static PDF, not a route to prefetch.
+    <a href={resumeUrl} target="_blank" rel="noopener noreferrer" onClick={onClick} className={className}>
       {children ?? "Resume"}
-    </Link>
+    </a>
   );
 }

@@ -114,6 +114,15 @@ export function ObjectAngleGallery({
     <div id={object.slug} aria-label={object.title} role="group" className="scroll-mt-24">
       {spread}
 
+      {object.project && (
+        <a
+          href={object.project.href}
+          className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-sage-deep underline-offset-4 hover:underline"
+        >
+          {object.project.label} <span aria-hidden="true">→</span>
+        </a>
+      )}
+
       {lightboxIndex !== null && (
         <ImageLightbox
           images={images}

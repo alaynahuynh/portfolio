@@ -132,6 +132,8 @@ export interface Object3D {
   images: Object3DImage[];
   size: "large" | "medium" | "small";
   rotate: number;
+  /** Optional link to a project page about this piece. */
+  project?: { href: string; label: string };
 }
 
 export const threeDObjects: Object3D[] = [
@@ -177,17 +179,17 @@ export const threeDObjects: Object3D[] = [
     images: [
       {
         src: "/creative-practice/3d/pig-lamp-1.jpg",
-        label: "Front",
+        label: "Side",
         width: 1600,
         height: 1420,
         alt: "Pink pig-shaped handmade lamp with a curled tail and an exposed bulb held inside a curved frame, front view",
       },
       {
         src: "/creative-practice/3d/pig-lamp-2.jpg",
-        label: "Front, lit",
+        label: "Other side",
         width: 1600,
         height: 1420,
-        alt: "Pig lamp viewed from the front at a slightly different angle, lit bulb visible inside the frame",
+        alt: "Pig lamp viewed from its other side, with the bulb visible inside the curved frame",
       },
       {
         src: "/creative-practice/3d/pig-lamp-3.jpg",
@@ -199,6 +201,7 @@ export const threeDObjects: Object3D[] = [
     ],
     size: "medium",
     rotate: 2,
+    project: { href: "/projects/pig-lamp", label: "Pig Lamp — made with a clinic for autistic children" },
   },
   {
     slug: "monkey-sculpture",

@@ -69,7 +69,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   background: {
     heading: "The old site was actively working against the business",
     narrative:
-      "The old site was hosted on HostGator and wasn't mobile-responsive: on a phone the layout broke, text was unstyled, and the hero image was broken or showing a placeholder. On desktop it was usable but generic — a dated layout with a visual identity that said nothing about the food or the family behind it. For a restaurant that depends on people finding it, trusting it, and ordering from it online, that gap between the real place and its website was a real cost.",
+      "The old site wasn't mobile-responsive: on a phone the layout broke, text was unstyled, and the hero image was broken or showing a placeholder. On desktop it was usable but generic — a dated layout with a visual identity that said nothing about the food or the family behind it. For a restaurant that depends on people finding it, trusting it, and ordering from it online, that gap between the real place and its website was a real cost.",
     placeholder: false,
     principles: {
       title: "The identity I wanted the redesign to earn",

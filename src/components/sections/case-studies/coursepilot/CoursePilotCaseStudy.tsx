@@ -251,7 +251,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
               <CaseStudyVideo
                 video={{
                   src: "/videos/projects/coursepilot/starttoend.mp4",
-                  alt: "Walkthrough of the CoursePilot prototype from the Canvas dashboard through the full experience",
+                  alt: "Walkthrough of the CoursePilot prototype, starting from its popup open inside Canvas through the full experience",
                   width: 2000,
                   height: 1422,
                 }}

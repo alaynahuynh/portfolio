@@ -33,6 +33,7 @@ export const PROJECTS_STATUS = {
 export const projects: Project[] = [
   {
     slug: "mymuseum",
+    statusTag: "Live product",
     title: "MyMuseum",
     role: "Product Design · UX Research · Development",
     summary: "Helping artists share their work as walkable 3D galleries instead of flat image feeds.",
@@ -55,6 +56,7 @@ export const projects: Project[] = [
   },
   {
     slug: "coursepilot",
+    statusTag: "Figma prototype",
     title: "CoursePilot",
     role: "Product Design · User Research · Prototyping",
     summary: "Helping students turn scattered course information into an actionable plan.",
@@ -79,6 +81,7 @@ export const projects: Project[] = [
   },
   {
     slug: "vietnamese-noodle-house",
+    statusTag: "Shipped · Client work",
     title: "Vietnamese Noodle House",
     role: "Client Work · UX/UI Design · Development",
     summary: "Redesigning a family restaurant's website so customers can find the menu and order from the right location.",

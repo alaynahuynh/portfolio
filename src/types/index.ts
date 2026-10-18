@@ -54,4 +54,6 @@ export interface Project {
   /** Still image for the "Next project" card at the end of each case
    * study — falls back to `imageThumbnail` when unset. */
   cover?: { src: string; alt: string; width: number; height: number };
+  /** Short scope label shown on the homepage card, e.g. "Live product". */
+  statusTag?: string;
 }

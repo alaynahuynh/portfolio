@@ -62,7 +62,18 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <div className="mt-8 border-t border-border pt-6">
+            <dl className="mt-8 grid gap-4 border-t border-border pt-6 text-sm sm:grid-cols-[6.5rem_1fr]">
+              <dt className="font-medium text-foreground">Currently</dt>
+              <dd className="text-muted-foreground">
+                BSI in User Experience Design, minor in Industrial Design — University of Michigan, class of 2029.
+              </dd>
+              <dt className="font-medium text-foreground">Design</dt>
+              <dd className="text-muted-foreground">Figma, FigJam, Illustrator, Photoshop, InDesign, Procreate</dd>
+              <dt className="font-medium text-foreground">Build</dt>
+              <dd className="text-muted-foreground">Next.js, React, React Three Fiber, Blender</dd>
+            </dl>
+
+            <div className="mt-6 border-t border-border pt-6">
               <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
                 <li>
                   <a href={`mailto:${siteConfig.email}`} className="text-foreground underline underline-offset-4 hover:text-sage-deep">
