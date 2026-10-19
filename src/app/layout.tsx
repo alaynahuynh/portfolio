@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
@@ -17,12 +17,14 @@ const inter = Inter({
   style: ["normal", "italic"],
 });
 
-/** Headings only (see --font-heading in globals.css) — a display serif
- * that's too high-contrast for body-size text. */
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+/** Headings only (see --font-heading in globals.css). A low-contrast
+ * reading serif; the opsz axis lets it tighten up at large title sizes
+ * and stay sturdy at small subheading sizes. */
+const sourceSerif = Source_Serif_4({
+  variable: "--font-source-serif",
   subsets: ["latin"],
   style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 /** Custom handwriting font made in Calligraphr from Alayna's own
@@ -52,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${alaynaHandwriting.variable} h-full antialiased`}
+      className={`${inter.variable} ${sourceSerif.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">

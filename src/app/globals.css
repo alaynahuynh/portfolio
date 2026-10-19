@@ -14,7 +14,7 @@
   --color-foreground: #2e322a; /* body text — soft charcoal with a muted green undertone */
   --color-muted-foreground: #5c6152; /* secondary text, still ≥4.5:1 on cream */
   --color-border: #e8dfd3; /* warm neutral hairline, doesn't fight the palette */
-  --color-band: #f4f5f2; /* light gray section stripe — home hero, case-study .cs-band */
+  --color-band: #f4f5f2; /* light gray section stripe — case-study .cs-band */
 
   /* Core portfolio palette — the site's actual brand colors, used
      sitewide (hero through footer) so the whole experience reads as one
@@ -75,8 +75,8 @@
 
   /* Typography */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  /* Headings: Playfair Display. Body stays on the sans above. */
-  --font-heading: var(--font-playfair), ui-serif, Georgia, serif;
+  /* Headings: Source Serif 4. Body stays on the sans above. */
+  --font-heading: var(--font-source-serif), ui-serif, Georgia, serif;
   /* Alayna's own handwriting (Calligraphr) — the only handwriting face. */
   --font-alayna-handwriting: var(--font-alayna), cursive;
 
@@ -88,7 +88,7 @@
   /* Motion — one shared timing system so hero, cards, nav, and type all
      move the same way. `--ease-soft` is for anything settling into place
      (hover lifts, dropdowns, page settling). `--ease-draw` is an even,
-     ink-like pace for stroke/reveal animations. `--ease-spring`
+     ink-like pace for stroke/reveal animations (the AH logo). `--ease-spring`
      keeps a touch of overshoot for tiny, restrained UI feedback only —
      avoid it for environmental/nature motion (water, swans, pages), which
      should read calm rather than bouncy; prefer --ease-soft there. */
@@ -692,39 +692,43 @@
   cursor: none;
 }
 
-/* Header name (Header.tsx): on hover or keyboard focus, "Alayna Huynh"
-   re-writes itself left to right, like a pen moving across the line. A
-   soft-edged mask (wider than the text) slides from its transparent end
-   to its opaque end, so the ink appears gradually instead of as a hard
-   wipe. At rest the mask sits on its opaque end — the name is fully
-   visible, including on touch devices that never hover. */
-.name-write {
-  -webkit-mask-image: linear-gradient(90deg, #000 0 50%, transparent 60% 100%);
-  mask-image: linear-gradient(90deg, #000 0 50%, transparent 60% 100%);
-  -webkit-mask-size: 250% 100%;
-  mask-size: 250% 100%;
-  -webkit-mask-position: 0% 0;
-  mask-position: 0% 0;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+/* AnimatedAHLogo: brush-like stroke draw for the A and H. Paths use
+   pathLength="1" so a single dasharray/dashoffset pair works regardless
+   of each path's actual geometric length. */
+@keyframes ah-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
-.group:hover .name-write,
-.group:focus-visible .name-write {
-  animation: name-write 1.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) both;
-}
-@keyframes name-write {
+
+/* The H flies out to the right into its resting position while it draws. */
+@keyframes ah-fly-right {
   from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
+    transform: translateX(-24px);
   }
   to {
-    -webkit-mask-position: 0% 0;
-    mask-position: 0% 0;
+    transform: translateX(0);
+  }
+}
+
+/* The H's middle line draws as a straight crossbar (a real "H"), then
+   droops down below the legs into a smile. Both path values use the same
+   command structure (one M + one Q) so the browser can interpolate `d`
+   directly. If a browser doesn't support animating `d`, this rule is
+   simply ignored and the element falls back to its plain `d` attribute
+   below — which is already the smile, so the resting logo is still
+   correct even without the morph playing. */
+@keyframes ah-crossbar-to-smile {
+  from {
+    d: path("M127,54 Q136,54 145,54");
+  }
+  to {
+    d: path("M124,80 Q136,94 148,80");
   }
 }
 
 /* Floating nav (Header.tsx): the container softly lifts into place, an
-   ink outline traces itself around it, then each item (name, links,
+   ink outline traces itself around it, then each item (logo, links,
    resume) fades/rises in on its own delay — see nav-stagger-item below.
    All three stages overlap slightly rather than running strictly in
    sequence, which reads as one continuous gesture instead of a

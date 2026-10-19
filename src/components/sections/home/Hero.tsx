@@ -48,7 +48,7 @@ function RetroTooltip({ children }: { children: React.ReactNode }) {
  */
 export function Hero() {
   return (
-    <section className="relative flex flex-col justify-center overflow-hidden border-b border-border bg-band pt-28 pb-16 sm:min-h-svh sm:pt-24 sm:pb-0">
+    <section className="relative flex flex-col justify-center overflow-hidden border-b border-border bg-background pt-28 pb-16 sm:min-h-svh sm:pt-24 sm:pb-0">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
         <div className="group/hero relative mx-auto aspect-300/330 w-[84%] sm:aspect-1100/650 sm:w-full">
           <HeroGlow />
