@@ -32,9 +32,9 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     category: "Product Design · UX Audit · Website Redesign",
     title: "Vietnamese Noodle House",
     tagline:
-      "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
+      "Rebuilding a family restaurant's website so customers can find the menu and order from the right location.",
     description:
-      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location. Since the July launch, the owners report mistaken orders dropping from about 8 a month to about 1.",
+      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one with a warmer look built around photos of the food, and a clearer way to order from the right location. Since the July launch, the owners report mistaken orders dropping from about 8 a month to about 1.",
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
     ctaHref: "https://vietnoodlehouse.com/",
@@ -69,27 +69,27 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   },
 
   background: {
-    heading: "The old site was actively working against the business",
+    heading: "The old site was hurting the business",
     narrative:
-      "The old site wasn't mobile-responsive: on a phone the layout broke, text was unstyled, and the hero image was broken or showing a placeholder. On desktop it was usable but generic — a dated layout with a visual identity that said nothing about the food or the family behind it. For a restaurant that depends on people finding it, trusting it, and ordering from it online, that gap between the real place and its website was a real cost.",
+      "The old site wasn't mobile-responsive: on a phone the layout broke, text was unstyled, and the hero image was broken or showing a placeholder. On desktop it was usable but dated, and it said nothing about the food or the family behind it. For a restaurant that takes orders online, that mattered.",
     placeholder: false,
     principles: {
       title: "The identity I wanted the redesign to earn",
       items: [
         {
-          title: "Warm, not generic",
+          title: "Type",
           description:
-            "A serif display face paired against a clean sans body — editorial, not templated.",
+            "A serif for headings and a simple sans-serif for everything else.",
         },
         {
-          title: "Photography-forward",
+          title: "Photography",
           description:
-            "Real photography of the food and the locations carrying the page, instead of a stock-feeling layout doing the work alone.",
+            "Photos of the actual food and dining rooms do most of the work on each page.",
         },
         {
-          title: "Mobile gets equal care",
+          title: "Mobile",
           description:
-            "Every page designed and refined at both breakpoints together, not shrunk down from desktop as an afterthought.",
+            "I designed every page for phone and desktop at the same time, instead of shrinking the desktop version.",
         },
       ],
     },
@@ -102,9 +102,9 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   research: {
     heading: "Auditing the live site",
     intro:
-      "There was no separate discovery phase to run — the old site was live, in front of real customers, and visibly failing them. So the audit doubled as the research: a heuristic review of the desktop experience, and a full pass on mobile, where the failures were worse.",
+      "The old site was live and its problems were easy to see, so I started with an audit instead of a separate research phase: a heuristic review of the desktop experience, and a full pass on mobile, where the failures were worse.",
     participants:
-      "Self-directed UX audit across desktop and mobile breakpoints — not participant usability testing.",
+      "A self-directed UX audit on desktop and mobile, not usability testing with participants.",
     swot: { strengths: [], weaknesses: [], opportunities: [], threats: [] },
     swotPlaceholder: true,
     findings: [],
@@ -113,9 +113,9 @@ export const vietnameseNoodleHouse: CaseStudyData = {
       {
         title: "Two look-alike ordering buttons",
         whatParticipantsSaid:
-          "The homepage's main actions were two ordering buttons — \"Camillus\" and \"N Syracuse\" — styled identically except for border color, with no address, hours, or map beside them. A customer had to already know which town their restaurant is in.",
+          "The homepage's main actions were two ordering buttons, \"Camillus\" and \"N Syracuse\", styled identically except for border color, with no address, hours, or map beside them. A customer had to already know which town their restaurant is in.",
         whyItMatters:
-          "Each button opens a different location's ordering page — and the owners told me customers were already placing orders at the wrong location.",
+          "Each button opens a different location's ordering page, and the owners told me customers were already placing orders at the wrong location.",
         designResponse:
           "Location cards with address, map, and hours, then a confirmation that repeats the address before handing off to ordering.",
       },
@@ -126,14 +126,14 @@ export const vietnameseNoodleHouse: CaseStudyData = {
         whyItMatters:
           "The menu is core content for a restaurant site, but as a PDF it couldn't match the site's identity or adapt to a phone screen.",
         designResponse:
-          "Rebuilt the menu as a real page — seven categories, ~50 items — with a sticky category nav that highlights where you are.",
+          "Rebuilt the menu as a real page with seven categories and ~50 items, plus a sticky category nav that highlights where you are.",
       },
       {
         title: "The mobile hero worked against the business priority",
         whatParticipantsSaid:
-          "The heading sat directly on the brightest part of the hero photo with no scrim behind it, and a decorative callout tag crowded the headline — while online ordering, the actual business priority, wasn't the primary action.",
+          "The heading sat directly on the brightest part of the hero photo with no scrim behind it, and a decorative callout tag crowded the headline. Online ordering, the restaurant's top priority, wasn't the main button.",
         whyItMatters:
-          "If the highest-priority action isn't legible or isn't primary, the homepage isn't doing its one job.",
+          "Ordering online should be the easiest thing to find on the homepage, and it wasn't.",
         designResponse:
           "Order Online promoted to the primary filled CTA, View Menu made secondary, a scrim added behind the heading, and the callout tag repositioned.",
       },
@@ -142,18 +142,18 @@ export const vietnameseNoodleHouse: CaseStudyData = {
         whatParticipantsSaid:
           "The About page was text-only with a large empty gap on desktop, and the footer emphasized the abbreviation \"VNH\" over the restaurant's actual name.",
         whyItMatters:
-          "Empty space and an unclear name both read as an unfinished site, not a considered one.",
+          "Both made the site look unfinished.",
         designResponse:
-          "Added real photography to About and rebalanced the footer around the restaurant's full name.",
+          "Added photos of the dining rooms to About and rebalanced the footer around the restaurant's full name.",
       },
       {
         title: "\"Message sent!\" wasn't true",
         whatParticipantsSaid:
-          "The contact form displayed a success message on every submission, but the email was never actually being delivered anywhere.",
+          "The contact form displayed a success message on every submission, but the email was never delivered anywhere.",
         whyItMatters:
-          "A contact form that silently fails is worse than no contact form — it tells the business every message got through when none did.",
+          "That's worse than having no form at all: customers thought their messages went through, and the owners never saw them.",
         designResponse:
-          "Rebuilt the form to actually send via Resend, and to fail honestly and visibly if it's ever misconfigured again.",
+          "Rebuilt the form to send through Resend, and to show a clear error if it ever stops working.",
       },
     ],
   },
@@ -221,15 +221,15 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   },
 
   finalThoughts: {
-    pullQuote: "Sometimes the better design adds a step.",
+    pullQuote: "Adding a step on purpose.",
     // Two paragraphs, split on the blank line by VNHCaseStudy.
     whatILearned:
-      "Good design usually means removing steps, and the location flow added one on purpose. Friction is a tool when the mistake it prevents costs more than the step — and here the owner noticed the difference.\n\nThe contact form taught me the other half: an interaction that looks like it works isn't done until it actually does.",
+      "I usually try to remove steps, but the location flow adds one on purpose. One extra tap is worth it if it keeps an order from going to the wrong kitchen, and the owners noticed the difference.\n\nThe contact form was a reminder to check that a feature actually works, not just that it shows a success message.",
     nextStepsHeading: "What's next",
     nextSteps:
-      "Add location-level analytics on the ordering hand-off so the owners' count has data behind it, and keep checking in with them as real usage of the new site grows.",
+      "Add location-level analytics on the ordering hand-off so the owners' count has data behind it, and keep checking in with them as more customers use the new site.",
     proudestOf:
-      "Designing the confirm step twice — inline on desktop, a bottom sheet on mobile — instead of shrinking one layout, all around ordering platforms I couldn't change.",
+      "Designing the confirm step twice (inline on desktop, a bottom sheet on mobile) instead of shrinking one layout, all around ordering platforms I couldn't change.",
     placeholder: false,
   },
 

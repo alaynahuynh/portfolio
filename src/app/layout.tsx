@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
@@ -9,10 +9,18 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-/** The site's one typeface — headings and body both use Inter. Italic
- * is loaded for the few italic captions/quotes in the case studies. */
+/** Body text, captions, labels, and nav. Italic is loaded for the few
+ * italic captions/quotes in the case studies. */
 const inter = Inter({
   variable: "--font-inter",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+});
+
+/** Headings only (see --font-heading in globals.css) — a display serif
+ * that's too high-contrast for body-size text. */
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   style: ["normal", "italic"],
 });
@@ -44,7 +52,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${alaynaHandwriting.variable} h-full antialiased`}
+      className={`${inter.variable} ${playfair.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">

@@ -285,18 +285,18 @@ function BeforePair({
 
 const SUPPORTING_PAGES = [
   {
-    title: "About — filling an empty page",
-    copy: "Real photography of the dining rooms fills what used to be a text-only page.",
+    title: "About: filling an empty page",
+    copy: "Photos of the dining rooms fill what used to be a text-only page.",
     image: ABOUT_DESKTOP,
   },
   {
-    title: "Food Truck — a page that didn't exist",
-    copy: "The truck travels around Syracuse but had no page on the old site. I built one from scratch in the same identity, centered on where it'll be next.",
+    title: "Food Truck: a new page",
+    copy: "The truck travels around Syracuse but had no page on the old site. I built one in the same style, centered on where the truck will be next.",
     image: FOOD_TRUCK_DESKTOP_TOP,
   },
   {
-    title: "Contact — a form that actually sends",
-    copy: "Looks much like before. The difference is underneath: messages now actually arrive, through Resend.",
+    title: "Contact: a form that sends",
+    copy: "It looks about the same as before, but messages now actually arrive (sent through Resend).",
     image: CONTACT_DESKTOP,
   },
 ];
@@ -328,13 +328,13 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <div>
               <dt><Label>Client</Label></dt>
               <dd className="mt-2 text-sm text-muted-foreground">
-                A family-owned restaurant with two locations — North Syracuse and Camillus — and a food truck.
+                A family-owned restaurant with two locations (North Syracuse and Camillus) and a food truck.
               </dd>
             </div>
             <div>
               <dt><Label>My role</Label></dt>
               <dd className="mt-2 text-sm text-muted-foreground">
-                Solo — I audited the old site, then designed and built the new one across every page, desktop and
+                Solo. I audited the old site, then designed and built the new one across every page, desktop and
                 mobile.
               </dd>
             </div>
@@ -342,7 +342,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               <dt><Label>Constraint</Label></dt>
               <dd className="mt-2 text-sm text-muted-foreground">
                 Online ordering stays on the restaurant&rsquo;s existing ordering platforms (MenuDrive/Lavu), with a
-                separate link per location — the site has to route people to the right one.
+                separate link per location, so the site has to send people to the right one.
               </dd>
             </div>
             <div>
@@ -455,7 +455,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
           </div>
           <Reveal delay={160}>
             <p className="mt-4 max-w-2xl text-sm text-muted-foreground">
-              Desktop has room to show the confirmation inline, right below the card grid — a natural next step in the
+              Desktop has room to show the confirmation inline, right below the card grid, in the
               same view.
             </p>
           </Reveal>
@@ -477,8 +477,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <Reveal delay={160}>
               <p className="text-muted-foreground sm:pt-9">
                 On mobile, a second full card stacked underneath read as duplicated information rather than a next
-                step. So I redesigned this step as a bottom sheet that covers the list instead of extending it — the
-                same information, but a sequence that&rsquo;s actually clear on a small screen.
+                step. So I redesigned this step as a bottom sheet that covers the list instead of extending it. It&rsquo;s the
+                same information, in an order that&rsquo;s clear on a small screen.
               </p>
               {orderingFlow?.takeaway && (
                 <p className="mt-4 text-sm text-muted-foreground italic">{orderingFlow.takeaway}</p>
@@ -494,7 +494,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               <p className="mt-3 text-muted-foreground">
                 Ordering online is the business&rsquo;s top priority, and this flow adds one confirmation tap in front
                 of it. I accepted that because wrong-location orders were already happening, and each one costs the
-                customer and the restaurant far more than a tap — the extra step is a single button that already
+                customer and the restaurant far more than a tap. The extra step is a single button that already
                 names the location they picked.
               </p>
             </div>
@@ -503,7 +503,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               <p className="mt-3 font-heading text-3xl text-foreground">About 8 → about 1</p>
               <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month since the July launch, by the owners&rsquo; count</p>
               <p className="mt-4 text-muted-foreground">
-                That&rsquo;s their tally, not analytics, and the redesign changed more than this flow at once — but
+                That&rsquo;s their tally, not analytics, and the redesign changed more than this flow at once, but
                 the location flow was the change aimed at mistaken orders. Location-level analytics on the hand-off
                 would put data behind it.
               </p>

@@ -58,7 +58,7 @@ export default function AboutPage() {
               </p>
               <p>
                 I&apos;m currently studying UX Design, with a minor in Industrial Design, at the University of Michigan, and I&apos;m especially drawn to
-                projects that bring creativity, technology, and people together.
+                projects where art and technology meet.
               </p>            </div>
 
           </div>

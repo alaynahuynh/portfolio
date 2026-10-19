@@ -153,6 +153,12 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
         const nextStillRight = i === LEAF_COUNT - 1 || clamp(progress - (i + 1), 0, 1) < 0.5;
         const isTopOfLeft = t >= 0.5 && nextStillRight;
         el.style.pointerEvents = (isTopOfRight || isTopOfLeft) && closeProgress === 0 ? "auto" : "none";
+        // On the left, only the back face may take clicks. The front face
+        // (with its artwork and "Explore" links) is mirrored over there
+        // but hidden — without this, hovering the left page could still
+        // land on those links instead of turning the page back.
+        el.style.setProperty("--front-pe", isTopOfLeft ? "none" : "auto");
+        el.style.setProperty("--back-pe", isTopOfLeft ? "auto" : "none");
       }
       const nearest = clamp(Math.round(progress), 0, STAGE_COUNT - 1);
       if (nearest !== stageRef.current) {

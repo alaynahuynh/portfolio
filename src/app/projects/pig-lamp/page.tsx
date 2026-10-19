@@ -13,7 +13,7 @@ import type { CaseStudyImageSpec } from "@/types/case-study";
 export const metadata: Metadata = {
   title: "Pig Lamp",
   description:
-    "A laser-cut wood pig lamp — hand-dimensioned sketches, Illustrator cut files, raw-wood prototypes, and a painted final — made for a clinic's autistic children, who found it comforting and cute.",
+    "A laser-cut wood pig lamp made for a clinic's autistic children, who found it comforting and cute. Hand-measured sketches, Illustrator cut files, raw-wood prototypes, and a painted final.",
 };
 
 /**
@@ -164,7 +164,7 @@ export default function PigLampPage() {
         </Reveal>
         <Reveal delay={60}>
           <p className="mt-6 max-w-2xl text-xl text-foreground sm:text-2xl">
-            A laser-cut wood lamp whose body is the lampshade — from a project creating customized lamps for
+            A laser-cut wood lamp whose body is the lampshade, from a project making customized lamps for
             autistic children.
           </p>
         </Reveal>
@@ -212,9 +212,8 @@ export default function PigLampPage() {
           <Reveal delay={60}>
             <Label>My part</Label>
             <p className="mt-3 text-lg text-muted-foreground">
-              I designed and fabricated this lamp — sketching and sizing every part, drawing the cut files in
-              Illustrator, then cutting, test-fitting, and painting it — translating user needs into physical design
-              constraints.
+              I designed and fabricated this lamp: I sketched and sized every part, drew the cut files in
+              Illustrator, then cut, test-fit, and painted it.
             </p>
           </Reveal>
         </div>
@@ -275,7 +274,7 @@ export default function PigLampPage() {
             <CaseStudyFullImage image={CUT_FILE_RIBS} />
           </div>
           <Caption>
-            Left: the main cut file — tabbed ribs, the silhouette, slotted rings, and leg panels. Right: more ribs, plus
+            Left: the main cut file, with tabbed ribs, the silhouette, slotted rings, and leg panels. Right: more ribs, plus
             the small example piece I cut first to make sure the slots would fit into the disc.
           </Caption>
         </Reveal>
@@ -289,7 +288,7 @@ export default function PigLampPage() {
             Getting the pieces to fit took a couple of tries.
           </Heading>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            The hardest part was adjusting for the kerf — the sliver of wood the laser burns away — so the slots and
+            The hardest part was adjusting for the kerf (the sliver of wood the laser burns away) so the slots and
             ribs actually fit together. It took a couple of tries to get everything aligned just right. I worked it
             out in raw wood before the painted final.
           </p>
@@ -370,7 +369,7 @@ export default function PigLampPage() {
         <Reveal>
           <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Precision decides whether it holds together.
+            Small measurements make a big difference.
           </Heading>
         </Reveal>
         <div className="mt-10 grid gap-10 sm:grid-cols-2">
@@ -391,8 +390,8 @@ export default function PigLampPage() {
               </li>
               <li>
                 <span className="font-medium text-foreground">Prototype the scale, not just the fit.</span>{" "}I&rsquo;d make
-                the pig a little smaller so it looks more proportional — something a quick cardboard mockup at full
-                size would have shown before cutting wood.
+                the pig a little smaller so it looks more proportional. A quick full-size cardboard mockup
+                would have shown that before cutting wood.
               </li>
             </ul>
           </Reveal>

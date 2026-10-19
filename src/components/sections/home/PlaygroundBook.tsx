@@ -35,9 +35,6 @@ const STAGE_VH = 50;
 // book before the sticky scene releases and the footer scrolls into view.
 const CLOSE_VH = 70;
 const CLOSED_HOLD_VH = 30;
-// How far into the first page turn (in stages) the "Open Sketchbook" link
-// takes to fade out — just as the cover starts to lift.
-const CTA_FADE_STAGE = 0.12;
 // The sticky scene is itself one viewport tall, so the track needs that
 // much extra height for every scroll span above to actually be reachable.
 const RELEASE_VH = 100;
@@ -159,8 +156,8 @@ function animateScrollTo(
  * rises up from below the fold; after that its open page is driven
  * directly by scroll position through the rest of the pinned track.
  *
- * Every other way of turning a page (clicking the book itself, the
- * Open Sketchbook link, or the arrow keys) funnels through `scrollToStage`,
+ * Every other way of turning a page (clicking the book itself or the
+ * arrow keys) funnels through `scrollToStage`,
  * which just moves the window's scroll position to that stage — the
  * resulting scroll is what actually plays the flip, so every interaction
  * stays in sync with the scroll track instead of animating independently
@@ -182,7 +179,6 @@ export function PlaygroundBook() {
   const highlightTimeoutRef = useRef<number | undefined>(undefined);
   const bookContainerRef = useRef<HTMLDivElement>(null);
   const bookApiRef = useRef<SketchbookBookHandle>(null);
-  const ctaRef = useRef<HTMLButtonElement>(null);
   const stageRef = useRef(0);
   // True from the moment a click/key navigation starts an animated scroll
   // until it actually finishes — see handleStageChange below.
@@ -342,7 +338,7 @@ export function PlaygroundBook() {
       const stagePx = (STAGE_VH / 100) * window.innerHeight;
       const introProgress = introPx > 0 ? clamp(introScrolledPx / introPx, 0, 1) : 1;
       // Hold the highlight back until the text is actually on screen.
-      const riseProgress = applyIntro(introProgress, coverProgress >= 1);
+      applyIntro(introProgress, coverProgress >= 1);
 
       // The book's open page tracks this directly, frame for frame — see
       // SketchbookBook's `setProgress`. Zero for the whole intro span
@@ -354,19 +350,6 @@ export function PlaygroundBook() {
       const closeProgress = closePx > 0 ? clamp((introScrolledPx - closeStartPx) / closePx, 0, 1) : 0;
       bookApiRef.current?.setProgress(stageProgress, closeProgress);
 
-      // Only worth showing while the book rests closed on its cover: it
-      // fades out as soon as the cover starts to lift (gone by
-      // CTA_FADE_STAGE), so it never sits under a half-open page. Derived
-      // from this tick's own progress rather than stageRef, which a jump
-      // (chapter dot, deep link) only updates after this point. Once
-      // invisible it's also hidden outright, so it can't catch a tap or
-      // keyboard focus below the open book.
-      if (ctaRef.current) {
-        const coverResting = closeProgress === 0 ? 1 - clamp(stageProgress / CTA_FADE_STAGE, 0, 1) : 0;
-        const ctaOpacity = riseProgress * coverResting;
-        ctaRef.current.style.opacity = ctaOpacity.toFixed(3);
-        ctaRef.current.style.visibility = ctaOpacity > 0.05 ? "visible" : "hidden";
-      }
     }
 
     function onScroll() {
@@ -398,8 +381,8 @@ export function PlaygroundBook() {
     return rect.bottom > 0 && rect.top < window.innerHeight;
   }
 
-  // The single way every non-scroll interaction (a click on the book, the
-  // Open Sketchbook link, or the arrow keys) turns a page: move the
+  // The single way every non-scroll interaction (a click on the book or
+  // the arrow keys) turns a page: move the
   // window's scroll position to that stage. Scroll position is the book's
   // source of truth (see the scroll effect above), so the resulting
   // scroll — a slow, hand-tuned animated scroll by default (see
@@ -577,16 +560,6 @@ export function PlaygroundBook() {
                 onStageChange={handleStageChange}
                 onRequestStage={(target) => scrollToStage(target)}
               />
-
-              <button
-                ref={ctaRef}
-                type="button"
-                onClick={() => scrollToStage(1)}
-                className="font-alayna-handwriting -translate-y-4.5 cursor-pointer text-lg text-foreground underline decoration-foreground/50 underline-offset-4 transition-colors hover:text-foreground/70 sm:text-xl"
-                style={{ opacity: 0, visibility: "hidden" }}
-              >
-                Open Sketchbook →
-              </button>
             </div>
 
           </div>

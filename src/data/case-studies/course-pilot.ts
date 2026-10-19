@@ -40,7 +40,7 @@ export const coursePilot: CaseStudyData = {
     platform: "Canvas-integrated desktop experience",
     tools: ["Figma"],
     disclosure:
-      "Conceptual Canvas integration — designed as a Figma prototype, not an official Canvas or university product.",
+      "Conceptual Canvas integration, designed as a Figma prototype. Not an official Canvas or university product.",
   },
 
   overview: {
@@ -53,9 +53,9 @@ export const coursePilot: CaseStudyData = {
   },
 
   background: {
-    heading: "Students had the information. Finding and acting on it was the problem.",
+    heading: "The information was all in Canvas. Students just couldn't find it fast enough to use it.",
     narrative:
-      "Assignments, announcements, grades, syllabi, files, and deadlines are all in Canvas — just spread across different pages, each organized a little differently by each professor. Students weren't missing information because it didn't exist; they were missing it because nothing connected it to what to do next.",
+      "Assignments, announcements, grades, syllabi, files, and deadlines are all in Canvas, but they're spread across different pages, and each professor organizes them a little differently. Nothing ties that information to what a student should do next.",
     placeholder: false,
   },
 
@@ -134,7 +134,7 @@ export const coursePilot: CaseStudyData = {
       {
         title: "AI has to show its work",
         whatParticipantsSaid:
-          "Students said inaccurate academic information would quickly erode their trust. They wanted to see where answers came from and why tasks were ranked — in a small expandable dropdown, not a paragraph — and to change priorities themselves.",
+          "Students said inaccurate academic information would quickly erode their trust. They wanted to see where answers came from and why tasks were ranked (in a small expandable dropdown, not a paragraph), and to change priorities themselves.",
         whyItMatters: "An AI assistant is only useful if students believe the information is reliable.",
         designResponse:
           "Sources on every answer, a compact “Why this?” on each recommended task, and Adjust Plan to change a plan before acting on it.",
@@ -269,7 +269,7 @@ export const coursePilot: CaseStudyData = {
   // for "students didn't need another app," not two.
 
   aiBoundary:
-    "Assist with understanding and planning — not completing graded work.",
+    "Help with understanding and planning, never with completing graded work.",
 
   ideation: {
     whyThisTitle: "Why AI?",
@@ -349,7 +349,7 @@ export const coursePilot: CaseStudyData = {
   ],
 
   platformIntegration: {
-    heading: "Students didn’t need another productivity app. They needed help inside the tool they already use.",
+    heading: "Students already spend their time in Canvas, so CoursePilot lives there instead of in a separate app.",
     copy: "CoursePilot opens from the Canvas sidebar. A popup handles quick questions; anything that needs planning or follow-up expands into a full workspace.",
     flowSteps: ["Canvas Dashboard", "CoursePilot", "New Chat"],
     // Once exported: save the Canvas dashboard screenshot showing the
@@ -399,7 +399,7 @@ export const coursePilot: CaseStudyData = {
   },
 
   earlyExploration: {
-    heading: "Exploring the experience before polishing the interface.",
+    heading: "Sketching the structure before the visuals.",
     copy: "Before any high-fidelity screens, I sketched how the dashboard, the AI popup, and daily summaries should feel as raw structure.",
     items: [
       {
@@ -450,9 +450,9 @@ export const coursePilot: CaseStudyData = {
     placeholder: false,
     iterationStory: {
       problem:
-        "Early CoursePilot concepts relied heavily on conversational, chat-style responses. As I designed more complex tasks — study planning, grade calculations, weekly summaries — long text responses became difficult to scan.",
+        "Early CoursePilot concepts relied heavily on conversational, chat-style responses. As I designed more complex tasks like study planning, grade calculations, and weekly summaries, long text responses got hard to scan.",
       decision:
-        "Conversation stayed the input. The response became structured UI, designed around the task.",
+        "Students still ask in plain words, but the answer comes back as a schedule, a summary, or a breakdown instead of a paragraph.",
       pairs: [
         {
           task: "Plan My Night",
@@ -490,7 +490,7 @@ export const coursePilot: CaseStudyData = {
         },
       ],
       takeaway:
-        "The shift wasn’t from chat to dashboard. It was from generic AI output to task-specific interfaces.",
+        "Each answer gets a layout that fits the task the student is trying to do.",
       comparisonLabels: {
         early: ["Harder to scan", "Reasoning buried", "Limited direct action"],
         final: ["Scannable hierarchy", "Visible reasoning + sources", "Editable/actionable output"],
@@ -522,13 +522,13 @@ export const coursePilot: CaseStudyData = {
   testing: {
     heading: "Five students, one prototype",
     intro:
-      "I ran task-based usability sessions with five students on the Figma prototype, each focused on one or two features. Every participant saw value in it — but each session also surfaced a different gap. Because each finding comes from one participant, I treat them as signals to design against, not patterns yet.",
+      "I ran task-based usability sessions with five students on the Figma prototype, each focused on one or two features. Every participant saw value in it, and each session also turned up a different problem. Because each finding comes from one participant, I treat them as signals to design against, not patterns yet.",
     tasks: [
-      "P1 · Junior, uses Canvas Calendar and a notes app — Catch Me Up, then Plan My Night",
-      "P2 · Sophomore, often starts close to deadlines — Plan My Night",
-      "P3 · First-year, relies on Canvas notifications — Catch Me Up",
-      "P4 · Senior, checks syllabi before academic decisions — grade question",
-      "P5 · Junior, balancing clubs and coursework — Plan My Night",
+      "P1 · Junior, uses Canvas Calendar and a notes app · tested Catch Me Up, then Plan My Night",
+      "P2 · Sophomore, often starts close to deadlines · tested Plan My Night",
+      "P3 · First-year, relies on Canvas notifications · tested Catch Me Up",
+      "P4 · Senior, checks syllabi before academic decisions · tested a grade question",
+      "P5 · Junior, balancing clubs and coursework · tested Plan My Night",
     ],
     changedLabel: "What I'd change",
     iterations: [
@@ -537,7 +537,7 @@ export const coursePilot: CaseStudyData = {
         feedback:
           "P1, looking at the generated plan: “Wait, why is this assignment first?” Then: “Unless there's a reason this one is more important, but I can't really tell from looking at it.”",
         finalIteration:
-          "Each task already has a “Why this?” link, but the reason needs to be visible without clicking: show the deciding factor — due date, estimated effort — right on the task row.",
+          "Each task already has a “Why this?” link, but the reason needs to be visible without clicking: show the deciding factor (due date or estimated effort) right on the task row.",
       },
       {
         title: "Time estimates read as fixed",
@@ -563,9 +563,9 @@ export const coursePilot: CaseStudyData = {
       {
         title: "A source wasn't enough to trust a grade",
         feedback:
-          "P4 found the source — “That's good” — but: “I think I'd still want to know if it's missing anything, though. Like if participation isn't graded yet.” And: “I wouldn't make a decision about dropping a class or anything serious without checking it myself.”",
+          "P4 found the source (“That's good”), but added: “I think I'd still want to know if it's missing anything, though. Like if participation isn't graded yet.” And: “I wouldn't make a decision about dropping a class or anything serious without checking it myself.”",
         finalIteration:
-          "Show the calculation's assumptions and missing inputs, such as ungraded categories, next to the result — not just where the numbers came from.",
+          "Show the calculation's assumptions and missing inputs, such as ungraded categories, next to the result, not just where the numbers came from.",
       },
     ],
     whatWorked: [
@@ -624,19 +624,19 @@ export const coursePilot: CaseStudyData = {
       copy: "A student describes their evening; CoursePilot ranks what's due and lays out a schedule that fits.",
       prompt: "I have 3 hours tonight. What should I work on?",
       callouts: [
-        { title: "Priority", description: "Ranked by more than due date — estimated effort counts too." },
+        { title: "Priority", description: "Ranked by due date and estimated effort." },
         { title: "Fits the time", description: "The schedule fills the hours the student says they have." },
         { title: "Why this?", description: "Each task can explain why it's ranked where it is." },
         { title: "Sources", description: "Every task links back to its Canvas assignment." },
       ],
-      principle: "AI recommends. Students decide.",
+      principle: "Nothing changes in a student's plan or calendar until they approve it.",
     },
 
     secondaryMoments: [
       {
         name: "Catch Me Up",
         heading: "Understand what changed without checking every course.",
-        copy: "Assignments and announcements from every course in one summary — nearly every student I interviewed mentioned missing announcements.",
+        copy: "Assignments and announcements from every course in one summary. Nearly every student I interviewed mentioned missing announcements.",
         image: {
           src: "/images/projects/coursepilot/final/catch-me-up.png",
           alt: "Catch Me Up response to “Catch me up on this week”: 2 assignments due and 1 announcement, listed with due dates, estimated time, and the Canvas sources they came from.",
@@ -652,7 +652,7 @@ export const coursePilot: CaseStudyData = {
       {
         name: "Sourced Q&A",
         heading: "Answers you can check.",
-        copy: "The goal wasn't to make AI look certain — it was to make important answers inspectable. A short answer comes with the original wording and where it came from.",
+        copy: "AI can be wrong, so important answers show where they came from. A short answer comes with the original wording and where it came from.",
         steps: ["“What's the late work policy?”", "Concise answer", "Source", "View in syllabus"],
         image: {
           src: "/images/projects/coursepilot/final/syllabus-answer.png",
@@ -681,14 +681,14 @@ export const coursePilot: CaseStudyData = {
           alt: "Adjust your plan overlay: each task with minus and plus time controls, an Anything else CoursePilot should consider? field, a 2 hr 35 planned, 25 min remaining summary, and Cancel and Update Plan buttons.",
           width: 704,
           height: 576,
-          caption: "Adjust Plan — students change time per task before anything is saved.",
+          caption: "Adjust Plan: students change the time per task before anything is saved.",
         },
         {
           src: "/images/projects/coursepilot/final/add-to-calendar.png",
           alt: "Add plan to calendar overlay listing the three time blocks for Friday, May 16, a calendar picker with Canvas Calendar and Google Calendar, and Cancel and Add Plan buttons.",
           width: 704,
           height: 648,
-          caption: "Add to Calendar — the exact events are reviewed before they're added.",
+          caption: "Add to Calendar: students review the exact events before they're added.",
         },
       ],
     },
@@ -699,9 +699,9 @@ export const coursePilot: CaseStudyData = {
 
   finalThoughts: {
     whatILearned:
-      "The real decisions were about when AI should summarize, when it should recommend, when students needed control, and when an answer needed evidence. Testing showed I'd underestimated the last one: students wanted the reasoning visible, not one click away.",
+      "The hard part was deciding when AI should summarize, when it should recommend, when students needed control, and when an answer needed evidence. Testing showed I'd underestimated the last one: students wanted the reasoning visible, not one click away.",
     nextSteps:
-      "Design the five changes from testing — visible reasons, approximate estimates, available time, action-needed announcements, and stated assumptions — and test them with new students before adding any new AI features.",
+      "Design the five changes from testing (visible reasons, approximate estimates, available time, action-needed announcements, and stated assumptions) and test them with new students before adding any new AI features.",
     placeholder: false,
   },
 
@@ -729,7 +729,7 @@ export const coursePilot: CaseStudyData = {
     },
     {
       label: "Not yet done",
-      items: ["Redesign from testing findings", "Canvas API feasibility review", "Engineering — this is a design prototype, not built software"],
+      items: ["Redesign from testing findings", "Canvas API feasibility review", "Engineering (this is a design prototype, not built software)"],
     },
   ],
 

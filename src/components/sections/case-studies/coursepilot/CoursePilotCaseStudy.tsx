@@ -369,7 +369,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            I mapped how conversation, Canvas information, AI processing, and student decisions connect — including where a student can push back and regenerate.
+            I mapped how conversation, Canvas information, AI processing, and student decisions connect, including where a student can push back and regenerate.
           </p>
         </Reveal>
 
@@ -499,7 +499,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Final experience</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-4xl sm:text-6xl">
-            Ask in plain words. Get something you can act on.
+            The final prototype.
           </Heading>
         </Reveal>
         {finalExperience?.subheading && (
@@ -709,7 +709,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Designing an AI product wasn&rsquo;t primarily about designing a chat interface.
+            Most of the hard decisions had nothing to do with the chat box.
           </Heading>
         </Reveal>
         <Reveal delay={40}>

@@ -106,7 +106,7 @@ export const projects: Project[] = [
     summary: "Redesigned and built a family restaurant's live site. Since its July launch, the owners report mistaken orders fell from about 8 a month to about 1.",
     credibility:
       "Designed and built for a real restaurant while working within existing MenuDrive/Lavu platform constraints.",
-    tagline: "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
+    tagline: "Rebuilding a family restaurant's website so customers can find the menu and order from the right location.",
     tags: ["Product Design", "UX Audit", "Website Redesign"],
     status: "in-progress",
     accent: "sage-deep",

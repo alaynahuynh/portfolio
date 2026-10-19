@@ -72,6 +72,9 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
             // truly blank page area) drags into a native text selection
             // instead of just registering as a page-turn.
             onFrontClick && "cursor-pointer select-none",
+            // Set per-leaf by SketchbookBook's apply(): off while this
+            // page lies turned on the left.
+            "[pointer-events:var(--front-pe,auto)]",
           )}
           style={{ backfaceVisibility: "hidden" }}
         >
@@ -91,6 +94,7 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
               "absolute inset-0 overflow-y-auto rounded-lg",
               coverBack ? "page-cover-inside" : "page-parchment",
               onBackClick && "cursor-pointer select-none",
+              "[pointer-events:var(--back-pe,auto)]",
             )}
             style={{
               backfaceVisibility: "hidden",
