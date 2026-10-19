@@ -182,7 +182,7 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
   return (
     <div
       ref={containerRef}
-      className="group relative w-full max-w-[58rem]"
+      className="group relative w-full max-w-[56rem]"
       style={{ perspective: "2400px", opacity: 0 }}
     >
       {/* Ground shadow — stays anchored to the meadow while the book above

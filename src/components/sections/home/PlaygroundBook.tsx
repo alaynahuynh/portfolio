@@ -553,13 +553,16 @@ export function PlaygroundBook() {
               </div>
             </div>
 
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 pt-28 pb-10 sm:px-8 sm:pt-32">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 pt-36 pb-10 sm:px-8 sm:pt-40">
               <SketchbookBook
                 containerRef={bookContainerRef}
                 ref={bookApiRef}
                 onStageChange={handleStageChange}
                 onRequestStage={(target) => scrollToStage(target)}
               />
+              {/* Holds the space the old "Open Sketchbook" link used (one
+                  28px text line), so the book sits where it always has. */}
+              <div aria-hidden="true" className="h-7 shrink-0" />
             </div>
 
           </div>

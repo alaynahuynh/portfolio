@@ -191,7 +191,7 @@ export function Header() {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-5 sm:pt-6">
       <div
         className={cn(
-          "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-border/70 bg-background/55 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] lg:w-[56%]",
+          "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-border/70 bg-background/55 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] md:w-[80%] lg:w-[60%]",
           scrolled && "border-border bg-background/85 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
         )}
       >
