@@ -36,7 +36,7 @@ export function AboutSkills() {
   return (
     <section
       aria-labelledby="about-skills"
-      className="mx-auto mt-16 max-w-3xl border-t border-border pt-12 sm:mt-20 lg:max-w-5xl"
+      className="mx-auto mt-12 max-w-3xl border-t border-border pt-8 sm:mt-10 lg:max-w-5xl"
     >
       <h2 id="about-skills" className="font-alayna-handwriting text-3xl text-sage-deep sm:text-4xl">
         What I do

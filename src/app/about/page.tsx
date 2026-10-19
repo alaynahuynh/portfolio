@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="bg-background">
-      <Container className="pt-28 pb-20 sm:pt-36 sm:pb-28">
+      <Container className="pt-28 pb-20 sm:pt-32 sm:pb-28">
         <div className="mx-auto grid max-w-3xl gap-10 sm:grid-cols-[15rem_1fr] sm:gap-12 lg:max-w-5xl lg:grid-cols-2">
           <div className="relative mx-auto w-full max-w-[15rem] sm:mx-0 lg:max-w-none">
             {/* Handwritten hint, like the hero's, with the arrow pointing
