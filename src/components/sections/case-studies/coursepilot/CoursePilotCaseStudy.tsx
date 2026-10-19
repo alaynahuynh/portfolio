@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { getProjectBySlug } from "@/data/projects";
 import Image from "next/image";
 import { ViewTransition } from "react";
 import { Section } from "@/components/ui/Section";
+import { CaseStudyHero } from "@/components/sections/case-studies/CaseStudyHero";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
@@ -192,79 +192,28 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
   const architecture = finalExperience?.architecture;
   const heroMoment = finalExperience?.heroMoment;
   const actionImages = finalExperience?.interactionDesign?.images ?? [];
-  // The prototype link is optional — no URL, no button (never a dead "#").
-  const prototypeHref = /^https?:\/\//.test(hero.ctaHref) ? hero.ctaHref : null;
 
   return (
     <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)", "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
-      <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-          ← Back to Work
-        </Link>
-
-        <Reveal>
-          <Heading level={1} className="mt-10 text-6xl sm:text-8xl">
-            {hero.title}
-          </Heading>
-        </Reveal>
-
-        <Reveal delay={60}>
-          <p className="mt-6 max-w-2xl text-xl text-foreground sm:text-2xl">{hero.tagline}</p>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <p className="mt-6 max-w-2xl text-sm text-muted-foreground">
-            {hero.category} · Figma · Solo Project · {overview.year} · {overview.duration}
-          </p>
-        </Reveal>
-
-        <Reveal delay={140}>
-          <span className="mt-6 inline-flex items-center gap-1.5 rounded-(--radius-pill) bg-mist-blue px-3 py-1 text-xs font-medium text-sage-deep">
-            <span className="size-1.5 rounded-full bg-sage-deep" />
-            {hero.statusLabel}
-          </span>
-        </Reveal>
-
-        {prototypeHref && (
-          <Reveal delay={160}>
-            <a
-              href={prototypeHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
-            >
-              {hero.ctaLabel} →
-            </a>
-          </Reveal>
-        )}
-
-        {hero.disclosure && (
-          <Reveal delay={180}>
-            <p className="mt-4 max-w-xl text-xs text-muted-foreground/80">{hero.disclosure}</p>
-          </Reveal>
-        )}
-
-        <Reveal delay={200}>
-          <div className="mt-14">
-            {/* Same `project-media-coursepilot` name as the homepage's
-                ProjectPlaceholder — the browser morphs that exact video
-                from its homepage position/size into this hero slot. */}
-            <ViewTransition name="project-media-coursepilot">
-              <CaseStudyVideo
-                video={{
-                  src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
-                  poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
-                  alt: "Walkthrough of the CoursePilot workspace: a three-hour study plan, adjusting it, adding it to a calendar, then a weekly catch-up and a sourced syllabus answer",
-                  width: 2000,
-                  height: 1420,
-                }}
-                className="mx-auto max-w-5xl"
-              />
-            </ViewTransition>
-          </div>
-        </Reveal>
-      </Section>
+      {/* No description here: the Overview heading right below restates it. */}
+      <CaseStudyHero data={data} showDescription={false}>
+        {/* Same `project-media-coursepilot` name as the homepage's
+            ProjectPlaceholder — the browser morphs that exact video
+            from its homepage position/size into this hero slot. */}
+        <ViewTransition name="project-media-coursepilot">
+          <CaseStudyVideo
+            video={{
+              src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
+              poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
+              alt: "Walkthrough of the CoursePilot workspace: a three-hour study plan, adjusting it, adding it to a calendar, then a weekly catch-up and a sourced syllabus answer",
+              width: 2000,
+              height: 1420,
+            }}
+            className="mx-auto max-w-5xl"
+          />
+        </ViewTransition>
+      </CaseStudyHero>
 
       <CaseStudySectionMobileNav sections={NAV_SECTIONS} />
 

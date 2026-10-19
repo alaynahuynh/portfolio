@@ -38,6 +38,8 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
     ctaHref: "https://vietnoodlehouse.com/",
+    platform: "Responsive web",
+    tools: ["Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "Resend", "Vercel"],
   },
 
   overview: {

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getProjectBySlug } from "@/data/projects";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
@@ -26,6 +25,7 @@ import {
   CaseStudySectionMobileNav,
   type CaseStudyNavSection,
 } from "@/components/sections/case-studies/CaseStudySectionNav";
+import { CaseStudyHero } from "@/components/sections/case-studies/CaseStudyHero";
 
 /** `accent` switches from the shared portfolio green to this project's
  * own `--project-accent` (set once on the page wrapper — see
@@ -955,79 +955,13 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         } as React.CSSProperties
       }
     >
-      <Section className="pt-24 pb-0 sm:pt-32">
-        <Link
-          href="/#work"
-          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-        >
-          ← Back to Work
-        </Link>
-
-        <p className="mt-8 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
-          {hero.category}
-        </p>
-        <Heading level={1} className="mt-2">
-          {hero.title}
-        </Heading>
-        <p className="mt-3 max-w-2xl text-xl text-foreground">
-          {hero.tagline}
-        </p>
-
-        <span className="mt-4 inline-flex items-center gap-1.5 rounded-(--radius-pill) bg-mist-blue px-3 py-1 text-xs font-medium text-sage-deep">
-          <span className="size-1.5 rounded-full bg-sage-deep" />
-          {hero.statusLabel}
-        </span>
-
-        <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-          {hero.description}
-        </p>
-
-        <a
-          href={hero.ctaHref}
-          {...externalLinkProps(hero.ctaHref)}
-          className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
-        >
-          {hero.ctaLabel} →
-        </a>
-
-        {hero.disclosure && (
-          <p className="mt-4 max-w-xl text-xs text-muted-foreground/80">{hero.disclosure}</p>
-        )}
-
-        {hero.tools && hero.tools.length > 0 && (
-          <p className="mt-5 text-sm text-muted-foreground">
-            <span className="text-foreground">Tools:</span>{" "}
-            {hero.tools.join(", ")}
-          </p>
-        )}
-
+      <CaseStudyHero data={data}>
         {hero.video ? (
-          <div className="mt-10">
-            <CaseStudyVideo video={hero.video} />
-          </div>
+          <CaseStudyVideo video={hero.video} />
         ) : hero.image ? (
-          <div className="mt-10">
-            <CaseStudyFullImage image={hero.image} eager />
-          </div>
+          <CaseStudyFullImage image={hero.image} eager />
         ) : null}
-
-        <dl className="mt-10 grid max-w-3xl gap-6 border-t border-border pt-6 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] sm:gap-10">
-          {[
-            { label: "Role", value: overview.role },
-            { label: "Duration", value: overview.duration },
-            { label: "Platform", value: hero.platform },
-          ]
-            .filter((item) => item.value)
-            .map((item) => (
-              <div key={item.label}>
-                <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                  {item.label}
-                </dt>
-                <dd className="mt-1.5 text-foreground">{item.value}</dd>
-              </div>
-            ))}
-        </dl>
-      </Section>
+      </CaseStudyHero>
 
       <CaseStudySectionMobileNav sections={navSections} />
 

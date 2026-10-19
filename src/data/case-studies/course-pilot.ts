@@ -38,6 +38,7 @@ export const coursePilot: CaseStudyData = {
     ctaLabel: "Explore Prototype",
     ctaHref: FIGMA_PROTOTYPE_URL,
     platform: "Canvas-integrated desktop experience",
+    tools: ["Figma"],
     disclosure:
       "Conceptual Canvas integration — designed as a Figma prototype, not an official Canvas or university product.",
   },

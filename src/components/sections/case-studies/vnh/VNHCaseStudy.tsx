@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { getProjectBySlug } from "@/data/projects";
 import { Section } from "@/components/ui/Section";
+import { CaseStudyHero } from "@/components/sections/case-studies/CaseStudyHero";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
@@ -303,72 +303,16 @@ const SUPPORTING_PAGES = [
 ];
 
 export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
-  const { hero, overview, background, research, ideation, finalThoughts } = data;
+  const { overview, background, research, ideation, finalThoughts } = data;
   const keyFindings = research.keyFindings ?? [];
   const orderingFlow = ideation.flows[0];
 
   return (
     <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)", "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
-      <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-          ← Back to Work
-        </Link>
-
-        <Reveal>
-          <p className="mt-10 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">{hero.category}</p>
-          <Heading level={1} className="mt-2 text-5xl sm:text-7xl">
-            {hero.title}
-          </Heading>
-        </Reveal>
-
-        <Reveal delay={60}>
-          <p className="mt-6 max-w-2xl text-xl text-foreground sm:text-2xl">{hero.tagline}</p>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <span className="mt-6 inline-flex items-center gap-1.5 rounded-(--radius-pill) bg-mist-blue px-3 py-1 text-xs font-medium text-sage-deep">
-            <span className="size-1.5 rounded-full bg-sage-deep" />
-            {hero.statusLabel}
-          </span>
-        </Reveal>
-
-        <Reveal delay={140}>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{hero.description}</p>
-        </Reveal>
-
-        <Reveal delay={180}>
-          <a
-            href={hero.ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
-          >
-            {hero.ctaLabel} →
-          </a>
-        </Reveal>
-
-        <dl className="mt-10 grid max-w-xl grid-cols-3 gap-6 border-t border-border pt-6">
-          <div>
-            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Year</dt>
-            <dd className="mt-1 text-foreground">{overview.year}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Duration</dt>
-            <dd className="mt-1 text-foreground">{overview.duration}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">Role</dt>
-            <dd className="mt-1 text-foreground">{overview.role}</dd>
-          </div>
-        </dl>
-
-        <Reveal delay={200}>
-          <div className="mt-14">
-            <DesktopMobilePair desktop={HERO_DESKTOP} mobile={HERO_MOBILE} />
-          </div>
-        </Reveal>
-      </Section>
+      <CaseStudyHero data={data}>
+        <DesktopMobilePair desktop={HERO_DESKTOP} mobile={HERO_MOBILE} />
+      </CaseStudyHero>
 
       <CaseStudySectionMobileNav sections={NAV_SECTIONS} />
 
