@@ -18,44 +18,47 @@ const featured = bySize.large;
  * itself is expected to already be styled (framed, taped, whatever look
  * is wanted) before it's uploaded — this just places it, no code-drawn
  * frame/tape/rotation on top.
+ *
+ * Like TwoDSpread, always two columns sized in container units of the
+ * page, so it reads the same on a phone as on desktop.
  */
 export function ThreeDSpread() {
   return (
     <div
       id="practice-3d"
-      className="grid scroll-mt-24 items-center gap-10 sm:grid-cols-2 sm:gap-16"
+      className="grid w-full scroll-mt-24 grid-cols-2 items-center gap-[6.5cqw]"
     >
-      <div className="order-2 sm:order-1">
-        <Heading level={3} size={2} className="font-alayna-handwriting text-earth">
+      <div>
+        <Heading level={3} size={2} className="font-alayna-handwriting text-[length:clamp(1rem,3.9cqw,2.25rem)] leading-[1.1] text-earth sm:text-[length:clamp(1rem,3.9cqw,2.25rem)]">
           3D Works
         </Heading>
-        <p className="font-alayna-handwriting mt-4 max-w-md text-3xl text-muted-foreground">
+        <p className="font-alayna-handwriting mt-[1.7cqw] text-[length:clamp(0.8125rem,3.2cqw,1.875rem)] leading-[1.25] text-muted-foreground">
           I have always loved working with my hands, and building my own 3D projects.
         </p>
         <Link
           href="/creative-practice/3d"
           data-cursor="explore"
           onClick={rememberBookScrollPosition}
-          className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-earth transition-colors hover:text-earth/70"
+          className="mt-[2.6cqw] inline-flex items-center gap-1.5 text-[length:clamp(0.625rem,1.5cqw,0.875rem)] font-medium text-earth transition-colors hover:text-earth/70"
         >
           Explore 3D Works →
         </Link>
       </div>
 
       {featured && (
-        <div className="order-1 mx-auto w-full max-w-sm sm:order-2">
+        <div className="w-full">
           <SketchbookArtworkLink
             href="/creative-practice/3d"
             gallery="3D Works"
             accentClassName="text-earth"
-            annotationClassName="right-auto left-1/2 mt-3 -translate-x-1/2"
+            annotationClassName="right-auto left-1/2 mt-[1.2cqw] -translate-x-1/2 text-[length:clamp(0.75rem,2.1cqw,1.25rem)]"
           >
             <Image
               src={featured.images[0].src}
               alt={featured.images[0].alt}
               width={featured.images[0].width}
               height={featured.images[0].height}
-              sizes="(min-width: 640px) 380px, 80vw"
+              sizes="(min-width: 1024px) 400px, 45vw"
               className="aspect-11/12 h-auto w-full object-cover"
               priority
             />

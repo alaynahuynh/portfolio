@@ -8,7 +8,6 @@ import type { CaseStudyData, CaseStudyImageSpec } from "@/types/case-study";
 import {
   CaseStudyContentImage,
   CaseStudyFullImage,
-  CaseStudyZoomImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -276,8 +275,8 @@ function BeforePair({
           gridTemplateColumns: `minmax(0, ${desktop.width / desktop.height}fr) minmax(0, ${mobile.width / mobile.height}fr)`,
         }}
       >
-        <CaseStudyZoomImage image={desktop} />
-        <CaseStudyZoomImage image={mobile} />
+        <CaseStudyFullImage image={desktop} />
+        <CaseStudyFullImage image={mobile} />
       </div>
       <p className="mt-4 max-w-2xl text-sm text-muted-foreground">{caption}</p>
     </div>
@@ -372,7 +371,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
           </Reveal>
           <Reveal delay={80}>
             <Label>Old site — Mobile</Label>
-            <CaseStudyZoomImage image={BEFORE_MOBILE} className="mt-3" />
+            <CaseStudyFullImage image={BEFORE_MOBILE} className="mt-3" />
             <p className="mt-3 text-xs text-muted-foreground">
               A broken logo, a gray box where the hero photo should be, and unstyled buttons.
             </p>
@@ -447,11 +446,11 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
           <div className="mt-4 grid gap-6 lg:grid-cols-2">
             <Reveal delay={100}>
               <p className="mb-3 text-sm font-medium text-foreground">Step 1 — Select a location</p>
-              <CaseStudyZoomImage image={LOCATIONS_DESKTOP_CARDS} />
+              <CaseStudyFullImage image={LOCATIONS_DESKTOP_CARDS} />
             </Reveal>
             <Reveal delay={140}>
               <p className="mb-3 text-sm font-medium text-(--project-accent)">Step 2 — Confirm</p>
-              <CaseStudyZoomImage image={LOCATIONS_DESKTOP_CONFIRM} />
+              <CaseStudyFullImage image={LOCATIONS_DESKTOP_CONFIRM} />
             </Reveal>
           </div>
           <Reveal delay={160}>
@@ -554,7 +553,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-6">
           <Reveal>
             <Label accent>After — Desktop</Label>
-            <CaseStudyZoomImage image={MENU_DESKTOP_TOP} className="mt-3" />
+            <CaseStudyFullImage image={MENU_DESKTOP_TOP} className="mt-3" />
           </Reveal>
           <Reveal delay={40}>
             <Label accent>After — Mobile, top of page</Label>
@@ -645,7 +644,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <div className="mt-14 grid gap-12 lg:grid-cols-3 lg:gap-8">
           {SUPPORTING_PAGES.map((page, i) => (
             <Reveal key={page.title} delay={i * 40}>
-              <CaseStudyZoomImage image={page.image} />
+              <CaseStudyFullImage image={page.image} />
               <h3 className="mt-5 text-lg font-semibold text-foreground">{page.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{page.copy}</p>
             </Reveal>

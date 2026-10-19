@@ -11,7 +11,6 @@ import {
   CaseStudyVideo,
   CaseStudyContentImage,
   CaseStudyFullImage,
-  CaseStudyZoomImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -333,7 +332,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
                       <p className="mb-3 flex items-baseline gap-2 text-sm font-medium text-foreground">
                         <span className="text-(--project-accent)">0{i + 1}</span> {step.label}
                       </p>
-                      {i === 0 ? <CanvasEntryImage image={image} /> : <CaseStudyZoomImage image={image} />}
+                      {i === 0 ? <CanvasEntryImage image={image} /> : <CaseStudyFullImage image={image} />}
                     </li>
                   );
                 })}
@@ -385,7 +384,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             flow.image ? (
               <Reveal key={flow.name} delay={80 + i * 20}>
                 <Label>{flow.name}</Label>
-                <CaseStudyZoomImage image={flow.image} className="mt-3" />
+                <CaseStudyFullImage image={flow.image} className="mt-3" />
               </Reveal>
             ) : null,
           )}
@@ -457,11 +456,11 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
                 <div className="mt-5 grid gap-6 lg:grid-cols-2">
                   <div>
                     <Label>{pair.beforeLabel}</Label>
-                    <CaseStudyZoomImage image={pair.before} className="mt-3" />
+                    <CaseStudyFullImage image={pair.before} className="mt-3" />
                   </div>
                   <div>
                     <Label accent>{pair.afterLabel}</Label>
-                    <CaseStudyZoomImage image={pair.after} className="mt-3" />
+                    <CaseStudyFullImage image={pair.after} className="mt-3" />
                   </div>
                 </div>
               </Reveal>
@@ -581,7 +580,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
                   )}
                 >
                   <div className={cn(i % 2 === 1 && "lg:order-2")}>
-                    <CaseStudyZoomImage image={moment.image} />
+                    <CaseStudyFullImage image={moment.image} />
                   </div>
                   <div className={cn(i % 2 === 1 && "lg:order-1")}>
                     <p className="text-sm font-medium text-(--project-accent)">

@@ -19,8 +19,15 @@ function easeInOutCubic(x: number) {
   return x < 0.5 ? 4 * x * x * x : 1 - (-2 * x + 2) ** 3 / 2;
 }
 
-function PageContent({ children }: { children: ReactNode }) {
-  return <div className="flex h-full w-full items-center overflow-y-auto p-6 sm:p-10">{children}</div>;
+/** A sketchbook page's content area, and the size container the spreads
+ * scale against (their type, gaps and padding are in cqw), so a page
+ * keeps its desktop balance at any book width instead of reflowing. */
+export function SketchbookPageContent({ children }: { children: ReactNode }) {
+  return (
+    <div className="@container h-full w-full">
+      <div className="flex h-full w-full items-center p-[4.5cqw]">{children}</div>
+    </div>
+  );
 }
 
 interface BookPageSpec {
@@ -38,8 +45,8 @@ interface BookPageSpec {
 // is just the sketchbook proper: cover, 2D work, 3D work, back cover.
 const PAGES: BookPageSpec[] = [
   { key: "cover", front: <BookCover />, transparentFront: true, coverBack: true },
-  { key: "2d", front: <PageContent><TwoDSpread /></PageContent> },
-  { key: "3d", front: <PageContent><ThreeDSpread /></PageContent> },
+  { key: "2d", front: <SketchbookPageContent><TwoDSpread /></SketchbookPageContent> },
+  { key: "3d", front: <SketchbookPageContent><ThreeDSpread /></SketchbookPageContent> },
   { key: "back-cover", front: <BackCoverPage />, transparentFront: true },
 ];
 export const STAGE_COUNT = PAGES.length;

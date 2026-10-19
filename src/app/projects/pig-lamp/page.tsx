@@ -5,7 +5,7 @@ import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import {
   CaseStudyContentImage,
-  CaseStudyZoomImage,
+  CaseStudyFullImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
 import type { CaseStudyImageSpec } from "@/types/case-study";
@@ -13,15 +13,17 @@ import type { CaseStudyImageSpec } from "@/types/case-study";
 export const metadata: Metadata = {
   title: "Pig Lamp",
   description:
-    "A laser-cut wood pig lamp — hand-dimensioned sketches, Illustrator cut files, raw-wood prototypes, and a painted final — from a project creating customized lamps for autistic children.",
+    "A laser-cut wood pig lamp — hand-dimensioned sketches, Illustrator cut files, raw-wood prototypes, and a painted final — made for a clinic's autistic children, who found it comforting and cute.",
 };
 
 /**
  * Short case study built from two sources only: the résumé entry (the
  * clinic collaboration, role) and Alayna's own process deck "Pendant
  * Light Project" (sketches + dimensions, Illustrator cut files, raw-wood
- * prototypes, final photos, and her written takeaways). Nothing else —
- * e.g. the specific children's needs — is documented, so it isn't stated.
+ * prototypes, final photos, and her written takeaways), plus the outcome
+ * as Alayna reported it: the lamp was delivered to the clinic, and the
+ * clinic said the kids found it comforting and cute. Nothing else — e.g.
+ * the specific children's needs — is documented, so it isn't stated.
  */
 
 const img = (name: string, alt: string, width: number, height: number): CaseStudyImageSpec => ({
@@ -105,6 +107,12 @@ const STUDIO_END = studio(
   1572,
   1600,
 );
+const OUTDOORS = img(
+  "outdoors.jpg",
+  "The finished pink pig lamp standing in the grass among fallen leaves on a sunny day, a University of Michigan bus parked behind it.",
+  1500,
+  2000,
+);
 const LIT_DIM = img("lit-dim.jpg", "The finished lamp switched on in low light, glowing through its ribs.", 1500, 2000);
 
 const PARTS = [
@@ -184,7 +192,7 @@ export default function PigLampPage() {
 
         <Reveal delay={140}>
           <div className="mt-14">
-            <CaseStudyZoomImage image={HERO} />
+            <CaseStudyFullImage image={HERO} />
           </div>
         </Reveal>
       </Section>
@@ -229,8 +237,8 @@ export default function PigLampPage() {
         <div className="mt-14 grid items-start gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] lg:gap-14">
           <Reveal delay={40}>
             <div className="grid grid-cols-2 items-start gap-4 sm:gap-6">
-              <CaseStudyZoomImage image={SKETCH_PARTS} />
-              <CaseStudyZoomImage image={SKETCH_PIECES} />
+              <CaseStudyFullImage image={SKETCH_PARTS} />
+              <CaseStudyFullImage image={SKETCH_PIECES} />
             </div>
             <Caption>Left: every part, sized by hand. Right: how the pieces add up to the product.</Caption>
           </Reveal>
@@ -263,8 +271,8 @@ export default function PigLampPage() {
         </Reveal>
         <Reveal delay={60}>
           <div className="mt-12 grid items-start gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-            <CaseStudyZoomImage image={CUT_FILE} />
-            <CaseStudyZoomImage image={CUT_FILE_RIBS} />
+            <CaseStudyFullImage image={CUT_FILE} />
+            <CaseStudyFullImage image={CUT_FILE_RIBS} />
           </div>
           <Caption>
             Left: the main cut file — tabbed ribs, the silhouette, slotted rings, and leg panels. Right: more ribs, plus
@@ -289,15 +297,15 @@ export default function PigLampPage() {
         <Reveal delay={60}>
           <div className="mt-12 grid items-start gap-4 sm:grid-cols-3 sm:gap-6">
             <div>
-              <CaseStudyZoomImage image={DRAFT_PARTS} />
+              <CaseStudyFullImage image={DRAFT_PARTS} />
               <Caption>Draft parts: slotted rings and a silhouette.</Caption>
             </div>
             <div>
-              <CaseStudyZoomImage image={PROTOTYPE_SIDE} />
+              <CaseStudyFullImage image={PROTOTYPE_SIDE} />
               <Caption>The raw-wood version, assembled.</Caption>
             </div>
             <div>
-              <CaseStudyZoomImage image={PROTOTYPE_LIT} />
+              <CaseStudyFullImage image={PROTOTYPE_LIT} />
               <Caption>Lit up, still unpainted.</Caption>
             </div>
           </div>
@@ -314,7 +322,7 @@ export default function PigLampPage() {
         </Reveal>
         <Reveal delay={40}>
           <div className="mt-12">
-            <CaseStudyZoomImage image={STUDIO_SIDE} />
+            <CaseStudyFullImage image={STUDIO_SIDE} />
           </div>
         </Reveal>
         <Reveal delay={60}>
@@ -335,8 +343,30 @@ export default function PigLampPage() {
         </Reveal>
       </Section>
 
-      {/* ----------------------------------------------------- REFLECTION */}
+      {/* -------------------------------------------------------- OUTCOME */}
       <Section className="cs-band">
+        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16">
+          <Reveal>
+            <Eyebrow>05 · Outcome</Eyebrow>
+            <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+              The kids found it comforting and cute.
+            </Heading>
+            <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
+              The finished lamp was delivered to the clinic. They really liked it, and told us the kids found it very
+              comforting and cute.
+            </p>
+          </Reveal>
+          <Reveal delay={60}>
+            <div className="mx-auto max-w-md">
+              <CaseStudyFullImage image={OUTDOORS} />
+              <Caption>The finished lamp, out in the daylight.</Caption>
+            </div>
+          </Reveal>
+        </div>
+      </Section>
+
+      {/* ----------------------------------------------------- REFLECTION */}
+      <Section>
         <Reveal>
           <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
@@ -363,11 +393,6 @@ export default function PigLampPage() {
                 <span className="font-medium text-foreground">Prototype the scale, not just the fit.</span>{" "}I&rsquo;d make
                 the pig a little smaller so it looks more proportional — something a quick cardboard mockup at full
                 size would have shown before cutting wood.
-              </li>
-              <li>
-                <span className="font-medium text-foreground">Check it with the people it&rsquo;s for.</span> The next
-                step is putting the lamp in front of the clinic and the child to see how the light and the form
-                actually land.
               </li>
             </ul>
           </Reveal>

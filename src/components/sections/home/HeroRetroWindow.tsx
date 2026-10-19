@@ -72,9 +72,11 @@ export function HeroRetroWindow({
           ))}
         </span>
       </div>
+      {/* Menu row — dropped on phones, where the windows are small enough
+          that it reads as clutter rather than detail. */}
       <div
         aria-hidden="true"
-        className="flex gap-[1em] px-1.5 py-0.5 font-sans text-[clamp(0.5rem,2.6cqw,0.6875rem)] text-foreground select-none"
+        className="hidden gap-[1em] px-1.5 py-0.5 sm:flex font-sans text-[clamp(0.5rem,2.6cqw,0.6875rem)] text-foreground select-none"
       >
         {menu.map((item) => (
           <span key={item}>

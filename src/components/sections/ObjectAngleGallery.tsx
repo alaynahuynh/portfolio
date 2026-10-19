@@ -1,9 +1,7 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { JustifiedRow } from "@/components/ui/JustifiedRow";
 import type { Object3D, Object3DImage } from "@/data/creative-practice";
 
@@ -21,7 +19,7 @@ const aspect = (image: Object3DImage) => image.width / image.height;
  * One 3D piece's group of photos, with no text of its own: the page
  * stacks the groups at the same gutter as the photos inside them, so the
  * whole collection reads as one continuous gallery. Photos sit straight
- * on the page at their own proportions; clicking one opens the lightbox.
+ * on the page at their own proportions.
  */
 export function ObjectAngleGallery({
   object,
@@ -30,27 +28,20 @@ export function ObjectAngleGallery({
   object: Object3D;
   layout: ObjectGalleryLayout;
 }) {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const { images } = object;
 
   function photo(image: Object3DImage, sizes: string, className?: string) {
     return (
-      <button
-        type="button"
-        onClick={() => setLightboxIndex(images.indexOf(image))}
-        aria-label={`Enlarge photo: ${image.alt}`}
-        className="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mauve-deep"
-      >
+      <div className="h-full w-full">
         <Image
           src={image.src}
           alt={image.alt}
           width={image.width}
           height={image.height}
           sizes={sizes}
-          className={cn("h-auto w-full transition-opacity duration-300 hover:opacity-90", className)}
+          className={cn("h-auto w-full", className)}
         />
-      </button>
+      </div>
     );
   }
 
@@ -121,15 +112,6 @@ export function ObjectAngleGallery({
         >
           {object.project.label} <span aria-hidden="true">→</span>
         </a>
-      )}
-
-      {lightboxIndex !== null && (
-        <ImageLightbox
-          images={images}
-          index={lightboxIndex}
-          onIndexChange={setLightboxIndex}
-          onClose={closeLightbox}
-        />
       )}
     </div>
   );

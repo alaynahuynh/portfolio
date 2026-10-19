@@ -62,7 +62,12 @@ function drift(duration: string, delay: string, x: string, y: string) {
  * at least as large as the viewport in both directions ("cover"). When
  * it's wider than the viewport (portrait/mobile), it's shifted so the
  * dogs (~67% across the canvas) stay centered instead of cropped, while
- * never revealing an edge — see the `left` clamp below.
+ * never revealing an edge — see the `left` clamp below. On phones (below
+ * sm) the screen's right edge instead lands exactly at the piano's left
+ * edge (85.2%, see PIANO_REGULAR), so the piano sits just off screen
+ * rather than half-cropped — unless the screen is too narrow for that to
+ * keep Gobi (54%) in view, where it falls back to the dog-centered crop
+ * (which hides the piano too).
  */
 export function PlaygroundLandscape() {
   const [openDialog, setOpenDialog] = useState<OpenDialog>(null);
@@ -79,13 +84,12 @@ export function PlaygroundLandscape() {
       className="relative h-svh min-h-[520px] overflow-hidden bg-sky"
     >
       <div
-        className="absolute bottom-0"
+        className="absolute bottom-0 left-[clamp(calc(100%_-_var(--w)),calc(50%_-_var(--w)_*_0.67),0px)] max-sm:left-[clamp(calc(100%_-_var(--w)),max(calc(100%_-_var(--w)_*_0.852),calc(50%_-_var(--w)_*_0.67)),0px)]"
         style={
           {
             "--w": "max(100%, calc(max(100svh, 520px) * 1.6))",
             width: "var(--w)",
             aspectRatio: "4320 / 2700",
-            left: "clamp(calc(100% - var(--w)), calc(50% - var(--w) * 0.67), 0px)",
           } as React.CSSProperties
         }
       >

@@ -40,32 +40,34 @@ function RetroTooltip({ children }: { children: React.ReactNode }) {
  * (→ Playground) overlapping its bottom-left and a Notepad window
  * (→ About) overlapping its upper-right.
  *
- * Desktop (sm+): absolutely positioned inside a fixed-aspect stage, with
- * percentages taken from the Figma mockup. Mobile: the monitor stacks
- * full width and the two windows overlap it in normal flow, so nothing
- * clips and the text stays readable.
+ * Absolutely positioned inside a fixed-aspect stage at every size, so
+ * the windows always overlap the monitor the same way. Desktop (sm+) uses
+ * percentages taken from the Figma mockup; mobile uses a taller stage
+ * with smaller windows tucked over the monitor's upper-right and
+ * lower-left corners, keeping the same composition on a narrow screen.
  */
 export function Hero() {
   return (
     <section className="relative flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 sm:min-h-svh sm:pt-24 sm:pb-0">
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
-        <div className="group/hero relative sm:aspect-1100/650">
+        <div className="group/hero relative mx-auto aspect-300/330 w-[84%] sm:aspect-1100/650 sm:w-full">
           <HeroGlow />
           {/* Halftone accent peeking out around the Notepad / monitor's
-              right edge. */}
-          <HeroHalftone className="-top-[6%] right-[4%] w-[42%] opacity-50 sm:-top-[14%] sm:right-auto sm:left-[60%] sm:w-[36%]" />
+              right edge. sm+ only, like the grid below — on a phone the
+              scene is busy enough without them. */}
+          <HeroHalftone className="hidden opacity-50 sm:-top-[14%] sm:left-[60%] sm:block sm:w-[36%]" />
           {/* Warped wireframe grid on the left, balancing the halftone.
               The PNG is used as a mask so the lines take About's mauve. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-[18%] left-[2%] aspect-1199/1726 w-[28%] bg-mauve-deep opacity-55 mask-[url('/images/hero/grid-texture.png')] mask-contain mask-no-repeat sm:top-[12%] sm:left-[7%] sm:w-[20%]"
+            className="pointer-events-none absolute top-[12%] left-[7%] hidden aspect-1199/1726 w-[20%] bg-mauve-deep opacity-55 mask-[url('/images/hero/grid-texture.png')] mask-contain mask-no-repeat sm:block"
           />
           <HeroWorkLink
             data-monitor
             aria-label="Alayna Huynh — view selected work"
             className={cn(
               OBJECT_LINK,
-              "relative mx-auto w-[92%] sm:absolute sm:top-0 sm:left-[16%] sm:mx-0 sm:w-[64%]",
+              "absolute top-0 left-[5%] w-[88%] sm:left-[16%] sm:w-[64%]",
             )}
           >
             <HeroMonitor />
@@ -78,7 +80,7 @@ export function Hero() {
             className={cn(
               OBJECT_LINK,
               WINDOW_LINK,
-              "relative z-10 -mt-[30%] ml-auto w-[80%] sm:absolute sm:top-[10%] sm:left-[62%] sm:mt-0 sm:w-[38%]",
+              "absolute top-[30%] -right-[6%] z-10 w-[54%] sm:top-[10%] sm:right-auto sm:left-[62%] sm:w-[38%]",
             )}
           >
             <HeroNotepad />
@@ -91,7 +93,7 @@ export function Hero() {
             className={cn(
               OBJECT_LINK,
               WINDOW_LINK,
-              "relative z-10 -mt-[2%] w-[86%] sm:absolute sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:mt-0 sm:w-[40%]",
+              "absolute top-[58%] -left-[6%] z-10 w-[60%] sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:w-[40%]",
             )}
           >
             <HeroPlaygroundTab />
@@ -101,9 +103,9 @@ export function Hero() {
           {/* Handwritten hint (in Alayna's own hand) in the open space
               right of the monitor stand (sm+), led by a small arrow
               curving up toward the monitor.
-              On mobile it sits centered below the stack. */}
+              On mobile it sits centered just below the stage. */}
 
-          <p className="pointer-events-none mt-6 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-sage-deep select-none sm:text-[1.1875rem] sm:absolute sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start">
+          <p className="pointer-events-none absolute inset-x-0 top-full mt-5 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-sage-deep select-none sm:inset-x-auto sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start sm:text-[1.1875rem]">
             <HintArrow className="h-[1.1em] w-auto shrink-0 -translate-y-[0.3em]" />
             Click around to explore
           </p>

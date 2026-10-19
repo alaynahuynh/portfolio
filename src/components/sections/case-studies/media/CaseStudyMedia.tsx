@@ -1,9 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { Maximize2 } from "lucide-react";
-import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { useLazyVideo } from "@/components/sections/home/ProjectPlaceholder";
 import { cn } from "@/lib/utils";
 import type {
@@ -122,57 +120,6 @@ export function CaseStudyContentImage({
       sizes={sizes}
       className={cn("mx-auto w-full max-w-3xl", className)}
     />
-  );
-}
-
-/**
- * 1b. Full-width image that opens in the shared ImageLightbox — for dense,
- * annotated research visuals that need to be read up close. The trigger
- * is a real button (keyboard focusable); Escape / backdrop / the close
- * button dismiss the viewer and focus returns to the image.
- */
-export function CaseStudyZoomImage({ image, className }: SingleImageProps) {
-  const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-
-  return (
-    <>
-      <button
-        ref={triggerRef}
-        type="button"
-        onClick={() => setOpen(true)}
-        aria-label={`Enlarge image: ${image.alt}`}
-        style={{ maxWidth: sharpMaxWidth(image) }}
-        className={cn(
-          "group relative mx-auto block w-full cursor-zoom-in rounded-(--radius-default) text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep",
-          className,
-        )}
-      >
-        <Frame
-          image={image}
-          sizes="(min-width: 1280px) 1200px, 100vw"
-          className="w-full"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute top-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface/95 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm transition-colors group-hover:text-foreground"
-        >
-          <Maximize2 className="size-3.5" />
-          Enlarge
-        </span>
-      </button>
-      {open && (
-        <ImageLightbox
-          images={[image]}
-          index={0}
-          onIndexChange={() => {}}
-          onClose={() => {
-            setOpen(false);
-            triggerRef.current?.focus();
-          }}
-        />
-      )}
-    </>
   );
 }
 

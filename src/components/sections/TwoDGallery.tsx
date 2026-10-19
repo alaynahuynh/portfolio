@@ -1,11 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
-import { ImageLightbox } from "@/components/ui/ImageLightbox";
 import { JustifiedRow } from "@/components/ui/JustifiedRow";
 import { paintings, type Painting2D } from "@/data/creative-practice";
 
@@ -32,18 +30,13 @@ const rows: Painting2D[][] = [
     unlisted.slice(i * 3, i * 3 + 3),
   ),
 ].filter((row) => row.length > 0);
-const ordered = rows.flat();
 
 /**
  * The full 2D collection as one continuous editorial gallery, matching
  * the 3D works page: paintings in equal-height rows at a consistent
- * gutter, no frames or captions. Clicking one opens the lightbox, which
- * steps through the whole collection in gallery order.
+ * gutter, no frames or captions.
  */
 export function TwoDGallery() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const closeLightbox = useCallback(() => setActiveIndex(null), []);
-
   return (
     <section className="overflow-x-hidden bg-sketchbook-paper py-24 sm:py-32">
       <Container>
@@ -67,22 +60,16 @@ export function TwoDGallery() {
               images={row}
               stackOnMobile
               render={(painting) => (
-                <button
-                  id={painting.slug}
-                  type="button"
-                  onClick={() => setActiveIndex(ordered.indexOf(painting))}
-                  aria-label={`Enlarge: ${painting.alt}`}
-                  className="block w-full scroll-mt-24 cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-mauve-deep"
-                >
+                <div id={painting.slug} className="scroll-mt-24">
                   <Image
                     src={painting.src}
                     alt={painting.alt}
                     width={painting.width}
                     height={painting.height}
                     sizes="(min-width: 1024px) 600px, (min-width: 640px) 45vw, 92vw"
-                    className="h-auto w-full transition-opacity duration-300 hover:opacity-90"
+                    className="h-auto w-full"
                   />
-                </button>
+                </div>
               )}
             />
           ))}
@@ -97,15 +84,6 @@ export function TwoDGallery() {
           </Link>
         </div>
       </Container>
-
-      {activeIndex !== null && (
-        <ImageLightbox
-          images={ordered}
-          index={activeIndex}
-          onIndexChange={setActiveIndex}
-          onClose={closeLightbox}
-        />
-      )}
     </section>
   );
 }

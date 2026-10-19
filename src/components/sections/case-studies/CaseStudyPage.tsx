@@ -19,7 +19,6 @@ import {
   CaseStudyBeforeAfter,
   CaseStudyFlowImage,
   CaseStudyVideo,
-  CaseStudyZoomImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -278,7 +277,7 @@ function CompetitorBlock({
 
       {competitor.image && (
         <div className="mt-8 xl:-mx-12">
-          <CaseStudyZoomImage image={competitor.image} />
+          <CaseStudyFullImage image={competitor.image} />
         </div>
       )}
 
@@ -898,7 +897,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   {flow.image ? (
                     // Dense diagrams: open in the lightbox to read up close.
                     <div className="mt-5">
-                      <CaseStudyZoomImage image={flow.image} />
+                      <CaseStudyFullImage image={flow.image} />
                     </div>
                   ) : (
                     <div className="mt-4">

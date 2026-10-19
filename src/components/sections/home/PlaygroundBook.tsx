@@ -9,6 +9,7 @@ import { BookCover } from "@/components/sections/home/BookCover";
 import { PlaygroundLandscape } from "@/components/sections/home/PlaygroundLandscape";
 import {
   SketchbookBook,
+  SketchbookPageContent,
   STAGE_COUNT,
   type SketchbookBookHandle,
 } from "@/components/sections/home/SketchbookBook";
@@ -35,6 +36,9 @@ const STAGE_VH = 50;
 // book before the sticky scene releases and the footer scrolls into view.
 const CLOSE_VH = 70;
 const CLOSED_HOLD_VH = 30;
+// How far into the first page turn (in stages) the "Open Sketchbook" link
+// takes to fade out — just as the cover starts to lift.
+const CTA_FADE_STAGE = 0.12;
 // The sticky scene is itself one viewport tall, so the track needs that
 // much extra height for every scroll span above to actually be reachable.
 const RELEASE_VH = 100;
@@ -284,12 +288,6 @@ export function PlaygroundBook() {
         // is still on screen.
         bookContainerRef.current.style.transform = `translateY(${(100 * (1 - riseProgress)).toFixed(1)}vh)`;
       }
-      // Only worth showing while still on the closed cover — mirrors the
-      // `stage === 0` gate, reading the ref instead of React state to stay
-      // accurate within this same rAF tick (state lags a render behind).
-      if (ctaRef.current) {
-        ctaRef.current.style.opacity = stageRef.current === 0 ? riseProgress.toFixed(3) : "0";
-      }
 
       // The "sketchbook" highlight deliberately lands a beat after the
       // intro text itself does, rather than at the exact same moment — it
@@ -318,6 +316,7 @@ export function PlaygroundBook() {
         window.clearTimeout(highlightTimeoutRef.current);
         highlightRef.current?.classList.remove("bg-sky/35");
       }
+      return riseProgress;
     }
 
     function computeAndApply() {
@@ -346,7 +345,7 @@ export function PlaygroundBook() {
       const stagePx = (STAGE_VH / 100) * window.innerHeight;
       const introProgress = introPx > 0 ? clamp(introScrolledPx / introPx, 0, 1) : 1;
       // Hold the highlight back until the text is actually on screen.
-      applyIntro(introProgress, coverProgress >= 1);
+      const riseProgress = applyIntro(introProgress, coverProgress >= 1);
 
       // The book's open page tracks this directly, frame for frame — see
       // SketchbookBook's `setProgress`. Zero for the whole intro span
@@ -357,6 +356,20 @@ export function PlaygroundBook() {
       const closePx = (CLOSE_VH / 100) * window.innerHeight;
       const closeProgress = closePx > 0 ? clamp((introScrolledPx - closeStartPx) / closePx, 0, 1) : 0;
       bookApiRef.current?.setProgress(stageProgress, closeProgress);
+
+      // Only worth showing while the book rests closed on its cover: it
+      // fades out as soon as the cover starts to lift (gone by
+      // CTA_FADE_STAGE), so it never sits under a half-open page. Derived
+      // from this tick's own progress rather than stageRef, which a jump
+      // (chapter dot, deep link) only updates after this point. Once
+      // invisible it's also hidden outright, so it can't catch a tap or
+      // keyboard focus below the open book.
+      if (ctaRef.current) {
+        const coverResting = closeProgress === 0 ? 1 - clamp(stageProgress / CTA_FADE_STAGE, 0, 1) : 0;
+        const ctaOpacity = riseProgress * coverResting;
+        ctaRef.current.style.opacity = ctaOpacity.toFixed(3);
+        ctaRef.current.style.visibility = ctaOpacity > 0.05 ? "visible" : "hidden";
+      }
     }
 
     function onScroll() {
@@ -471,8 +484,16 @@ export function PlaygroundBook() {
               <BookCover />
             </div>
             <div className="mt-16 flex flex-col gap-24 sm:gap-32">
-              <TwoDSpread />
-              <ThreeDSpread />
+              {/* Same page shape as the animated book, since the spreads
+                  size themselves against the page (SketchbookPageContent). */}
+              {[<TwoDSpread key="2d" />, <ThreeDSpread key="3d" />].map((spread) => (
+                <div
+                  key={spread.key}
+                  className="page-parchment page-edge-stack mx-auto aspect-4/3 w-full max-w-[58rem] rounded-lg"
+                >
+                  <SketchbookPageContent>{spread}</SketchbookPageContent>
+                </div>
+              ))}
               <div className="mx-auto aspect-4/3 w-full max-w-md">
                 <BackCoverPage />
               </div>
@@ -566,7 +587,7 @@ export function PlaygroundBook() {
                 type="button"
                 onClick={() => scrollToStage(1)}
                 className="font-alayna-handwriting -translate-y-4.5 cursor-pointer text-lg text-foreground underline decoration-foreground/50 underline-offset-4 transition-colors hover:text-foreground/70 sm:text-xl"
-                style={{ opacity: 0 }}
+                style={{ opacity: 0, visibility: "hidden" }}
               >
                 Open Sketchbook →
               </button>

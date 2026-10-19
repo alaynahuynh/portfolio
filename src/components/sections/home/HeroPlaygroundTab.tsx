@@ -160,10 +160,10 @@ export function HeroPlaygroundTab({ className }: { className?: string }) {
         </div>
       </div>
 
-      {/* Color swatch strip */}
+      {/* Color swatch strip (sm+ only — clutter at phone size) */}
       <div
         aria-hidden="true"
-        className="flex items-center gap-[1.2cqw] px-[1cqw] py-[1.5cqw]"
+        className="hidden items-center sm:flex gap-[1.2cqw] px-[1cqw] py-[1.5cqw]"
       >
         {SWATCHES.map((color) => (
           <span
@@ -176,7 +176,7 @@ export function HeroPlaygroundTab({ className }: { className?: string }) {
 
       {/* Status bar — a wide sunken field for the message plus a small
        * empty one at the right, as in Paint's own status bar. */}
-      <div className="flex gap-[0.8cqw] px-[0.5cqw] pb-[0.3cqw] font-sans text-[clamp(0.5rem,2.4cqw,0.625rem)] leading-none text-foreground/70 select-none">
+      <div className="mt-[1.5cqw] flex gap-[0.8cqw] px-[0.5cqw] pb-[0.3cqw] font-sans sm:mt-0 text-[clamp(0.5rem,2.4cqw,0.625rem)] leading-none text-foreground/70 select-none">
         <span
           className={cn("flex-1 truncate px-[1cqw] py-[0.8cqw]", RETRO_WELL)}
         >

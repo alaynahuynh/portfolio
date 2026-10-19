@@ -16,7 +16,7 @@ export function HeroNotepad({ className }: { className?: string }) {
       className={className}
     >
       <div className={cn("m-[2px] bg-surface", RETRO_WELL)}>
-        <p className="min-h-[7em] px-[7cqw] py-[1.4em] font-sans text-[clamp(0.9375rem,5.5cqw,1.5rem)] leading-snug text-foreground">
+        <p className="px-[6cqw] py-[0.8em] font-sans text-[clamp(0.75rem,6.2cqw,1.5rem)] leading-snug text-foreground sm:min-h-[7em] sm:px-[7cqw] sm:py-[1.4em] sm:text-[clamp(0.9375rem,5.5cqw,1.5rem)]">
           {siteConfig.positioningStatement}
         </p>
       </div>
