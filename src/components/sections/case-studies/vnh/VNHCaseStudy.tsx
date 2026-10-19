@@ -39,7 +39,7 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "process", label: "Audit" },
   { id: "locations", label: "Ordering flow" },
   { id: "menu", label: "Menu" },
-  { id: "home", label: "Homepage" },
+  { id: "home", label: "Visual identity" },
   { id: "supporting", label: "Other pages" },
   { id: "reflection", label: "Reflection" },
 ];
@@ -177,6 +177,36 @@ const LOCATIONS_MOBILE_SHEET = img(
   1688,
 );
 
+/** The site's palette, each color shown beside the part of the dining room
+ * it was taken from. Hex values are the live site's real CSS tokens; the
+ * crops are from the restaurant's own interior photos. */
+const ROOM_PALETTE = [
+  {
+    name: "Teal",
+    hex: "#197E8C",
+    from: "The teal dining-room walls",
+    image: img("identity/teal-wall.jpg", "The restaurant's teal dining-room wall with the Vietnamese Noodle House logo painted on it.", 800, 600),
+  },
+  {
+    name: "Terracotta",
+    hex: "#AE5A42",
+    from: "The red-brown walls in the back dining room",
+    image: img("identity/red-wall.jpg", "The red-brown back wall of the restaurant with a wooden welcome sign.", 800, 600),
+  },
+  {
+    name: "Honey",
+    hex: "#8A6142",
+    from: "The wood chair backs and bar",
+    image: img("identity/wood-chairs.jpg", "Close-up of the restaurant's wooden chair backs with curved cutouts.", 800, 600),
+  },
+  {
+    name: "Charcoal",
+    hex: "#1E1B18",
+    from: "The black chair frames and seats",
+    image: img("identity/table.jpg", "A dining table with black-framed chairs and dark seats on a wood-look floor.", 800, 600),
+  },
+];
+
 const ABOUT_DESKTOP = img(
   "about/desktop.png",
   "The redesigned About page on desktop, with a restaurant photo filling the space that used to be an empty gap beside the text.",
@@ -257,7 +287,7 @@ function BeforePair({
 const SUPPORTING_PAGES = [
   {
     title: "About — filling an empty page",
-    copy: "The old About page was text-only, with a large empty gap on desktop. Real photography of the restaurant makes it read as considered rather than unfinished.",
+    copy: "Real photography of the dining rooms fills what used to be a text-only page.",
     image: ABOUT_DESKTOP,
   },
   {
@@ -267,7 +297,7 @@ const SUPPORTING_PAGES = [
   },
   {
     title: "Contact — a form that actually sends",
-    copy: "It looks much like the old one, but the old form showed “Message sent!” without delivering anything. It now sends through Resend and fails visibly if it's ever misconfigured.",
+    copy: "Looks much like before. The difference is underneath: messages now actually arrive, through Resend.",
     image: CONTACT_DESKTOP,
   },
 ];
@@ -375,7 +405,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <div>
               <dt><Label accent>Status</Label></dt>
               <dd className="mt-2 text-sm text-muted-foreground">
-                Live at vietnoodlehouse.com. Real-world impact hasn&rsquo;t been measured yet.
+                Live at vietnoodlehouse.com.
               </dd>
             </div>
           </dl>
@@ -437,25 +467,6 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             </Reveal>
           ))}
         </div>
-
-        {background.principles && (
-          <Reveal delay={80}>
-            <div className="mt-16 border-t border-border pt-12">
-              <Heading level={3} size={4}>
-                {background.principles.title}
-              </Heading>
-              <div className="mt-8 grid gap-8 sm:grid-cols-3">
-                {background.principles.items.map((principle, i) => (
-                  <div key={principle.title}>
-                    <p className="text-sm font-semibold text-(--project-accent)">{String(i + 1).padStart(2, "0")}</p>
-                    <p className="mt-2 font-medium text-foreground">{principle.title}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{principle.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        )}
       </Section>
 
       {/* ------------------------------------------------------ LOCATIONS */}
@@ -468,9 +479,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            Each location has its own ordering link, and the old site asked customers to choose between two
-            town names with nothing else to go on. The owners told me customers were already ordering from the
-            wrong location. I designed a{" "}
+            The audit&rsquo;s costliest problem: customers ordering from the wrong location, because nothing but a
+            town name told the two ordering links apart. I designed a{" "}
             <span className="font-medium text-foreground">select, then confirm</span> flow: each location card shows
             the address, a map, and hours, and choosing one repeats the address back before handing off to ordering.
           </p>
@@ -481,7 +491,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <BeforePair
               desktop={OLD_ORDERING_DESKTOP}
               mobile={OLD_ORDERING_MOBILE}
-              caption="Two dark pills that differ only by town name and border color — no address, hours, or map to tell a customer which restaurant is theirs. Each opens a different location's ordering page."
+              caption="The old homepage's two ordering buttons, on desktop and mobile."
             />
           </div>
         </Reveal>
@@ -546,14 +556,27 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               </p>
             </div>
             <div>
-              <Label accent>How I&rsquo;d know it worked</Label>
-              <p className="mt-3 text-muted-foreground">
-                I haven&rsquo;t measured it yet. The owners&rsquo; reports are the baseline: the next step is
-                location-level analytics on the hand-off, plus checking with them whether wrong-location orders have
-                dropped.
+              <Label accent>What happened</Label>
+              <p className="mt-3 font-heading text-3xl text-foreground">About 8 → about 1</p>
+              <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month, by the owners&rsquo; count</p>
+              <p className="mt-4 text-muted-foreground">
+                That&rsquo;s their tally, not analytics, and the redesign changed more than this flow at once — but
+                the location flow was the change aimed at mistaken orders. Location-level analytics on the hand-off
+                would put data behind it.
               </p>
             </div>
           </div>
+        </Reveal>
+
+        <Reveal delay={200}>
+          <figure className="mt-14 max-w-3xl border-l-2 border-(--project-accent) pl-6">
+            <blockquote className="font-heading text-2xl text-foreground sm:text-3xl">
+              &ldquo;We used to have customers accidentally order from the wrong location. Since the redesign,
+              we&rsquo;ve noticed less confusion, and customers seem to have an easier time finding the right place
+              to order.&rdquo;
+            </blockquote>
+            <figcaption className="mt-4 text-sm text-muted-foreground">Owner, Vietnamese Noodle House</figcaption>
+          </figure>
         </Reveal>
       </Section>
 
@@ -562,15 +585,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>From PDF to a real menu</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            The menu wasn&rsquo;t part of the website — it was a PDF
+            From an 11-page PDF to a menu you can scroll
           </Heading>
-        </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            On the old site, View Menu simply opened an 11-page PDF in the browser&rsquo;s PDF viewer. It didn&rsquo;t
-            share the site&rsquo;s design, didn&rsquo;t adapt to a phone, and the only way to find a dish was to page
-            through the document.
-          </p>
         </Reveal>
 
         <Reveal delay={60}>
@@ -615,16 +631,55 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Visual identity</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            A homepage that looks like the restaurant
+            A site that feels like walking into the restaurant
           </Heading>
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            {data.designPrinciples[0]} Order Online is the primary filled action on every breakpoint; on mobile I
-            added a scrim behind the hero heading, which used to sit on the brightest part of the photo, and moved a
-            callout tag that was crowding it.
+            I wanted the website to feel the way it does inside the restaurant, so I took the palette from the
+            dining rooms themselves.
           </p>
         </Reveal>
+
+        <Reveal delay={60}>
+          <div className="mt-12 grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-8 lg:grid-cols-4 lg:gap-6">
+            {ROOM_PALETTE.map((color) => (
+              <figure key={color.name}>
+                <CaseStudyContentImage image={color.image} className="max-w-none" sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw" />
+                <div className="mt-3 h-10 rounded-sm ring-1 ring-black/5" style={{ backgroundColor: color.hex }} />
+                <figcaption className="mt-3">
+                  <p className="flex items-baseline justify-between gap-2 text-sm font-medium text-foreground">
+                    {color.name}
+                    <span className="font-mono text-xs text-muted-foreground">{color.hex}</span>
+                  </p>
+                  <p className="mt-1 text-sm text-muted-foreground">{color.from}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-6 max-w-[45rem] text-sm text-muted-foreground">
+            Underneath it all is a warm cream (#F6F1E7) instead of white, so the food photography leads.
+          </p>
+        </Reveal>
+
+        <Reveal delay={40}>
+          <p className="mt-16 max-w-[45rem] border-t border-border pt-12 text-lg text-muted-foreground">
+            The same idea carried through every page.
+          </p>
+        </Reveal>
+        {background.principles && (
+          <Reveal delay={60}>
+            <div className="mt-10 grid gap-8 sm:grid-cols-3">
+              {background.principles.items.map((principle, i) => (
+                <div key={principle.title}>
+                  <p className="text-sm font-semibold text-(--project-accent)">{String(i + 1).padStart(2, "0")}</p>
+                  <p className="mt-2 font-medium text-foreground">{principle.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{principle.description}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        )}
         <div className="mt-14 space-y-6">
           <Reveal>
             <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />

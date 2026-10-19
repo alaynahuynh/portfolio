@@ -43,7 +43,7 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "exploration", label: "Exploration" },
   { id: "iteration", label: "Evolution" },
   { id: "final", label: "Final solution" },
-  { id: "testing", label: "Validate next" },
+  { id: "testing", label: "Testing" },
   { id: "reflection", label: "Reflection" },
 ];
 
@@ -108,11 +108,13 @@ function Finding({
   title,
   whatParticipantsSaid,
   designResponse,
+  responseLabel = "What I designed",
 }: {
   index: number;
   title: string;
   whatParticipantsSaid: string;
   designResponse: string;
+  responseLabel?: string;
 }) {
   return (
     <div className="grid gap-4 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
@@ -122,7 +124,7 @@ function Finding({
         <p className="mt-3 text-muted-foreground">{whatParticipantsSaid}</p>
       </div>
       <div className="lg:pt-1">
-        <Label accent>What I designed</Label>
+        <Label accent>{responseLabel}</Label>
         <p className="mt-2 text-foreground">{designResponse}</p>
       </div>
     </div>
@@ -251,10 +253,11 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             <ViewTransition name="project-media-coursepilot">
               <CaseStudyVideo
                 video={{
-                  src: "/videos/projects/coursepilot/starttoend.mp4",
-                  alt: "Walkthrough of the CoursePilot prototype, starting from its popup open inside Canvas through the full experience",
+                  src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
+                  poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
+                  alt: "Walkthrough of the CoursePilot workspace: a three-hour study plan, adjusting it, adding it to a calendar, then a weekly catch-up and a sourced syllabus answer",
                   width: 2000,
-                  height: 1422,
+                  height: 1420,
                 }}
                 className="mx-auto max-w-5xl"
               />
@@ -392,6 +395,20 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             </Reveal>
           </>
         )}
+
+        <Reveal delay={160}>
+          <CaseStudyVideo
+            video={{
+              src: "/videos/projects/coursepilot/starttoend.mp4",
+              poster: "/images/projects/coursepilot/final/starttoend-poster.jpg",
+              alt: "Click-through of the CoursePilot prototype from the Canvas dashboard: opening the popup, then expanding into the full workspace",
+              caption: "From the Canvas dashboard to the popup, then the full workspace.",
+              width: 2000,
+              height: 1422,
+            }}
+            className="mx-auto mt-16 max-w-5xl"
+          />
+        </Reveal>
       </Section>
 
       {/* --------------------------------------------------------- FLOWS */}
@@ -534,7 +551,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Final experience</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-4xl sm:text-6xl">
-            A conversational layer that adapts to what the student needs.
+            Ask in plain words. Get something you can act on.
           </Heading>
         </Reveal>
         {finalExperience?.subheading && (
@@ -573,7 +590,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             </Reveal>
 
             <Reveal delay={80}>
-              <CalloutList items={heroMoment.callouts} className="mt-10 sm:grid-cols-2 lg:grid-cols-5" />
+              <CalloutList items={heroMoment.callouts} className="mt-10 sm:grid-cols-2 lg:grid-cols-4" />
             </Reveal>
 
             {actionImages.length > 0 && (
@@ -660,7 +677,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------- TESTING */}
       <Section id="testing" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Validation</Eyebrow>
+          <Eyebrow>Usability testing</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
             {testing.heading}
           </Heading>
@@ -669,8 +686,60 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{testing.intro}</p>
         </Reveal>
 
+        {!testing.placeholder && testing.tasks.length > 0 && (
+          <Reveal delay={60}>
+            <ul className="mt-10 grid max-w-[60rem] gap-x-10 gap-y-3 text-sm text-muted-foreground sm:grid-cols-2">
+              {testing.tasks.map((task) => (
+                <li key={task} className="border-t border-border pt-3">
+                  {task}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        )}
+
+        {testing.iterations.length > 0 && (
+          <div className="mt-16">
+            {testing.iterations.map((finding, i) => (
+              <Reveal key={finding.title} delay={i * 30}>
+                <Finding
+                  index={i + 1}
+                  title={finding.title}
+                  whatParticipantsSaid={finding.feedback}
+                  designResponse={finding.finalIteration}
+                  responseLabel={testing.changedLabel}
+                />
+              </Reveal>
+            ))}
+          </div>
+        )}
+
+        {testing.whatWorked && testing.whatWorked.length > 0 && (
+          <Reveal delay={80}>
+            <div className="mt-14 border-t border-border pt-8">
+              <Label accent>What worked</Label>
+              <div className="mt-6 grid gap-8 sm:grid-cols-2">
+                {testing.whatWorked.map((item) => (
+                  <figure key={item.who}>
+                    <blockquote className="font-heading text-xl text-foreground">&ldquo;{item.quote}&rdquo;</blockquote>
+                    <figcaption className="mt-2 text-sm text-muted-foreground">{item.who}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        )}
+
+        {testing.validateNextHeading && (
+          <Reveal delay={80}>
+            <div className="mt-14">
+              <Label accent>{testing.validateNextHeading}</Label>
+            </div>
+          </Reveal>
+        )}
+
         <Reveal delay={80}>
-          <div className="mt-14 grid gap-8 sm:grid-cols-2">
+          <div className={cn("grid gap-8 sm:grid-cols-2", testing.validateNextHeading ? "mt-6" : "mt-14")}>
             {testing.validateNext?.map((item) => (
               <div key={item.title} className="border-t border-border pt-6">
                 <p className="font-medium text-foreground">{item.title}</p>

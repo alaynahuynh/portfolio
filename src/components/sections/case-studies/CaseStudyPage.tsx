@@ -218,7 +218,13 @@ function CompetitorBreakdown({
 
       <div className={cn("space-y-16", discovery.narrative && "mt-14")}>
         {(discovery.competitors ?? []).map((competitor, i) => (
-          <CompetitorBlock key={competitor.name} competitor={competitor} index={i} productName={productName} />
+          <CompetitorBlock
+            key={competitor.name}
+            competitor={competitor}
+            index={i}
+            numbered={(discovery.competitors?.length ?? 0) > 1}
+            productName={productName}
+          />
         ))}
       </div>
 
@@ -248,10 +254,13 @@ function CompetitorBreakdown({
 function CompetitorBlock({
   competitor,
   index,
+  numbered,
   productName,
 }: {
   competitor: CompetitorFinding;
   index: number;
+  /** A lone competitor gets no "01" — there's nothing to count. */
+  numbered: boolean;
   productName: string;
 }) {
   const columns = [
@@ -260,8 +269,10 @@ function CompetitorBlock({
   ];
   return (
     <Reveal className={cn(index > 0 && "border-t border-border pt-16")}>
-      <p className="font-heading text-3xl text-sage-deep/50">{String(index + 1).padStart(2, "0")}</p>
-      <Heading level={3} size={3} className="mt-1">
+      {numbered && (
+        <p className="font-heading text-3xl text-sage-deep/50">{String(index + 1).padStart(2, "0")}</p>
+      )}
+      <Heading level={3} size={3} className={cn(numbered && "mt-1")}>
         {competitor.name}
       </Heading>
 
@@ -1497,10 +1508,10 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                   <p className="mt-3 text-muted-foreground">
                     {define.personaSummary}
                   </p>
-                  <ul className="mt-4 flex flex-wrap gap-2">
+                  <ul className="mt-4 list-disc space-y-2 pl-4 marker:text-(--project-accent)">
                     {(define.personaNeeds ?? []).map((need) => (
                       <li key={need}>
-                        <Chip>{need}</Chip>
+                        {need}
                       </li>
                     ))}
                   </ul>
@@ -1513,10 +1524,10 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                     <p className="mt-3 text-muted-foreground">
                       {define.secondaryPersona.summary}
                     </p>
-                    <ul className="mt-4 flex flex-wrap gap-2">
+                    <ul className="mt-4 list-disc space-y-2 pl-4 marker:text-(--project-accent)">
                       {define.secondaryPersona.needs.map((need) => (
                         <li key={need}>
-                          <Chip>{need}</Chip>
+                          {need}
                         </li>
                       ))}
                     </ul>

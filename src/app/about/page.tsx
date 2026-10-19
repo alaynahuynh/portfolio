@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
+import { AboutContactWindow } from "@/components/sections/AboutContactWindow";
 import { AboutPhotoBrowser } from "@/components/sections/AboutPhotoBrowser";
+import { AboutSkills } from "@/components/sections/AboutSkills";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { HintArrow } from "@/components/ui/HintArrow";
-import { resumeUrl } from "@/lib/resume";
-import { siteConfig, socialLinks } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "About",
@@ -57,49 +57,30 @@ export default function AboutPage() {
                 experience.
               </p>
               <p>
-                I&apos;m currently studying UX Design at the University of Michigan, and I&apos;m especially drawn to
+                I&apos;m currently studying UX Design, with a minor in Industrial Design, at the University of Michigan, and I&apos;m especially drawn to
                 projects that bring creativity, technology, and people together.
-              </p>
-            </div>
+              </p>            </div>
 
-            <dl className="mt-8 grid gap-4 border-t border-border pt-6 text-sm sm:grid-cols-[6.5rem_1fr]">
-              <dt className="font-medium text-foreground">Currently</dt>
-              <dd className="text-muted-foreground">
-                BSI in User Experience Design, minor in Industrial Design — University of Michigan, class of 2029.
-              </dd>
-              <dt className="font-medium text-foreground">Design</dt>
-              <dd className="text-muted-foreground">Figma, FigJam, Illustrator, Photoshop, InDesign, Procreate</dd>
-              <dt className="font-medium text-foreground">Build</dt>
-              <dd className="text-muted-foreground">Next.js, React, React Three Fiber, Blender</dd>
-            </dl>
-
-            <div className="mt-6 border-t border-border pt-6">
-              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-                <li>
-                  <a href={`mailto:${siteConfig.email}`} className="text-foreground underline underline-offset-4 hover:text-sage-deep">
-                    {siteConfig.email}
-                  </a>
-                </li>
-                {resumeUrl && (
-                  <li>
-                    <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-sage-deep">
-                      Resume
-                    </a>
-                  </li>
-                )}
-                {socialLinks
-                  .filter((link) => link.label === "LinkedIn")
-                  .map((link) => (
-                    <li key={link.href}>
-                      <a href={link.href} target="_blank" rel="noopener noreferrer" className="text-foreground underline underline-offset-4 hover:text-sage-deep">
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-              </ul>
-            </div>
           </div>
         </div>
+
+        <AboutSkills />
+
+        <section
+          aria-labelledby="about-contact"
+          className="mx-auto mt-16 grid max-w-3xl items-center gap-10 border-t border-border pt-16 sm:mt-20 lg:max-w-5xl lg:grid-cols-[1fr_1.15fr] lg:gap-12"
+        >
+          <div>
+            <Heading level={2} id="about-contact" className="font-alayna-handwriting font-normal text-4xl sm:text-5xl">
+              Let&apos;s make something together.
+            </Heading>
+            <p className="mt-4 max-w-md text-lg text-muted-foreground">
+              Whether it&apos;s a role, a project, or just to say hi, my inbox is open. Write a note here and it&apos;ll open
+              in your email app.
+            </p>
+          </div>
+          <AboutContactWindow />
+        </section>
       </Container>
     </div>
   );

@@ -11,7 +11,7 @@ export const siteConfig = {
    * (see heroSupportingLine below), not compete with the primary identity. */
   heroEyebrow: "Product Designer",
   /** The hero's main statement (shown in the About Me Notepad window) — what she does, not just where she studied. */
-  positioningStatement: "I like making things, figuring out how they work, and turning ideas into something people can actually use.",
+  positioningStatement: "I design products and build them, from user research to shipped code.",
   /** Small supporting line under the main statement — where "I build, too" lives, deliberately smaller/quieter than the statement above it. */
   heroSupportingLine: "I prototype and build, too.",
   /** Subtitle on the hero monitor's screen, under the name. */
@@ -25,7 +25,7 @@ export const siteConfig = {
   /** The live site's base URL (e.g. "https://alaynahuynh.com"). Used as
    * metadataBase so link previews resolve absolute image URLs — leave
    * empty until the real domain is known. */
-  url: "",
+  url: "https://www.alaynahuynh.com",
   email: "aahuynh@umich.edu",
 };
 

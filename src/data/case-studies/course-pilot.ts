@@ -13,9 +13,9 @@ const FIGMA_PROTOTYPE_URL =
  * Canvas AI Companion Project Brief) plus 5 real student interviews.
  * Research, findings, key insights, product requirements, and the HMW
  * below are all drawn from that real material — nothing invented. High-
- * fidelity design and a clickable Figma prototype are done; usability
- * testing has not happened yet, so there is no results section and
- * `testing.validateNext` is framed as open questions, never findings.
+ * fidelity design and a clickable Figma prototype are done, plus five
+ * real usability sessions (`testing`). Their findings haven't been
+ * designed into the prototype yet, so they're framed as what I'd change.
  */
 export const coursePilot: CaseStudyData = {
   slug: "coursepilot",
@@ -46,39 +46,21 @@ export const coursePilot: CaseStudyData = {
     year: "2026",
     duration: "Ongoing",
     role: "Solo Product Designer",
-    featuresHeading: "What students can ask CoursePilot",
-    featuresIntro:
-      "CoursePilot is built to answer open-ended questions about coursework, not to run through a fixed menu of features. These are examples from the Figma prototype — not the full range of what it can handle.",
-    features: [
-      {
-        name: "“Help me plan my night”",
-        description: "Prioritizes work around the time a student actually has.",
-      },
-      {
-        name: "“What did I miss this week?”",
-        description: "Summarizes assignments, announcements, and course changes.",
-      },
-      {
-        name: "“What do I need on my final to pass?”",
-        description: "Calculates the target and exposes the inputs behind it.",
-      },
-      {
-        name: "“What’s the late work policy?”",
-        description: "Answers from the syllabus and links back to the original source.",
-      },
-    ],
+    // No feature list here — the Final Experience section walks through
+    // the same examples with the real screens.
+    features: [],
   },
 
   background: {
     heading: "Students had the information. Finding and acting on it was the problem.",
     narrative:
-      "Assignments, announcements, grades, syllabi, files, and deadlines are all in Canvas — just spread across different pages, each organized a little differently by each professor. Students weren't missing information because it didn't exist; they were missing it because nothing connected it to what to do next. CoursePilot's goal: help students understand what changed, decide what to work on, and build a realistic study plan — without doing the work for them.",
+      "Assignments, announcements, grades, syllabi, files, and deadlines are all in Canvas — just spread across different pages, each organized a little differently by each professor. Students weren't missing information because it didn't exist; they were missing it because nothing connected it to what to do next.",
     placeholder: false,
   },
 
   research: {
     intro:
-      "I interviewed five college students who regularly use Canvas to understand how they track coursework, decide what to prioritize, find course information, and think about using AI for academic planning.",
+      "All five use Canvas regularly. We covered how they track coursework, decide what to work on first, find course information, and feel about using AI for academic planning.",
     participants: "5 college students who currently use Canvas",
 
     // Real SWOT/participant data now lives in `landscape` + `findings`
@@ -149,20 +131,12 @@ export const coursePilot: CaseStudyData = {
           "Conversational questions return structured answers directly, with a link back to the original Canvas page.",
       },
       {
-        title: "AI needs to be verifiable",
+        title: "AI has to show its work",
         whatParticipantsSaid:
-          "Students said inaccurate academic information would quickly erode trust and wanted to see where AI-generated answers came from.",
+          "Students said inaccurate academic information would quickly erode their trust. They wanted to see where answers came from and why tasks were ranked — in a small expandable dropdown, not a paragraph — and to change priorities themselves.",
         whyItMatters: "An AI assistant is only useful if students believe the information is reliable.",
         designResponse:
-          "Recommendations and answers expose their source, inputs, or reasoning — “Why this?”, Grades used, Sources, View in syllabus.",
-      },
-      {
-        title: "Explanations should be small, and plans editable",
-        whatParticipantsSaid:
-          "Students wanted to know why the AI prioritized certain assignments — but preferred a small expandable dropdown over a large paragraph, and wanted to change priorities themselves.",
-        whyItMatters: "Students want transparency without cluttering the interface.",
-        designResponse:
-          "A compact “Why this?” link on each recommended task, and Adjust Plan to change the plan before acting on it.",
+          "Sources on every answer, a compact “Why this?” on each recommended task, and Adjust Plan to change a plan before acting on it.",
       },
     ],
 
@@ -375,7 +349,7 @@ export const coursePilot: CaseStudyData = {
 
   platformIntegration: {
     heading: "Students didn’t need another productivity app. They needed help inside the tool they already use.",
-    copy: "Rather than introducing another standalone student app, CoursePilot is designed as a conceptual AI layer inside Canvas — students reach it from the navigation they already use, not a separate destination.",
+    copy: "CoursePilot opens from the Canvas sidebar. A popup handles quick questions; anything that needs planning or follow-up expands into a full workspace.",
     flowSteps: ["Canvas Dashboard", "CoursePilot", "New Chat"],
     // Once exported: save the Canvas dashboard screenshot showing the
     // CoursePilot icon to /public/images/projects/coursepilot/canvas-entry.png
@@ -539,103 +513,120 @@ export const coursePilot: CaseStudyData = {
     // ],
   },
 
+  // Real task-based sessions with five students on the Figma prototype.
+  // Each session focused on one or two features, so every finding below
+  // comes from a single participant — quotes are verbatim from session
+  // notes. Nothing has been redesigned from them yet, so the response
+  // column says what I'd change, never what I changed.
   testing: {
-    heading: "What I'd validate next",
+    heading: "Five students, one prototype",
     intro:
-      "I haven't run usability testing on CoursePilot yet. These are the specific questions I'd want to answer first, not conclusions from testing that's already happened.",
+      "I ran task-based usability sessions with five students on the Figma prototype, each focused on one or two features. Every participant saw value in it — but each session also surfaced a different gap. Because each finding comes from one participant, I treat them as signals to design against, not patterns yet.",
     tasks: [
-      "Find the most urgent assignment.",
-      "Create a two-hour study plan.",
-      "Check why the AI prioritized a certain task.",
-      "Verify where an AI summary came from.",
-      "Change the order of a generated study plan.",
-      "Find announcements missed during the past three days.",
-      "Ask the AI to explain an assignment.",
-      "Respond when the AI shows uncertain information.",
+      "P1 · Junior, uses Canvas Calendar and a notes app — Catch Me Up, then Plan My Night",
+      "P2 · Sophomore, often starts close to deadlines — Plan My Night",
+      "P3 · First-year, relies on Canvas notifications — Catch Me Up",
+      "P4 · Senior, checks syllabi before academic decisions — grade question",
+      "P5 · Junior, balancing clubs and coursework — Plan My Night",
     ],
-    iterations: [],
-    placeholder: true,
+    changedLabel: "What I'd change",
+    iterations: [
+      {
+        title: "The task order didn't explain itself",
+        feedback:
+          "P1, looking at the generated plan: “Wait, why is this assignment first?” Then: “Unless there's a reason this one is more important, but I can't really tell from looking at it.”",
+        finalIteration:
+          "Each task already has a “Why this?” link, but the reason needs to be visible without clicking: show the deciding factor — due date, estimated effort — right on the task row.",
+      },
+      {
+        title: "Time estimates read as fixed",
+        feedback:
+          "P2: “It says this assignment should take an hour and a half. I feel like it would take me way longer than that.” Asked what they'd do: “I don't really know how it would know how long I take to finish something.”",
+        finalIteration:
+          "Label estimates as approximate, say where they come from, and put the way to edit them (Adjust Plan) right next to the estimate.",
+      },
+      {
+        title: "No way to say how much time you actually have",
+        feedback:
+          "P5 had a meeting that night: “Is there somewhere I can change how much time I have?” What they expected: “Like if I only have an hour, show me what I can realistically finish in that hour.”",
+        finalIteration:
+          "Adjust Plan changes time per task, not the total. Add a control for available time on the plan itself that regenerates a shorter plan without starting over.",
+      },
+      {
+        title: "Announcements didn't say whether action was needed",
+        feedback:
+          "P3, reading the Catch Me Up summary: “I'm not sure if I'm supposed to do something for this announcement or if it's just telling us something. It mentions an assignment, but I can't tell if there's anything I need to submit.” Their fallback was opening Canvas to read the original.",
+        finalIteration:
+          "Mark each announcement as action needed or informational, and keep the direct link back to the original post.",
+      },
+      {
+        title: "A source wasn't enough to trust a grade",
+        feedback:
+          "P4 found the source — “That's good” — but: “I think I'd still want to know if it's missing anything, though. Like if participation isn't graded yet.” And: “I wouldn't make a decision about dropping a class or anything serious without checking it myself.”",
+        finalIteration:
+          "Show the calculation's assumptions and missing inputs, such as ungraded categories, next to the result — not just where the numbers came from.",
+      },
+    ],
+    whatWorked: [
+      {
+        who: "P1, on Catch Me Up",
+        quote: "Normally I'd have to click through each class to see if there's anything new, so this is easier.",
+      },
+      {
+        who: "P2, on Plan My Night",
+        quote: "It makes everything seem less overwhelming when it's broken down like that.",
+      },
+      {
+        who: "P3, comparing it with checking each class",
+        quote: "It's definitely faster.",
+      },
+      {
+        who: "P5, on Plan My Night",
+        quote: "I think I'd use it, especially when I have a lot going on.",
+      },
+    ],
+    placeholder: false,
+    validateNextHeading: "What I'd test next round",
     validateNext: [
       {
         title: "Prioritization",
-        question: "Do students agree with the order CoursePilot recommends?",
-      },
-      {
-        title: "Trust",
-        question: "Do sources and explanations meaningfully increase confidence?",
+        question: "With the deciding factor shown on each task, do students agree with the order?",
       },
       {
         title: "Control",
-        question: "Do students understand how to modify AI-generated recommendations?",
+        question: "Can students find Adjust Plan and change their available time without help?",
+      },
+      {
+        title: "Breadth",
+        question: "Do these issues hold up across more students? Each finding here came from one session.",
       },
       {
         title: "Feasibility",
         question: "How should CoursePilot respond when Canvas information is incomplete, conflicting, or unavailable?",
       },
     ],
-    closingStatement:
-      "A next-stage prototype would also explore implementation feasibility through authorized Canvas APIs and institutional integration requirements.",
   },
 
   finalExperience: {
     subheading:
-      "CoursePilot lets students ask questions naturally while adapting the response to the task — from quick answers to structured plans, summaries, and calculations.",
+      "Three flows from the prototype, each shaped around what the student does next.",
     // The old per-feature gallery (one heading + paragraph + full
     // screenshot per screen) is replaced by the story below —
     // `architecture` / `heroMoment` / `secondaryMoments` / `synthesis`.
     features: [],
 
-    architecture: {
-      heading: "Quick access without leaving Canvas.",
-      copy: "CoursePilot is accessible directly from Canvas rather than as a separate productivity app. Students can use the popup for quick questions or expand into the full workspace when a task needs more context.",
-      steps: [
-        {
-          label: "Canvas dashboard",
-          image: {
-            src: "/images/projects/coursepilot/canvas-dashboard-regular.png",
-            alt: "Regular Canvas dashboard, unmodified",
-            width: 1446,
-            height: 1024,
-          },
-        },
-        {
-          label: "CoursePilot popup",
-          image: {
-            src: "/images/projects/coursepilot/final/canvas-popup-open.png",
-            alt: "CoursePilot popup open over the Canvas dashboard: a welcome summary of 2 assignments due, 1 update, and 1 overdue, with Plan My Day, Catch Me Up, and Grades quick actions and an Ask anything input.",
-            width: 2000,
-            height: 1422,
-          },
-        },
-        {
-          label: "Full CoursePilot workspace",
-          image: {
-            src: "/images/projects/coursepilot/final/workspace-new-chat.png",
-            alt: "Full CoursePilot workspace in its New Chat state: recent chats in a sidebar, a How can we help? prompt, suggested questions, and an Ask anything input.",
-            width: 2000,
-            height: 1422,
-          },
-        },
-      ],
-      callouts: [
-        { title: "Quick entry", description: "Ask without leaving the current Canvas workflow." },
-        { title: "Deeper workspace", description: "Expand when a task requires planning, comparison, or follow-up." },
-      ],
-    },
+    // No `architecture` stills: "Where it lives" shows the same Canvas →
+    // popup → workspace path as one click-through video instead.
 
     heroMoment: {
-      heading: "Conversation in. Actionable interface out.",
-      copy: "Students don't need to learn special commands. They can describe their situation naturally, while CoursePilot structures the response around the decision they need to make.",
+      heading: "A plan built around the time you have.",
+      copy: "A student describes their evening; CoursePilot ranks what's due and lays out a schedule that fits.",
       prompt: "I have 3 hours tonight. What should I work on?",
-      // No separate visual here: the plan itself is the "after" in Design
-      // Evolution and plays in the hero video, so this moment shows what
-      // students do with it next (see `interactionDesign.images`).
       callouts: [
-        { title: "Priority", description: "Tasks are ordered using more than due date alone." },
-        { title: "Estimated effort", description: "The response accounts for how much time the student actually has." },
-        { title: "Why this?", description: "Students can understand why a task was prioritized." },
-        { title: "Editable plan", description: "AI proposes the schedule; the student remains in control." },
-        { title: "Sources", description: "Recommendations stay connected to the underlying Canvas information." },
+        { title: "Priority", description: "Ranked by more than due date — estimated effort counts too." },
+        { title: "Fits the time", description: "The schedule fills the hours the student says they have." },
+        { title: "Why this?", description: "Each task can explain why it's ranked where it is." },
+        { title: "Sources", description: "Every task links back to its Canvas assignment." },
       ],
       principle: "AI recommends. Students decide.",
     },
@@ -644,7 +635,7 @@ export const coursePilot: CaseStudyData = {
       {
         name: "Catch Me Up",
         heading: "Understand what changed without checking every course.",
-        copy: "CoursePilot brings assignments, announcements, and recent course changes into one summary so students can quickly understand what needs attention.",
+        copy: "Assignments and announcements from every course in one summary — nearly every student I interviewed mentioned missing announcements.",
         image: {
           src: "/images/projects/coursepilot/final/catch-me-up.png",
           alt: "Catch Me Up response to “Catch me up on this week”: 2 assignments due and 1 announcement, listed with due dates, estimated time, and the Canvas sources they came from.",
@@ -653,15 +644,14 @@ export const coursePilot: CaseStudyData = {
         },
         callouts: [
           { title: "Needs attention", description: "Surfaces the most time-sensitive coursework first." },
-          { title: "Important updates", description: "Separates course changes and announcements from assignments." },
-          { title: "Back to Canvas", description: "Students can open the original item when they need more detail." },
+          { title: "Important updates", description: "Announcements sit apart from assignments, so they don't get buried." },
         ],
         size: "large",
       },
       {
         name: "Sourced Q&A",
-        heading: "Answers that don't hide the source.",
-        copy: "For straightforward course questions, CoursePilot keeps the response concise and provides a direct path back to the original Canvas material.",
+        heading: "Answers you can check.",
+        copy: "The goal wasn't to make AI look certain — it was to make important answers inspectable. A short answer comes with the original wording and where it came from.",
         steps: ["“What's the late work policy?”", "Concise answer", "Source", "View in syllabus"],
         image: {
           src: "/images/projects/coursepilot/final/syllabus-answer.png",
@@ -669,62 +659,18 @@ export const coursePilot: CaseStudyData = {
           width: 2000,
           height: 1422,
         },
+        // The trust features across all three flows, listed once here.
         callouts: [
-          { title: "Answer", description: "Concise response to the student's question." },
-          { title: "Source", description: "Shows where the information came from." },
-          { title: "View in syllabus", description: "Lets the student verify the original material." },
+          { title: "View in syllabus", description: "One click to the policy as the professor wrote it." },
+          { title: "Grades used", description: "Grade calculations list every score behind the number." },
+          { title: "Sources everywhere", description: "Plans, summaries, and answers all name the Canvas pages they used." },
         ],
         size: "large",
       },
     ],
 
-    trust: {
-      copy: "The goal wasn’t to make AI look certain. It was to make important answers inspectable.",
-      items: [
-        {
-          title: "Why this?",
-          description: "Explains why CoursePilot made a recommendation.",
-          image: {
-            src: "/images/projects/coursepilot/trust/why-this.png",
-            alt: "Cropped task row showing a “Why this?” link next to the due date and estimated time",
-            width: 1020,
-            height: 98,
-          },
-        },
-        {
-          title: "Grades used",
-          description: "Shows the inputs behind calculations.",
-          image: {
-            src: "/images/projects/coursepilot/trust/grades-used.png",
-            alt: "Cropped grades-used table listing each assignment's score and points behind a grade calculation",
-            width: 1040,
-            height: 260,
-          },
-        },
-        {
-          title: "Sources",
-          description: "Shows where the answer came from.",
-          image: {
-            src: "/images/projects/coursepilot/trust/sources.png",
-            alt: "Cropped sources list linking a recommendation back to its originating Canvas assignments and announcements",
-            width: 1020,
-            height: 100,
-          },
-        },
-        {
-          title: "View in syllabus",
-          description: "Lets students verify the original material.",
-          image: {
-            src: "/images/projects/coursepilot/trust/view-in-syllabus.png",
-            alt: "Cropped source row under a syllabus answer: Art History → Syllabus → Late Work Policy, with a View in syllabus link",
-            width: 995,
-            height: 62,
-          },
-        },
-        // No uncertainty state exists yet, so no "Uncertainty" item is
-        // listed here — nothing to show would mean inventing one.
-      ],
-    },
+    // No standalone `trust` block: the trust features are covered once,
+    // in the Sourced Q&A moment's callouts.
     interactionDesign: {
       heading: "Acting without losing context",
       copy: "Actions such as adjusting a recommendation or adding a calendar event happen in lightweight overlays so students can make changes without losing the original conversation.",
@@ -747,14 +693,14 @@ export const coursePilot: CaseStudyData = {
     },
   },
 
-  // No results section: usability testing hasn't happened yet, so there
-  // are no real outcomes to report. See `testing.validateNext` instead.
+  // No results section: the testing findings above haven't been designed
+  // into the prototype yet, so there are no outcomes to report.
 
   finalThoughts: {
     whatILearned:
-      "The biggest shift in CoursePilot was realizing that designing an AI product wasn't primarily about designing a chat interface. I had to decide when AI should summarize, when it should recommend, when students needed control, and when an answer required supporting evidence.",
+      "The real decisions were about when AI should summarize, when it should recommend, when students needed control, and when an answer needed evidence. Testing showed I'd underestimated the last one: students wanted the reasoning visible, not one click away.",
     nextSteps:
-      "Those decisions are still the ones I'd keep refining — not by adding more AI features, but by getting sharper about when CoursePilot should stay quiet and let a student just work.",
+      "Design the five changes from testing — visible reasons, approximate estimates, available time, action-needed announcements, and stated assumptions — and test them with new students before adding any new AI features.",
     placeholder: false,
   },
 
@@ -782,7 +728,7 @@ export const coursePilot: CaseStudyData = {
     },
     {
       label: "Not yet done",
-      items: ["Usability testing", "Canvas API feasibility review", "Engineering — this is a design prototype, not built software"],
+      items: ["Redesign from testing findings", "Canvas API feasibility review", "Engineering — this is a design prototype, not built software"],
     },
   ],
 
@@ -797,7 +743,7 @@ export const coursePilot: CaseStudyData = {
     { label: "Visual direction", done: true },
     { label: "High-fidelity screens", done: true },
     { label: "Clickable prototype", done: true },
-    { label: "Usability testing", done: false },
+    { label: "Usability testing", done: true },
     { label: "Iterations after testing", done: false },
   ],
 };

@@ -68,18 +68,6 @@ export function Header() {
   const panelRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLSpanElement>(null);
   const clickFlashTimeoutRef = useRef<number | null>(null);
-  // Remounting AnimatedAHLogo (via the `key={logoPlay}` bump below) swaps
-  // the SVG DOM node out from under a stationary cursor, which makes the
-  // browser fire a spurious native mouseover/mouseenter on the
-  // replacement node even though the pointer never moved — without this
-  // guard, that retriggers another remount, which triggers another
-  // mouseenter, forever, for as long as the mouse holds still: the logo
-  // would perpetually reset and never finish drawing while genuinely
-  // hovered. Set on the real entry, cleared on mouseleave (which never
-  // fires spuriously the way mouseenter does), so exactly one replay
-  // happens per real hover no matter how many spurious re-enters the
-  // remount itself causes.
-  const isHoveringLogoRef = useRef(false);
 
   // A real page load/reload should always open at the top, with the nav's
   // entrance actually visible — not wherever the browser would otherwise
@@ -221,15 +209,10 @@ export function Header() {
               splitting leftover space in the middle of the nav group. */}
           <Link
             href="/"
-            onMouseEnter={() => {
-              if (isHoveringLogoRef.current) return;
-              isHoveringLogoRef.current = true;
-              setLogoPlay((n) => n + 1);
-            }}
-            onMouseLeave={() => {
-              isHoveringLogoRef.current = false;
-            }}
             onClick={(event) => {
+              // Replay the draw-on animation on click only (not hover):
+              // bumping the key remounts AnimatedAHLogo from its first frame.
+              setLogoPlay((n) => n + 1);
               // Same page: next/link no-ops on a same-URL click (no
               // pathname or hash change to navigate to), so the logo
               // would otherwise do nothing if you're already home and

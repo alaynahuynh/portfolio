@@ -10,24 +10,37 @@ import {
   RETRO_WELL,
 } from "@/components/sections/home/HeroRetroWindow";
 
-/** Add more photos here — the browser cycles through them in order. */
-const PHOTOS = [
-  { src: "/images/about/02-concert.jpg", alt: "Alayna with friends at a concert at night" },
-  { src: "/images/about/03-mountain.jpg", alt: "Alayna with friends at a mountain overlook" },
-  { src: "/images/about/04-lakeshore.jpg", alt: "Alayna hugging friends by the lakeshore" },
+/** Photos of Alayna alone — always shown before any group photo. */
+const SOLO_PHOTOS = [
   { src: "/images/about/05-mirror.jpg", alt: "Alayna taking a photo in a car's side mirror at sunset" },
   { src: "/images/about/06-pier.jpg", alt: "Alayna on a pier at dusk" },
-  { src: "/images/about/07-chicago.jpg", alt: "Alayna with a friend on the Chicago Riverwalk" },
   { src: "/images/about/08-cafe.jpg", alt: "Alayna eating a treat at an outdoor café" },
 ];
 
-const STORAGE_KEY = "about-photo-index";
+/** Photos with friends — shown only after every solo photo. */
+const GROUP_PHOTOS = [
+  { src: "/images/about/02-concert.jpg", alt: "Alayna with friends at a concert at night" },
+  { src: "/images/about/03-mountain.jpg", alt: "Alayna with friends at a mountain overlook" },
+  { src: "/images/about/04-lakeshore.jpg", alt: "Alayna hugging friends by the lakeshore" },
+  { src: "/images/about/07-chicago.jpg", alt: "Alayna with a friend on the Chicago Riverwalk" },
+];
+
+const PHOTO_COUNT = SOLO_PHOTOS.length + GROUP_PHOTOS.length;
+
+/** This load's sequence: the solo photos, rotated so a different one
+ * leads each load, then the group photos. */
+function photoOrder(soloStart: number) {
+  return [...SOLO_PHOTOS.slice(soloStart), ...SOLO_PHOTOS.slice(0, soloStart), ...GROUP_PHOTOS];
+}
+
+const STORAGE_KEY = "about-photo-solo-start";
 const FADE_MS = 180;
 
 function readStoredIndex() {
   try {
-    const value = Number(sessionStorage.getItem(STORAGE_KEY));
-    return Number.isInteger(value) ? value : null;
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    const value = Number(raw);
+    return raw !== null && Number.isInteger(value) ? value : null;
   } catch {
     return null;
   }
@@ -40,32 +53,33 @@ function storeIndex(index: number) {
 }
 
 /**
- * The About photo, framed as a little retro browser. Its refresh button
- * "reloads" to the next photo, and each real page load starts one photo
- * further along (tracked per tab in sessionStorage). No timer.
+ * The About photo, framed as a little retro browser. Every page load opens
+ * on a photo of Alayna alone — a different solo photo each load (tracked
+ * per tab in sessionStorage) — and the refresh button steps through the
+ * rest of the solo photos before any group photo. No timer.
  */
 export function AboutPhotoBrowser() {
+  const [soloStart, setSoloStart] = useState(0);
   const [index, setIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const started = useRef(false);
 
-  // On load, advance past the photo shown last time (ref guards against
-  // Strict Mode running this twice).
+  // On load, lead with the next solo photo after last load's (ref guards
+  // against Strict Mode running this twice).
   useEffect(() => {
     if (started.current) return;
     started.current = true;
     const stored = readStoredIndex();
-    const next = stored === null ? 0 : (stored + 1) % PHOTOS.length;
+    const next = stored === null ? 0 : (stored + 1) % SOLO_PHOTOS.length;
     storeIndex(next);
-    setIndex(next);
+    setSoloStart(next);
     setLoading(false);
   }, []);
 
   function refresh() {
     if (loading) return;
-    const next = (index + 1) % PHOTOS.length;
+    const next = (index + 1) % PHOTO_COUNT;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    storeIndex(next);
     if (reduceMotion) {
       setIndex(next);
       return;
@@ -77,7 +91,7 @@ export function AboutPhotoBrowser() {
     }, FADE_MS);
   }
 
-  const photo = PHOTOS[index];
+  const photo = photoOrder(soloStart)[index];
 
   return (
     <HeroRetroWindow title="Photos — try to reload!" menu={["File", "View"]} destination="about" className="bg-[#e3dccb] shadow-[0_2px_10px_rgba(46,50,42,0.08)]">
@@ -130,7 +144,7 @@ export function AboutPhotoBrowser() {
         />
       </div>
       <p aria-live="polite" className="sr-only">
-        {loading ? "" : `Photo ${index + 1} of ${PHOTOS.length}`}
+        {loading ? "" : `Photo ${index + 1} of ${PHOTO_COUNT}`}
       </p>
     </HeroRetroWindow>
   );

@@ -36,7 +36,7 @@ interface AnimatedAHLogoProps {
   /**
    * Multiplies every duration/delay below, so the whole draw-in stays in
    * proportion. 1 = normal (initial mount). Header passes a higher value
-   * on hover-triggered replays only, so the logo's very first paint isn't
+   * on click-triggered replays only, so the logo's very first paint isn't
    * slowed down along with it.
    */
   speed?: number;

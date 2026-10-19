@@ -666,6 +666,12 @@ export interface CaseStudyData {
      * that hasn't run usability testing yet but has concrete questions
      * it would test. Framed as open questions, never as findings. */
     validateNext?: CaseStudyValidationItem[];
+    /** Label above `validateNext` when it follows real results (e.g.
+     * "What I'd test next round") — omit when it stands in for testing. */
+    validateNextHeading?: string;
+    /** Optional verbatim participant quotes about what worked, shown
+     * alongside the findings so the section isn't only problems. */
+    whatWorked?: { who: string; quote: string }[];
     /** Optional short closing line shown at the end of the Testing
      * section (below `validateNext` or the iterations) — a single
      * sentence (e.g. a functional-verification result or a pointer at

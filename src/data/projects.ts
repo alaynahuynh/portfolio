@@ -38,7 +38,7 @@ export const projects: Project[] = [
     statusTag: "Live product",
     title: "MyMuseum",
     role: "Product Design · UX Research · Development",
-    summary: "Helping artists share their work as walkable 3D galleries instead of flat image feeds.",
+    summary: "Designed and built a live platform that turns artists' uploads into walkable 3D galleries, shaped by 5 artist interviews and a 5-person usability study.",
     credibility: "Designed and built the end-to-end experience, from concept to a live product.",
     status: "in-progress",
     accent: "mauve",
@@ -46,7 +46,12 @@ export const projects: Project[] = [
     hasCaseStudy: true,
     // Same walkthrough clip used as the case study's own hero video —
     // see data/case-studies/my-museum.ts's `hero.video`.
-    videoThumbnail: { src: "/videos/projects/mymuseum/walkthrough.mp4", width: 1920, height: 1036 },
+    videoThumbnail: {
+      src: "/videos/projects/mymuseum/walkthrough-thumb.mp4",
+      poster: "/images/projects/mymuseum/posters/walkthrough.jpg",
+      width: 1920,
+      height: 1036,
+    },
     // A still from the same walkthrough, for the "Next project" card.
     cover: {
       src: "/images/projects/mymuseum/final/cover.jpg",
@@ -63,7 +68,7 @@ export const projects: Project[] = [
     statusTag: "Figma prototype",
     title: "CoursePilot",
     role: "Product Design · User Research · Prototyping",
-    summary: "Helping students turn scattered course information into an actionable plan.",
+    summary: "Designed an AI planning assistant inside Canvas, from 5 student interviews to a Figma prototype tested with 5 students.",
     credibility:
       "Designed from student research around deadlines, planning behavior, Canvas friction, and trust in AI.",
     tags: ["Product Design", "User Research", "Prototyping"],
@@ -74,15 +79,21 @@ export const projects: Project[] = [
     // data/case-studies/course-pilot.ts's `accentColor`.
     dominantColor: "var(--color-olive)",
     hasCaseStudy: true,
-    // Homepage card plays the walkthrough (it now opens with CoursePilot
-    // already open inside Canvas).
-    videoThumbnail: { src: "/videos/projects/coursepilot/starttoend.mp4", width: 2000, height: 1422 },
-    // Still frame for the "Next project" card at the end of each case study.
-    cover: {
-      src: "/images/projects/coursepilot/final/plan-my-night-2000.png",
-      alt: "CoursePilot's Plan My Night response inside Canvas: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
+    // Homepage card plays the same workspace walkthrough as the case-study
+    // hero, so the shared ViewTransition morphs one clip into itself.
+    videoThumbnail: {
+      src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
+      poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
       width: 2000,
-      height: 1422,
+      height: 1420,
+    },
+    // Still frame for the "Next project" card — the plan result from the
+    // same walkthrough.
+    cover: {
+      src: "/images/projects/coursepilot/final/workspace-walkthrough-cover.jpg",
+      alt: "CoursePilot's Plan My Night response: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
+      width: 2000,
+      height: 1420,
     },
   },
   {
@@ -92,7 +103,7 @@ export const projects: Project[] = [
     statusTag: "Shipped · Client work",
     title: "Vietnamese Noodle House",
     role: "Client Work · UX/UI Design · Development",
-    summary: "Redesigning a family restaurant's website so customers can find the menu and order from the right location.",
+    summary: "Redesigned and built a family restaurant's live site. The owners report mistaken orders fell from about 8 a month to 1.",
     credibility:
       "Designed and built for a real restaurant while working within existing MenuDrive/Lavu platform constraints.",
     tagline: "Rebuilding a family restaurant's website so it finally works as hard as the food does.",

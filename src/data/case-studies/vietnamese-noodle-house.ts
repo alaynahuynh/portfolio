@@ -34,7 +34,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     tagline:
       "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
     description:
-      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location.",
+      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location. Since launch, the owners report mistaken orders dropping from about 8 a month to about 1.",
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
     ctaHref: "https://vietnoodlehouse.com/",
@@ -77,7 +77,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
         {
           title: "Warm, not generic",
           description:
-            "A cream, terracotta, and teal palette with a serif display face paired against a clean sans body — editorial, not templated.",
+            "A serif display face paired against a clean sans body — editorial, not templated.",
         },
         {
           title: "Photography-forward",
@@ -184,8 +184,6 @@ export const vietnameseNoodleHouse: CaseStudyData = {
           "Review the confirmation for that specific location",
           "Continue to that location's online ordering",
         ],
-        takeaway:
-          "Desktop had room to show the confirmation inline below the grid; mobile needed a different pattern entirely.",
       },
     ],
     flowsPlaceholder: false,
@@ -221,15 +219,15 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   },
 
   finalThoughts: {
-    pullQuote: "Designing for clarity meant thinking beyond the visuals.",
+    pullQuote: "Sometimes the better design adds a step.",
     // Two paragraphs, split on the blank line by VNHCaseStudy.
     whatILearned:
-      "Working on Vietnamese Noodle House taught me that redesigning a website isn't just about making it look better. It's about understanding how people use it and making sure the experience works for both customers and the business.\n\nOne of my biggest takeaways was learning to think beyond the interface itself. Whether someone is choosing a restaurant location or submitting a contact form, a successful interaction should be clear, reliable, and easy to complete.",
+      "Good design usually means removing steps, and the location flow added one on purpose. Friction is a tool when the mistake it prevents costs more than the step — and here the owner noticed the difference.\n\nThe contact form taught me the other half: an interaction that looks like it works isn't done until it actually does.",
     nextStepsHeading: "What's next",
     nextSteps:
-      "Now that the redesigned website is live, I want to understand how customers are using it. My next steps are gathering feedback from the restaurant owner, evaluating the location-selection experience on mobile and desktop, and identifying opportunities to improve the site based on actual usage.",
+      "Add location-level analytics on the ordering hand-off so the owners' count has data behind it, and keep checking in with them as real usage of the new site grows.",
     proudestOf:
-      "Turning an existing restaurant website into a more cohesive, responsive experience while working around real business and ordering-platform constraints.",
+      "Designing the confirm step twice — inline on desktop, a bottom sheet on mobile — instead of shrinking one layout, all around ordering platforms I couldn't change.",
     placeholder: false,
   },
 

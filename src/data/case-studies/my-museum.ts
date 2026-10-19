@@ -37,6 +37,7 @@ export const myMuseum: CaseStudyData = {
     tools: ["Figma", "Next.js", "React Three Fiber", "Claude Code", "Blender"],
     video: {
       src: "/videos/projects/mymuseum/walkthrough.mp4",
+      poster: "/images/projects/mymuseum/posters/walkthrough.jpg",
       alt: "Walkthrough of MyMuseum's live 3D gallery experience.",
       width: 1920,
       height: 1036,
@@ -152,12 +153,13 @@ export const myMuseum: CaseStudyData = {
     secondaryPersona: {
       name: "Their visitors",
       summary:
-        "Collectors and art directors, as the artists described them — I haven't interviewed collectors or art directors directly.",
+        "Want to find the work, take it in, and reach the artist, without learning a game first. Collectors and art directors as the artists described them, plus the five people who visited museums in July testing.",
       needs: [
-        "No game-style controls (P1)",
-        "Judge work in about thirty seconds (P2)",
-        "Crisp detail, fast loading (P2, P3)",
-        "An obvious way to reach the artist (P2)",
+        "Get around without game-style controls (P1)",
+        "Judge the work in about thirty seconds (P2)",
+        "Crisp detail that loads fast, even on a midrange phone (P2, P3)",
+        "See every piece without hunting for it (July testing)",
+        "A private way to reach the artist about a piece (P2, July testing)",
       ],
     },
     tensionIntro:
@@ -260,6 +262,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/room-small.mp4",
+            poster: "/images/projects/mymuseum/posters/room-small.jpg",
             alt: "Walking through a small museum: one compact room with artwork on every wall around a central sculpture.",
             width: 1024,
             height: 554,
@@ -267,6 +270,7 @@ export const myMuseum: CaseStudyData = {
           },
           {
             src: "/videos/projects/mymuseum/room-middle.mp4",
+            poster: "/images/projects/mymuseum/posters/room-middle.jpg",
             alt: "Walking through a medium museum: two connected rooms, with framed paintings along the walls.",
             width: 1024,
             height: 554,
@@ -274,10 +278,11 @@ export const myMuseum: CaseStudyData = {
           },
           {
             src: "/videos/projects/mymuseum/room-large.mp4",
+            poster: "/images/projects/mymuseum/posters/room-large.jpg",
             alt: "Walking through a large museum: moving between several connected rooms of a five-room floor plan.",
             width: 1024,
             height: 554,
-            caption: "Large · 10+ pieces — a five-room floor plan.",
+            caption: "Large · 10 pieces (the current upload cap) — a five-room floor plan.",
           },
         ],
       },
@@ -312,14 +317,14 @@ export const myMuseum: CaseStudyData = {
             alt: "Accessible grid view of a museum's full collection as cards with thumbnails, titles, and View artwork links, with an Enter 3D Gallery button.",
             width: 2940,
             height: 1592,
-            caption: "Grid View: the full collection with the same artwork viewer, no 3D required. Enter 3D Gallery stays one tap away.",
+            caption: "Grid View on desktop.",
           },
           {
             src: "/images/projects/mymuseum/final/mobile-grid.jpg",
             alt: "Grid View on a phone: the museum title, an Enter 3D Gallery button, and a single column of artwork cards with View artwork links.",
             width: 1206,
             height: 2136,
-            caption: "On touch devices, Grid View is the starting point.",
+            caption: "On a phone, where it's the starting point.",
           },
         ],
       },
@@ -388,6 +393,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/final-walk.mp4",
+            poster: "/images/projects/mymuseum/posters/final-walk.jpg",
             alt: "A yellow block avatar walks through dark-blue gallery rooms past framed artwork, plants, and white columns, with a 'Press E to view' prompt appearing whenever a piece is close.",
             width: 1920,
             height: 1036,
@@ -401,6 +407,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/final-inspect.mp4",
+            poster: "/images/projects/mymuseum/posters/final-inspect.jpg",
             alt: "The artwork viewer pages from 'Porch' to 'Ah Ma' with Previous/Next, then the visitor switches to Grid View, opens 'Misty Falls' from the grid, and returns to the 3D museum.",
             width: 1920,
             height: 1036,
@@ -415,6 +422,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/final-create.mp4",
+            poster: "/images/projects/mymuseum/posters/final-create.jpg",
             alt: "Creating 'Some of my favorites': the creator fills in the museum name, description, and their name, picks the Muted Sage theme, titles three uploaded pieces, and clicks Create My Museum. On the 'museum is ready' screen they click Copy museum link, which confirms 'Link copied', then walk into the new museum and open pieces in the viewer.",
             width: 1920,
             height: 1036,
@@ -438,6 +446,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/final-private-toggle.mp4",
+            poster: "/images/projects/mymuseum/posters/final-private-toggle.jpg",
             alt: "From My Museums, the creator opens Edit on 'Some of my favorites' and flips the Visibility switch from 'Published — anyone with the link can visit' to 'Private — only you can see this museum.'",
             width: 1920,
             height: 1000,
@@ -469,38 +478,38 @@ export const myMuseum: CaseStudyData = {
       {
         title: "Browse an artist's collection",
         description:
-          "A public profile lists every museum an artist has published, each opening straight into that museum.",
+          "A public profile lists every museum an artist has published, each opening straight into that museum, with a Message button for reaching the artist directly.",
         images: [
           {
-            src: "/images/projects/mymuseum/final/artist-profile.png",
-            alt: "Artist profile page for Alayna showing an avatar, bio, and three published museum cards with Enter museum links.",
-            width: 1440,
-            height: 900,
+            src: "/images/projects/mymuseum/final/artist-profile-desktop.png",
+            alt: "Public profile for the artist Monet: a teal cone avatar with glasses, the handle @claudemonet with one published museum, a Message button, and a card for The Monet Collection with an Enter museum link.",
+            width: 2940,
+            height: 1586,
           },
           {
-            src: "/images/projects/mymuseum/final/artist-profile-mobile.png",
-            alt: "The same artist profile reflowed into a single mobile column, museum cards stacked vertically.",
-            width: 390,
-            height: 844,
+            src: "/images/projects/mymuseum/final/artist-profile-mobile.jpg",
+            alt: "The same profile on mobile: avatar, name, and a full-width Message button stacked above The Monet Collection card.",
+            width: 1206,
+            height: 2151,
           },
         ],
       },
       {
         title: "Give every visitor an identity",
         description:
-          "Testing participants found the humanoid avatars \"weird,\" so I replaced them with simple shape characters — shape, body color, expression, and decoration — that fit a museum better. Drag to rotate; works on desktop and mobile.",
+          "The shape characters that replaced the humanoid avatars from testing (finding 03): shape, body color, expression, and decoration, designed to fit MyMuseum's look. Drag to rotate; works on desktop and mobile.",
         images: [
           {
-            src: "/images/projects/mymuseum/final/avatar-editor.png",
-            alt: "MyMuseum avatar editor showing a rounded-cube character with glasses and a sprout decoration, with body color, expression, and decoration controls beside it.",
-            width: 1440,
-            height: 900,
+            src: "/images/projects/mymuseum/final/avatar-editor-desktop.png",
+            alt: "Customize your avatar: a mustard rounded-cube character with round glasses and a smile, beside options for character shape, body color, expression, head decoration, and decoration color.",
+            width: 2940,
+            height: 1586,
           },
           {
-            src: "/images/projects/mymuseum/final/avatar-editor-mobile.png",
-            alt: "The same avatar editor stacked into a single mobile column, with the character preview above its customization controls.",
-            width: 390,
-            height: 844,
+            src: "/images/projects/mymuseum/final/avatar-editor-mobile.jpg",
+            alt: "The avatar editor on mobile: the same rounded-cube character in a large preview above Save avatar and Reset changes, with the customization options below.",
+            width: 1206,
+            height: 2235,
           },
         ],
       },
@@ -520,6 +529,7 @@ export const myMuseum: CaseStudyData = {
         videos: [
           {
             src: "/videos/projects/mymuseum/mail.mp4",
+            poster: "/images/projects/mymuseum/posters/mail.jpg",
             alt: "A visitor opens Museum Mail from the artwork viewer for \"Still Life\" and writes a private note to the artist of My Little World.",
             width: 1920,
             height: 1040,
@@ -540,7 +550,7 @@ export const myMuseum: CaseStudyData = {
             alt: "\"Your mail\" inbox listing three unread notes from Monet, each labeled with its museum and piece — My Little World · Still Life, Innocence, and Scenes — and a date.",
             width: 1484,
             height: 846,
-            caption: "Each note names the museum and piece it's about.",
+            caption: "Each note names the museum and piece it's about. (Test notes I sent from a second account.)",
           },
         ],
       },
@@ -595,7 +605,7 @@ export const myMuseum: CaseStudyData = {
       {
         title: "The avatars didn't fit",
         feedback:
-          "Participants felt the avatars \"looked weird and did not suit the game,\" and wanted something simpler.",
+          "Participants felt the avatars looked basic and didn't have a theme of their own.",
         finalIteration: "Simple geometric shape avatars — see Final product.",
       },
       {
@@ -621,19 +631,11 @@ export const myMuseum: CaseStudyData = {
         feedback: "Showing every artwork's full metadata form made editing long and hard to scan.",
         finalIteration: "Redesigned artwork management as compact summary rows with expandable editing.",
       },
-      {
-        title: "Fixing a share link that looked correct but failed",
-        later: true,
-        feedback: "The generated URL was using a placeholder domain rather than the browser's real origin.",
-        finalIteration:
-          "Separated relative internal navigation from browser-resolved absolute sharing URLs so copied links work consistently across environments.",
-        isTechnicalNote: true,
-      },
     ],
 
     laterHeading: "Hardening the product",
     laterIntro:
-      "Turning the redesign into a real product, I ran the full creator and visitor workflows myself — real accounts, stored artwork, sharing, multiple users. This was self-testing, not usability testing. The new homepage and the Explore / My Museums / Create navigation also came from this period, as my own design iterations.",
+      "Turning the redesign into a real product, I ran every creator and visitor workflow myself with real accounts and multiple users — self-testing, not usability testing. The new homepage and the Explore / My Museums / Create navigation came from this period too.",
 
     placeholder: false,
   },
