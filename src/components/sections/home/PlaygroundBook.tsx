@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { ChapterControls } from "@/components/sections/home/ChapterControls";
 import { TwoDSpread } from "@/components/sections/home/TwoDSpread";
 import { ThreeDSpread } from "@/components/sections/home/ThreeDSpread";
 import { BackCoverPage } from "@/components/sections/home/BackCoverPage";
@@ -161,7 +160,7 @@ function animateScrollTo(
  * directly by scroll position through the rest of the pinned track.
  *
  * Every other way of turning a page (clicking the book itself, the
- * chapter dots/arrows, or the arrow keys) funnels through `scrollToStage`,
+ * Open Sketchbook link, or the arrow keys) funnels through `scrollToStage`,
  * which just moves the window's scroll position to that stage — the
  * resulting scroll is what actually plays the flip, so every interaction
  * stays in sync with the scroll track instead of animating independently
@@ -190,7 +189,6 @@ export function PlaygroundBook() {
   const isAnimatingRef = useRef(false);
   const scrollAnimRef = useRef(0);
   const [reduced, setReduced] = useState(false);
-  const [stage, setStage] = useState(0);
 
   // Read (and clear) any remembered scroll position exactly once, during
   // render rather than in an effect. `consumeBookScrollPosition` is
@@ -232,17 +230,16 @@ export function PlaygroundBook() {
 
   function handleStageChange(next: number) {
     // While a click/key-triggered flip is animating, its own
-    // scrollToStage call has already set stageRef/stage to the real
+    // scrollToStage call has already set stageRef to the real
     // destination — ignore the intermediate stages the scroll passes
     // through on the way there. Without this guard, a second click fired
     // before the first flip finishes would read a rounded-but-stale
     // in-between stage here and compute its own target one step off the
     // *actual* destination instead of continuing from it, which is what
-    // made rapid clicking desync the book from the buttons. Once nothing
+    // made rapid clicking desync the book from the clicks. Once nothing
     // is animating, this goes back to just tracking raw scroll position.
     if (isAnimatingRef.current) return;
     stageRef.current = next;
-    setStage(next);
   }
 
   useEffect(() => {
@@ -402,7 +399,7 @@ export function PlaygroundBook() {
   }
 
   // The single way every non-scroll interaction (a click on the book, the
-  // chapter dots/arrows, or the arrow keys) turns a page: move the
+  // Open Sketchbook link, or the arrow keys) turns a page: move the
   // window's scroll position to that stage. Scroll position is the book's
   // source of truth (see the scroll effect above), so the resulting
   // scroll — a slow, hand-tuned animated scroll by default (see
@@ -421,7 +418,6 @@ export function PlaygroundBook() {
     const targetScrollY = trackTop + transitionPx + introPx + clampedTarget * stagePx;
     const from = stageRef.current;
     stageRef.current = clampedTarget;
-    setStage(clampedTarget);
     if (prefersReducedMotion()) {
       isAnimatingRef.current = false;
       cancelAnimationFrame(scrollAnimRef.current);
@@ -593,7 +589,6 @@ export function PlaygroundBook() {
               </button>
             </div>
 
-            <ChapterControls stage={stage} onSelect={(target) => scrollToStage(target)} />
           </div>
         </div>
       </div>

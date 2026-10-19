@@ -1354,11 +1354,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       {opportunity && (
         <Section
           id="opportunity"
-          className="scroll-mt-28 py-24 sm:py-36"
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--project-accent) 6%, var(--color-background))",
-          }}
+          className="scroll-mt-28 cs-band py-24 sm:py-36"
         >
           <Reveal>
             <Statement
@@ -1533,11 +1529,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
       {keyDecisions && keyDecisions.items.length > 0 && (
         <Section
           id="decisions"
-          className="scroll-mt-28"
-          style={{
-            backgroundColor:
-              "color-mix(in srgb, var(--project-accent) 5%, var(--color-background))",
-          }}
+          className="scroll-mt-28 cs-band"
         >
           <Reveal>
             <SectionEyebrow accent>Key decisions</SectionEyebrow>

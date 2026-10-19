@@ -5,14 +5,9 @@ import { SelectedWorkMedia } from "@/components/sections/home/SelectedWorkMedia"
 import { projects } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
-/** Muted traffic-light dots for the browser title bar. */
-const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
-
 /**
- * Selected Work: every project inside one retro browser window (blue-gray
- * title bar, window dots, an active "Selected Works" tab) spanning the
- * full viewport width; the projects stay inside the site Container. The
- * chrome is kept deliberately quiet so the screenshots lead.
+ * Selected Work: the project list, straight after the hero with no
+ * visible section title (the heading is screen-reader only).
  *
  * Projects alternate image-left / image-right on large screens and stack
  * image above copy on mobile, with identical 16:10 thumbnails so all three
@@ -25,47 +20,10 @@ export function FeaturedWork() {
   return (
     <section id="work" className="scroll-mt-28">
       <Reveal y={20} duration={500} className="overflow-hidden bg-background">
-        {/* Title bar + active tab */}
-        <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5">
-          <div aria-hidden="true" className="flex gap-1.5 self-center pb-2.5 opacity-80">
-            {WINDOW_DOTS.map((color) => (
-              <span
-                key={color}
-                className="size-2.5 rounded-full"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-
-          {/* Active tab — rounded top, with the curved "flare" corners
-              where a real browser tab melts into the page below. */}
-          <div className="relative flex h-9 w-56 min-w-0 items-center gap-2 rounded-t-lg bg-background pr-2.5 pl-4 sm:w-64">
-            <span
-              aria-hidden="true"
-              className="absolute bottom-0 -left-2.5 size-2.5 bg-[radial-gradient(circle_at_0_0,transparent_9.5px,var(--color-background)_10px)]"
-            />
-            <span
-              aria-hidden="true"
-              className="absolute -right-2.5 bottom-0 size-2.5 bg-[radial-gradient(circle_at_100%_0,transparent_9.5px,var(--color-background)_10px)]"
-            />
-            <span className="flex-1 truncate text-[13px] font-medium text-foreground/80">
-              Selected Works
-            </span>
-            <span
-              aria-hidden="true"
-              className="text-sm leading-none text-muted-foreground/60"
-            >
-              ×
-            </span>
-          </div>
-        </div>
-
         <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-4 sm:px-12 sm:pt-14 lg:px-20 lg:pt-20 xl:px-28">
-          <h2 className="font-heading text-3xl font-normal tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Selected Works
-          </h2>
+          <h2 className="sr-only">Selected Works</h2>
 
-          <ol className="mt-8 divide-y divide-border/70 sm:mt-12 lg:mt-16">
+          <ol className="divide-y divide-border/70">
             {projects.map((project, index) => {
               const imageRight = index % 2 === 1;
               const href = `/projects/${project.slug}`;

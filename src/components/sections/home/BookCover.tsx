@@ -26,7 +26,7 @@ import Image from "next/image";
  * rendered as the front face of a 3D-rotating page element (see
  * CreativePracticeBook/BookPage), which owns the only `transform` on
  * that element (the scroll-linked opening rotateY). Opening the book is
- * driven by scroll progress and ChapterControls in CreativePracticeBook
+ * driven by scroll progress and the arrow keys in PlaygroundBook
  * — this component has no click handler of its own.
  */
 export function BookCover() {

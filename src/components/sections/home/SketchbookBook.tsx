@@ -85,7 +85,7 @@ interface SketchbookBookProps {
  * (inside CreativePracticeBook's pinned scene), not a separate overlay.
  * The open page tracks scroll position directly (see `setProgress`), so
  * scrolling the pinned track turns pages exactly like scrolling a real
- * book. Clicking a page, the chapter dots/arrows, the site nav, and the
+ * book. Clicking a page, the site nav, and the
  * arrow keys don't animate the flip themselves — they all just move the
  * window's scroll position to the target stage (see CreativePracticeBook's
  * `scrollToStage`), and the resulting scroll (real or smooth-scrolled)
@@ -143,8 +143,16 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
         // cover has to land on top again.
         el.style.zIndex = t > 0.5 && closeEased <= 0.5 ? "0" : String(PAGES.length - i);
         el.style.setProperty("--flip-shade", shade.toFixed(3));
+        // Two leaves are clickable at a time: the top page on the right
+        // (its front turns forward) and the most recently turned page on
+        // the left (its back turns back). Every other leaf lets clicks
+        // fall through, so a click on either side only ever hits the
+        // page actually on top there.
         const previousCleared = i === 0 || clamp(progress - (i - 1), 0, 1) > 0.5;
-        el.style.pointerEvents = previousCleared && t < 0.5 && closeProgress === 0 ? "auto" : "none";
+        const isTopOfRight = previousCleared && t < 0.5;
+        const nextStillRight = i === LEAF_COUNT - 1 || clamp(progress - (i + 1), 0, 1) < 0.5;
+        const isTopOfLeft = t >= 0.5 && nextStillRight;
+        el.style.pointerEvents = (isTopOfRight || isTopOfLeft) && closeProgress === 0 ? "auto" : "none";
       }
       const nearest = clamp(Math.round(progress), 0, STAGE_COUNT - 1);
       if (nearest !== stageRef.current) {
@@ -202,6 +210,7 @@ export const SketchbookBook = forwardRef<SketchbookBookHandle, SketchbookBookPro
             coverBack={page.coverBack}
             front={page.front}
             onFrontClick={i < LEAF_COUNT ? () => onRequestStage?.(i + 1) : undefined}
+            onBackClick={i < LEAF_COUNT ? () => onRequestStage?.(i) : undefined}
           />
         ))}
       </BookHoverTilt>

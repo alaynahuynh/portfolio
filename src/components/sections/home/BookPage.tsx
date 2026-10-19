@@ -25,6 +25,11 @@ interface BookPageProps {
    * on the one leaf that's currently interactive, so there's no risk of
    * a hidden/inactive leaf underneath swallowing the click instead. */
   onFrontClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
+
+  /** Turns the page back on click — the back face is what shows on the
+   * left once the page has turned. Same blank-area-only rule as
+   * `onFrontClick`. */
+  onBackClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 function isInteractiveTarget(event: React.MouseEvent<HTMLDivElement>) {
@@ -41,6 +46,7 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
       transparentFront = false,
       coverBack = false,
       onFrontClick,
+      onBackClick,
     },
     ref,
   ) {
@@ -78,9 +84,13 @@ export const BookPage = forwardRef<HTMLDivElement, BookPageProps>(
 
         {!staticPage && (
           <div
+            onClick={
+              onBackClick && ((event) => !isInteractiveTarget(event) && onBackClick(event))
+            }
             className={cn(
               "absolute inset-0 overflow-y-auto rounded-lg",
               coverBack ? "page-cover-inside" : "page-parchment",
+              onBackClick && "cursor-pointer select-none",
             )}
             style={{
               backfaceVisibility: "hidden",

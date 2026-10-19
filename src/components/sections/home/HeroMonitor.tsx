@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
  * The hero's centerpiece: a beige CRT monitor drawn in CSS (no casing
  * art exists yet). Its screen is keyed to Work's lake-blue accent (see
  * hero-destinations.ts), the same way the Playground and About windows
- * carry theirs, and the name is set in Fraunces like every other headline.
+ * carry theirs, and the name is set in the heading face like every other headline.
  * Text sizes use container units so the screen copy scales with the
  * monitor itself, clamped so it never drops below a readable size.
  */

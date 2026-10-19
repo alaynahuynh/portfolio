@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Instrument_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { Header } from "@/components/layout/Header";
@@ -9,19 +9,12 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { siteConfig } from "@/lib/site-config";
 import "./globals.css";
 
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
+/** The site's one typeface — headings and body both use Inter. Italic
+ * is loaded for the few italic captions/quotes in the case studies. */
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-  axes: ["opsz", "SOFT"],
-  // Previously normal-only — the hero monitor's screen text sets the
-  // name in italic Fraunces, which needs the real italic font files
-  // loaded (not a browser-synthesized oblique of the upright weight).
   style: ["normal", "italic"],
-});
-
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument-sans",
-  subsets: ["latin"],
 });
 
 /** Custom handwriting font made in Calligraphr from Alayna's own
@@ -51,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${instrumentSans.variable} ${alaynaHandwriting.variable} h-full antialiased`}
+      className={`${inter.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">

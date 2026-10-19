@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { AnimatedAHLogo } from "@/components/ui/AnimatedAHLogo";
 import { NavItem } from "@/components/layout/NavItem";
 import { ResumeLink } from "@/components/ui/ResumeLink";
 import { navLinks } from "@/lib/site-config";
@@ -60,7 +59,6 @@ export function Header() {
   const pathname = usePathname();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [logoPlay, setLogoPlay] = useState(0);
   const [scrolled, setScrolled] = useState(false);
   const [clickedKey, setClickedKey] = useState<string | null>(null);
 
@@ -201,18 +199,15 @@ export function Header() {
         <span aria-hidden="true" className="nav-trace pointer-events-none absolute inset-0 rounded-[28px] border-[1.5px] border-sage-deep/70" />
 
         <Container className={cn("flex items-center justify-between transition-[padding] duration-(--duration-slow) ease-(--ease-soft)", scrolled ? "py-2.5" : "py-3")}>
-          {/* Logo stands alone at the far left; nav + Resume cluster
+          {/* Name stands alone at the far left; nav + Resume cluster
               together at the far right (their own fixed, equal-spacing
               gaps internally) — the one elastic gap this leaves is
-              between the logo and that cluster, reading as "logo furthest
+              between the logo and that cluster, reading as "name furthest
               left, everything else drawn toward the right" rather than
               splitting leftover space in the middle of the nav group. */}
           <Link
             href="/"
             onClick={(event) => {
-              // Replay the draw-on animation on click only (not hover):
-              // bumping the key remounts AnimatedAHLogo from its first frame.
-              setLogoPlay((n) => n + 1);
               // Same page: next/link no-ops on a same-URL click (no
               // pathname or hash change to navigate to), so the logo
               // would otherwise do nothing if you're already home and
@@ -227,15 +222,11 @@ export function Header() {
               if (clickFlashTimeoutRef.current) window.clearTimeout(clickFlashTimeoutRef.current);
               setClickedKey(null);
             }}
-            className="nav-stagger-item flex items-center gap-2.5 text-[#648F5E] transition-opacity duration-(--duration-base) hover:opacity-75"
+            className="nav-stagger-item group flex items-center focus-visible:outline-offset-4"
             style={{ animationDelay: "230ms" }}
           >
-            <AnimatedAHLogo
-              key={logoPlay}
-              className="h-[34px] w-auto"
-              speed={logoPlay > 0 ? 1.5 : 1}
-            />
-            <span className="font-alayna-handwriting text-[1.75rem] leading-none whitespace-nowrap text-foreground">
+            {/* Re-writes itself left to right on hover/focus — see .name-write in globals.css. */}
+            <span className="name-write font-alayna-handwriting text-[1.75rem] leading-none whitespace-nowrap text-foreground">
               Alayna Huynh
             </span>
           </Link>
