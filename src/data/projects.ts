@@ -103,7 +103,7 @@ export const projects: Project[] = [
     statusTag: "Shipped · Client work",
     title: "Vietnamese Noodle House",
     role: "Client Work · UX/UI Design · Development",
-    summary: "Redesigned and built a family restaurant's live site. The owners report mistaken orders fell from about 8 a month to 1.",
+    summary: "Redesigned and built a family restaurant's live site. Since its July launch, the owners report mistaken orders fell from about 8 a month to 1.",
     credibility:
       "Designed and built for a real restaurant while working within existing MenuDrive/Lavu platform constraints.",
     tagline: "Rebuilding a family restaurant's website so it finally works as hard as the food does.",

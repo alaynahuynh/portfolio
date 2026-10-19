@@ -558,7 +558,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <div>
               <Label accent>What happened</Label>
               <p className="mt-3 font-heading text-3xl text-foreground">About 8 → about 1</p>
-              <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month, by the owners&rsquo; count</p>
+              <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month since the July launch, by the owners&rsquo; count</p>
               <p className="mt-4 text-muted-foreground">
                 That&rsquo;s their tally, not analytics, and the redesign changed more than this flow at once — but
                 the location flow was the change aimed at mistaken orders. Location-level analytics on the hand-off

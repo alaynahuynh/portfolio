@@ -34,7 +34,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     tagline:
       "Rebuilding a family restaurant's website so it finally works as hard as the food does.",
     description:
-      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location. Since launch, the owners report mistaken orders dropping from about 8 a month to about 1.",
+      "Vietnamese Noodle House is a family-owned restaurant with two physical locations and a food truck around Syracuse, NY. Their old site broke on mobile and looked nothing like the restaurant it represented. I audited it, then designed and built a new one — a warm, photography-forward identity across every page, with a clearer path to ordering from the right location. Since the July launch, the owners report mistaken orders dropping from about 8 a month to about 1.",
     statusLabel: "Shipped",
     ctaLabel: "View Live Site",
     ctaHref: "https://vietnoodlehouse.com/",

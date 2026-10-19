@@ -355,12 +355,12 @@ export default function PigLampPage() {
             <Label>What I&rsquo;d do differently</Label>
             <ul className="mt-3 space-y-3 text-muted-foreground">
               <li>
-                <span className="font-medium text-foreground">Test fit before anything else.</span> The small example
+                <span className="font-medium text-foreground">Test fit before anything else.</span>{" "}The small example
                 piece saved me from a full bad cut. Next time I&rsquo;d cut a kerf test on day one and size every slot
                 from it, instead of adjusting after the fact.
               </li>
               <li>
-                <span className="font-medium text-foreground">Prototype the scale, not just the fit.</span> I&rsquo;d make
+                <span className="font-medium text-foreground">Prototype the scale, not just the fit.</span>{" "}I&rsquo;d make
                 the pig a little smaller so it looks more proportional — something a quick cardboard mockup at full
                 size would have shown before cutting wood.
               </li>
