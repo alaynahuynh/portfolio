@@ -3,15 +3,20 @@ import { HeroMonitor } from "@/components/sections/home/HeroMonitor";
 import { HeroPlaygroundTab } from "@/components/sections/home/HeroPlaygroundTab";
 import { HeroNotepad } from "@/components/sections/home/HeroNotepad";
 import { HeroGlow } from "@/components/sections/home/HeroGlow";
+import { HeroCursorGlow } from "@/components/sections/home/HeroCursorGlow";
+import { HeroSection } from "@/components/sections/home/HeroSection";
 import { HeroWorkLink } from "@/components/sections/home/HeroWorkLink";
 import { HeroHalftone } from "@/components/sections/home/HeroHalftone";
 import { HintArrow } from "@/components/ui/HintArrow";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 
-/** Shared link treatment: a gentle lift + soft drop shadow on hover/focus. */
+/** Shared link treatment: a gentle lift + soft drop shadow on hover/focus.
+ * Objects rest slightly dimmed and come back to full color when hovered or
+ * focused. The dim only applies on devices that can hover, so touch
+ * screens always see full color. */
 const OBJECT_LINK =
-  "group block rounded-sm transition-[transform,filter] duration-(--duration-base) ease-(--ease-soft) hover:-translate-y-1 hover:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:-translate-y-1 focus-visible:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep";
+  "group block rounded-sm transition-[transform,filter] duration-(--duration-base) ease-(--ease-soft) [@media(hover:hover)]:brightness-(--hero-dim) hover:brightness-100 focus-visible:brightness-100 hover:-translate-y-1 hover:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:-translate-y-1 focus-visible:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep";
 
 /** The Paint/Notepad windows go further: a deeper shadow, and they come
  * to the front of the stack so the hovered window reads as the active
@@ -48,19 +53,21 @@ function RetroTooltip({ children }: { children: React.ReactNode }) {
  */
 export function Hero() {
   return (
-    <section className="relative flex flex-col justify-center overflow-hidden border-b border-border bg-background pt-28 pb-16 sm:min-h-svh sm:pt-24 sm:pb-0">
+    <HeroSection>
+      {/* Cursor light — first child so the stage paints above it. */}
+      <HeroCursorGlow />
       <div className="mx-auto w-full max-w-[1100px] px-4 sm:px-6">
         <div className="group/hero relative mx-auto aspect-300/330 w-[84%] sm:aspect-1100/650 sm:w-full">
           <HeroGlow />
           {/* Halftone accent peeking out around the Notepad / monitor's
               right edge. sm+ only, like the grid below — on a phone the
               scene is busy enough without them. */}
-          <HeroHalftone className="hidden opacity-50 sm:-top-[14%] sm:left-[60%] sm:block sm:w-[36%]" />
+          <HeroHalftone tone="themed" className="hidden opacity-50 sm:-top-[14%] sm:left-[60%] sm:block sm:w-[36%]" />
           {/* Warped wireframe grid on the left, balancing the halftone.
-              The PNG is used as a mask so the lines take About's mauve. */}
+              The PNG is used as a mask; line color follows the hero theme. */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute top-[12%] left-[7%] hidden aspect-1199/1726 w-[20%] bg-mauve-deep opacity-55 mask-[url('/images/hero/grid-texture.png')] mask-contain mask-no-repeat sm:block"
+            className="pointer-events-none absolute top-[12%] left-[7%] hidden aspect-1199/1726 w-[20%] bg-(--hero-grid) opacity-(--hero-grid-opacity) transition-[background-color,opacity] duration-500 mask-[url('/images/hero/grid-texture.png')] mask-contain mask-no-repeat sm:block"
           />
           <HeroWorkLink
             data-monitor
@@ -83,7 +90,7 @@ export function Hero() {
               "absolute top-[30%] -right-[6%] z-10 w-[54%] sm:top-[10%] sm:right-auto sm:left-[62%] sm:w-[38%]",
             )}
           >
-            <HeroNotepad />
+            <HeroNotepad className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
             <RetroTooltip>About Me</RetroTooltip>
           </Link>
 
@@ -96,7 +103,7 @@ export function Hero() {
               "absolute top-[58%] -left-[6%] z-10 w-[60%] sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:w-[40%]",
             )}
           >
-            <HeroPlaygroundTab />
+            <HeroPlaygroundTab className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
             <RetroTooltip>Explore Playground</RetroTooltip>
           </Link>
 
@@ -105,12 +112,12 @@ export function Hero() {
               curving up toward the monitor.
               On mobile it sits centered just below the stage. */}
 
-          <p className="pointer-events-none absolute inset-x-0 top-full mt-5 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-sage-deep select-none sm:inset-x-auto sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start sm:text-[1.1875rem]">
+          <p className="pointer-events-none absolute inset-x-0 top-full mt-5 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-(--hero-hint) transition-colors duration-500 select-none sm:inset-x-auto sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start sm:text-[1.1875rem]">
             <HintArrow className="h-[1.1em] w-auto shrink-0 -translate-y-[0.3em]" />
             Click around to explore
           </p>
         </div>
       </div>
-    </section>
+    </HeroSection>
   );
 }

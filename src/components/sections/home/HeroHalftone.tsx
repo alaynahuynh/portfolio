@@ -30,7 +30,15 @@ const DOTS = (() => {
  * at low opacity so it reads as texture behind the objects, never a
  * focal point. Position, size, and opacity come from `className`.
  */
-export function HeroHalftone({ className }: { className?: string }) {
+export function HeroHalftone({
+  className,
+  tone = "blue",
+}: {
+  className?: string;
+  /** "themed" takes its colors from the hero theme variables (--hero-dot-*). */
+  tone?: "blue" | "themed";
+}) {
+  const themed = tone === "themed";
   // Each instance needs its own gradient id; strip useId's punctuation
   // so it's safe inside url(#…).
   const gradientId = `halftone-${useId().replace(/[^\w-]/g, "")}`;
@@ -49,14 +57,14 @@ export function HeroHalftone({ className }: { className?: string }) {
           r={R}
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0%" stopColor="var(--color-lake-blue)" />
+          <stop offset="0%" stopColor={themed ? "var(--hero-dot-1)" : "var(--color-lake-blue)"} />
           <stop
             offset="50%"
-            stopColor="color-mix(in srgb, var(--color-sky) 30%, white)"
+            stopColor={themed ? "var(--hero-dot-2)" : "color-mix(in srgb, var(--color-sky) 30%, white)"}
           />
           <stop
             offset="100%"
-            stopColor="color-mix(in srgb, var(--color-sky) 15%, white)"
+            stopColor={themed ? "var(--hero-dot-3)" : "color-mix(in srgb, var(--color-sky) 15%, white)"}
             stopOpacity="0"
           />
         </radialGradient>

@@ -12,12 +12,19 @@ import { cn } from "@/lib/utils";
 export function HeroMonitor({ className }: { className?: string }) {
   return (
     <div className={cn("@container relative", className)}>
-      {/* Casing */}
-      <div className="relative aspect-696/510 rounded-[1.2cqw] border border-[#cfc6b0] bg-linear-to-b from-[#e3dccb] to-[#d6cdb8] shadow-[inset_0_2px_0_rgba(255,255,255,0.6),inset_0_-3px_0_rgba(0,0,0,0.06)]">
+      {/* Hover aura: a soft white halo that blooms around the whole monitor while
+          it's hovered/focused, like light spilling off the screen. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-x-[18%] -top-[22%] -bottom-[4%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(240,245,255,0.6)_35%,rgba(220,232,250,0.25)_65%,transparent)] opacity-0 blur-3xl transition-opacity duration-(--duration-base) ease-(--ease-soft) group-hover:opacity-100 group-focus-visible:opacity-100"
+      />
+      {/* Casing — beveled like molded plastic: lit top/left edges, shaded
+          bottom/right, and a soft falloff toward the chin. */}
+      <div className="relative z-10 aspect-696/510 rounded-[1.2cqw] border border-[#c4bba4] bg-linear-to-b from-[#e6dfcf] via-[#ddd5c3] to-[#cfc6b0] shadow-[inset_0_0.4cqw_0_rgba(255,255,255,0.7),inset_0.35cqw_0_0_rgba(255,255,255,0.35),inset_-0.45cqw_0_0_rgba(0,0,0,0.07),inset_0_-0.8cqw_1.2cqw_rgba(0,0,0,0.12),0_30px_60px_-10px_rgba(0,0,0,0.55)]">
         {/* Recessed bezel */}
-        <div className="absolute inset-x-[8.6%] top-[10.6%] bottom-[13.3%] rounded-[1cqw] bg-[#bdb39c] shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]">
+        <div className="absolute inset-x-[8.6%] top-[10.6%] bottom-[13.3%] rounded-[1cqw] bg-linear-to-b from-[#a99f88] to-[#c7bea8] shadow-[inset_0_0.8cqw_1.2cqw_rgba(0,0,0,0.35),inset_0.4cqw_0_0.6cqw_rgba(0,0,0,0.12),inset_-0.4cqw_0_0.6cqw_rgba(0,0,0,0.08),0_0.25cqw_0_rgba(255,255,255,0.55),0_-0.2cqw_0_rgba(0,0,0,0.08)]">
           {/* Screen */}
-          <div className="absolute inset-x-[2.8%] top-[3.4%] bottom-[2.6%] overflow-hidden rounded-[1.6cqw] transition-[filter] duration-(--duration-base) ease-(--ease-soft) group-hover:brightness-[1.15] group-focus-visible:brightness-[1.15] bg-linear-to-br from-[color-mix(in_srgb,var(--color-mist-blue)_55%,white)] to-mist-blue shadow-[inset_0_0_2cqw_rgba(62,110,150,0.22)]">
+          <div className="absolute inset-x-[2.8%] top-[3.4%] bottom-[2.6%] overflow-hidden rounded-[1.6cqw] transition-[filter,box-shadow] duration-(--duration-base) ease-(--ease-soft) brightness-[1.04] saturate-[1.15] group-hover:brightness-[1.1] group-hover:saturate-[1.6] group-focus-visible:brightness-[1.1] group-focus-visible:saturate-[1.6] bg-linear-to-br from-[color-mix(in_srgb,var(--color-mist-blue)_55%,white)] to-mist-blue shadow-[0_0_40px_rgba(180,210,245,0.35),inset_0_0_30px_rgba(255,255,255,0.18)] group-hover:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)] group-focus-visible:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)]">
             {/* Photographed CRT texture, rotated to landscape to match the screen */}
             <div
               aria-hidden="true"
@@ -47,6 +54,12 @@ export function HeroMonitor({ className }: { className?: string }) {
           </div>
         </div>
 
+        {/* Seam where the front bezel meets the chin */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-[1.5%] bottom-[9.5%] h-[0.25cqw] bg-black/8 shadow-[0_0.2cqw_0_rgba(255,255,255,0.5)]"
+        />
+
         {/* Power LED + button — the LED switches to a lighter, glowing blue on
             hover/focus, like the monitor turning on. */}
         <span
@@ -55,15 +68,26 @@ export function HeroMonitor({ className }: { className?: string }) {
         />
         <span
           aria-hidden="true"
-          className="absolute right-[10.3%] bottom-[2.2%] h-[5.4%] w-[5cqw] rounded-[0.4cqw] border border-[#5c574b] bg-[#ddd5c2]"
+          className="absolute right-[10.3%] bottom-[2.2%] h-[5.4%] w-[5cqw] rounded-[0.4cqw] border border-[#5c574b] bg-linear-to-b from-[#e6dfcf] to-[#d2c9b4] shadow-[inset_0_0.2cqw_0_rgba(255,255,255,0.7),inset_0_-0.2cqw_0_rgba(0,0,0,0.12),0_0.15cqw_0.3cqw_rgba(0,0,0,0.2)]"
         />
       </div>
 
-      {/* Back of the tube, swivel, and base */}
-      <div aria-hidden="true" className="relative flex flex-col items-center">
-        <div className="h-[4.8cqw] w-[80%] rounded-b-[1cqw] bg-linear-to-b from-[#cbc2ad] to-[#d9d1be]" />
-        <div className="-mt-[0.6cqw] h-[3.2cqw] w-[30%] rounded-b-[50%] border-x border-b border-[#bdb39c] bg-[#d4cbb7]" />
-        <div className="mt-[1.2cqw] h-[8.3cqw] w-[56%] rounded-[0.8cqw] bg-linear-to-b from-[#e3dccb] to-[#cfc6b0] shadow-[0_2px_0_#bdb39c]" />
+      {/* Stand, modeled on a real CRT: a short neck emerging from under the
+          casing (which sits above it at z-10), a swivel collar, and a base
+          whose top face narrows toward the back, with a darker front edge.
+          Drop shadow lives on a wrapper because clip-path would cut it off. */}
+      <div aria-hidden="true" className="relative z-0 -mt-[1.6cqw] flex flex-col items-center">
+        {/* Neck — shaded at the top where the casing overhangs it */}
+        <div className="h-[5cqw] w-[30%] bg-linear-to-b from-[#9c9279] to-[#cbc2ab] shadow-[inset_0_1.6cqw_1.4cqw_-0.6cqw_rgba(0,0,0,0.45),inset_0.5cqw_0_0.6cqw_-0.3cqw_rgba(0,0,0,0.15),inset_-0.5cqw_0_0.6cqw_-0.3cqw_rgba(0,0,0,0.15)]" />
+        {/* Swivel collar sitting on the base */}
+        <div className="relative z-10 -mt-[0.4cqw] h-[2.8cqw] w-[40%] rounded-b-[50%] rounded-t-[0.4cqw] bg-linear-to-b from-[#e2dbca] to-[#c4bba4] shadow-[inset_0_0.3cqw_0_rgba(255,255,255,0.6),0_0.5cqw_0.8cqw_rgba(0,0,0,0.3)]" />
+        {/* Base */}
+        <div className="relative -mt-[1.2cqw] w-[58%] drop-shadow-[0_1.4cqw_1.4cqw_rgba(0,0,0,0.45)]">
+          {/* Top face, in perspective */}
+          <div className="h-[5cqw] bg-linear-to-b from-[#cfc6b0] to-[#e6dfcf] [clip-path:polygon(7%_0,93%_0,100%_100%,0_100%)]" />
+          {/* Front edge */}
+          <div className="h-[2.6cqw] rounded-b-[0.6cqw] bg-linear-to-b from-[#d3cab5] to-[#b9af97] shadow-[inset_0_0.2cqw_0_rgba(255,255,255,0.65)]" />
+        </div>
       </div>
     </div>
   );

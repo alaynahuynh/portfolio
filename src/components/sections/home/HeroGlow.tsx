@@ -8,8 +8,8 @@ import { motion, prefersReducedMotion } from "@/lib/motion";
 const MAX_SHIFT = 24;
 
 /**
- * Soft glow behind the monitor — faint mist-blue "screen light" fading
- * into the paper; brightens a touch while the monitor is hovered/focused.
+ * Soft glow behind the monitor — blue "screen light" spilling onto the
+ * navy backdrop; brightens a touch while the monitor is hovered/focused.
  * Drifts noticeably toward the cursor anywhere over the hero section,
  * eased with the shared `motion.lerp` and settling back to center when
  * the pointer leaves. Disabled under prefers-reduced-motion and on
@@ -79,10 +79,7 @@ export function HeroGlow() {
       ref={ref}
       aria-hidden="true"
       className="pointer-events-none absolute top-[30%] left-1/2 aspect-4/3 w-[150%] -translate-1/2 rounded-full opacity-90 blur-3xl transition-opacity duration-(--duration-base) ease-(--ease-soft) will-change-transform group-has-[[data-monitor]:hover]/hero:opacity-100 group-has-[[data-monitor]:focus-visible]/hero:opacity-100 sm:top-[40%] sm:left-[48%] sm:w-[118%]"
-      style={{
-        background:
-          "radial-gradient(closest-side, color-mix(in srgb, var(--color-mist-blue) 55%, white) 0%, color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 55%, white) 70%, transparent) 45%, color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 55%, white) 30%, transparent) 75%, transparent 100%)",
-      }}
+      style={{ background: "var(--hero-glow)" }}
     />
   );
 }

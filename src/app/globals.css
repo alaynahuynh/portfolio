@@ -865,3 +865,52 @@
     animation-delay: 0s !important;
   }
 }
+
+/* ── Hero theme ─────────────────────────────────────────────────────────
+   Colors the homepage hero's light/dark switch controls (see
+   HeroSection.tsx). Light restores the original white hero; dark is the
+   navy version. */
+[data-hero-theme="dark"] {
+  --hero-navy: 1;
+  --hero-border: #1a2742;
+  --hero-dim: 0.8;
+  --hero-hint: #e8e1cf;
+  --hero-grid: #c4b2e3;
+  --hero-grid-opacity: 0.6;
+  --hero-dot-1: #a9c8ec;
+  --hero-dot-2: #a9c8ec;
+  --hero-dot-3: #a9c8ec;
+  --hero-glow: radial-gradient(
+    closest-side,
+    rgba(160, 195, 240, 0.42) 0%,
+    rgba(120, 160, 220, 0.16) 45%,
+    transparent 75%
+  );
+  --hero-cursor-core: rgba(232, 225, 207, 0.2);
+  --hero-cursor-edge: rgba(180, 205, 240, 0.09);
+}
+
+[data-hero-theme="light"] {
+  --hero-navy: 0;
+  --hero-border: var(--color-border);
+  --hero-dim: 1;
+  --hero-hint: var(--color-sage-deep);
+  --hero-grid: var(--color-mauve-deep);
+  --hero-grid-opacity: 0.55;
+  --hero-dot-1: var(--color-lake-blue);
+  --hero-dot-2: color-mix(in srgb, var(--color-sky) 30%, white);
+  --hero-dot-3: color-mix(in srgb, var(--color-sky) 15%, white);
+  /* A soft, mostly-white halo: just enough cool tint to show against the
+     white page, held at strong opacity further out than the old blue. */
+  --hero-glow: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--color-mist-blue) 32%, white) 0%,
+    color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 32%, white) 90%, transparent) 45%,
+    color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 32%, white) 55%, transparent) 75%,
+    transparent 100%
+  );
+  /* No cursor light on the white hero. */
+  --hero-cursor-core: transparent;
+  --hero-cursor-edge: transparent;
+}
+

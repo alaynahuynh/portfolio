@@ -10,12 +10,20 @@ import { NavItem } from "@/components/layout/NavItem";
 import { ResumeLink } from "@/components/ui/ResumeLink";
 import { navLinks } from "@/lib/site-config";
 import { prefersReducedMotion } from "@/lib/motion";
+import { HERO_THEME_EVENT } from "@/components/sections/home/HeroSection";
 import { cn } from "@/lib/utils";
 
 /** Fixed scroll-pixel threshold before the pill firms up — the hero is a
  * plain static section now (see Hero.tsx), so this is just "has the
  * visitor started scrolling," not synced to any hero animation. */
 const SCROLL_SHRINK_THRESHOLD = 24;
+
+/** Cream used for nav text while the pill sits over the navy homepage hero. */
+const CREAM = "text-[#E8E1CF]";
+
+/** Roughly where the pill's bottom edge sits (top padding + pill height).
+ * The nav stays in its navy style until the hero's bottom scrolls above this. */
+const NAV_OVERLAP_PX = 80;
 
 /** `/#work` → "work", used both to key each NavItem and to match it against
  * the active section/route. A plain route link (no hash, e.g. "/about")
@@ -62,6 +70,9 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logoPlay, setLogoPlay] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+  // True while the homepage hero (marked `data-hero`) is behind the pill
+  // and set to its dark theme.
+  const [overHero, setOverHero] = useState(false);
   const [clickedKey, setClickedKey] = useState<string | null>(null);
 
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -131,6 +142,13 @@ export function Header() {
       const y = window.scrollY;
       setScrolled(y > SCROLL_SHRINK_THRESHOLD);
 
+      const hero = document.querySelector("[data-hero]");
+      setOverHero(
+        !!hero &&
+          hero.getAttribute("data-hero-theme") !== "light" &&
+          hero.getBoundingClientRect().bottom > NAV_OVERLAP_PX,
+      );
+
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
       if (progressRef.current) {
@@ -145,12 +163,16 @@ export function Header() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
+    window.addEventListener(HERO_THEME_EVENT, update);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
+      window.removeEventListener(HERO_THEME_EVENT, update);
       if (frame) cancelAnimationFrame(frame);
     };
-  }, []);
+    // Re-run on route changes so the hero check picks up (or drops) the
+    // homepage hero after client-side navigation.
+  }, [pathname]);
 
   // Clears any in-flight click-flash timer on unmount so it can't fire
   // setState after Header is gone.
@@ -194,7 +216,9 @@ export function Header() {
       <div
         className={cn(
           "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-border/70 bg-background/55 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] md:w-[88%] lg:w-[66%]",
-          scrolled && "border-border bg-background/85 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
+          overHero
+            ? "border-[#E8E1CF]/10 bg-[rgba(14,20,36,0.72)] shadow-[0_8px_28px_-12px_rgba(0,0,0,0.6)] backdrop-blur-md"
+            : scrolled && "border-border bg-background/85 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
         )}
       >
         {/* One-time entrance flourish: an ink outline traces the pill's own border, then fades. */}
@@ -227,7 +251,11 @@ export function Header() {
               if (clickFlashTimeoutRef.current) window.clearTimeout(clickFlashTimeoutRef.current);
               setClickedKey(null);
             }}
-            className="nav-stagger-item flex items-center gap-2.5 text-[#648F5E] transition-opacity duration-(--duration-base) hover:opacity-75"
+            className={cn(
+              "nav-stagger-item flex items-center gap-2.5 text-[#648F5E] transition-[opacity,color] duration-(--duration-base) hover:opacity-75",
+              // Lighter sage over the navy hero so the mark doesn't sink into it.
+              overHero && "text-[#9CC08F]",
+            )}
             style={{ animationDelay: "230ms" }}
           >
             <AnimatedAHLogo
@@ -235,7 +263,7 @@ export function Header() {
               className="h-[34px] w-auto"
               speed={logoPlay > 0 ? 1.5 : 1}
             />
-            <span className="font-alayna-handwriting text-[1.75rem] leading-none whitespace-nowrap text-foreground">
+            <span className={cn("font-alayna-handwriting text-[1.75rem] leading-none whitespace-nowrap text-foreground transition-colors duration-(--duration-slow) ease-(--ease-soft)", overHero && CREAM)}>
               Alayna Huynh
             </span>
           </Link>
@@ -253,6 +281,7 @@ export function Header() {
                     label={link.label}
                     active={active}
                     index={i + 1}
+                    dark={overHero}
                     onClick={(event) => {
                       if (anchor && pathname === "/") {
                         event.preventDefault();
@@ -269,7 +298,12 @@ export function Header() {
               className="nav-stagger-item"
               style={{ animationDelay: `${230 + (navLinks.length + 1) * 55}ms` }}
             >
-              <ResumeLink className="rounded-(--radius-pill) border border-meadow/25 px-4 py-2 text-sm tracking-wide text-meadow transition-colors duration-(--duration-base) ease-(--ease-soft) hover:bg-meadow/10" />
+              <ResumeLink
+                className={cn(
+                  "rounded-(--radius-pill) border border-meadow/25 px-4 py-2 text-sm tracking-wide text-meadow transition-colors duration-(--duration-base) ease-(--ease-soft) hover:bg-meadow/10",
+                  overHero && cn("border-[#E8E1CF]/30 hover:bg-white/10", CREAM),
+                )}
+              />
             </span>
           </div>
 
@@ -280,7 +314,10 @@ export function Header() {
             aria-controls="mobile-nav"
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             onClick={() => setMenuOpen((open) => !open)}
-            className="nav-stagger-item flex size-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-black/5 md:hidden"
+            className={cn(
+              "nav-stagger-item flex size-10 items-center justify-center rounded-full text-foreground transition-colors hover:bg-black/5 md:hidden",
+              overHero && cn("hover:bg-white/10", CREAM),
+            )}
             style={{ animationDelay: `${230 + (navLinks.length + 1) * 55}ms` }}
           >
             {menuOpen ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
