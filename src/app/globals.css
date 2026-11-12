@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* `dark:` utilities follow the site theme on <html data-theme> (toggled by
+   the hero's pendant lamp, see src/lib/theme.ts), not the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* ------------------------------------------------------------------ */
 /* Design tokens                                                       */
 /* Colors, fonts, radii, and spacing all live here. Every component    */
@@ -106,9 +110,79 @@
   --duration-slower: 900ms; /* environmental/scroll-linked transitions */
 }
 
-/* No automatic dark mode: the painterly storybook aesthetic (cream paper,
-   garden palette, hand-drawn details) is intentionally light-only. Revisit
-   if a manual toggle is ever wanted. */
+/* ── Dark theme ──────────────────────────────────────────────────────────
+   Manual only (the hero's pendant lamp; saved, and applied before paint
+   by the script in layout.tsx): no automatic switch from the OS setting.
+   The navy matches the dark hero. Re-pointing the tokens here re-themes
+   every page; the -deep "accessible on cream" accents become light
+   versions so they stay readable on navy. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-background: #0f1626;
+  --color-surface: #162036;
+  --color-muted: #1b2640;
+  --color-foreground: #ece6d6;
+  --color-muted-foreground: #aeb4c2;
+  --color-border: #27324c;
+  --color-band: #131c30;
+
+  --color-meadow: #8fb556;
+  --color-mist: #1e2c33;
+  --color-earth: #cdb08a;
+
+  --color-mauve-deep: #d6a6c2;
+  --color-blush: #4a3442;
+  --color-mist-blue: #2a3a56;
+  --color-lake-blue-deep: #9cc6ec;
+  --color-sage-deep: #a8c58a;
+
+  --color-coursepilot-purple: #a993ff;
+
+  --color-accent: #3b2d43;
+  --color-accent-hover: #5a4263;
+  --color-accent-secondary: #22314d;
+  --color-accent-foreground: #ece6d6;
+
+  --color-primary: #a8c58a;
+  --color-primary-foreground: #0f1626;
+}
+
+/* The 2D/3D works pages: the same paper grain, laid over navy instead of
+   cream, so the whole page goes dark with the rest of the site. */
+:root[data-theme="dark"] .bg-sketchbook-paper {
+  background-color: #131b2d;
+}
+
+/* Surfaces that keep the light palette in the dark theme:
+   - The sketchbook is a physical object: its pages and kraft cover stay
+     cream/kraft, so they get the light text tokens back (cream-on-cream
+     would vanish).
+   - The homepage hero has its own dark design (navy backdrop + the
+     --hero-* variables under "Hero theme"); its drawn monitor and windows
+     keep their light colors, so it isn't simply inverted. */
+:root[data-theme="dark"] :is(.page-parchment, .page-cover-inside, [data-hero]) {
+  color-scheme: light;
+  --color-background: #ffffff;
+  --color-surface: #ffffff;
+  --color-muted: #f1e9da;
+  --color-foreground: #2e322a;
+  --color-muted-foreground: #5c6152;
+  --color-border: #e8dfd3;
+  --color-meadow: #769f3d;
+  --color-mist: #c9ddc4;
+  --color-earth: #745b36;
+  --color-mauve-deep: #8c5d78;
+  --color-blush: #e9c6ce;
+  --color-mist-blue: #c7d7e7;
+  --color-lake-blue-deep: #3e6e96;
+  --color-sage-deep: #5f7a45;
+  --color-accent: #e9c6ce;
+  --color-accent-foreground: #2e322a;
+  --color-primary: #5f7a45;
+  --color-primary-foreground: #faf6ec;
+  color: var(--color-foreground);
+}
 
 /* Map tokens above into Tailwind utilities, e.g. bg-background,        */
 /* text-foreground, font-heading, etc.                                  */
@@ -812,6 +886,14 @@
   --color-border: #e4e2dc;
   --radius-default: 0.5rem;
 }
+:root[data-theme="dark"] .case-study {
+  --color-background: #0f1626;
+  --color-surface: #162036;
+  --color-muted: #1b2640;
+  --color-foreground: #f0ebdd;
+  --color-muted-foreground: #b4bac7;
+  --color-border: #27324c;
+}
 .case-study :is(h1, h2, h3) {
   text-wrap: balance;
 }
@@ -867,10 +949,9 @@
 }
 
 /* ── Hero theme ─────────────────────────────────────────────────────────
-   Colors the homepage hero's light/dark switch controls (see
-   HeroSection.tsx). Light restores the original white hero; dark is the
-   navy version. */
-[data-hero-theme="dark"] {
+   The homepage hero's colors for each site theme (see HeroSection.tsx):
+   white in the light theme, navy in the dark theme. */
+:root[data-theme="dark"] [data-hero] {
   --hero-navy: 1;
   --hero-border: #1a2742;
   --hero-dim: 0.8;
@@ -890,7 +971,7 @@
   --hero-cursor-edge: rgba(180, 205, 240, 0.09);
 }
 
-[data-hero-theme="light"] {
+[data-hero] {
   --hero-navy: 0;
   --hero-border: var(--color-border);
   --hero-dim: 1;

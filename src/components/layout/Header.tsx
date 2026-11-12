@@ -10,7 +10,7 @@ import { NavItem } from "@/components/layout/NavItem";
 import { ResumeLink } from "@/components/ui/ResumeLink";
 import { navLinks } from "@/lib/site-config";
 import { prefersReducedMotion } from "@/lib/motion";
-import { HERO_THEME_EVENT } from "@/components/sections/home/HeroSection";
+import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /** Fixed scroll-pixel threshold before the pill firms up — the hero is a
@@ -18,12 +18,8 @@ import { cn } from "@/lib/utils";
  * visitor started scrolling," not synced to any hero animation. */
 const SCROLL_SHRINK_THRESHOLD = 24;
 
-/** Cream used for nav text while the pill sits over the navy homepage hero. */
+/** Cream used for nav text in the navy (dark theme) pill. */
 const CREAM = "text-[#E8E1CF]";
-
-/** Roughly where the pill's bottom edge sits (top padding + pill height).
- * The nav stays in its navy style until the hero's bottom scrolls above this. */
-const NAV_OVERLAP_PX = 80;
 
 /** `/#work` → "work", used both to key each NavItem and to match it against
  * the active section/route. A plain route link (no hash, e.g. "/about")
@@ -72,7 +68,8 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   // True while the homepage hero (marked `data-hero`) is behind the pill
   // and set to its dark theme.
-  const [overHero, setOverHero] = useState(false);
+  // Navy pill whenever the site is in dark mode (every page).
+  const overHero = useTheme() === "dark";
   const [clickedKey, setClickedKey] = useState<string | null>(null);
 
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -142,13 +139,6 @@ export function Header() {
       const y = window.scrollY;
       setScrolled(y > SCROLL_SHRINK_THRESHOLD);
 
-      const hero = document.querySelector("[data-hero]");
-      setOverHero(
-        !!hero &&
-          hero.getAttribute("data-hero-theme") !== "light" &&
-          hero.getBoundingClientRect().bottom > NAV_OVERLAP_PX,
-      );
-
       const max = document.documentElement.scrollHeight - window.innerHeight;
       const progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
       if (progressRef.current) {
@@ -163,11 +153,9 @@ export function Header() {
     update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", update);
-    window.addEventListener(HERO_THEME_EVENT, update);
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", update);
-      window.removeEventListener(HERO_THEME_EVENT, update);
       if (frame) cancelAnimationFrame(frame);
     };
     // Re-run on route changes so the hero check picks up (or drops) the
@@ -253,7 +241,7 @@ export function Header() {
             }}
             className={cn(
               "nav-stagger-item flex items-center gap-2.5 text-[#648F5E] transition-[opacity,color] duration-(--duration-base) hover:opacity-75",
-              // Lighter sage over the navy hero so the mark doesn't sink into it.
+              // Lighter sage on the navy pill so the mark doesn't sink into it.
               overHero && "text-[#9CC08F]",
             )}
             style={{ animationDelay: "230ms" }}

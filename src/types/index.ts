@@ -60,4 +60,26 @@ export interface Project {
   cover?: { src: string; alt: string; width: number; height: number };
   /** Short scope label shown on the homepage card, e.g. "Live product". */
   statusTag?: string;
+  /** Small meta line under the role on the homepage card, e.g.
+   * "Solo · 3 months · 2025". Omitted when unset. */
+  meta?: string;
+  /** Homepage Selected Works media: a wide 16:9 clip beside a tall 9:16
+   * one on a soft project-colored card. Built by
+   * scripts/thumbnails/build_thumbnails.py into /public/thumbnails/<project>/.
+   * Projects without it render as a compact secondary row instead. */
+  media?: ProjectMedia;
+}
+
+export interface ProjectMedia {
+  /** Soft card background from the project palette. */
+  bgColor: string;
+  /** Looping clip (muted MP4) and its first-frame still. */
+  wideSrc: string;
+  widePoster: string;
+  /** Describes what happens in the clip. */
+  wideAlt: string;
+  /** Phone-shaped panel; hidden under 700px. */
+  tallSrc?: string;
+  tallPoster?: string;
+  tallAlt?: string;
 }

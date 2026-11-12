@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { CustomCursor } from "@/components/ui/CustomCursor";
 import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { siteConfig } from "@/lib/site-config";
+import { THEME_SCRIPT } from "@/lib/theme-script";
 import "./globals.css";
 
 /** Body text, captions, labels, and nav. Italic is loaded for the few
@@ -54,8 +55,15 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-theme="light"
+      // The theme script below may switch data-theme to "dark" before React
+      // hydrates; keep the DOM's value (see src/lib/theme.ts).
+      suppressHydrationWarning
       className={`${inter.variable} ${sourceSerif.variable} ${alaynaHandwriting.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">
           <a

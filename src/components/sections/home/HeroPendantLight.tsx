@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -9,29 +9,30 @@ export type HeroTheme = "light" | "dark";
 /**
  * A small pendant bulb hanging from the top of the hero on a cord: the
  * hero's light/dark control. Lit (warm glow) while the hero is light;
- * clicking switches it off and the hero goes dark, clicking again turns it
- * back on. Hover/focus lowers it a little on its cord, and each click sets
- * it swinging gently.
+ * clicking switches it off and the site goes dark, clicking again turns it
+ * back on. It hangs like a real pendulum: the pointer brushing past pushes
+ * it the way the pointer is moving (entering, sweeping across, leaving),
+ * a click sets it swinging harder, and every swing dies down on its own.
+ * Hover/focus also lowers it a little on its cord.
  *
  * The cord starts above the section's top edge (the section clips it), so
  * lowering the bulb never shows the cord's end.
  */
 
-/** A damped pendulum: equal time per swing (like a real pendulum), each
- * swing smaller than the last, easing in and out at every turnaround.
- * Offsets follow the timing — a quarter swing out, five half swings, a
- * quarter swing back to rest — so the motion never speeds up or stalls. */
-const SWING: Keyframe[] = [
-  { transform: "rotate(0deg)", offset: 0, easing: "cubic-bezier(0.33, 1, 0.68, 1)" },
-  { transform: "rotate(7deg)", offset: 1 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(-5deg)", offset: 3 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(3.4deg)", offset: 5 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(-2.2deg)", offset: 7 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(1.2deg)", offset: 9 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(-0.5deg)", offset: 11 / 12, easing: "cubic-bezier(0.37, 0, 0.63, 1)" },
-  { transform: "rotate(0deg)", offset: 1 },
-];
-const SWING_MS = 3000;
+/** Pendulum tuning. Angles in degrees, time in seconds.
+ * STIFFNESS sets the swing period (2π/√40 ≈ 1s per full swing);
+ * DAMPING sets how fast swings die down (about 2s to settle). */
+const STIFFNESS = 40;
+const DAMPING = 1.6;
+const MAX_ANGLE = 14;
+/** Push from the pointer entering the bulb, from its side. ≈1.5° swing. */
+const ENTER_KICK = 10;
+/** Push per pixel of pointer movement while sweeping across the bulb. */
+const MOVE_KICK = 0.5;
+/** Largest push a single pointer-move event can add (fast flicks). */
+const MOVE_KICK_MAX = 4;
+/** Push from a click. ≈7° swing, like the old click swing. */
+const CLICK_KICK = 46;
 export function HeroPendantLight({
   theme,
   onChange,
@@ -43,30 +44,79 @@ export function HeroPendantLight({
 }) {
   const lit = theme === "light";
   const swingRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<Animation | null>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const pendulum = useRef({ angle: 0, velocity: 0, frame: 0, last: 0 });
 
-  /** Starts (or smoothly restarts) the swing with the Web Animations API,
-   * so the bulb's elements are never remounted and keep hover/focus. */
-  function startSwing() {
+  useEffect(() => () => cancelAnimationFrame(pendulum.current.frame), []);
+
+  /** One animation frame of the damped pendulum (semi-implicit Euler),
+   * written straight to the element's transform so nothing re-renders. */
+  function step(now: number) {
+    const p = pendulum.current;
     const el = swingRef.current;
-    if (!el || prefersReducedMotion()) return;
-    animationRef.current?.cancel();
-    animationRef.current = el.animate(SWING, { duration: SWING_MS });
+    if (!el) return;
+    const dt = Math.min((now - p.last) / 1000, 1 / 30);
+    p.last = now;
+    p.velocity += (-STIFFNESS * p.angle - DAMPING * p.velocity) * dt;
+    p.angle = Math.max(-MAX_ANGLE, Math.min(MAX_ANGLE, p.angle + p.velocity * dt));
+    if (Math.abs(p.angle) < 0.02 && Math.abs(p.velocity) < 0.05) {
+      p.angle = 0;
+      p.velocity = 0;
+      p.frame = 0;
+      el.style.transform = "";
+      return;
+    }
+    el.style.transform = `rotate(${p.angle.toFixed(3)}deg)`;
+    p.frame = requestAnimationFrame(step);
+  }
+
+  /** Adds angular velocity (deg/s; positive swings the bulb to the right). */
+  function push(velocity: number) {
+    if (prefersReducedMotion()) return;
+    const p = pendulum.current;
+    p.velocity += velocity;
+    if (!p.frame) {
+      p.last = performance.now();
+      p.frame = requestAnimationFrame(step);
+    }
+  }
+
+  /** +1 if the pointer is left of the bulb's center (so it gets pushed
+   * right), -1 if right of it. */
+  function sideOf(clientX: number) {
+    const rect = buttonRef.current?.getBoundingClientRect();
+    if (!rect) return 1;
+    return clientX < rect.left + rect.width / 2 ? 1 : -1;
   }
 
   return (
     <div className={cn("pointer-events-none absolute -top-10 z-30", className)}>
       <div ref={swingRef} className="origin-top will-change-transform">
         <button
+          ref={buttonRef}
           type="button"
           aria-pressed={!lit}
-          aria-label={lit ? "Turn off the light (dark background)" : "Turn on the light (light background)"}
+          aria-label={lit ? "Turn off the light (switch the site to dark mode)" : "Turn on the light (switch the site to light mode)"}
           title={lit ? "Lights off" : "Lights on"}
           onClick={() => {
             onChange(lit ? "dark" : "light");
-            startSwing();
+            // Keep going the way it's already swinging, or right from rest.
+            push(pendulum.current.velocity < 0 ? -CLICK_KICK : CLICK_KICK);
           }}
-          className="pointer-events-auto flex cursor-pointer flex-col items-center rounded-full px-2 pb-1 opacity-55 transition-[translate,opacity] duration-700 ease-[cubic-bezier(0.34,1.35,0.64,1)] hover:opacity-100 focus-visible:opacity-100 hover:translate-y-5 focus-visible:translate-y-5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-deep motion-reduce:transition-none"
+          onPointerEnter={(event) => {
+            if (event.pointerType === "mouse") push(sideOf(event.clientX) * ENTER_KICK);
+          }}
+          onPointerMove={(event) => {
+            if (event.pointerType !== "mouse" || !event.movementX) return;
+            push(Math.max(-MOVE_KICK_MAX, Math.min(MOVE_KICK_MAX, event.movementX * MOVE_KICK)));
+          }}
+          onPointerLeave={(event) => {
+            if (event.pointerType === "mouse") push(-sideOf(event.clientX) * ENTER_KICK * 0.6);
+          }}
+          onFocus={(event) => {
+            if (event.currentTarget.matches(":focus-visible")) push(ENTER_KICK * 0.7);
+          }}
+          className="pointer-events-auto flex cursor-pointer flex-col items-center rounded-full px-2 pb-1 opacity-55 transition-[translate,opacity] duration-700 ease-[cubic-bezier(0.34,1.35,0.64,1)] hover:opacity-100 focus-visible:opacity-100 hover:translate-y-3 focus-visible:translate-y-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-deep motion-reduce:transition-none"
         >
           {/* Cord */}
           <span

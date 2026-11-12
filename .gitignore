@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .claude/
+
+# motion-brief source screens and raw recordings (not for the live site)
+/design-refs/

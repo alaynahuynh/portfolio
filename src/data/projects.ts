@@ -60,6 +60,16 @@ export const projects: Project[] = [
       height: 1036,
     },
     liveUrl: "https://mymuseum-eta.vercel.app/",
+    media: {
+      bgColor: "#E4E9DF",
+      wideSrc: "/thumbnails/mymuseum/mymuseum-wide.mp4",
+      widePoster: "/thumbnails/mymuseum/mymuseum-wide-poster.webp",
+      wideAlt:
+        "The MyMuseum landing gallery under the headline 'Create a world for your work', then a visitor's avatar walking up to a framed artwork.",
+      tallSrc: "/thumbnails/mymuseum/mymuseum-tall.mp4",
+      tallPoster: "/thumbnails/mymuseum/mymuseum-tall-poster.webp",
+      tallAlt: "MyMuseum's Grid View on a phone, scrolling from 'My Little World' down to the artwork 'Out of Water'.",
+    },
   },
   {
     slug: "coursepilot",
@@ -95,6 +105,13 @@ export const projects: Project[] = [
       width: 2000,
       height: 1420,
     },
+    media: {
+      bgColor: "#DCE4F0",
+      wideSrc: "/thumbnails/coursepilot/coursepilot-wide.mp4",
+      widePoster: "/thumbnails/coursepilot/coursepilot-wide-poster.webp",
+      wideAlt:
+        "CoursePilot's answer to 'I have 3 hours tonight. What should I work on?': prioritized tasks and a 3-hour schedule, which the student adds to their calendar.",
+    },
   },
   {
     slug: "vietnamese-noodle-house",
@@ -129,6 +146,16 @@ export const projects: Project[] = [
     },
     // The real, live site — CoursePilot (concept stage) has no live link.
     liveUrl: "https://vietnoodlehouse.com/",
+    media: {
+      bgColor: "#EDE3D3",
+      wideSrc: "/thumbnails/noodle-house/noodle-house-wide.mp4",
+      widePoster: "/thumbnails/noodle-house/noodle-house-wide-poster.webp",
+      wideAlt:
+        "The Vietnamese Noodle House homepage hero zooms in on Order Online, then the Locations page shows Camillus selected and ready to order.",
+      tallSrc: "/thumbnails/noodle-house/noodle-house-tall.mp4",
+      tallPoster: "/thumbnails/noodle-house/noodle-house-tall-poster.webp",
+      tallAlt: "On a phone: the homepage, then the locations list, then the 'You're ordering from Camillus' sheet sliding up.",
+    },
   },
   {
     slug: "pig-lamp",

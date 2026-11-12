@@ -6,15 +6,14 @@ import { siteConfig, socialLinks } from "@/lib/site-config";
 // cover (see BackCoverPage) deliberately has no copyright line of its
 // own anymore, exactly so it doesn't repeat this one right above it.
 //
-// White by default; turns navy only while the homepage hero is switched to
-// dark (HeroSection sets `data-hero-dark` on <html>), so the navy bookends
-// the page.
-const LINK = "transition-colors hover:text-foreground in-data-[hero-dark]:hover:text-[#E8E1CF]";
+// White in the light theme; navy in the dark theme (the hero's pendant
+// lamp toggles it site-wide, see src/lib/theme.ts).
+const LINK = "transition-colors hover:text-foreground dark:hover:text-[#E8E1CF]";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-background transition-colors duration-500 in-data-[hero-dark]:border-[#1A2742] in-data-[hero-dark]:bg-[#0E1424]">
-      <Container className="flex flex-col gap-4 py-10 text-sm text-muted-foreground transition-colors duration-500 in-data-[hero-dark]:text-[#E8E1CF]/75 sm:flex-row sm:items-center sm:justify-between">
+    <footer className="border-t border-border bg-background transition-colors duration-500 dark:border-[#1A2742] dark:bg-[#0E1424]">
+      <Container className="flex flex-col gap-4 py-10 text-sm text-muted-foreground transition-colors duration-500 dark:text-[#E8E1CF]/75 sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {new Date().getFullYear()} {siteConfig.name}. All rights reserved.
         </p>

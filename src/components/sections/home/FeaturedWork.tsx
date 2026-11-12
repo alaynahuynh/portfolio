@@ -8,26 +8,45 @@ import { cn } from "@/lib/utils";
 /** Muted traffic-light dots for the browser title bar. */
 const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
+/** Only projects with Selected Works media appear here. Pig Lamp has none:
+ * it's reached from the Playground (3D page -> its case study). */
+const featured = projects.filter((p) => p.media);
+
+function ViewCaseStudy({ className }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "inline-flex items-center gap-1.5 font-medium text-foreground transition-colors duration-(--duration-base) group-hover/card:text-sage-deep",
+        "text-sm lg:text-base",
+        className,
+      )}
+    >
+      View case study
+      <ArrowRight className="size-4 transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/card:translate-x-1 group-has-[a:focus-visible]/card:translate-x-1" />
+    </span>
+  );
+}
+
 /**
  * Selected Work: every project inside one retro browser window (blue-gray
  * title bar, window dots, an active "Selected Works" tab) spanning the
- * full viewport width; the projects stay inside the site Container. The
- * chrome is kept deliberately quiet so the screenshots lead. The tab acts
- * as the visible title, so the heading itself is screen-reader only.
+ * full viewport width. The tab acts as the visible title, so the heading
+ * itself is screen-reader only.
  *
- * Projects alternate image-left / image-right on large screens and stack
- * image above copy on mobile, with identical 16:10 thumbnails so all three
- * carry equal weight. Each row is one link (the title's anchor is
- * stretched over the whole row), so the title, thumbnail and CTA are all
- * clickable with a single tab stop; keyboard focus outlines the full row.
- * Plain document flow — no pinned or scroll-driven effects.
+ * Featured projects follow the motion brief's card: media first (a wide
+ * 16:9 loop beside a tall 9:16 one on a soft project color, see
+ * SelectedWorkMedia), then title, one-line result and CTA on the left with
+ * role + meta on the right (stacked under 768px). Each card is one link (the title's anchor is stretched over the
+ * whole card), so everything is clickable with a single tab stop; hover
+ * or keyboard focus lifts the media.
  */
 export function FeaturedWork() {
   return (
     <section id="work" className="scroll-mt-28">
       <Reveal y={20} duration={500} className="overflow-hidden bg-background">
         {/* Title bar + active tab */}
-        <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5">
+        <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5 dark:bg-[#1a2742]">
           <div aria-hidden="true" className="flex gap-1.5 self-center pb-2.5 opacity-80">
             {WINDOW_DOTS.map((color) => (
               <span
@@ -64,84 +83,56 @@ export function FeaturedWork() {
         <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-4 sm:px-12 sm:pt-14 lg:px-20 lg:pt-20 xl:px-28">
           <h2 className="sr-only">Selected Works</h2>
 
-          <ol className="divide-y divide-border/70">
-            {projects.map((project, index) => {
-              const imageRight = index % 2 === 1;
+          <ol className="space-y-16 sm:space-y-20 md:space-y-[120px]">
+            {featured.map((project) => {
               const href = `/projects/${project.slug}`;
               const linkable = project.hasCaseStudy;
               return (
-                <li key={project.slug} className="py-10 first:pt-0 sm:py-14 lg:py-20">
+                <li key={project.slug}>
                   <Reveal
                     y={15}
                     duration={500}
                     className={cn(
-                      "group/row relative grid gap-6 rounded-2xl sm:gap-8 lg:grid-cols-2 lg:items-center lg:gap-16 xl:gap-24",
+                      "group/card relative rounded-[20px]",
                       "outline-offset-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-mauve-deep",
                     )}
                   >
-                    <div
-                      className={cn(
-                        "group/media rounded-xl p-1.5 sm:p-2 lg:p-2.5",
-                        imageRight && "lg:order-2",
-                      )}
-                      style={{
-                        // Shared with the case-study CTA — see `matTint` in data/projects.ts.
-                        backgroundColor: project.matTint,
-                      }}
-                    >
-                      {linkable ? (
-                        // Sits above the title link's row-wide overlay so the
-                        // thumbnail gets its own hover (and still navigates).
-                        // Hidden from AT/tab order — the title link covers that.
-                        <Link
-                          href={href}
-                          prefetch={project.videoThumbnail ? false : undefined}
-                          tabIndex={-1}
-                          aria-hidden="true"
-                          className="relative z-10 block"
-                        >
-                          <SelectedWorkMedia project={project} index={index} />
-                        </Link>
-                      ) : (
-                        <SelectedWorkMedia project={project} index={index} />
-                      )}
-                    </div>
+                    <SelectedWorkMedia project={project} media={project.media!} />
 
-                    <div className={cn("max-w-md lg:max-w-lg", imageRight && "lg:order-1")}>
-                      {project.statusTag && (
-                        <p className="mb-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-muted-foreground lg:mb-4">
-                          <span aria-hidden="true" className="size-1.5 rounded-full bg-sage-deep" />
-                          {project.statusTag}
+                    {/* Two columns from 768px: story on the left (~60%),
+                        role + meta top-aligned on the right (~40%). */}
+                    <div className="mt-6 grid gap-4 sm:mt-7 md:grid-cols-[3fr_2fr] md:gap-10 lg:gap-16">
+                      <div>
+                        <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
+                          {linkable ? (
+                            // Stretched over the whole card: media, copy and
+                            // CTA are one link with one tab stop.
+                            <Link
+                              href={href}
+                              prefetch={project.videoThumbnail ? false : undefined}
+                              className="after:absolute after:inset-0 after:z-10 after:rounded-[20px] focus-visible:outline-none"
+                            >
+                              {project.title}
+                            </Link>
+                          ) : (
+                            project.title
+                          )}
+                        </h3>
+                        <p className="mt-3 text-base text-muted-foreground sm:text-lg">
+                          {project.summary}
                         </p>
-                      )}
-                      <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                        {linkable ? (
-                          <Link
-                            href={href}
-                            prefetch={project.videoThumbnail ? false : undefined}
-                            className="after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none"
-                          >
-                            {project.title}
-                          </Link>
-                        ) : (
-                          project.title
+                        {linkable && <ViewCaseStudy className="mt-5 hidden md:inline-flex" />}
+                      </div>
+                      <div className="md:pt-3 lg:pt-4">
+                        <p className="text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase md:whitespace-nowrap lg:text-[13px]">
+                          {project.role}
+                        </p>
+                        {project.meta && (
+                          <p className="mt-2 text-sm text-muted-foreground">{project.meta}</p>
                         )}
-                      </h3>
-                      <p className="mt-3 text-base text-muted-foreground sm:text-lg lg:mt-4 lg:text-xl">
-                        {project.summary}
-                      </p>
-                      <p className="mt-4 text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase lg:mt-5 lg:text-[13px]">
-                        {project.role}
-                      </p>
-                      {linkable && (
-                        <span
-                          aria-hidden="true"
-                          className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors duration-(--duration-base) group-hover/row:text-sage-deep lg:mt-9 lg:text-base"
-                        >
-                          View case study
-                          <ArrowRight className="size-4 transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover/row:translate-x-1 group-has-[a:focus-visible]/row:translate-x-1" />
-                        </span>
-                      )}
+                      </div>
+                      {/* Mobile: the CTA closes the stacked column. */}
+                      {linkable && <ViewCaseStudy className="md:hidden" />}
                     </div>
                   </Reveal>
                 </li>

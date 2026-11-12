@@ -1,39 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { HeroPendantLight, type HeroTheme } from "@/components/sections/home/HeroPendantLight";
-
-/** Fired on window whenever the hero theme changes, so the Header can
- * restyle the nav without waiting for a scroll. */
-export const HERO_THEME_EVENT = "hero-theme-change";
+import { HeroPendantLight } from "@/components/sections/home/HeroPendantLight";
+import { setTheme, useTheme } from "@/lib/theme";
 
 /**
- * The hero's <section>, plus the pendant light that switches it between
- * light and dark. Starts light. The theme is written to `data-hero-theme`,
- * and the colors it controls live as CSS variables in globals.css (see
- * "Hero theme"), so the server-rendered hero content doesn't need to know
- * about it.
+ * The hero's <section>, plus the pendant light that switches the whole
+ * site between light and dark (see src/lib/theme.ts). The hero's colors
+ * live as CSS variables in globals.css (see "Hero theme") keyed off
+ * `<html data-theme>`, so the server-rendered hero needs no client state
+ * and a saved dark theme is already applied on first paint.
  *
  * The navy backdrop is its own layer that fades in and out over the white
  * base, since CSS can't transition between gradients directly.
  */
 export function HeroSection({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<HeroTheme>("light");
-
-  useEffect(() => {
-    window.dispatchEvent(new Event(HERO_THEME_EVENT));
-
-    // Mark the page while the hero is dark so the Footer can turn navy to
-    // match. Cleared on unmount, so every other route keeps the white footer.
-    const root = document.documentElement;
-    root.toggleAttribute("data-hero-dark", theme === "dark");
-    return () => root.removeAttribute("data-hero-dark");
-  }, [theme]);
+  const theme = useTheme();
 
   return (
     <section
       data-hero
-      data-hero-theme={theme}
       className="relative flex flex-col justify-center overflow-hidden border-b border-(--hero-border) bg-background pt-28 pb-16 transition-[border-color] duration-500 sm:min-h-svh sm:pt-24 sm:pb-0"
     >
       <div
