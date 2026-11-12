@@ -98,7 +98,6 @@ def recorded_taps(path: Path):
     return [(p["t"], p["x"], p["y"]) for p in json.loads(path.read_text())["taps"]]
 
 
-CP_REC = VID / "coursepilot/workspace-walkthrough.mp4"
 MM_REC = REFS / "mymuseum/recording-tall.mp4"
 NH_REC = REFS / "noodle-house/recording-tall.mp4"
 
@@ -135,44 +134,8 @@ CLIPS = [
             ),
         ],
     ),
-    # Filled-in plan (hold 2s) -> slow zoom to the 3-hour schedule -> ease
-    # back out -> Add plan to calendar -> "Plan added" toast -> back to the plan.
-    # Source: 2000x1420 recording; framings put every edge in a gap between
-    # UI rows so no text is cut on any held frame.
-    Clip(
-        "coursepilot-wide",
-        "coursepilot",
-        WIDE,
-        [
-            Seg(
-                CP_REC,
-                5.6,
-                # Opens and closes on the same framing as the dialog/toast
-                # shot, so every crossfade (incl. the loop) lines up exactly.
-                [
-                    (0.0, 1.0, 0.5, 0.4863),  # whole app: question + plan card
-                    (2.0, 1.0, 0.5, 0.4863),
-                    (3.6, 1.65, 0.563, 0.7176),  # Suggested 3 Hour Plan + buttons
-                    (4.0, 1.65, 0.563, 0.7176),
-                    (5.0, 1.0, 0.5, 0.4863),
-                    (5.6, 1.0, 0.5, 0.4863),
-                ],
-                start=4.6,
-                play=0,
-            ),
-            # Dialog open -> Add Plan click (~12.4s) -> toast (12.75s);
-            # freezes on the toast at 14.2s.
-            Seg(
-                CP_REC,
-                4.2,
-                [(0, 1.0, 0.5, 0.4863)],
-                start=11.4,
-                play=2.8,
-                keep=[(1472, 1152, 1956, 1228)],  # the toast
-                keep_px=20,
-            ),
-        ],
-    ),
+    # coursepilot-wide is built by coursepilot_wide.py instead (clean,
+    # cursor-free screens with one synthetic cursor).
     # Hero holds 1.5s, eases to at most 1.15x toward the headline and Order
     # Online (all kept >= 60px from the edges), then Locations scrolls to
     # Camillus, selected and ready to order.

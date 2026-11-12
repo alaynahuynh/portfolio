@@ -13,7 +13,7 @@ const SKILL_GROUPS: SkillGroup[] = [
   },
   {
     title: "Building in code",
-    tools: ["Next.js", "React", "React Three Fiber", "Blender"],
+    tools: ["Next.js", "React", "Python", "React Three Fiber", "Blender"],
     tint: "color-mix(in srgb, var(--color-sage) 30%, var(--color-background))",
   },
   {
