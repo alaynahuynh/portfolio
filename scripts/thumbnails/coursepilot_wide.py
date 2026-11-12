@@ -8,9 +8,10 @@ directly, because the recording has its own cursor baked in. Instead:
    Add to Calendar modal, answer + "Plan added" toast) take the per-pixel
    median of the recording frames where that state is on screen. The
    recorded cursor keeps moving, so the median erases it.
-2. One framing for every screen: the main chat panel (sidebars and input
-   bar trimmed in the gaps between UI), centered on the card color with
-   rounded corners, so nothing is cut off and nothing jumps between scenes.
+2. Framing: a 16:9 crop of the app (Canvas nav strip, header and input bar
+   trimmed in the gaps between UI) fills the clip. A camera then follows
+   the cursor toward each button and, after each click, pushes in on what
+   it opened, never past the point where that thing is fully in frame.
 3. One synthetic cursor that glides between the real click targets, with a
    small press + ripple on each click; each screen holds 2-3 s after its
    click so it can be read.
@@ -45,8 +46,7 @@ BG = (0xDC, 0xE4, 0xF0)  # card color
 SRC_W, SRC_H = 2000, 1422
 # Main chat panel, trimmed in UI gaps: left of it is the sidebar border,
 # above it the "Welcome back" header, below it the prompt chips/input bar.
-PANEL_H = 1000  # panel height in the output frame
-RADIUS = 26
+PANEL_H = H  # the app fills the frame
 MAX_BYTES = 1_500_000
 
 # App states: (name, start_s, end_s) of the recording where it's static.
@@ -79,9 +79,13 @@ def clean_states(tmp: Path) -> dict:
 
 
 # Main chat panel, re-stated with the measured crop (see module docstring).
-CROP = (590, 232, 2000, 1258)  # right edge = recording edge, so the toast fits
+# Exactly 16:9, so the app fills the whole clip (no margins): from the
+# CoursePilot sidebar (Canvas's nav strip trimmed) to the recording's right
+# edge (the toast fits), and from just under the "Welcome back" header to
+# just above the input bar. Every edge sits in a gap between UI.
+CROP = (130, 210, 2000, 1262)
 SCALE = PANEL_H / (CROP[3] - CROP[1])
-PANEL_W = round((CROP[2] - CROP[0]) * SCALE)
+PANEL_W = W
 PX0, PY0 = (W - PANEL_W) // 2, (H - PANEL_H) // 2
 
 # Click targets, in recording pixels (measured on the clean states).
@@ -117,9 +121,52 @@ PATH = [
 ]
 CLICKS = [1.5, 4.6, 7.3, 8.8, 11.4]
 
+# Camera: (t, zoom, cx, cy). zoom 1 = the whole CROP; (cx, cy) in recording
+# pixels. After each click it pushes in on what the click opened, but never
+# past the point where that thing is fully in frame; before a click it
+# follows the cursor toward the button. Starts and ends at the full view.
+BASE = (1.0, (CROP[0] + CROP[2]) / 2, (CROP[1] + CROP[3]) / 2)
+CAMERA = [
+    (0.0, *BASE), (0.3, *BASE),
+    (1.1, 1.35, 1250, 726),  # the typed question + send
+    (1.6, 1.35, 1250, 726),
+    (2.4, 1.31, 1150, 795),  # the whole plan card
+    (3.5, 1.31, 1150, 795),
+    (4.3, 1.7, 1150, 950),  # in on the schedule + Adjust Plan (card fully wide)
+    (4.75, 1.7, 1150, 950),
+    (5.4, 1.64, 1006, 694),  # the whole Adjust your plan modal
+    (7.35, 1.64, 1006, 694),
+    (8.0, 1.7, 1150, 950),  # back on the plan, toward Add to My Calendar
+    (8.9, 1.7, 1150, 950),
+    (9.5, 1.5, 1006, 728),  # the whole Add plan to calendar modal
+    (11.5, 1.5, 1006, 728),
+    (12.2, 1.25, 1252, 841),  # the whole plan card + "Plan added" toast
+    (14.39, 1.25, 1252, 841),
+    (14.4, *BASE), (END, *BASE),
+]
 
-def to_out(pt):
-    return (PX0 + (pt[0] - CROP[0]) * SCALE, PY0 + (pt[1] - CROP[1]) * SCALE)
+
+def camera_at(t):
+    for (t0, *a), (t1, *b) in zip(CAMERA, CAMERA[1:]):
+        if t <= t1:
+            k = ease((t - t0) / (t1 - t0)) if t1 > t0 else 1.0
+            return tuple(x + (y - x) * k for x, y in zip(a, b))
+    return tuple(CAMERA[-1][1:])
+
+
+def window(cam):
+    """Recording-pixel rectangle (x0, y0, w, h) the camera shows, kept
+    inside CROP."""
+    z, cx, cy = cam
+    w, h = (CROP[2] - CROP[0]) / z, (CROP[3] - CROP[1]) / z
+    x0 = min(max(cx - w / 2, CROP[0]), CROP[2] - w)
+    y0 = min(max(cy - h / 2, CROP[1]), CROP[3] - h)
+    return x0, y0, w, h
+
+
+def to_out(pt, cam):
+    x0, y0, w, h = window(cam)
+    return ((pt[0] - x0) * W / w, (pt[1] - y0) * H / h)
 
 
 def cursor_at(t):
@@ -130,17 +177,11 @@ def cursor_at(t):
     return PATH[-1][1]
 
 
-def panel(state_img):
-    """The cropped screen as a rounded panel on the card color."""
-    im = state_img.crop(CROP).resize((PANEL_W, PANEL_H), Image.LANCZOS)
-    frame = Image.new("RGB", (W, H), BG)
-    shadow = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(shadow).rounded_rectangle((PX0, PY0 + 10, PX0 + PANEL_W, PY0 + PANEL_H + 10), RADIUS, fill=60)
-    frame.paste(Image.new("RGB", (W, H), (40, 50, 70)), (0, 0), shadow.filter(ImageFilter.GaussianBlur(22)))
-    mask = Image.new("L", (PANEL_W, PANEL_H), 0)
-    ImageDraw.Draw(mask).rounded_rectangle((0, 0, PANEL_W - 1, PANEL_H - 1), RADIUS, fill=255)
-    frame.paste(im, (PX0, PY0), mask)
-    return frame
+def view(state_img, cam):
+    """What the camera sees of a screen, filling the frame (the card rounds
+    the corners). Sampled straight from the recording for sharpness."""
+    x0, y0, w, h = window(cam)
+    return state_img.resize((W, H), Image.LANCZOS, box=(x0, y0, x0 + w, y0 + h))
 
 
 # Classic arrow cursor, tip at (0, 0), in output pixels.
@@ -149,7 +190,8 @@ CURSOR_SCALE = 1.35
 
 
 def draw_cursor(frame, t):
-    x, y = to_out(cursor_at(t))
+    cam = camera_at(t)
+    x, y = to_out(cursor_at(t), cam)
     over = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(over)
     press = 1.0
@@ -159,7 +201,7 @@ def draw_cursor(frame, t):
             press = 0.82
         if 0 <= dt < 0.6:  # ripple where it clicked
             k = dt / 0.6
-            cx, cy = to_out(cursor_at(c))
+            cx, cy = to_out(cursor_at(c), cam)
             r = 10 + 34 * ease(k)
             a = int(150 * (1 - k))
             d.ellipse((cx - r, cy - r, cx + r, cy + r), outline=(113, 59, 255, a), width=4)
@@ -188,7 +230,6 @@ def toast_on_answer(states):
 
 def render(states, tmp: Path):
     states = {**states, "toast": toast_on_answer(states)}
-    panels = {k: panel(v) for k, v in states.items()}
     bg = Image.new("RGB", (W, H), BG)
     n = round(END * FPS)
     fdir = tmp / "frames"
@@ -196,18 +237,19 @@ def render(states, tmp: Path):
     first = None
     for i in range(n):
         t = i / FPS
+        cam = camera_at(t)
         live = [(k, a, b) for k, a, b in SCREENS if a <= t < b]
         if not live:  # loop transition: through the card color
             if t < 14.4:
-                im = Image.blend(panels["toast"], bg, ease((t - 14.0) / 0.4))
+                im = Image.blend(view(states["toast"], cam), bg, ease((t - 14.0) / 0.4))
             else:
                 k = 1.0 if i == n - 1 else ease((t - 14.4) / (0.4 - 1 / FPS))
-                im = Image.blend(bg, panels["prompt"], k)
+                im = Image.blend(bg, view(states["prompt"], cam), k)
         elif len(live) == 2:
             (k0, _, _), (k1, a1, _) = live
-            im = Image.blend(panels[k0], panels[k1], ease((t - a1) / XF))
+            im = Image.blend(view(states[k0], cam), view(states[k1], cam), ease((t - a1) / XF))
         else:
-            im = panels[live[0][0]]
+            im = view(states[live[0][0]], cam)
         im = draw_cursor(im, t)
         if first is None:
             first = im

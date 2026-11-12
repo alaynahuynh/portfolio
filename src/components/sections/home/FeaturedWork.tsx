@@ -80,7 +80,7 @@ export function FeaturedWork() {
           </div>
         </div>
 
-        <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-4 sm:px-12 sm:pt-14 lg:px-20 lg:pt-20 xl:px-28">
+        <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-16 sm:px-12 sm:pt-14 sm:pb-20 lg:px-20 lg:pt-20 lg:pb-24 xl:px-28">
           <h2 className="sr-only">Selected Works</h2>
 
           <ol className="space-y-16 sm:space-y-20 md:space-y-[120px]">
