@@ -38,7 +38,6 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "problem", label: "Problem" },
   { id: "research", label: "Research" },
   { id: "canvas", label: "Where it lives" },
-  { id: "mapping", label: "Mapping" },
   { id: "exploration", label: "Exploration" },
   { id: "iteration", label: "Evolution" },
   { id: "final", label: "Final solution" },
@@ -64,26 +63,6 @@ function Label({ children, accent }: { children: React.ReactNode; accent?: boole
     >
       {children}
     </p>
-  );
-}
-
-const LEGEND = [
-  { color: "#8ecdfb", label: "Student" },
-  { color: "#fcd888", label: "AI / System" },
-  { color: "#a7e3ad", label: "Start / Result" },
-  { color: "#c9c9c9", label: "Decision" },
-];
-
-function FlowLegend() {
-  return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-      {LEGEND.map((item) => (
-        <span key={item.label} className="flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="size-2.5 rounded-sm" style={{ backgroundColor: item.color }} aria-hidden="true" />
-          {item.label}
-        </span>
-      ))}
-    </div>
   );
 }
 
@@ -185,7 +164,7 @@ function CanvasEntryImage({ image }: { image: CaseStudyImageSpec }) {
 }
 
 export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
-  const { hero, overview, background, research, ideation, platformIntegration, earlyExploration, design, testing, finalExperience, finalThoughts } = data;
+  const { hero, overview, background, research, platformIntegration, earlyExploration, design, testing, finalExperience, finalThoughts } = data;
   const keyFindings = research.keyFindings ?? [];
   const iterationStory = design.iterationStory;
   const architecture = finalExperience?.architecture;
@@ -343,52 +322,6 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             </Reveal>
           </>
         )}
-
-        <Reveal delay={160}>
-          <CaseStudyVideo
-            video={{
-              src: "/videos/projects/coursepilot/starttoend.mp4",
-              poster: "/images/projects/coursepilot/final/starttoend-poster.jpg",
-              alt: "Click-through of the CoursePilot prototype from the Canvas dashboard: opening the popup, then expanding into the full workspace",
-              caption: "From the Canvas dashboard to the popup, then the full workspace.",
-              width: 2000,
-              height: 1422,
-            }}
-            className="mx-auto mt-16 max-w-5xl"
-          />
-        </Reveal>
-      </Section>
-
-      {/* --------------------------------------------------------- FLOWS */}
-      <Section id="mapping" className="scroll-mt-28 cs-band">
-        <Reveal>
-          <Eyebrow>Mapping the interactions</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Three representative tasks, mapped end to end.
-          </Heading>
-        </Reveal>
-        <Reveal delay={40}>
-          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-            I mapped how conversation, Canvas information, AI processing, and student decisions connect, including where a student can push back and regenerate.
-          </p>
-        </Reveal>
-
-        <Reveal delay={60}>
-          <div className="mt-10">
-            <FlowLegend />
-          </div>
-        </Reveal>
-
-        <div className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-6">
-          {ideation.flows.map((flow, i) =>
-            flow.image ? (
-              <Reveal key={flow.name} delay={80 + i * 20}>
-                <Label>{flow.name}</Label>
-                <CaseStudyFullImage image={flow.image} className="mt-3" />
-              </Reveal>
-            ) : null,
-          )}
-        </div>
       </Section>
 
       {/* ----------------------------------------------------- EXPLORATION */}
@@ -709,7 +642,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Most of the hard decisions had nothing to do with the chat box.
+            Students needed to see the reasoning, not just the answer.
           </Heading>
         </Reveal>
         <Reveal delay={40}>

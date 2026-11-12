@@ -16,9 +16,7 @@ export const myMuseum: CaseStudyData = {
     { id: "research", label: "Interviews" },
     { id: "testing", label: "Usability testing" },
     { id: "decisions", label: "Key decisions" },
-    { id: "user-flows", label: "Flows" },
     { id: "final-design", label: "Final design" },
-    { id: "iterations", label: "Iterations" },
     { id: "reflection", label: "Reflection" },
   ],
 
@@ -58,7 +56,7 @@ export const myMuseum: CaseStudyData = {
       "Online portfolios flatten art into grids and feeds, losing the scale, depth, and sequence the work depends on.",
     narrative:
       "I wanted to know whether an artist's work could be walked through like a gallery instead. I started by interviewing five artists about how they show their work, built a first prototype around what they needed, put it in front of five people in usability sessions, and reworked it from there.",
-    challenge: "What if an art portfolio felt like entering someone's world?",
+    challenge: "",
     placeholder: false,
   },
 
@@ -109,12 +107,10 @@ export const myMuseum: CaseStudyData = {
             height: 2712,
           },
           strengths: [
-            "Recent Exhibitions and Events & Openings give visitors two ways to discover artists.",
             "Built-in chat gives exhibitions a sense of social presence.",
           ],
           limitations: [
             "Open-ended building tools trade visitor navigation for creator freedom, so finding a specific piece can take a lot of wandering.",
-            "Feels more like a professional creative workspace than a place to just upload work.",
           ],
           applied:
             "Social, browser-based exhibitions work, but visitors still need to be able to find the work.",
@@ -147,25 +143,21 @@ export const myMuseum: CaseStudyData = {
       "Show scale, surface, and depth (P1, P3)",
       "Keep a series in sequence (P4)",
       "Publish in minutes (P2)",
-      "Free to run, managed from a phone (P5)",
     ],
     personaPlaceholder: false,
     secondaryPersona: {
       name: "Their visitors",
       summary:
-        "Want to find the work, take it in, and reach the artist, without learning a game first. Collectors and art directors as the artists described them, plus the five people who visited museums in July testing.",
+        "Want to find the work, take it in, and reach the artist, without learning a game first.",
       needs: [
         "Get around without game-style controls (P1)",
-        "Judge the work in about thirty seconds (P2)",
-        "Crisp detail that loads fast, even on a midrange phone (P2, P3)",
         "See every piece without hunting for it (July testing)",
         "A private way to reach the artist about a piece (P2, July testing)",
       ],
     },
     tensionIntro:
       "The interviews pulled in two directions: P3 and P4 wanted more atmosphere, P2 wanted none, and P1 wanted both: a painting's presence without the controls.",
-    hmw:
-      "How might I give artists enough freedom to make a museum feel like their own without sacrificing navigation and accessibility for visitors?",
+    hmw: "",
   },
 
   // The three tensions now live in `keyDecisions` below, with their
@@ -175,56 +167,9 @@ export const myMuseum: CaseStudyData = {
     whyThis: [],
     whyThisPlaceholder: false,
 
-    flowsSectionTitle: "The redesigned flows",
-    flowsPlacement: "after-decisions",
-    flowsIntro:
-      "After testing, the two main journeys, creating a museum and exploring one, looked like this.",
-
-    flows: [
-      {
-        name: "Creator flow",
-        steps: [
-          "Discover MyMuseum",
-          "Create account",
-          "Add museum details",
-          "Upload artwork",
-          "Add artwork information",
-          "Choose gallery style",
-          "Generate museum",
-          "Preview",
-          "Publish",
-          "Copy link",
-          "Share",
-        ],
-        image: {
-          src: "/images/projects/mymuseum/flow-creator.png",
-          alt: "Flowchart of the MyMuseum creator flow: landing page into sign up, museum details, artwork upload, gallery style selection, generating and previewing the museum, then editing or publishing with a visibility choice and share link.",
-          width: 2040,
-          height: 3208,
-        },
-        takeaway:
-          "Goal: as little distance as possible between uploading artwork and having something worth sharing.",
-      },
-      {
-        name: "Visitor flow",
-        steps: [
-          "Open a shared link or discover a museum",
-          "Enter museum",
-          "Choose 3D Gallery or Grid View",
-          "Explore artwork",
-          "Open artwork details",
-          "Explore alongside other visitors",
-        ],
-        image: {
-          src: "/images/projects/mymuseum/flow-visitor.png",
-          alt: "Flowchart of the MyMuseum visitor flow: a shared link or Explore page into museum entry, choosing 3D Game View or Grid View, browsing and selecting artwork, viewing artwork details, then continuing to explore.",
-          width: 1688,
-          height: 1992,
-        },
-        takeaway:
-          "Goal: keep spatial discovery without making 3D navigation a requirement.",
-      },
-    ],
+    // Trimmed for length: the creator/visitor flowcharts repeated what the
+    // final-product videos already show.
+    flows: [],
 
     flowsPlaceholder: false,
   },
@@ -235,10 +180,10 @@ export const myMuseum: CaseStudyData = {
       "How I reworked the prototype. Each decision answers what the May interviews and July testing showed, and each gave something up.",
     items: [
       {
-        title: "Make creating a museum feel like uploading a portfolio",
+        title: "Generate the museum from the uploads",
         tension: "Freedom vs. structure",
         problem:
-          "Full spatial freedom means learning exhibition design, and risks layouts visitors can't navigate.",
+          "Letting artists arrange rooms freely means they'd have to learn exhibition design, and visitors could get lost.",
         evidence: [
           {
             source: "Competitive analysis",
@@ -248,15 +193,11 @@ export const myMuseum: CaseStudyData = {
             source: "Usability testing · July",
             text: "Participants liked having the museum auto-curated instead of building their own environment, but one room size didn't fit every collection (finding 01).",
           },
-          {
-            source: "Artist interviews · May",
-            text: "Publishing speed was the clearest shared need (P2, P5), and automatic layout takes most of that work away.",
-          },
         ],
         decision:
           "Generate the layout automatically, sized to the collection. Creators control their artwork, gallery style, and museum details. Adding or removing a piece re-runs the layout instead of asking them to place it.",
         tradeoff:
-          "Artists can't hand-place work or design their own rooms. I gave up some expressiveness so every museum stays navigable and no one has to learn exhibition design.",
+          "Artists can't hand-place work. I gave up some expressiveness so every museum stays easy to navigate.",
         outcome:
           "Built: creators never place anything by hand, and one of three floor plans is picked from the size of the collection (below).",
         videos: [
@@ -287,18 +228,14 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Make 3D an option, not a requirement",
+        title: "Put a Grid View beside the 3D gallery",
         tension: "Immersion vs. accessibility",
         problem:
-          "3D exploration is MyMuseum's hook, but it shouldn't be the only way to see someone's work.",
+          "Walking a 3D room is the hook, but in testing it was also how visitors missed work.",
         evidence: [
           {
             source: "Usability testing · July",
             text: "Participants missed artwork moving through the rooms (finding 02), and the prototype had no other way to view the collection.",
-          },
-          {
-            source: "Self-testing",
-            text: "The interface could be responsive while keyboard-based 3D movement still had no natural touch equivalent.",
           },
           {
             source: "Artist interviews · May",
@@ -308,7 +245,7 @@ export const myMuseum: CaseStudyData = {
         decision:
           "Pair the 3D gallery with a Grid View of the same collection and the same artwork viewer. On touch devices, Grid View is the starting point and Enter 3D Gallery stays one tap away.",
         tradeoff:
-          "Mobile visitors don't start in the immersive experience that makes MyMuseum distinctive. I chose reliable access to every artwork over a first impression that might not work on their device.",
+          "Mobile visitors don't start in 3D, the part that makes MyMuseum distinctive. Reaching every piece mattered more.",
         outcome:
           "Built: no artwork is 3D-only. Grid View was checked at 390px wide, and the artwork viewer with keyboard only.",
         images: [
@@ -329,15 +266,11 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Design for presence, not engagement",
+        title: "Show other visitors, but skip likes and chat",
         tension: "Social presence vs. social pressure",
         problem:
-          "Multiplayer could make galleries feel alive. Add likes, follower counts, and chat, though, and they turn into another social feed.",
+          "Other visitors make a gallery feel occupied, but likes, follower counts, and chat would turn it into another social feed.",
         evidence: [
-          {
-            source: "Competitive analysis",
-            text: "New Art City's built-in chat showed that social presence was worth keeping.",
-          },
           {
             source: "Design intent",
             text: "I wanted artists to share work without likes, follower counts, or pressure to post. In the May interviews, P4 described feeds reducing a series to scroll, double-tap, and forget.",
@@ -350,7 +283,7 @@ export const myMuseum: CaseStudyData = {
         decision:
           "Show other visitors as labeled avatars and a live count, with no chat, likes, or follower counts. For anything more personal, visitors can leave the artist an async note through Museum Mail, which artists can switch off.",
         tradeoff:
-          "Visitors can't talk to each other in real time the way they can in a chat-first space. I traded spontaneous conversation for a calmer room where the artwork stays the focus.",
+          "Visitors can't chat in real time. I traded that for a calmer room where the artwork stays the focus.",
         outcome:
           "Built: realtime presence, verified across two live sessions, and Museum Mail. Public multiplayer deployment is still to come.",
         images: [
@@ -433,16 +366,7 @@ export const myMuseum: CaseStudyData = {
       {
         title: "Share it, or keep it private",
         description:
-          "A museum is shareable the moment it's published: the success screen hands over a permanent link to copy. Creators who aren't ready can switch a museum to Private, which takes it off Explore and makes the link work only for them.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/museum-ready-share.png",
-            alt: "'Your museum is ready' screen for 'Some of my favorites': it's live at a shareable link, with Enter Museum and Copy museum link buttons.",
-            width: 1440,
-            height: 860,
-            caption: "Right after publishing: enter the museum, or copy its link to send.",
-          },
-        ],
+          "Every museum gets a permanent link the moment it's published. Switching it to Private takes it off Explore and makes the link work only for its creator.",
         videos: [
           {
             src: "/videos/projects/mymuseum/final-private-toggle.mp4",
@@ -455,49 +379,9 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Find museums and artists",
-        description:
-          "Explore lists every published museum and the artists behind them, so visitors who don't arrive by a shared link still have a way in. Private museums never show up here.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/explore-museums.png",
-            alt: "Explore museums page, Museums tab: cards for 'My favorite works!' by Aahuynh, 'footsies' by jeanz, and 'The Monet Collection' by Monet, each with a cover image, date, description, and Enter museum link.",
-            width: 1920,
-            height: 1036,
-            caption: "Published museums, most recently opened first.",
-          },
-          {
-            src: "/images/projects/mymuseum/final/explore-artists.png",
-            alt: "Explore artists page, Artists tab: cards for four creators, each showing their shape avatar, display name, handle, and museum count.",
-            width: 1920,
-            height: 1036,
-            caption: "Artists, shown by the avatars they made.",
-          },
-        ],
-      },
-      {
-        title: "Browse an artist's collection",
-        description:
-          "A public profile lists every museum an artist has published, each opening straight into that museum, with a Message button for reaching the artist directly.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/artist-profile-desktop.png",
-            alt: "Public profile for the artist Monet: a teal cone avatar with glasses, the handle @claudemonet with one published museum, a Message button, and a card for The Monet Collection with an Enter museum link.",
-            width: 2940,
-            height: 1586,
-          },
-          {
-            src: "/images/projects/mymuseum/final/artist-profile-mobile.jpg",
-            alt: "The same profile on mobile: avatar, name, and a full-width Message button stacked above The Monet Collection card.",
-            width: 1206,
-            height: 2151,
-          },
-        ],
-      },
-      {
         title: "Give every visitor an identity",
         description:
-          "The shape characters that replaced the humanoid avatars from testing (finding 03): shape, body color, expression, and decoration, designed to fit MyMuseum's look. Drag to rotate; works on desktop and mobile.",
+          "Shape characters replaced the humanoid avatars from testing (finding 03), with options for shape, color, expression, and decoration.",
         images: [
           {
             src: "/images/projects/mymuseum/final/avatar-editor-desktop.png",
@@ -505,27 +389,12 @@ export const myMuseum: CaseStudyData = {
             width: 2940,
             height: 1586,
           },
-          {
-            src: "/images/projects/mymuseum/final/avatar-editor-mobile.jpg",
-            alt: "The avatar editor on mobile: the same rounded-cube character in a large preview above Save avatar and Reset changes, with the customization options below.",
-            width: 1206,
-            height: 2235,
-          },
         ],
       },
       {
         title: "Write to the artist",
         description:
-          "A private note to the artist about a museum or a specific piece, sent from the artwork viewer, the museum menu, or their profile. It works like email, not chat: artists reply from an inbox on their own time, can switch new notes off, and can block or report a sender.",
-        images: [
-          {
-            src: "/images/projects/mymuseum/final/mail-composer-dialog.png",
-            alt: "Museum Mail composer, titled 'Leave a note for the artist': 'About My Little World. This goes straight to them, privately.', a note field with a 0/2000 character count, and Cancel and Send note buttons.",
-            width: 720,
-            height: 570,
-            caption: "Leaving a note from inside the museum.",
-          },
-        ],
+          "Visitors can send the artist a private note about a museum or a specific piece. It works like email, not chat: artists reply on their own time and can switch notes off.",
         videos: [
           {
             src: "/videos/projects/mymuseum/mail.mp4",
@@ -533,24 +402,7 @@ export const myMuseum: CaseStudyData = {
             alt: "A visitor opens Museum Mail from the artwork viewer for \"Still Life\" and writes a private note to the artist of My Little World.",
             width: 1920,
             height: 1040,
-            caption: "Or about a specific piece, from the artwork viewer.",
-          },
-        ],
-        followUpLabel: "On the artist's side, a dot on their avatar signals new mail, and each note in the inbox shows which museum and piece it's about.",
-        followUpImages: [
-          {
-            src: "/images/projects/mymuseum/final/mail-notification-menu.png",
-            alt: "Account menu opened from the artist's avatar, which has an unread dot; the Museum Mail item also shows a dot, alongside Customize Avatar, Public Profile, Settings, and Log out.",
-            width: 508,
-            height: 666,
-            caption: "A dot flags new mail.",
-          },
-          {
-            src: "/images/projects/mymuseum/final/mail-inbox.png",
-            alt: "\"Your mail\" inbox listing three unread notes from Monet, each labeled with its museum and piece — My Little World · Still Life, Innocence, and Scenes — and a date.",
-            width: 1484,
-            height: 846,
-            caption: "Each note names the museum and piece it's about. (Test notes I sent from a second account.)",
+            caption: "Writing to the artist about a specific piece, from the artwork viewer.",
           },
         ],
       },
@@ -562,14 +414,9 @@ export const myMuseum: CaseStudyData = {
     heading: "Five people, one early prototype",
     placement: "before-decisions",
     intro:
-      "July 15–21, 2026. The prototype had humanoid avatars, one room size for every museum, and an earlier homepage. Participants: two general users (one who plays games often, one who rarely does), a University of Michigan art student, a University of Michigan design student, and a user around 40. They liked the idea, especially getting an auto-curated museum instead of building their own. They also ran into four problems.",
+      "In July 2026 I tested the prototype with five people: two general users, a U-M art student, a U-M design student, and a user around 40. They liked getting an auto-curated museum instead of building their own, and ran into four problems.",
 
-    tasks: [
-      "Navigate the website.",
-      "Visit other people's museums.",
-      "Create your own museum.",
-      "Edit your avatar and profile.",
-    ],
+    tasks: [],
 
     images: [
       {
@@ -613,43 +460,20 @@ export const myMuseum: CaseStudyData = {
         feedback: "Participants wanted a way to comment on an artwork privately.",
         finalIteration: "Museum Mail (Decision 03).",
       },
-      {
-        title: "Sharing was hard to find",
-        later: true,
-        feedback: "Permanent museum URLs existed, but creators had no obvious way to find and reuse them.",
-        finalIteration: "Added View Museum and Copy Link actions to the dashboard and editing flow.",
-      },
-      {
-        title: "No way back in after publishing",
-        later: true,
-        feedback: "Once a museum was generated, creators had no way back in to fix a typo, swap a piece, or change its visibility.",
-        finalIteration: "Added museum editing: details, artwork, visibility, and identity, all changeable after publishing.",
-      },
-      {
-        title: "Editing got long as collections grew",
-        later: true,
-        feedback: "Showing every artwork's full metadata form made editing long and hard to scan.",
-        finalIteration: "Redesigned artwork management as compact summary rows with expandable editing.",
-      },
     ],
-
-    laterHeading: "Hardening the product",
-    laterIntro:
-      "To turn the redesign into a working product, I ran every creator and visitor workflow myself with real accounts and multiple users. This was self-testing, not usability testing. The new homepage and the Explore / My Museums / Create navigation came from this period too.",
 
     placeholder: false,
   },
 
   finalThoughts: {
     nextStepsHeading: "Opportunities & next steps",
-    pullQuote:
-      "A cool interaction and a usable product are two different things.",
+    pullQuote: "",
 
     whatILearned:
-      "Putting a rough prototype in front of five people reshaped the product. The rooms, the avatars, and how visitors reach the work all changed because of those sessions. I started out trying to make a 3D museum work, but the harder questions came after: how creators manage museums, how visitors reach them on any device, and how presence supports the artwork instead of distracting from it.",
+      "Putting a rough prototype in front of five people reshaped the product: the rooms, the avatars, and how visitors reach the work all changed because of those sessions. Making a 3D museum work was the easy part; the harder questions were how visitors reach it on any device, and how presence supports the artwork instead of distracting from it.",
 
     nextSteps:
-      "First, a second round of usability sessions on the redesigned, live product to check that room sizing, Grid View, the new avatars, and Museum Mail resolve what the July participants ran into. Then the two gaps the interviews made clearest: artwork zoom with measured load times (P2, P3), and showing a painting's real-world scale (P1).",
+      "Test the live product with a second round of users to confirm the redesign fixed what July's participants ran into, then add artwork zoom (P2, P3) and a way to show a painting's real-world scale (P1).",
 
     proudestOf:
       "Getting it to the point where artists come back to their museums, edit them, and share them, instead of trying a 3D demo once.",

@@ -1370,15 +1370,17 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               result={opportunity.resultLabel ?? hero.title}
             />
           </Reveal>
-          <Reveal
-            delay={140}
-            className="mt-10 max-w-2xl border-l-2 border-(--project-accent) pl-6"
-          >
-            <p className="text-xs font-semibold tracking-[0.14em] text-(--project-accent) uppercase">
-              How might we
-            </p>
-            <p className="mt-2 text-xl text-foreground">{define.hmw}</p>
-          </Reveal>
+          {define.hmw.trim().length > 0 && (
+            <Reveal
+              delay={140}
+              className="mt-10 max-w-2xl border-l-2 border-(--project-accent) pl-6"
+            >
+              <p className="text-xs font-semibold tracking-[0.14em] text-(--project-accent) uppercase">
+                How might we
+              </p>
+              <p className="mt-2 text-xl text-foreground">{define.hmw}</p>
+            </Reveal>
+          )}
 
           {researchToDesign && researchToDesign.rows.length > 0 && (
             <div className="mt-20">
@@ -1472,7 +1474,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             </Reveal>
           )}
 
-          {!opportunity && (
+          {!opportunity && define.hmw.trim().length > 0 && (
             <Reveal
               delay={100}
               className="mt-6 max-w-2xl border-l-2 border-sage-deep pl-6"
@@ -1522,7 +1524,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Section>
       )}
 
-      {!flowsLate && flowsSection}
+      {!flowsLate && ideation.flows.length > 0 && flowsSection}
 
       {testing.placement === "before-decisions" && testingMain}
 
@@ -1548,7 +1550,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Section>
       )}
 
-      {flowsLate && flowsSection}
+      {flowsLate && ideation.flows.length > 0 && flowsSection}
 
       {(productRequirements.length > 0 ||
         (designPrinciplesDetailed && designPrinciplesDetailed.length > 0)) && (

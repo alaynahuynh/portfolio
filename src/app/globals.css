@@ -160,8 +160,10 @@
      would vanish).
    - The homepage hero has its own dark design (navy backdrop + the
      --hero-* variables under "Hero theme"); its drawn monitor and windows
-     keep their light colors, so it isn't simply inverted. */
-:root[data-theme="dark"] :is(.page-parchment, .page-cover-inside, [data-hero]) {
+     keep their light colors, so it isn't simply inverted.
+   - .keep-light: drawn retro windows (e.g. the About page's mail and photo
+     windows) keep their cream chrome, so their text stays dark too. */
+:root[data-theme="dark"] :is(.page-parchment, .page-cover-inside, [data-hero], .keep-light) {
   color-scheme: light;
   --color-background: #ffffff;
   --color-surface: #ffffff;

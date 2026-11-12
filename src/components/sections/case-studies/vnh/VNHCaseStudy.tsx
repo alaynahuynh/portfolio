@@ -39,7 +39,6 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "locations", label: "Ordering flow" },
   { id: "menu", label: "Menu" },
   { id: "home", label: "Visual identity" },
-  { id: "supporting", label: "Other pages" },
   { id: "reflection", label: "Reflection" },
 ];
 
@@ -125,24 +124,11 @@ const HOME_DESKTOP_FAVORITES = img(
   2880,
   1536,
 );
-const HOME_DESKTOP_GALLERY = img(
-  "home/desktop-gallery.png",
-  "The 'A Look Inside Our Restaurants' photo gallery on desktop.",
-  2880,
-  1648,
-);
-
 const MENU_DESKTOP_TOP = img(
   "menu/desktop-top.png",
   "The top of the redesigned menu page on desktop: dietary legend, the category nav, and the Appetizers category with a real photo for Fried Eggrolls.",
   1440,
   950,
-);
-const MENU_MOBILE_TOP = img(
-  "menu/mobile-top.png",
-  "The top of the redesigned menu page on mobile, before scrolling into the category list.",
-  780,
-  1688,
 );
 const MENU_MOBILE_STICKY = img(
   "menu/mobile-sticky-nav.png",
@@ -206,25 +192,6 @@ const ROOM_PALETTE = [
   },
 ];
 
-const ABOUT_DESKTOP = img(
-  "about/desktop.png",
-  "The redesigned About page on desktop, with a restaurant photo filling the space that used to be an empty gap beside the text.",
-  1440,
-  1159,
-);
-const FOOD_TRUCK_DESKTOP_TOP = img(
-  "food-truck/desktop-top.png",
-  "The new Food Truck page on desktop: a teal hero and the 'Where We'll Be' schedule of upcoming stops.",
-  1440,
-  1500,
-);
-const CONTACT_DESKTOP = img(
-  "contact/desktop.png",
-  "The Contact page on desktop: both locations' hours and phone numbers beside a Send a Message form.",
-  1440,
-  1651,
-);
-
 // --------------------------------------------------------------- HELPERS
 
 /** Wide desktop + tall mobile side by side, sized by their real aspect
@@ -282,24 +249,6 @@ function BeforePair({
     </div>
   );
 }
-
-const SUPPORTING_PAGES = [
-  {
-    title: "About: filling an empty page",
-    copy: "Photos of the dining rooms fill what used to be a text-only page.",
-    image: ABOUT_DESKTOP,
-  },
-  {
-    title: "Food Truck: a new page",
-    copy: "The truck travels around Syracuse but had no page on the old site. I built one in the same style, centered on where the truck will be next.",
-    image: FOOD_TRUCK_DESKTOP_TOP,
-  },
-  {
-    title: "Contact: a form that sends",
-    copy: "It looks about the same as before, but messages now actually arrive (sent through Resend).",
-    image: CONTACT_DESKTOP,
-  },
-];
 
 export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
   const { overview, background, research, ideation, finalThoughts } = data;
@@ -492,10 +441,9 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             <div>
               <Label>The tradeoff</Label>
               <p className="mt-3 text-muted-foreground">
-                Ordering online is the business&rsquo;s top priority, and this flow adds one confirmation tap in front
-                of it. I accepted that because wrong-location orders were already happening, and each one costs the
-                customer and the restaurant far more than a tap. The extra step is a single button that already
-                names the location they picked.
+                The flow adds one confirmation tap in front of ordering, the business&rsquo;s top priority. I
+                accepted it because each wrong-location order costs the customer and the restaurant far more than
+                a tap.
               </p>
             </div>
             <div>
@@ -503,9 +451,8 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
               <p className="mt-3 font-heading text-3xl text-foreground">About 8 → about 1</p>
               <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month since the July launch, by the owners&rsquo; count</p>
               <p className="mt-4 text-muted-foreground">
-                That&rsquo;s their tally, not analytics, and the redesign changed more than this flow at once, but
-                the location flow was the change aimed at mistaken orders. Location-level analytics on the hand-off
-                would put data behind it.
+                The owners&rsquo; tally, not analytics, and other pages changed too, but this flow was the change
+                aimed at mistaken orders.
               </p>
             </div>
           </div>
@@ -550,14 +497,10 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
           </p>
         </Reveal>
 
-        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)] lg:gap-6">
+        <div className="mt-10 grid items-start gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] lg:gap-6">
           <Reveal>
             <Label accent>After — Desktop</Label>
             <CaseStudyFullImage image={MENU_DESKTOP_TOP} className="mt-3" />
-          </Reveal>
-          <Reveal delay={40}>
-            <Label accent>After — Mobile, top of page</Label>
-            <CaseStudyContentImage image={MENU_MOBILE_TOP} className="mt-3 max-w-xs" />
           </Reveal>
           <Reveal delay={80}>
             <Label accent>After — Mobile, sticky nav mid-scroll</Label>
@@ -574,7 +517,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal>
           <Eyebrow>Visual identity</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            A site that feels like walking into the restaurant
+            A palette taken from the dining rooms
           </Heading>
         </Reveal>
         <Reveal delay={40}>
@@ -623,33 +566,9 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             </div>
           </Reveal>
         )}
-        <div className="mt-14 space-y-6">
-          <Reveal>
-            <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />
-          </Reveal>
-          <Reveal delay={40}>
-            <CaseStudyFullImage image={HOME_DESKTOP_GALLERY} />
-          </Reveal>
-        </div>
-      </Section>
-
-      {/* ----------------------------------------------------- SUPPORTING */}
-      <Section id="supporting" className="scroll-mt-28">
-        <Reveal>
-          <Eyebrow>Other pages</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Smaller fixes that made the site feel finished
-          </Heading>
+        <Reveal className="mt-14">
+          <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />
         </Reveal>
-        <div className="mt-14 grid gap-12 lg:grid-cols-3 lg:gap-8">
-          {SUPPORTING_PAGES.map((page, i) => (
-            <Reveal key={page.title} delay={i * 40}>
-              <CaseStudyFullImage image={page.image} />
-              <h3 className="mt-5 text-lg font-semibold text-foreground">{page.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{page.copy}</p>
-            </Reveal>
-          ))}
-        </div>
       </Section>
 
       {/* ------------------------------------------------------ REFLECTION */}

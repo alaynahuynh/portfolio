@@ -221,10 +221,9 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   },
 
   finalThoughts: {
-    pullQuote: "Adding a step on purpose.",
-    // Two paragraphs, split on the blank line by VNHCaseStudy.
+    pullQuote: "The fix added a step instead of removing one.",
     whatILearned:
-      "I usually try to remove steps, but the location flow adds one on purpose. One extra tap is worth it if it keeps an order from going to the wrong kitchen, and the owners noticed the difference.\n\nThe contact form was a reminder to check that a feature actually works, not just that it shows a success message.",
+      "I usually try to remove steps, but the location flow adds one. An extra tap was worth it to keep orders from going to the wrong kitchen, and the owners noticed the difference.",
     nextStepsHeading: "What's next",
     nextSteps:
       "Add location-level analytics on the ordering hand-off so the owners' count has data behind it, and keep checking in with them as more customers use the new site.",

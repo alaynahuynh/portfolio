@@ -400,17 +400,8 @@ export const coursePilot: CaseStudyData = {
 
   earlyExploration: {
     heading: "Sketching the structure before the visuals.",
-    copy: "Before any high-fidelity screens, I sketched how the dashboard, the AI popup, and daily summaries should feel as raw structure.",
+    copy: "Before any high-fidelity screens, I sketched the popup and the daily summary as raw structure.",
     items: [
-      {
-        label: "Dashboard structure",
-        image: {
-          src: "/images/projects/coursepilot/exploration/sketch-dashboard.png",
-          alt: "Early sketch of the Canvas dashboard: a course grid with a To Do column, before any CoursePilot entry point was added",
-          width: 778,
-          height: 554,
-        },
-      },
       {
         label: "CoursePilot popup entry",
         image: {
@@ -418,15 +409,6 @@ export const coursePilot: CaseStudyData = {
           alt: "Early sketch of the CoursePilot popup opening from the Canvas dashboard, with a “How can we help?” prompt and an “Ask anything” input",
           width: 777,
           height: 554,
-        },
-      },
-      {
-        label: "Welcome / ask CoursePilot",
-        image: {
-          src: "/images/projects/coursepilot/exploration/sketch-welcome.png",
-          alt: "Early sketch of the full CoursePilot welcome screen: “Meet CoursePilot, your AI course assistant” above an “Ask CoursePilot” input",
-          width: 778,
-          height: 541,
         },
       },
       {
@@ -522,48 +504,42 @@ export const coursePilot: CaseStudyData = {
   testing: {
     heading: "Five students, one prototype",
     intro:
-      "I ran task-based usability sessions with five students on the Figma prototype, each focused on one or two features. Every participant saw value in it, and each session also turned up a different problem. Because each finding comes from one participant, I treat them as signals to design against, not patterns yet.",
-    tasks: [
-      "P1 · Junior, uses Canvas Calendar and a notes app · tested Catch Me Up, then Plan My Night",
-      "P2 · Sophomore, often starts close to deadlines · tested Plan My Night",
-      "P3 · First-year, relies on Canvas notifications · tested Catch Me Up",
-      "P4 · Senior, checks syllabi before academic decisions · tested a grade question",
-      "P5 · Junior, balancing clubs and coursework · tested Plan My Night",
-    ],
+      "I ran task-based sessions with five students on the Figma prototype. Every participant saw value in it, and each turned up a different problem. Each finding comes from one participant, so I treat them as signals, not patterns yet.",
+    tasks: [],
     changedLabel: "What I'd change",
     iterations: [
       {
         title: "The task order didn't explain itself",
         feedback:
-          "P1, looking at the generated plan: “Wait, why is this assignment first?” Then: “Unless there's a reason this one is more important, but I can't really tell from looking at it.”",
+          "P1, looking at the generated plan: “Wait, why is this assignment first?”",
         finalIteration:
           "Each task already has a “Why this?” link, but the reason needs to be visible without clicking: show the deciding factor (due date or estimated effort) right on the task row.",
       },
       {
         title: "Time estimates read as fixed",
         feedback:
-          "P2: “It says this assignment should take an hour and a half. I feel like it would take me way longer than that.” Asked what they'd do: “I don't really know how it would know how long I take to finish something.”",
+          "P2: “It says this assignment should take an hour and a half. I feel like it would take me way longer than that.”",
         finalIteration:
           "Label estimates as approximate, say where they come from, and put the way to edit them (Adjust Plan) right next to the estimate.",
       },
       {
         title: "No way to say how much time you actually have",
         feedback:
-          "P5 had a meeting that night: “Is there somewhere I can change how much time I have?” What they expected: “Like if I only have an hour, show me what I can realistically finish in that hour.”",
+          "P5, who had a meeting that night: “Is there somewhere I can change how much time I have?”",
         finalIteration:
           "Adjust Plan changes time per task, not the total. Add a control for available time on the plan itself that regenerates a shorter plan without starting over.",
       },
       {
         title: "Announcements didn't say whether action was needed",
         feedback:
-          "P3, reading the Catch Me Up summary: “I'm not sure if I'm supposed to do something for this announcement or if it's just telling us something. It mentions an assignment, but I can't tell if there's anything I need to submit.” Their fallback was opening Canvas to read the original.",
+          "P3, reading the Catch Me Up summary: “I'm not sure if I'm supposed to do something for this announcement or if it's just telling us something.”",
         finalIteration:
           "Mark each announcement as action needed or informational, and keep the direct link back to the original post.",
       },
       {
         title: "A source wasn't enough to trust a grade",
         feedback:
-          "P4 found the source (“That's good”), but added: “I think I'd still want to know if it's missing anything, though. Like if participation isn't graded yet.” And: “I wouldn't make a decision about dropping a class or anything serious without checking it myself.”",
+          "P4 found the source, but: “I'd still want to know if it's missing anything. Like if participation isn't graded yet.”",
         finalIteration:
           "Show the calculation's assumptions and missing inputs, such as ungraded categories, next to the result, not just where the numbers came from.",
       },
@@ -577,35 +553,8 @@ export const coursePilot: CaseStudyData = {
         who: "P2, on Plan My Night",
         quote: "It makes everything seem less overwhelming when it's broken down like that.",
       },
-      {
-        who: "P3, comparing it with checking each class",
-        quote: "It's definitely faster.",
-      },
-      {
-        who: "P5, on Plan My Night",
-        quote: "I think I'd use it, especially when I have a lot going on.",
-      },
     ],
     placeholder: false,
-    validateNextHeading: "What I'd test next round",
-    validateNext: [
-      {
-        title: "Prioritization",
-        question: "With the deciding factor shown on each task, do students agree with the order?",
-      },
-      {
-        title: "Control",
-        question: "Can students find Adjust Plan and change their available time without help?",
-      },
-      {
-        title: "Breadth",
-        question: "Do these issues hold up across more students? Each finding here came from one session.",
-      },
-      {
-        title: "Feasibility",
-        question: "How should CoursePilot respond when Canvas information is incomplete, conflicting, or unavailable?",
-      },
-    ],
   },
 
   finalExperience: {

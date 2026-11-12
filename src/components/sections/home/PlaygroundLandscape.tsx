@@ -81,7 +81,7 @@ export function PlaygroundLandscape() {
   return (
     <section
       aria-label="Playground landscape"
-      className="relative h-svh min-h-[520px] overflow-hidden bg-sky"
+      className="relative h-svh min-h-[520px] overflow-hidden bg-sky dark:bg-[#1b2444]"
     >
       <div
         className="absolute bottom-0 left-[clamp(calc(100%_-_var(--w)),calc(50%_-_var(--w)_*_0.67),0px)] max-sm:left-[clamp(calc(100%_-_var(--w)),max(calc(100%_-_var(--w)_*_0.852),calc(50%_-_var(--w)_*_0.67)),0px)]"
@@ -177,6 +177,15 @@ export function PlaygroundLandscape() {
           tailFrames={YOSHI_TAIL_FRAMES}
           wagSequence={YOSHI_WAG_SEQUENCE}
           onClick={() => setOpenDialog("yoshi")}
+        />
+
+        {/* Dark theme: a night tint over the whole painting, dogs and piano
+            included. Multiplied, so the painting's colors and brushwork
+            show through: deepest navy at the top of the sky, lighter
+            over the hills. Clicks pass through to the dogs and piano. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_bottom,#3a4680_0%,#5866a6_45%,#8590c2_75%,#7882b6_100%)] mix-blend-multiply dark:block"
         />
       </div>
 

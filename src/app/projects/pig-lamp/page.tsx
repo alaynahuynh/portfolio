@@ -369,15 +369,15 @@ export default function PigLampPage() {
         <Reveal>
           <Eyebrow>Reflection</Eyebrow>
           <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Small measurements make a big difference.
+            Next time I&rsquo;d test the fit and the size before cutting.
           </Heading>
         </Reveal>
         <div className="mt-10 grid gap-10 sm:grid-cols-2">
           <Reveal delay={40}>
             <Label accent>What I learned</Label>
             <p className="mt-3 text-muted-foreground">
-              Working through the kerf and the fit taught me a lot about precision and design: in a slot-together
-              object, small measurement choices decide whether the whole thing works.
+              In a slot-together object, a fraction of a millimeter in the kerf decides whether the pieces hold
+              together.
             </p>
           </Reveal>
           <Reveal delay={60}>
@@ -389,7 +389,7 @@ export default function PigLampPage() {
                 from it, instead of adjusting after the fact.
               </li>
               <li>
-                <span className="font-medium text-foreground">Prototype the scale, not just the fit.</span>{" "}I&rsquo;d make
+                <span className="font-medium text-foreground">Mock up the full size in cardboard.</span>{" "}I&rsquo;d make
                 the pig a little smaller so it looks more proportional. A quick full-size cardboard mockup
                 would have shown that before cutting wood.
               </li>

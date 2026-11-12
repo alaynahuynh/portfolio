@@ -40,7 +40,7 @@ export function HeroRetroWindow({
   const { deep, soft } = DESTINATION_COLORS[destination];
 
   return (
-    <div className={cn("@container p-[3px]", RETRO_BEVEL, className)}>
+    <div className={cn("keep-light @container p-[3px]", RETRO_BEVEL, className)}>
       <div
         className="flex items-center gap-1 bg-linear-to-r from-(--bar-deep) to-(--bar-soft) px-1 py-[1.5px] group-hover:to-(--bar-deep) group-focus-visible:to-(--bar-deep)"
         style={
