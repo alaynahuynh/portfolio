@@ -1,15 +1,17 @@
 /**
- * Records real phone-sized sessions of the live sites for the tall
- * Selected Works thumbnails.
+ * Records real sessions of the live sites for the Selected Works
+ * thumbnails: phone-sized ones for the tall panels, and a desktop one
+ * (noodle-house-desktop) for Noodle House's wide panel.
  *
  * 1. Start Chrome with remote debugging (headless is fine):
  *      "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
  *        --headless=new --remote-debugging-port=9333 --user-data-dir=/tmp/phone-rec about:blank
- * 2. node scripts/thumbnails/record-phone.mjs <mymuseum|noodle-house>
+ * 2. node scripts/thumbnails/record-phone.mjs <mymuseum|noodle-house|noodle-house-desktop>
  *
- * Writes design-refs/<project>/recording-tall.mp4 (1080x1920, 20 fps,
- * near-lossless) and recording-tall.json (tap times/positions, which
- * build_thumbnails.py draws as soft touch ripples).
+ * Writes design-refs/<project>/recording-<tall|wide>.mp4 (1080x1920 or
+ * 1920x1080, 30 fps, near-lossless) and a matching .json with tap times and
+ * positions (drawn as touch ripples) or, for desktop, the mouse path and
+ * clicks (drawn as one cursor) by build_thumbnails.py.
  */
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -18,8 +20,10 @@ import path from "node:path";
 
 const PORT = 9333;
 // iPhone 8 Plus viewport: exactly 9:16, scaled to a 1080x1920 capture.
-const VIEW = { width: 414, height: 736, deviceScaleFactor: 1080 / 414, mobile: true };
-const FPS = 20;
+const PHONE = { width: 414, height: 736, deviceScaleFactor: 1080 / 414, mobile: true };
+// Laptop viewport, scaled to a 1920x1080 capture.
+const DESKTOP = { width: 1280, height: 720, deviceScaleFactor: 1.5, mobile: false };
+const FPS = 30;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -87,6 +91,57 @@ const SESSIONS = {
       await s.homePainted();
     },
   },
+
+  // Desktop, with a mouse: scroll the homepage (favorites, the restaurant
+  // gallery, the two locations) -> Order Online in the nav -> pick Camillus
+  // -> the "You're ordering from Camillus" panel -> Menu in the nav ->
+  // scroll the menu under its sticky category bar. build_thumbnails.py
+  // crossfades the end back to the hero.
+  "noodle-house-desktop": {
+    view: DESKTOP,
+    project: "noodle-house",
+    name: "recording-wide",
+    url: "https://vietnoodlehouse.com/",
+    async prepare(s) {
+      for (const u of ["/locations", "/menu", "/"]) {
+        await s.nav("https://vietnoodlehouse.com" + u);
+        await sleep(3500);
+      }
+      // Warm the homepage's lazy images by scrolling through once.
+      for (let y = 0; y <= 2600; y += 400) {
+        await s.ev(`scrollTo(0, ${y})`);
+        await sleep(250);
+      }
+      await s.ev(`scrollTo(0, 0)`);
+      await s.mouseJump(900, 300);
+      await sleep(1200);
+    },
+    async run(s) {
+      await sleep(600); // the hero
+      await s.mouseTo(980, 420, 600);
+      await s.scroll(1480, 2400); // Customer Favorites -> the restaurant gallery
+      await sleep(500);
+      await s.scroll(2280, 1100); // Two Locations
+      await sleep(600);
+      await s.clickOn(byText(/^ORDER ONLINE$/, "e.getBoundingClientRect().top < 80"), 800);
+      await s.waitFor(`location.pathname === "/locations"`);
+      await sleep(1200); // let the location maps paint
+      await s.scroll(330, 800);
+      await sleep(250);
+      await s.clickOn(byText(/^ORDER FROM CAMILLUS$/), 750);
+      await sleep(500);
+      await s.scroll(560, 900); // the confirmation panel under the cards
+      await sleep(200);
+      await s.hoverOn(byText(/CONTINUE TO/i), 700);
+      await sleep(600);
+      await s.clickOn(byText(/^MENU$/, "e.getBoundingClientRect().top < 80"), 800);
+      await s.waitFor(`location.pathname === "/menu"`);
+      await sleep(700);
+      await s.mouseTo(1000, 520, 500);
+      await s.scroll(1700, 2600); // down the menu, sticky category bar on top
+      await sleep(700);
+    },
+  },
 };
 
 const project = process.argv[2];
@@ -95,7 +150,11 @@ if (!session) {
   console.error(`usage: node record-phone.mjs <${Object.keys(SESSIONS).join("|")}>`);
   process.exit(1);
 }
-const OUT_DIR = path.resolve(import.meta.dirname, "../../design-refs", project);
+const VIEW = session.view ?? PHONE;
+const OUT_NAME = session.name ?? "recording-tall";
+const OUT_W = Math.round(VIEW.width * VIEW.deviceScaleFactor);
+const OUT_H = Math.round(VIEW.height * VIEW.deviceScaleFactor);
+const OUT_DIR = path.resolve(import.meta.dirname, "../../design-refs", session.project ?? project);
 
 // --- Chrome DevTools Protocol plumbing ------------------------------------
 const list = await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json();
@@ -121,6 +180,10 @@ const ev = async (expression) =>
   (await send("Runtime.evaluate", { expression, awaitPromise: true, returnByValue: true })).result.value;
 
 const taps = [];
+const mouse = { x: 0, y: 0, path: [], clicks: [] };
+const logMouse = () => mouse.path.push({ t: Date.now() / 1000, x: mouse.x / VIEW.width, y: mouse.y / VIEW.height });
+const centerOf = (elementJs) =>
+  ev(`(() => { const r = (${elementJs}).getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; })()`);
 const s = {
   ev,
   async nav(url) {
@@ -155,10 +218,42 @@ const s = {
     await sleep(90);
     await send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
   },
+  async mouseJump(x, y) {
+    Object.assign(mouse, { x, y });
+    logMouse();
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x, y });
+  },
+  /** Real mouse moves along an eased path, so hover states play. */
+  async mouseTo(x, y, ms) {
+    const x0 = mouse.x, y0 = mouse.y, start = Date.now();
+    for (;;) {
+      const k = Math.min((Date.now() - start) / ms, 1);
+      const e = 0.5 - 0.5 * Math.cos(Math.PI * k);
+      Object.assign(mouse, { x: x0 + (x - x0) * e, y: y0 + (y - y0) * e });
+      logMouse();
+      await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: mouse.x, y: mouse.y });
+      if (k >= 1) break;
+      await sleep(16);
+    }
+  },
+  async hoverOn(elementJs, ms) {
+    const p = await centerOf(elementJs);
+    await this.mouseTo(p.x, p.y, ms);
+  },
+  async clickOn(elementJs, ms) {
+    await this.hoverOn(elementJs, ms);
+    await sleep(120);
+    mouse.clicks.push({ t: Date.now() / 1000, x: mouse.x / VIEW.width, y: mouse.y / VIEW.height });
+    const at = { x: mouse.x, y: mouse.y, button: "left", clickCount: 1 };
+    await send("Input.dispatchMouseEvent", { type: "mousePressed", ...at });
+    await sleep(70);
+    await send("Input.dispatchMouseEvent", { type: "mouseReleased", ...at });
+  },
   /** Eased scroll of the page (or its inner scroll container). */
   async scroll(to, ms) {
     await ev(`(() => {
-      const sc = [...document.querySelectorAll("*")].find((e) => /(auto|scroll)/.test(getComputedStyle(e).overflowY) && e.scrollHeight > e.clientHeight + 10) || document.scrollingElement;
+      const de = document.scrollingElement;
+      const sc = de.scrollHeight > de.clientHeight + 10 ? de : [...document.querySelectorAll("*")].find((e) => /(auto|scroll)/.test(getComputedStyle(e).overflowY) && e.scrollHeight > e.clientHeight + 10);
       const from = sc.scrollTop, start = performance.now();
       return new Promise((done) => (function step() {
         const k = Math.min((performance.now() - start) / ${ms}, 1);
@@ -199,7 +294,7 @@ listeners.push((m) => {
   frames.push({ file, t: m.params.metadata.timestamp });
   send("Page.screencastFrameAck", { sessionId: m.params.sessionId });
 });
-await send("Page.startScreencast", { format: "png", maxWidth: 1080, maxHeight: 1920, everyNthFrame: 1 });
+await send("Page.startScreencast", { format: "png", maxWidth: OUT_W, maxHeight: OUT_H, everyNthFrame: 1 });
 const t0 = Date.now() / 1000;
 await session.run(s);
 await send("Page.stopScreencast");
@@ -224,14 +319,18 @@ for (let t = tStart; t <= tEnd; t += 1 / FPS) {
 }
 fs.writeFileSync(path.join(tmp, "list.txt"), lines.join("\n") + `\nfile '${frames[j].file}'\n`);
 fs.mkdirSync(OUT_DIR, { recursive: true });
-const out = path.join(OUT_DIR, "recording-tall.mp4");
+const out = path.join(OUT_DIR, `${OUT_NAME}.mp4`);
 execFileSync("ffmpeg", [
   "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", path.join(tmp, "list.txt"),
-  "-vf", `scale=1080:1920:flags=lanczos,fps=${FPS}`, "-c:v", "libx264", "-crf", "10", "-preset", "slow",
+  "-vf", `scale=${OUT_W}:${OUT_H}:flags=lanczos,fps=${FPS}`, "-c:v", "libx264", "-crf", "10", "-preset", "slow",
   "-pix_fmt", "yuv420p", out,
 ]);
 const rel = taps.map((p) => ({ ...p, t: +(p.t - tStart).toFixed(3) }));
-fs.writeFileSync(path.join(OUT_DIR, "recording-tall.json"), JSON.stringify({ taps: rel }, null, 2));
+const rebase = (list) => list.filter((p) => p.t >= tStart - 0.05).map((p) => ({ ...p, t: +(p.t - tStart).toFixed(3) }));
+fs.writeFileSync(
+  path.join(OUT_DIR, `${OUT_NAME}.json`),
+  JSON.stringify({ taps: rel, cursor: rebase(mouse.path), clicks: rebase(mouse.clicks) }, null, 2),
+);
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(`${frames.length} frames over ${(tEnd - tStart).toFixed(2)}s -> ${out}`);
 console.log(JSON.stringify(rel.map((p) => ({ t: +p.t.toFixed(2), x: +p.x.toFixed(2), y: +p.y.toFixed(2) }))));

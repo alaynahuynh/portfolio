@@ -80,6 +80,10 @@ class Seg:
     keep_px: int = 60
     # Touch ripples: (time_s, x, y) with x, y as 0-1 of the source.
     taps: List[Tuple[float, float, float]] = field(default_factory=list)
+    # Desktop recordings: the mouse path and clicks, (time_s, x, y) with x, y
+    # as 0-1 of the source; drawn as one arrow cursor with a click ripple.
+    cursor: List[Tuple[float, float, float]] = field(default_factory=list)
+    clicks: List[Tuple[float, float, float]] = field(default_factory=list)
 
 
 @dataclass
@@ -89,9 +93,18 @@ class Clip:
     size: Tuple[int, int]
     segs: List[Seg]
     crf: int = 28  # x264 quality; lower = sharper and bigger
+    fps: int = FPS
+    max_s: float = MAX_S
+    max_bytes: int = MAX_BYTES
     # Fade the tail back into frame 0. Off for recordings that already end
     # on their first frame, so they loop on a straight cut.
     loop_fade: bool = True
+
+
+def recorded_mouse(path: Path):
+    d = json.loads(path.read_text())
+    pts = lambda key: [(p["t"], p["x"], p["y"]) for p in d.get(key, [])]  # noqa: E731
+    return pts("cursor"), pts("clicks")
 
 
 def recorded_taps(path: Path):
@@ -100,6 +113,8 @@ def recorded_taps(path: Path):
 
 MM_REC = REFS / "mymuseum/recording-tall.mp4"
 NH_REC = REFS / "noodle-house/recording-tall.mp4"
+NH_DESKTOP = REFS / "noodle-house/recording-wide.mp4"
+NH_MOUSE = recorded_mouse(NH_DESKTOP.with_suffix(".json")) if NH_DESKTOP.exists() else ([], [])
 
 # --------------------------------------------------------------------------
 # Storyboards
@@ -136,29 +151,32 @@ CLIPS = [
     ),
     # coursepilot-wide is built by coursepilot_wide.py instead (clean,
     # cursor-free screens with one synthetic cursor).
-    # Hero holds 1.5s, eases to at most 1.15x toward the headline and Order
-    # Online (all kept >= 60px from the edges), then Locations scrolls to
-    # Camillus, selected and ready to order.
+    # Scrolling and ordering through the live site on desktop (~19 s, so it
+    # runs longer than the 6-9 s clips, at 30 fps for smooth scrolling).
     Clip(
         "noodle-house-wide",
         "noodle-house",
-        WIDE,
+        # 1600x900, not 1920x1080: 19 s of continuous scrolling is ~2.7 MB at
+        # full size. The card shows it ~750 px wide, so 1600 is still sharp.
+        (1600, 900),
         [
+            # A real desktop session of the live site (record-phone.mjs
+            # noodle-house-desktop): homepage scroll -> Order Online ->
+            # Camillus -> "You're ordering from Camillus" -> Menu -> menu
+            # scroll, with the recorded mouse drawn as one cursor.
             Seg(
-                IMG / "vnh/home/desktop-hero.png",
-                4.4,
-                # cy 0.45 = top-aligned at 1.0x (unclamped, so the camera
-                # drifts down while it zooms instead of zooming first).
-                [(0, 1.0, 0.5, 0.45), (1.5, 1.0, 0.5, 0.45), (3.6, 1.15, 0.449, 0.558), (4.4, 1.15, 0.449, 0.558)],
-                # "Vietnamese Noodle House", subtitle and both buttons.
-                keep=[(78, 305, 475, 694)],
-            ),
-            Seg(
-                IMG / "vnh/locations/desktop-confirmation.png",
-                4.6,
-                [(0, 1.0, 0.5, 0.0), (0.6, 1.0, 0.5, 0.0), (3.6, 1.0, 0.5, 0.56), (4.6, 1.0, 0.5, 0.56)],
+                NH_DESKTOP,
+                19.6,
+                [(0, 1.0, 0.5, 0.5)],
+                play=19.4,
+                cursor=NH_MOUSE[0],
+                clicks=NH_MOUSE[1],
             ),
         ],
+        fps=30,
+        max_s=20.0,
+        # ~2.3x the length of the short clips, so a proportional budget.
+        max_bytes=2_500_000,
     ),
     # A real phone session of the live site, no crossfades: hero -> tap Order
     # Online -> Locations -> scroll to Camillus -> tap Select Camillus (the
@@ -326,6 +344,52 @@ def draw_taps(frame: Image.Image, seg: Seg, t: float, win, src_size) -> Image.Im
     return Image.alpha_composite(frame.convert("RGBA"), over).convert("RGB")
 
 
+# Classic arrow cursor, tip at (0, 0), in output pixels at scale 1.
+ARROW = [(0, 0), (0, 34), (8, 26.5), (13.5, 39), (19, 36.5), (13.5, 24.5), (24.5, 24.5)]
+
+
+def path_at(points, t):
+    """Linear interpolation of a recorded (t, x, y) path."""
+    if not points or t <= points[0][0]:
+        return points[0][1:] if points else None
+    for (t0, *a), (t1, *b) in zip(points, points[1:]):
+        if t <= t1:
+            k = (t - t0) / (t1 - t0) if t1 > t0 else 1.0
+            return tuple(x + (y - x) * k for x, y in zip(a, b))
+    return points[-1][1:]
+
+
+def draw_cursor(frame: Image.Image, seg: Seg, t: float, win, src_size) -> Image.Image:
+    pos = path_at(seg.cursor, t)
+    if pos is None:
+        return frame
+    x0, y0, ww, wh = win
+    W, H = frame.size
+    to_out = lambda fx, fy: ((fx * src_size[0] - x0) / ww * W, (fy * src_size[1] - y0) / wh * H)  # noqa: E731
+    x, y = to_out(*pos)
+    over = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+    d = ImageDraw.Draw(over)
+    press = 1.0
+    for ct, cx, cy in seg.clicks:
+        dt = t - ct
+        if -0.08 <= dt < 0.12:
+            press = 0.82
+        if 0 <= dt < 0.6:
+            k = dt / 0.6
+            px, py = to_out(cx, cy)
+            r = 10 + 34 * ease(k)
+            a = int(160 * (1 - k))
+            d.ellipse((px - r, py - r, px + r, py + r), outline=(174, 90, 66, a), width=4)
+            d.ellipse((px - r * 0.6, py - r * 0.6, px + r * 0.6, py + r * 0.6), fill=(174, 90, 66, a // 3))
+    sc = 1.3 * press * W / 1920
+    pts = [(x + px * sc, y + py * sc) for px, py in ARROW]
+    sh = Image.new("RGBA", frame.size, (0, 0, 0, 0))
+    ImageDraw.Draw(sh).polygon([(px + 2, py + 3) for px, py in pts], fill=(0, 0, 0, 90))
+    over = Image.alpha_composite(sh.filter(ImageFilter.GaussianBlur(3)), over)
+    ImageDraw.Draw(over).polygon(pts, fill=(20, 20, 24, 255), outline=(255, 255, 255, 255), width=3)
+    return Image.alpha_composite(frame.convert("RGBA"), over).convert("RGB")
+
+
 def render_seg(seg: Seg, src: Source, size, t: float, problems=None, label="") -> Image.Image:
     im = src.at(t)
     if seg.effect:
@@ -336,6 +400,9 @@ def render_seg(seg: Seg, src: Source, size, t: float, problems=None, label="") -
     frame = im.resize(size, Image.LANCZOS, box=(x0, y0, x0 + ww, y0 + wh))
     if seg.taps:
         frame = draw_taps(frame, seg, t, win, im.size)
+    if seg.cursor:
+        rec_t = seg.start + (min(t, seg.play) if seg.play is not None else t)
+        frame = draw_cursor(frame, seg, rec_t, win, im.size)
     if problems is not None:
         s = size[0] / ww
         for bx0, by0, bx1, by1 in seg.keep:
@@ -346,6 +413,8 @@ def render_seg(seg: Seg, src: Source, size, t: float, problems=None, label="") -
 
 
 def build(clip: Clip, tmp: Path):
+    global FPS
+    FPS = clip.fps
     sources = [Source(s, tmp) for s in clip.segs]
     # Segment start times on the output timeline (neighbours overlap by XF).
     starts, t = [], 0.0
@@ -355,8 +424,8 @@ def build(clip: Clip, tmp: Path):
     total = t  # the final XF overlaps the return to frame 0
     if not clip.loop_fade:
         total += XF
-    if not MIN_S <= total <= MAX_S:
-        sys.exit(f"{clip.name}: {total:.1f}s is outside {MIN_S}-{MAX_S}s")
+    if not MIN_S <= total <= clip.max_s:
+        sys.exit(f"{clip.name}: {total:.1f}s is outside {MIN_S}-{clip.max_s}s")
     n = int(round(total * FPS))
 
     fdir = tmp / clip.name
@@ -403,10 +472,10 @@ def build(clip: Clip, tmp: Path):
             ],
             check=True,
         )
-        if out.stat().st_size < MAX_BYTES or crf >= 34:
+        if out.stat().st_size < clip.max_bytes or crf >= 34:
             break
         crf += 1
-    if out.stat().st_size >= MAX_BYTES:
+    if out.stat().st_size >= clip.max_bytes:
         sys.exit(f"{clip.name}: {out.stat().st_size / 1e6:.2f} MB even at CRF {crf}")
     print(
         f"{clip.name:20s} {n / FPS:4.1f}s {n:3d}f  crf {crf}  "

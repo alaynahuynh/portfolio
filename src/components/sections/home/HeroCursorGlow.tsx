@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 /**
  * Soft light that follows the cursor across the hero, brightening the
@@ -10,7 +11,16 @@ import { useEffect, useRef } from "react";
  * Position is written straight to CSS variables in a rAF, so moving the
  * mouse never re-renders React.
  */
-export function HeroCursorGlow() {
+export function HeroCursorGlow({
+  core = "var(--hero-cursor-core)",
+  edge = "var(--hero-cursor-edge)",
+  className,
+}: {
+  /** Glow colors; default to the homepage hero's per-theme variables. */
+  core?: string;
+  edge?: string;
+  className?: string;
+} = {}) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,10 +64,12 @@ export function HeroCursorGlow() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-(--duration-slow) ease-(--ease-soft)"
+      className={cn(
+        "pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-(--duration-slow) ease-(--ease-soft)",
+        className,
+      )}
       style={{
-        background:
-          "radial-gradient(200px circle at var(--glow-x, 50%) var(--glow-y, 50%), var(--hero-cursor-core), var(--hero-cursor-edge) 45%, transparent 75%)",
+        background: `radial-gradient(200px circle at var(--glow-x, 50%) var(--glow-y, 50%), ${core}, ${edge} 45%, transparent 75%)`,
       }}
     />
   );

@@ -5,6 +5,11 @@ import Image from "next/image";
 import { DogInfoModal } from "@/components/sections/home/DogInfoModal";
 import { HeroDog } from "@/components/sections/home/HeroDog";
 import { HeroPiano } from "@/components/sections/home/HeroPiano";
+import { HeroCursorGlow } from "@/components/sections/home/HeroCursorGlow";
+import {
+  PlaygroundGlow,
+  nearVar,
+} from "@/components/sections/home/PlaygroundGlow";
 import { prefersReducedMotion } from "@/lib/motion";
 import {
   HERO_BACKDROP_LAYERS,
@@ -30,6 +35,11 @@ import {
 const [SKY, CLOUD_1, CLOUD_2, DISTANCE, HILL, FLOWERS] = HERO_BACKDROP_LAYERS;
 
 type OpenDialog = "gobi" | "yoshi" | null;
+
+/** A full-box layer around one clickable thing, so a filter can apply to
+ * all of its image parts at once without blocking its button. */
+const HOVER_LAYER =
+  "near-hint pointer-events-none absolute inset-0 [&_button]:pointer-events-auto";
 
 function getAge(birthday: string) {
   const birthDate = new Date(birthday);
@@ -73,9 +83,9 @@ export function PlaygroundLandscape() {
   const [openDialog, setOpenDialog] = useState<OpenDialog>(null);
 
   function openSketchbook() {
-    document
-      .getElementById("sketchbook-start")
-      ?.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    document.getElementById("sketchbook-start")?.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
   }
 
   return (
@@ -149,43 +159,74 @@ export function PlaygroundLandscape() {
           style={drift("5s", "-0.8s", "10px", "3px")}
         />
 
-        <HeroPiano regular={PIANO_REGULAR} touched={PIANO_TOUCHED} />
-
-        <HeroDog
-          name="Gobi"
-          hitBox={GOBI_HIT_BOX}
-          body={GOBI_BODY}
-          earsRest={GOBI_EARS_REST}
-          earsAlert={GOBI_EARS_ALERT}
-          earTwitch={false}
-          bodyShift
-          restFace={GOBI_FACE_NORMAL}
-          idleFaces={[GOBI_FACE_HAPPY]}
-          hoverFace={GOBI_FACE_HAPPY}
-          onClick={() => setOpenDialog("gobi")}
-        />
-        <HeroDog
-          name="Yoshi"
-          hitBox={YOSHI_HIT_BOX}
-          body={YOSHI_BODY}
-          earsRest={YOSHI_EARS_REST}
-          earsAlert={YOSHI_EARS_ALERT}
-          restFace={YOSHI_FACE_NEUTRAL}
-          idleFaces={[YOSHI_FACE_SMILE, YOSHI_FACE_TONGUE]}
-          hoverFace={YOSHI_FACE_SMILE}
-          clickFace={YOSHI_FACE_TONGUE}
-          tailFrames={YOSHI_TAIL_FRAMES}
-          wagSequence={YOSHI_WAG_SEQUENCE}
-          onClick={() => setOpenDialog("yoshi")}
-        />
-
-        {/* Dark theme: a night tint over the whole painting, dogs and piano
-            included. Multiplied, so the painting's colors and brushwork
-            show through: deepest navy at the top of the sky, lighter
-            over the hills. Clicks pass through to the dogs and piano. */}
+        {/* Dark theme: a night tint over the painting. Multiplied, so its
+            colors and brushwork show through: deepest navy at the top of
+            the sky, lighter over the hills. Gobi, Yoshi and the piano sit
+            above it with a matching night filter of their own
+            (.near-hint in globals.css) that fades as the pointer nears, so
+            only they regain their colors, not the grass around them. */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 hidden bg-[linear-gradient(to_bottom,#3a4680_0%,#5866a6_45%,#8590c2_75%,#7882b6_100%)] mix-blend-multiply dark:block"
+        />
+
+        {/* Each wrapper carries its own hover filter (see PlaygroundGlow);
+            pointer events pass through to the buttons inside. */}
+        <div className={HOVER_LAYER} style={nearVar("piano")}>
+          <HeroPiano regular={PIANO_REGULAR} touched={PIANO_TOUCHED} />
+        </div>
+
+        <div className={HOVER_LAYER} style={nearVar("gobi")}>
+          <HeroDog
+            name="Gobi"
+            hitBox={GOBI_HIT_BOX}
+            body={GOBI_BODY}
+            earsRest={GOBI_EARS_REST}
+            earsAlert={GOBI_EARS_ALERT}
+            earTwitch={false}
+            bodyShift
+            restFace={GOBI_FACE_NORMAL}
+            idleFaces={[GOBI_FACE_HAPPY]}
+            hoverFace={GOBI_FACE_HAPPY}
+            onClick={() => setOpenDialog("gobi")}
+          />
+        </div>
+        <div className={HOVER_LAYER} style={nearVar("yoshi")}>
+          <HeroDog
+            name="Yoshi"
+            hitBox={YOSHI_HIT_BOX}
+            body={YOSHI_BODY}
+            earsRest={YOSHI_EARS_REST}
+            earsAlert={YOSHI_EARS_ALERT}
+            restFace={YOSHI_FACE_NEUTRAL}
+            idleFaces={[YOSHI_FACE_SMILE, YOSHI_FACE_TONGUE]}
+            hoverFace={YOSHI_FACE_SMILE}
+            clickFace={YOSHI_FACE_TONGUE}
+            tailFrames={YOSHI_TAIL_FRAMES}
+            wagSequence={YOSHI_WAG_SEQUENCE}
+            onClick={() => setOpenDialog("yoshi")}
+          />
+        </div>
+
+        {/* Tracks how near the pointer is to Gobi, Yoshi and the piano. */}
+        <PlaygroundGlow />
+      </div>
+
+      {/* Dark theme: the homepage hero's lamp-like glow follows the cursor
+          across the night painting. */}
+      {/* Fades out near Gobi, Yoshi and the piano so it never washes them
+          out; their own colors take over there instead. */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          opacity:
+            "calc(1 - max(var(--near-gobi, 0), var(--near-yoshi, 0), var(--near-piano, 0)))",
+        }}
+      >
+        <HeroCursorGlow
+          core="rgba(255, 240, 205, 0.2)"
+          edge="rgba(180, 205, 240, 0.08)"
+          className="hidden mix-blend-screen dark:block"
         />
       </div>
 

@@ -148,6 +148,28 @@
   --color-primary-foreground: #0f1626;
 }
 
+/* Playground hover hints (PlaygroundLandscape + PlaygroundGlow): --n is
+   how near the pointer is to Gobi, Yoshi or the piano, 0 to 1. Light theme:
+   their colors get richer, with a thin warm rim. Dark theme: they sit above
+   the night tint, so they carry a matching night filter that fades out as
+   --n rises, bringing back their own painted colors. */
+.near-hint {
+  filter: saturate(calc(1 + 0.45 * var(--n, 0))) brightness(calc(1 + 0.05 * var(--n, 0)))
+    drop-shadow(0 0 calc(5px * var(--n, 0)) rgb(255 200 120 / calc(0.7 * var(--n, 0))));
+}
+:root[data-theme="dark"] .near-hint {
+  filter: brightness(calc(0.66 + 0.36 * var(--n, 0))) sepia(calc(0.22 * (1 - var(--n, 0))))
+    hue-rotate(calc(170deg * (1 - var(--n, 0)))) saturate(calc(0.85 + 0.45 * var(--n, 0)))
+    drop-shadow(0 0 calc(5px * var(--n, 0)) rgb(255 200 120 / calc(0.6 * var(--n, 0))));
+}
+
+/* Dark theme only: the Playground sketchbook rises dim (25% brightness)
+   and brightens to full as it settles (PlaygroundBook sets --book-dim from
+   0 to 1 with the scroll). In the light theme it's never dimmed. */
+:root[data-theme="dark"] [data-book-dim] {
+  filter: brightness(calc(0.25 + 0.75 * var(--book-dim, 1)));
+}
+
 /* The 2D/3D works pages: the same paper grain, laid over navy instead of
    cream, so the whole page goes dark with the rest of the site. */
 :root[data-theme="dark"] .bg-sketchbook-paper {

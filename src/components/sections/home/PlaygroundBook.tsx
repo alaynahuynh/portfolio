@@ -280,6 +280,14 @@ export function PlaygroundBook() {
         // size, so no sliver of it peeks in at the bottom while the text
         // is still on screen.
         bookContainerRef.current.style.transform = `translateY(${(100 * (1 - riseProgress)).toFixed(1)}vh)`;
+        // The book starts dim as it rises and brightens to full once it's
+        // in place (see [data-book-dim] in globals.css).
+        bookContainerRef.current.dataset.bookDim = "";
+        // Stays dim for the first third of the rise, then brightens as it
+        // settles into place.
+        const k = clamp((riseProgress - 0.35) / 0.65, 0, 1);
+        const lit = k * k * (3 - 2 * k);
+        bookContainerRef.current.style.setProperty("--book-dim", lit.toFixed(3));
       }
 
       // The "sketchbook" highlight deliberately lands a beat after the
