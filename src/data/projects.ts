@@ -158,6 +158,36 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "nudge",
+    // Homepage thumbnail mat + case-study CTA fill — Nudge's soft lavender.
+    matTint: "color-mix(in srgb, #d8cff7 45%, var(--color-background))",
+    statusTag: "Team project · Business+Tech Innovation Jam",
+    title: "Nudge",
+    role: "Product Design · Customer Research · Pitch Design",
+    summary:
+      "Designed a travel-health planner for first-time study abroad students, after five interviews showed the real problem was urgency, not information.",
+    status: "in-progress",
+    accent: "mauve",
+    dominantColor: "#d8cff7",
+    hasCaseStudy: true,
+    // Still for the "Next project" card — the same three-phone image as
+    // the homepage card. Standalone page: src/app/projects/nudge/page.tsx.
+    cover: {
+      src: "/images/projects/nudge/nudge-wide.jpg",
+      alt: "Three Nudge app screens on a lavender background: the trip plan, today's nudge to book a yellow fever shot, and the logging screen.",
+      width: 1920,
+      height: 1080,
+    },
+    media: {
+      bgColor: "#EAE6F8",
+      widePoster: "/images/projects/nudge/nudge-wide.jpg",
+      wideAlt:
+        "Three Nudge app screens: the trip plan grouped by weeks before departure, today's nudge to book a yellow fever shot with a CDC source, and the logging screen.",
+      tallPoster: "/images/projects/nudge/nudge-tall.jpg",
+      tallAlt: "Nudge's trip plan on a phone: steps to book now, steps coming up, and records already imported from MyChart.",
+    },
+  },
+  {
     slug: "pig-lamp",
     // Homepage thumbnail mat + case-study CTA fill — soft blush.
     matTint: "color-mix(in srgb, var(--color-blush) 45%, var(--color-background))",

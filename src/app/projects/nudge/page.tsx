@@ -5,14 +5,14 @@ import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseStudyFullImage } from "@/components/sections/case-studies/media/CaseStudyMedia";
+import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
 import type { CaseStudyImageSpec } from "@/types/case-study";
 import { cn } from "@/lib/utils";
 
 /**
- * DRAFT: not linked from anywhere and not indexed. Publish after the
- * Business+Tech Innovation Jam finale (Nov 18), once the result, team
- * credits, and teammates' OK are confirmed, and once the app screens are
- * Alayna's own Figma exports (see the TODO on PHONES).
+ * Featured in Selected Works (see data/projects.ts). Still to update:
+ * the Jam result after the Nov 18 finale, final team credits, and the
+ * app screens, which should be Alayna's own Figma exports (TODO on PHONES).
  *
  * Sources: the team's weekly Jam deliverables (Week 1 Discover, Week 2
  * Validate, Week 3 Solution), the final pitch deck, and Alayna's account
@@ -24,7 +24,6 @@ export const metadata: Metadata = {
   title: "Nudge",
   description:
     "A travel-health planner for first-time study abroad students, designed for the Business+Tech Innovation Jam 2026.",
-  robots: { index: false, follow: false },
 };
 
 /* ------------------------------------------------------------------ */
@@ -622,6 +621,8 @@ export default function NudgePage() {
           </Reveal>
         </div>
       </Section>
+
+      <NextCaseStudy slug="nudge" />
     </div>
   );
 }
