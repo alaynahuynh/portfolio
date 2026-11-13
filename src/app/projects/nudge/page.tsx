@@ -259,7 +259,7 @@ function MarkIcon({ mark }: { mark: Mark }) {
         "inline-block size-3.5 rounded-full",
         mark === "yes" && "bg-[#6249d6] dark:bg-[#b8a9ff]",
         mark === "part" && "bg-[linear-gradient(90deg,#6249d6_50%,transparent_50%)] ring-[1.5px] ring-[#6249d6] dark:bg-[linear-gradient(90deg,#b8a9ff_50%,transparent_50%)] dark:ring-[#b8a9ff]",
-        mark === "no" && "ring-[1.5px] ring-border",
+        mark === "no" && "ring-[1.5px] ring-muted-foreground/45",
       )}
     />
   );
@@ -300,7 +300,7 @@ export default function NudgePage() {
               <dd className="mt-1 text-foreground">UX/UI Designer</dd>
             </div>
             <div>
-              <dt><Label>I led</Label></dt>
+              <dt><Label>I did</Label></dt>
               <dd className="mt-1 text-foreground">Customer interviews, app screens, pitch deck design</dd>
             </div>
             <div>
@@ -451,8 +451,26 @@ export default function NudgePage() {
           that answer the reasons students stall, and saved the rest for later.
         </SectionIntro>
         <Reveal delay={60}>
-          <div className="mt-12 overflow-x-auto">
-            <table className="w-full min-w-[40rem] text-left text-[0.9375rem]">
+          {/* Mobile: stacked rows, so the MVP answer is never off-screen. */}
+          <ul className="mt-10 divide-y divide-border border-y border-border sm:hidden">
+            {NEEDS.map((row) => (
+              <li key={row.need} className="py-4">
+                <p className="font-medium text-foreground">{row.need}</p>
+                <p className="mt-1 text-[0.9375rem] text-muted-foreground">{row.feature}</p>
+                <p className="mt-2">
+                  {row.mvp ? (
+                    <span className="inline-flex rounded-full bg-[#ece8fd] px-3 py-1 text-sm font-semibold text-[#4a33b8] dark:bg-[#2a2752] dark:text-[#c9bfff]">
+                      MVP · {row.mvp}
+                    </span>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">Later</span>
+                  )}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-12 hidden sm:block">
+            <table className="w-full text-left text-[0.9375rem]">
               <thead>
                 <tr className="border-b border-border">
                   <th className="py-3 pr-6 font-normal"><Label>Josh needs</Label></th>
@@ -489,11 +507,12 @@ export default function NudgePage() {
           with your own vaccine records. That pairing became our focus.
         </SectionIntro>
         <Reveal delay={60}>
-          <div className="mt-12 overflow-x-auto rounded-2xl border border-border bg-surface">
+          <p className="mt-10 text-sm text-muted-foreground sm:hidden">Swipe the table to compare all six →</p>
+          <div className="mt-3 overflow-x-auto rounded-2xl border border-border bg-surface sm:mt-12">
             <table className="w-full min-w-[44rem] text-center text-sm">
               <thead>
                 <tr className="border-b border-border">
-                  <th className="p-4 text-left font-normal"><Label>Feature</Label></th>
+                  <th className="sticky left-0 z-10 bg-surface p-4 text-left font-normal"><Label>Feature</Label></th>
                   {COMPETITORS.map((c, i) => (
                     <th
                       key={c}
@@ -507,7 +526,7 @@ export default function NudgePage() {
               <tbody className="divide-y divide-border">
                 {MATRIX.map(([feature, marks]) => (
                   <tr key={feature}>
-                    <td className="p-4 text-left text-foreground">{feature}</td>
+                    <td className="sticky left-0 z-10 bg-surface p-4 text-left text-foreground">{feature}</td>
                     {marks.map((m, i) => (
                       <td key={i} className={cn("p-4", i === 0 && "bg-[#f6f3ff] dark:bg-[#1d1f3d]")}>
                         <MarkIcon mark={m} />
@@ -552,7 +571,7 @@ export default function NudgePage() {
 
         <div className="mt-20 grid gap-12 sm:grid-cols-2">
           <Reveal delay={40}>
-            <div className="rounded-[24px] bg-[#f1eff9] px-6 pt-10">
+            <div className="rounded-[24px] bg-[#f1eff9] px-6 pt-10 dark:bg-[#1d1f3d]">
               <Phone phone={PHONES.trip} className="mx-auto w-[64%] max-w-[260px]" />
             </div>
             <h3 className="mt-5 text-lg font-semibold text-foreground">Trip plan</h3>
