@@ -13,7 +13,7 @@ import type { CaseStudyImageSpec } from "@/types/case-study";
 export const metadata: Metadata = {
   title: "Pig Lamp",
   description:
-    "A laser-cut wood pig lamp made for a clinic's autistic children, who found it comforting and cute. Hand-measured sketches, Illustrator cut files, raw-wood prototypes, and a painted final.",
+    "A laser-cut wood pig lamp made for a clinic's autistic children, who absolutely loved it. Hand-measured sketches, Illustrator cut files, raw-wood prototypes, and a painted final.",
 };
 
 /**
@@ -22,7 +22,10 @@ export const metadata: Metadata = {
  * Light Project" (sketches + dimensions, Illustrator cut files, raw-wood
  * prototypes, final photos, and her written takeaways), plus the outcome
  * as Alayna reported it: the lamp was delivered to the clinic, and the
- * clinic said the kids found it comforting and cute. Nothing else — e.g.
+ * clinic's own words (quoted verbatim in the Outcome section): "The kids
+ * absolutely loved it. Something as simple as a little pig lamp made the
+ * room feel more welcoming and gave them something fun to focus on during
+ * their visits." Nothing else — e.g.
  * the specific children's needs — is documented, so it isn't stated.
  */
 
@@ -348,12 +351,18 @@ export default function PigLampPage() {
           <Reveal>
             <Eyebrow>05 · Outcome</Eyebrow>
             <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-              The kids found it comforting and cute.
+              &ldquo;The kids absolutely loved it.&rdquo;
             </Heading>
             <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
-              The finished lamp was delivered to the clinic. They really liked it, and told us the kids found it very
-              comforting and cute.
+              The finished lamp was delivered to the clinic. Here&rsquo;s what they told us:
             </p>
+            <blockquote className="mt-6 max-w-[45rem] border-l-2 border-mauve-deep/50 pl-5">
+              <p className="text-xl text-foreground">
+                &ldquo;The kids absolutely loved it. Something as simple as a little pig lamp made the room feel more
+                welcoming and gave them something fun to focus on during their visits.&rdquo;
+              </p>
+              <footer className="mt-3 text-sm text-muted-foreground">The clinic</footer>
+            </blockquote>
           </Reveal>
           <Reveal delay={60}>
             <div className="mx-auto max-w-md">

@@ -194,7 +194,8 @@ export const projects: Project[] = [
     statusTag: "Industrial design · Clinic collaboration",
     title: "Pig Lamp",
     role: "Industrial Design · Fabrication",
-    summary: "A laser-cut wood lamp made for a clinic's autistic children, who found it comforting and cute.",
+    summary:
+      "A laser-cut wood lamp made for a clinic's autistic children. The clinic said it made the room feel more welcoming and gave the kids something fun to focus on.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "var(--color-blush)",
