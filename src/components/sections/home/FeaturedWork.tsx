@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
@@ -8,9 +9,11 @@ import { cn } from "@/lib/utils";
 /** Muted traffic-light dots for the browser title bar. */
 const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
-/** Only projects with Selected Works media appear here, in data order
- * (Pig Lamp last, shown with still photos instead of clips). */
+/** Projects with Selected Works media get the full-size card, in data
+ * order. Smaller projects without media (e.g. Pig Lamp) are listed
+ * underneath as compact "Other" rows. */
 const featured = projects.filter((p) => p.media);
+const other = projects.filter((p) => !p.media && p.hasCaseStudy);
 
 function ViewCaseStudy({ className }: { className?: string }) {
   return (
@@ -139,6 +142,52 @@ export function FeaturedWork() {
               );
             })}
           </ol>
+
+          {other.length > 0 && (
+            <div className="mt-20 border-t border-border pt-10 sm:mt-24 md:mt-[120px]">
+              <h3 className="font-sans text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase lg:text-[13px]">
+                Other
+              </h3>
+              <ul className="mt-6 grid gap-6 md:grid-cols-2">
+                {other.map((project) => {
+                  const thumb = project.imageThumbnail ?? project.cover;
+                  return (
+                    <li key={project.slug}>
+                      <Link
+                        href={`/projects/${project.slug}`}
+                        className="group/card flex items-center gap-5 rounded-[20px] p-2 outline-offset-4 transition-colors duration-(--duration-base) hover:bg-muted/60 focus-visible:outline-2 focus-visible:outline-mauve-deep sm:gap-6"
+                      >
+                        {thumb && (
+                          <div
+                            className="relative aspect-4/3 w-32 shrink-0 overflow-hidden rounded-2xl bg-(--mat) sm:w-44"
+                            style={{ "--mat": project.matTint ?? "var(--color-muted)" } as React.CSSProperties}
+                          >
+                            <Image
+                              src={thumb.src}
+                              alt={thumb.alt}
+                              fill
+                              sizes="176px"
+                              className="object-cover transition-transform duration-(--duration-slow) ease-(--ease-soft) group-hover/card:scale-[1.03]"
+                            />
+                          </div>
+                        )}
+                        <div className="min-w-0">
+                          <p className="text-xs tracking-[0.12em] text-foreground/60 uppercase">{project.role}</p>
+                          <p className="mt-1 font-heading text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+                            {project.title}
+                          </p>
+                          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground sm:text-[0.9375rem]">
+                            {project.summary}
+                          </p>
+                          <ViewCaseStudy className="mt-2 text-sm lg:text-sm" />
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       </Reveal>
     </section>

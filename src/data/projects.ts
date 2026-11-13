@@ -206,13 +206,9 @@ export const projects: Project[] = [
       width: 1600,
       height: 1000,
     },
-    // Physical object, so a still instead of a clip: just the studio shot.
-    media: {
-      bgColor: "#F2DDE1",
-      widePoster: "/images/projects/pig-lamp-cover.jpg",
-      wideAlt:
-        "The pig lamp: a pink laser-cut wood pig silhouette whose body opens into a cage of curved ribs around a bulb.",
-    },
+    // No `media`: a smaller side project, so it's listed under "Other"
+    // below the featured case studies (see FeaturedWork.tsx), using
+    // `imageThumbnail` as its small cover.
   },
 ];
 
