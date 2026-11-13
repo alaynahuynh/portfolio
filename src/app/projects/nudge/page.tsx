@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /**
  * Featured in Selected Works (see data/projects.ts). Still to update:
  * the Jam result after the Nov 18 finale, final team credits, and the
- * app screens, which should be Alayna's own Figma exports (TODO on PHONES).
+ * version 2 screens, which Alayna is rebuilding in Figma (see PHONES).
  *
  * Sources: the team's weekly Jam deliverables (Week 1 Discover, Week 2
  * Validate, Week 3 Solution), the final pitch deck, and Alayna's account
@@ -59,7 +59,28 @@ const DECK = {
   ),
 };
 
-/** TODO before publishing: replace with Alayna's own Figma exports. */
+/** Alayna's original Figma screens (v1), exported at 1x (393×852).
+ * Re-export at 3x for sharper display. */
+const V1 = [
+  {
+    src: "/images/projects/nudge/v1-home.png",
+    alt: "Version 1 home screen: a 5-day streak, Heartie saying 'Good morning, Alex! Ready for today's nudge?', and today's nudge to check your blood pressure.",
+    caption: "Home: a daily nudge and a streak",
+  },
+  {
+    src: "/images/projects/nudge/v1-path.png",
+    alt: "Version 1 health path: spring and summer groups with a blood pressure check, dental cleaning, blood work, and an eye exam.",
+    caption: "Path: health tasks grouped by season",
+  },
+  {
+    src: "/images/projects/nudge/v1-log.png",
+    alt: "Version 1 logging screen: Vaccine, Screening, Lab work, or Medication, then when and whether it's done, booked, or to book.",
+    caption: "Log: what you did, when, and its status",
+  },
+];
+
+/** Version 2 (revised around the trip). In progress: Alayna is
+ * rebuilding these in Figma; swap in her exports when ready. */
 const PHONES = {
   home: {
     src: "/images/projects/nudge/phone-home.png",
@@ -548,11 +569,44 @@ export default function NudgePage() {
       {/* ------------------------------------------------------- DESIGN */}
       <Section>
         <SectionIntro eyebrow="06 · Designing the app" title="Every screen answers: what should Josh do today?">
-          I designed the screens so each research finding became a decision. Heartie, the app&rsquo;s mascot, keeps a
-          health topic friendly instead of clinical.
+          I designed the app in Figma. Heartie, its mascot, keeps a health topic friendly instead of clinical. My first
+          version was built around everyday health habits. Next to Josh&rsquo;s story, the mismatch was clear: nothing
+          on screen was about his trip.
         </SectionIntro>
 
-        <div className="mt-14 grid items-center gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
+        {/* v1: Alayna's original Figma screens. */}
+        <Reveal delay={40}>
+          <div className="mt-12 rounded-[24px] border border-border p-6 sm:p-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <Label>Version 1 · Figma</Label>
+              <p className="text-sm text-muted-foreground">Daily health habits, for any user</p>
+            </div>
+            <div className="mt-6 grid grid-cols-3 gap-3 sm:gap-8">
+              {V1.map((s) => (
+                <figure key={s.src}>
+                  <div className="relative aspect-[393/852] overflow-hidden rounded-[18px] shadow-[0_10px_30px_-12px_rgba(60,40,140,0.25)] ring-1 ring-black/5 sm:rounded-[28px]">
+                    <Image src={s.src} alt={s.alt} fill sizes="(min-width: 1024px) 300px, 30vw" className="object-cover" />
+                  </div>
+                  <figcaption className="mt-3 text-xs text-muted-foreground sm:text-sm">{s.caption}</figcaption>
+                </figure>
+              ))}
+            </div>
+            <p className="mt-6 border-t border-border pt-5 text-[0.9375rem] text-muted-foreground">
+              <span className="font-medium text-foreground">What didn&rsquo;t work:</span> streaks and a Habits tab made
+              it feel like a wellness tracker, and the tasks (blood pressure, dental, eye exams) had nothing to do with a
+              departure date, which was the whole insight from the interviews.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={40}>
+          <div className="mt-16 flex flex-wrap items-baseline justify-between gap-2">
+            <Label accent>Version 2 · Revised around the trip</Label>
+            <p className="text-sm text-muted-foreground">In progress</p>
+          </div>
+        </Reveal>
+
+        <div className="mt-8 grid items-center gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-16">
           <Reveal delay={40}>
             <Phone phone={PHONES.home} className="mx-auto w-[62%] max-w-[300px] lg:w-[78%]" />
           </Reveal>
