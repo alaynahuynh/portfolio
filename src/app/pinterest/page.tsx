@@ -118,16 +118,19 @@ const work: WorkEntry[] = [
     liveUrl: "https://vietnoodlehouse.com/",
   },
   {
-    slug: "pig-lamp",
-    year: "2025",
-    role: "Industrial Designer",
-    headline: "A lamp for a clinic's autistic children, where the body is the lampshade.",
+    slug: "nudge",
+    year: "2026",
+    role: "UX/UI Designer · Team project",
+    headline: "Helping first-time study abroad students get their travel-health prep done on time.",
     paragraphs: [
-      "With a clinic and the Industrial Design Society, I designed and made a custom lamp for children at the clinic. I sketched the parts with real dimensions, drew the cut files in Illustrator, and tested the slot fit on raw-wood prototypes before painting the final lamp.",
+      "For the Business+Tech Innovation Jam, my team set out to help travelers find the vaccines and health steps they need. I ran five customer interviews, and they changed our direction: students had the information, but nothing pushed them to act, and their records were with their parents.",
+      "I designed the app in Figma, and I'm now reworking it around one question: what should a student do today? Each step is counted back from the flight and shows its source. I also designed our pitch deck.",
     ],
-    did: ["Sketching", "Illustrator", "Laser cutting", "Prototyping"],
-    metrics: [],
-    quote: "The clinic said the kids found it “very comforting and cute.”",
+    did: ["Customer interviews", "Personas", "Figma", "Pitch deck design"],
+    metrics: [
+      { value: "5", label: "customer interviews I ran" },
+      { value: "7 → 3", label: "user needs cut down to MVP features" },
+    ],
   },
 ];
 
@@ -185,7 +188,7 @@ function HeroBoard() {
       >
         <div className="relative aspect-square overflow-hidden rounded-xl">
           <Image
-            src="/images/projects/pig-lamp/lit-glow.jpg"
+            src="/images/projects/nudge/nudge-wide.jpg"
             alt=""
             fill
             sizes="200px"
@@ -444,7 +447,7 @@ export default function PinterestPage() {
           <Heading level={2} id="work-title" className="font-heading">
             Selected work
           </Heading>
-          <p className="mt-2 text-lg text-muted-foreground">Newest first. Click any clip for the full case study.</p>
+          <p className="mt-2 text-lg text-muted-foreground">Click any clip for the full case study.</p>
 
           <div className="mt-12 space-y-24 sm:mt-16 md:space-y-[140px]">
             {work.map((entry, i) => (
