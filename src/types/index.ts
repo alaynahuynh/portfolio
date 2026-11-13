@@ -73,8 +73,9 @@ export interface Project {
 export interface ProjectMedia {
   /** Soft card background from the project palette. */
   bgColor: string;
-  /** Looping clip (muted MP4) and its first-frame still. */
-  wideSrc: string;
+  /** Looping clip (muted MP4) and its first-frame still. Leave the clip
+   * out to show the still on its own (e.g. a physical object's photo). */
+  wideSrc?: string;
   widePoster: string;
   /** Describes what happens in the clip. */
   wideAlt: string;

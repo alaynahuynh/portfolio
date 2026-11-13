@@ -164,10 +164,11 @@
 }
 
 /* Dark theme only: the Playground sketchbook rises dim (25% brightness)
-   and brightens to full as it settles (PlaygroundBook sets --book-dim from
-   0 to 1 with the scroll). In the light theme it's never dimmed. */
+   and brightens as it settles (PlaygroundBook sets --book-dim from 0 to 1
+   with the scroll), stopping at 80% so the cream pages don't glare on the
+   navy. In the light theme it's never dimmed. */
 :root[data-theme="dark"] [data-book-dim] {
-  filter: brightness(calc(0.25 + 0.75 * var(--book-dim, 1)));
+  filter: brightness(calc(0.25 + 0.55 * var(--book-dim, 1)));
 }
 
 /* The 2D/3D works pages: the same paper grain, laid over navy instead of

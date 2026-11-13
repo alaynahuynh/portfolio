@@ -144,17 +144,21 @@ export function HeroPendantLight({
             )}
           >
             {/* Socket */}
-            <rect x="9.5" y="0.75" width="9" height="8" rx="1.5" stroke="currentColor" />
-            <path d="M9.5 4.75h9" stroke="currentColor" strokeWidth="0.9" />
-            {/* Glass */}
+            <rect x="9.5" y="0.75" width="9" height="9" rx="1.5" stroke="currentColor" />
+            <path d="M9.5 4h9M9.5 6.75h9" stroke="currentColor" strokeWidth="0.8" />
+            {/* Glass — narrow neck flaring into a round globe */}
             <path
-              d="M10 9h8v2.5c0 3 7.5 6.5 7.5 15a11.5 11.5 0 0 1-23 0c0-8.5 7.5-12 7.5-15Z"
+              d="M10.5 9.75C10.5 14 2.5 17.5 2.5 28.5a11.5 11.5 0 0 0 23 0c0-11-8-14.5-8-18.75Z"
               stroke="currentColor"
               fill={lit ? "rgba(255,236,185,0.3)" : "transparent"}
               className="transition-[fill] duration-500"
             />
-            {/* Filament */}
-            <path d="M11.5 27l1.25-4 1.25 4 1.25-4 1.25 4" stroke="currentColor" strokeWidth="0.9" />
+            {/* Filament — two support wires and a single loop */}
+            <path
+              d="M12.25 9.75V22.5M15.75 9.75V22.5M12.25 22.5a1.75 1.75 0 0 0 3.5 0"
+              stroke="currentColor"
+              strokeWidth="0.8"
+            />
           </svg>
         </button>
       </div>

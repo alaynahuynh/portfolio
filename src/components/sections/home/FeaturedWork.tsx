@@ -8,8 +8,8 @@ import { cn } from "@/lib/utils";
 /** Muted traffic-light dots for the browser title bar. */
 const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
-/** Only projects with Selected Works media appear here. Pig Lamp has none:
- * it's reached from the Playground (3D page -> its case study). */
+/** Only projects with Selected Works media appear here, in data order
+ * (Pig Lamp last, shown with still photos instead of clips). */
 const featured = projects.filter((p) => p.media);
 
 function ViewCaseStudy({ className }: { className?: string }) {

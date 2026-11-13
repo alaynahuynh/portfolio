@@ -40,7 +40,8 @@ function LoopClip({
   alt,
   sizes,
 }: {
-  src: string;
+  /** Omit to show the poster as a plain still. */
+  src?: string;
   poster: string;
   alt: string;
   sizes: string;
@@ -52,7 +53,7 @@ function LoopClip({
   return (
     <>
       <Image src={poster} alt={alt} fill sizes={sizes} className="object-cover" />
-      {!reducedMotion && (
+      {src && !reducedMotion && (
         <video
           ref={videoRef}
           src={inView ? src : undefined}
@@ -91,7 +92,7 @@ export function SelectedWorkMedia({ project, media }: { project: Project; media:
               "relative aspect-video min-w-0 flex-[256_1_0%] overflow-hidden rounded-2xl bg-surface",
               // No phone panel: keep the same size as the other cards' wide
               // panels (so all cards match heights), centered on the color.
-              !media.tallSrc && "md:max-w-[calc((100%-12px)*256/337)]",
+              !media.tallPoster && "md:max-w-[calc((100%-12px)*256/337)]",
               LIFT,
             )}
           >
@@ -103,7 +104,7 @@ export function SelectedWorkMedia({ project, media }: { project: Project; media:
             />
           </div>
         </ViewTransition>
-        {media.tallSrc && media.tallPoster && (
+        {media.tallPoster && (
           <div
             className={cn(
               "relative hidden aspect-9/16 min-w-0 flex-[81_1_0%] overflow-hidden rounded-2xl bg-surface md:block",
