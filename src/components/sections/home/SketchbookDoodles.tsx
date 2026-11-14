@@ -25,7 +25,6 @@ import { cn } from "@/lib/utils";
  */
 
 const C = {
-  yellow: "#F4C430",
   lemon: "#FFE34D",
   pink: "#FF8DC1",
   blush: "#F8C6E2",
@@ -52,24 +51,18 @@ type Doodle = {
   edge?: boolean;
 };
 
-type SvgKind = "heart" | "sparkle" | "squiggle" | "dots" | "moon" | "cloud" | "ring" | "zigzag";
+type SvgKind = "heart" | "squiggle" | "dots" | "cloud" | "ring" | "zigzag";
 
 const DOODLES: Doodle[] = [
   // ---- right edge: always clear on desktop
-  { src: "shooting-stars.png", edge: true, size: [317, 343], at: 0.02, d: { right: "2%", top: "13%", w: "clamp(90px,8.5vw,150px)", rot: 6 }, m: { right: "5%", top: "12%", w: "84px", rot: 6 } },
-  { svg: "sparkle", edge: true, at: 0.1, d: { right: "13%", top: "11%", w: "clamp(22px,1.8vw,32px)" }, m: { left: "44%", top: "13%", w: "22px" } },
   { src: "flower-1.png", size: [252, 246], at: 0.16, d: { right: "8.5%", top: "34%", w: "clamp(64px,5.6vw,100px)", rot: -8 } },
   { svg: "squiggle", edge: true, at: 0.24, d: { right: "1.5%", top: "46%", w: "clamp(56px,4.6vw,84px)", rot: -12 }, m: { left: "6%", top: "84%", w: "70px", rot: -6 } },
   { src: "squiggle-flower.png", size: [324, 324], at: 0.3, d: { right: "9%", top: "56%", w: "clamp(70px,6vw,110px)", rot: 12 }, m: { right: "8%", top: "77%", w: "74px", rot: 10 } },
-  { src: "star-small.png", edge: true, size: [147, 162], at: 0.38, d: { right: "2.5%", top: "64%", w: "clamp(34px,2.8vw,52px)", rot: -10 } },
   { svg: "heart", at: 0.46, d: { right: "13.5%", top: "75%", w: "clamp(30px,2.6vw,46px)", rot: -8 }, m: { left: "40%", top: "88%", w: "34px", rot: -8 } },
   { src: "flower-5.png", edge: true, size: [253, 251], at: 0.54, d: { right: "3%", top: "79%", w: "clamp(66px,5.4vw,96px)", rot: 6 } },
   { svg: "dots", at: 0.62, d: { right: "8%", top: "90%", w: "clamp(44px,3.6vw,64px)" }, m: { right: "30%", top: "92%", w: "50px" } },
-  { src: "star-tiny.png", size: [113, 109], at: 0.7, d: { right: "14.5%", top: "48%", w: "clamp(22px,1.8vw,32px)", rot: 14 } },
 
   // ---- top and bottom corners on the left: clear except the left page's edge
-  { src: "star-big.png", edge: true, size: [304, 317], at: 0.05, d: { left: "2%", top: "10%", w: "clamp(80px,7vw,128px)", rot: -10 }, m: { left: "6%", top: "12%", w: "80px", rot: -10 } },
-  { svg: "moon", edge: true, at: 0.2, d: { left: "11%", top: "9%", w: "clamp(30px,2.6vw,46px)", rot: -18 } },
   { src: "spiral", size: [231, 215], at: 0.34, d: { left: "3%", top: "86%", w: "clamp(56px,4.6vw,84px)", rot: 8 }, m: { left: "64%", top: "85%", w: "56px", rot: 8 } },
   { src: "flower-6.png", size: [197, 193], at: 0.5, d: { left: "11%", top: "90%", w: "clamp(40px,3.4vw,60px)", rot: -6 }, m: { left: "26%", top: "79%", w: "44px", rot: -6 } },
   { svg: "zigzag", at: 0.66, d: { right: "15%", top: "93%", w: "clamp(44px,3.4vw,62px)", rot: 4 } },
@@ -104,12 +97,6 @@ function Svg({ kind }: { kind: SvgKind }) {
           />
         </svg>
       );
-    case "sparkle":
-      return (
-        <svg {...common}>
-          <path d="M50 6 Q55 44 94 50 Q55 56 50 94 Q45 56 6 50 Q45 44 50 6Z" fill={C.yellow} />
-        </svg>
-      );
     case "squiggle":
       return (
         <svg {...common} viewBox="0 0 120 60">
@@ -128,12 +115,6 @@ function Svg({ kind }: { kind: SvgKind }) {
           <circle cx="16" cy="38" r="11" fill={C.pink} />
           <circle cx="50" cy="20" r="9" fill={C.lemon} />
           <circle cx="82" cy="40" r="12" fill={C.lavender} />
-        </svg>
-      );
-    case "moon":
-      return (
-        <svg {...common}>
-          <path d="M62 10 A42 42 0 1 0 90 72 A33 33 0 1 1 62 10Z" fill={C.lemon} stroke={C.yellow} strokeWidth={5} />
         </svg>
       );
     case "cloud":
