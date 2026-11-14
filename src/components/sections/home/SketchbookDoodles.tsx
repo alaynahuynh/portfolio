@@ -29,8 +29,6 @@ const C = {
   pink: "#FF8DC1",
   blush: "#F8C6E2",
   lavender: "#9C7BDB",
-  peach: "#FFAE94",
-  brown: "#9A6A3A",
 };
 
 type Pos = { left?: string; right?: string; top: string; w: string; rot?: number };
@@ -51,29 +49,22 @@ type Doodle = {
   edge?: boolean;
 };
 
-type SvgKind = "heart" | "squiggle" | "dots" | "cloud" | "ring" | "zigzag";
+type SvgKind = "heart" | "squiggle" | "dots";
 
 const DOODLES: Doodle[] = [
-  // ---- right edge: always clear on desktop
-  { src: "flower-1.png", size: [252, 246], at: 0.16, d: { right: "8.5%", top: "34%", w: "clamp(64px,5.6vw,100px)", rot: -8 } },
-  { svg: "squiggle", edge: true, at: 0.24, d: { right: "1.5%", top: "46%", w: "clamp(56px,4.6vw,84px)", rot: -12 }, m: { left: "6%", top: "84%", w: "70px", rot: -6 } },
-  { src: "squiggle-flower.png", size: [324, 324], at: 0.3, d: { right: "9%", top: "56%", w: "clamp(70px,6vw,110px)", rot: 12 }, m: { right: "8%", top: "77%", w: "74px", rot: 10 } },
-  { svg: "heart", at: 0.46, d: { right: "13.5%", top: "75%", w: "clamp(30px,2.6vw,46px)", rot: -8 }, m: { left: "40%", top: "88%", w: "34px", rot: -8 } },
-  { src: "flower-5.png", edge: true, size: [253, 251], at: 0.54, d: { right: "3%", top: "79%", w: "clamp(66px,5.4vw,96px)", rot: 6 } },
-  { svg: "dots", at: 0.62, d: { right: "8%", top: "90%", w: "clamp(44px,3.6vw,64px)" }, m: { right: "30%", top: "92%", w: "50px" } },
-
-  // ---- top and bottom corners on the left: clear except the left page's edge
-  { src: "spiral", size: [231, 215], at: 0.34, d: { left: "3%", top: "86%", w: "clamp(56px,4.6vw,84px)", rot: 8 }, m: { left: "64%", top: "85%", w: "56px", rot: 8 } },
-  { src: "flower-6.png", size: [197, 193], at: 0.5, d: { left: "11%", top: "90%", w: "clamp(40px,3.4vw,60px)", rot: -6 }, m: { left: "26%", top: "79%", w: "44px", rot: -6 } },
-  { svg: "zigzag", at: 0.66, d: { right: "15%", top: "93%", w: "clamp(44px,3.4vw,62px)", rot: 4 } },
-
-  // ---- left gutter: shows with the closed book, tucks under the open page
-  { src: "flower-3.png", size: [305, 327], at: 0.08, d: { left: "4%", top: "36%", w: "clamp(80px,7vw,124px)", rot: 10 }, m: { right: "30%", top: "15%", w: "62px", rot: 10 } },
-  { src: "egg.png", size: [211, 252], at: 0.14, d: { left: "11.5%", top: "58%", w: "clamp(40px,3.4vw,60px)", rot: -14 }, m: { left: "28%", top: "19%", w: "40px", rot: -14 } },
-  { svg: "ring", at: 0.22, d: { left: "2%", top: "64%", w: "clamp(28px,2.4vw,42px)" } },
-  { src: "flower-2.png", size: [204, 194], at: 0.28, d: { left: "12%", top: "24%", w: "clamp(44px,3.6vw,64px)", rot: 6 } },
-  { svg: "cloud", at: 0.4, d: { left: "4%", top: "73%", w: "clamp(60px,5vw,90px)", rot: -4 }, m: { left: "70%", top: "20%", w: "64px", rot: -4 } },
-  { src: "flower-4.png", size: [225, 229], at: 0.58, d: { left: "1.5%", top: "50%", w: "clamp(48px,4vw,70px)", rot: 12 } },
+  // Balanced on large screens: one in each left corner, a column down the
+  // right edge (the side the open book always leaves clear), and one low
+  // near the middle. They alternate sides as they arrive.
+  // On phones: three above the book and three below, mirrored.
+  { src: "flower-3.png", edge: true, size: [305, 327], at: 0.04, d: { left: "4%", top: "13%", w: "clamp(76px,6.4vw,112px)", rot: 10 }, m: { left: "8%", top: "15%", w: "64px", rot: 10 } },
+  { src: "flower-1.png", edge: true, size: [252, 246], at: 0.12, d: { right: "4%", top: "15%", w: "clamp(64px,5.4vw,96px)", rot: -8 }, m: { right: "9%", top: "14%", w: "58px", rot: -8 } },
+  { svg: "squiggle", at: 0.22, d: { right: "11%", top: "36%", w: "clamp(56px,4.4vw,80px)", rot: -12 }, m: { left: "44%", top: "20%", w: "56px", rot: -8 } },
+  { src: "spiral.png", size: [231, 215], at: 0.32, d: { left: "4%", top: "52%", w: "clamp(56px,4.6vw,84px)", rot: 8 } },
+  { src: "squiggle-flower.png", size: [324, 324], at: 0.42, d: { right: "3.5%", top: "55%", w: "clamp(68px,5.6vw,104px)", rot: 12 }, m: { right: "8%", top: "80%", w: "66px", rot: 10 } },
+  { svg: "heart", at: 0.52, d: { right: "12%", top: "74%", w: "clamp(30px,2.6vw,46px)", rot: -8 }, m: { left: "45%", top: "87%", w: "32px", rot: -8 } },
+  { src: "flower-6.png", size: [197, 193], at: 0.62, d: { left: "4%", top: "95.5%", w: "clamp(40px,3.2vw,58px)", rot: -6 }, m: { left: "9%", top: "82%", w: "48px", rot: -6 } },
+  { src: "flower-5.png", size: [253, 251], at: 0.72, d: { right: "4%", top: "86%", w: "clamp(60px,5vw,90px)", rot: 6 } },
+  { svg: "dots", at: 0.82, d: { left: "50%", top: "96%", w: "clamp(44px,3.4vw,60px)" } },
 ];
 
 function Svg({ kind }: { kind: SvgKind }) {
@@ -103,34 +94,12 @@ function Svg({ kind }: { kind: SvgKind }) {
           <path d="M6 34 Q18 8 30 34 T54 34 T78 34 T102 34 T114 26" stroke={C.lavender} strokeWidth={7} />
         </svg>
       );
-    case "zigzag":
-      return (
-        <svg {...common} viewBox="0 0 120 50">
-          <path d="M6 36 L22 14 L38 36 L54 14 L70 36 L86 14 L102 36 L114 20" stroke={C.pink} strokeWidth={7} />
-        </svg>
-      );
     case "dots":
       return (
         <svg {...common} viewBox="0 0 100 60">
           <circle cx="16" cy="38" r="11" fill={C.pink} />
           <circle cx="50" cy="20" r="9" fill={C.lemon} />
           <circle cx="82" cy="40" r="12" fill={C.lavender} />
-        </svg>
-      );
-    case "cloud":
-      return (
-        <svg {...common} viewBox="0 0 100 70">
-          <path
-            d="M24 58 Q8 58 10 44 Q12 32 26 34 Q28 16 46 18 Q58 6 70 20 Q88 18 88 36 Q96 56 76 58 Z"
-            stroke={C.pink}
-            strokeWidth={6}
-          />
-        </svg>
-      );
-    case "ring":
-      return (
-        <svg {...common}>
-          <circle cx="50" cy="50" r="32" stroke={C.peach} strokeWidth={9} />
         </svg>
       );
   }
@@ -174,7 +143,7 @@ function Piece({ d, pos, className }: { d: Doodle; pos: Pos; className: string }
           <Svg kind={d.svg} />
         ) : (
           <Image
-            src={`/images/doodles/${d.src!.endsWith(".png") ? d.src : `${d.src}.png`}`}
+            src={`/images/doodles/${d.src}`}
             alt=""
             width={d.size![0]}
             height={d.size![1]}
