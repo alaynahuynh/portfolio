@@ -1050,3 +1050,37 @@
   .sketchbook-doodles .doodle-sway { animation: none; }
 }
 :root[data-theme="dark"] .sketchbook-doodles { opacity: 0.85; }
+
+/* ------------------------------------------------------------------ */
+/* Duolingo hero (components/sections/duolingo/DuoHero.tsx)            */
+/* Steps grow up from the floor, stars/crown/confetti pop in after,    */
+/* and her photo keeps a gentle hop. All off under reduced motion.     */
+/* ------------------------------------------------------------------ */
+.duo-scene .duo-grow {
+  transform-origin: bottom;
+  animation: duo-grow 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0s) both;
+}
+.duo-scene .duo-pop {
+  transform: rotate(var(--r, 0deg));
+  animation: duo-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0s) both;
+}
+.duo-scene .duo-hop {
+  animation: duo-hop 2.6s ease-in-out 1.3s infinite;
+}
+@keyframes duo-grow {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+@keyframes duo-pop {
+  from { opacity: 0; transform: scale(0.2) rotate(var(--r, 0deg)); }
+  to { opacity: 1; transform: scale(1) rotate(var(--r, 0deg)); }
+}
+@keyframes duo-hop {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  45% { transform: translateY(-5%) rotate(2deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .duo-scene .duo-grow,
+  .duo-scene .duo-pop,
+  .duo-scene .duo-hop { animation: none; }
+}
