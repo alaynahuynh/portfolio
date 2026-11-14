@@ -1020,3 +1020,33 @@
   --hero-cursor-edge: transparent;
 }
 
+
+/* ------------------------------------------------------------------ */
+/* Sketchbook doodles (SketchbookDoodles.tsx)                          */
+/* PlaygroundBook sets --doodle-p (0–1) on the layer as you scroll;    */
+/* each doodle pops in over a short span once it passes its own --at.  */
+/* ------------------------------------------------------------------ */
+.sketchbook-doodles .doodle {
+  --k: clamp(0, calc((var(--doodle-p) - var(--at)) * 7), 1);
+  opacity: var(--k);
+  transform: translateY(calc(-50% + (1 - var(--k)) * 14px))
+    scale(calc(0.55 + 0.45 * var(--k)))
+    rotate(calc(var(--rot) - (1 - var(--k)) * 22deg));
+  will-change: opacity, transform;
+}
+/* A slow, slightly different sway per doodle, so the page feels drawn
+   rather than printed. Off under reduced motion. */
+.sketchbook-doodles .doodle-sway {
+  animation: doodle-sway 7s ease-in-out infinite alternate;
+  transform-origin: 50% 60%;
+}
+.sketchbook-doodles span:nth-child(3n) .doodle-sway { animation-duration: 9s; animation-delay: -2s; }
+.sketchbook-doodles span:nth-child(3n + 1) .doodle-sway { animation-duration: 8s; animation-delay: -5s; }
+@keyframes doodle-sway {
+  from { transform: rotate(-3deg) translateY(0); }
+  to { transform: rotate(3deg) translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sketchbook-doodles .doodle-sway { animation: none; }
+}
+:root[data-theme="dark"] .sketchbook-doodles { opacity: 0.85; }

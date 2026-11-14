@@ -6,6 +6,7 @@ import { ThreeDSpread } from "@/components/sections/home/ThreeDSpread";
 import { BackCoverPage } from "@/components/sections/home/BackCoverPage";
 import { BookCover } from "@/components/sections/home/BookCover";
 import { PlaygroundLandscape } from "@/components/sections/home/PlaygroundLandscape";
+import { SketchbookDoodles } from "@/components/sections/home/SketchbookDoodles";
 import {
   SketchbookBook,
   SketchbookPageContent,
@@ -178,6 +179,7 @@ export function PlaygroundBook() {
   const introEnteredRef = useRef(false);
   const highlightTimeoutRef = useRef<number | undefined>(undefined);
   const bookContainerRef = useRef<HTMLDivElement>(null);
+  const doodlesRef = useRef<HTMLDivElement>(null);
   const bookApiRef = useRef<SketchbookBookHandle>(null);
   const stageRef = useRef(0);
   // True from the moment a click/key navigation starts an animated scroll
@@ -346,7 +348,7 @@ export function PlaygroundBook() {
       const stagePx = (STAGE_VH / 100) * window.innerHeight;
       const introProgress = introPx > 0 ? clamp(introScrolledPx / introPx, 0, 1) : 1;
       // Hold the highlight back until the text is actually on screen.
-      applyIntro(introProgress, coverProgress >= 1);
+      const riseProgress = applyIntro(introProgress, coverProgress >= 1);
 
       // The book's open page tracks this directly, frame for frame — see
       // SketchbookBook's `setProgress`. Zero for the whole intro span
@@ -357,6 +359,14 @@ export function PlaygroundBook() {
       const closePx = (CLOSE_VH / 100) * window.innerHeight;
       const closeProgress = closePx > 0 ? clamp((introScrolledPx - closeStartPx) / closePx, 0, 1) : 0;
       bookApiRef.current?.setProgress(stageProgress, closeProgress);
+
+      // Doodles: a few arrive with the book, the rest fill in slowly as
+      // the pages turn (0 → 1 across the rise plus every page turn).
+      if (doodlesRef.current) {
+        const pages = STAGE_COUNT > 1 ? stageProgress / (STAGE_COUNT - 1) : 1;
+        const doodleP = 0.3 * riseProgress + 0.7 * pages;
+        doodlesRef.current.style.setProperty("--doodle-p", doodleP.toFixed(3));
+      }
 
     }
 
@@ -537,6 +547,12 @@ export function PlaygroundBook() {
               }}
             />
             <div aria-hidden="true" className="absolute inset-0 bg-background" />
+
+            {/* Doodles around the book, appearing as you scroll (see
+                --doodle-p in computeAndApply). Behind the book. */}
+            <div className="absolute inset-0 z-[5]">
+              <SketchbookDoodles layerRef={doodlesRef} />
+            </div>
 
             {/* Narrative intro — flies up and clears before the closed book
                 rises up from below the fold; see applyIntro. */}
