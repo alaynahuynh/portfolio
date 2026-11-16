@@ -1057,7 +1057,6 @@
    white in the light theme, navy in the dark theme. */
 :root[data-theme="dark"] [data-hero] {
   --hero-navy: 1;
-  --hero-border: #1a2742;
   --hero-dim: 0.8;
   --hero-hint: #e8e1cf;
   --hero-grid: #c4b2e3;
@@ -1077,7 +1076,6 @@
 
 [data-hero] {
   --hero-navy: 0;
-  --hero-border: var(--color-border);
   --hero-dim: 1;
   --hero-hint: var(--color-sage-deep);
   --hero-grid: var(--color-mauve-deep);

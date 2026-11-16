@@ -19,7 +19,7 @@ export function HeroSection({ children }: { children: React.ReactNode }) {
   return (
     <section
       data-hero
-      className="relative flex flex-col justify-center overflow-hidden border-b border-(--hero-border) bg-background pt-28 pb-16 transition-[border-color] duration-500 sm:min-h-svh sm:pt-24 sm:pb-0"
+      className="relative flex flex-col justify-center overflow-hidden bg-background pt-28 pb-16 sm:min-h-svh sm:pt-24 sm:pb-0"
     >
       <div
         aria-hidden="true"

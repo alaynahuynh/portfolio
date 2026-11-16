@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { AboutContactWindow } from "@/components/sections/AboutContactWindow";
 import { AboutPhotoBrowser } from "@/components/sections/AboutPhotoBrowser";
-import { AboutSkills } from "@/components/sections/AboutSkills";
 import { Container } from "@/components/ui/Container";
 import { Heading } from "@/components/ui/Heading";
 import { HintArrow } from "@/components/ui/HintArrow";
@@ -59,16 +58,14 @@ export default function AboutPage() {
               <p>
                 I&apos;m currently studying UX Design, with a minor in Industrial Design, at the University of Michigan, and I&apos;m especially drawn to
                 projects where art and technology meet.
-              </p>            </div>
-
+              </p>
+            </div>
           </div>
         </div>
 
-        <AboutSkills />
-
         <section
           aria-labelledby="about-contact"
-          className="mx-auto mt-16 grid max-w-3xl items-center gap-10 border-t border-border pt-16 sm:mt-20 lg:max-w-5xl lg:grid-cols-[1fr_1.15fr] lg:gap-12"
+          className="mx-auto mt-10 grid max-w-3xl items-center gap-10 border-t border-border pt-10 sm:mt-12 sm:pt-12 lg:max-w-5xl lg:grid-cols-[1fr_1.15fr] lg:gap-12"
         >
           <div>
             <Heading level={2} id="about-contact" className="font-alayna-handwriting font-normal text-4xl sm:text-5xl">

@@ -49,7 +49,7 @@ export function FeaturedWork() {
     <section id="work" className="scroll-mt-28">
       <Reveal y={20} duration={500} className="overflow-hidden bg-background">
         {/* Title bar + active tab */}
-        <div className="flex items-end gap-4 bg-[#c8d5dc]/80 px-4 pt-2.5 sm:gap-6 sm:px-5 dark:bg-[#1a2742]">
+        <div className="flex items-end gap-4 bg-[#e6f2ff] px-4 pt-2.5 sm:gap-6 sm:px-5 dark:bg-[#1a2742]">
           <div aria-hidden="true" className="flex gap-1.5 self-center pb-2.5 opacity-80">
             {WINDOW_DOTS.map((color) => (
               <span
