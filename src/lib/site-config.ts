@@ -44,5 +44,5 @@ export const navLinks = [
 
 export const socialLinks = [
   { label: "GitHub", href: "https://github.com/alaynahuynh" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/alayna-huynh-977269374" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/alaynahuynh/" },
 ] satisfies { label: string; href: string }[];
