@@ -244,15 +244,24 @@ export function PlaygroundLandscape() {
         <button
           type="button"
           onClick={openSketchbook}
-          className="group inline-flex items-center gap-2 rounded-full bg-background/90 px-5 py-2.5 text-sm font-medium text-foreground shadow-[0_8px_20px_-10px_rgba(46,50,42,0.45)] backdrop-blur-sm transition-colors hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-deep"
+          className="group inline-flex items-center gap-2 rounded-full bg-background/90 px-5 py-2 font-alayna-handwriting text-xl text-foreground shadow-[0_8px_20px_-10px_rgba(46,50,42,0.45)] backdrop-blur-sm transition-colors hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-deep sm:text-2xl"
         >
-          Open my sketchbook
-          <span
+          Flip through my sketchbook
+          {/* A plain down arrow with a slight wobble and an uneven head,
+              so it reads as drawn by hand next to the handwriting. */}
+          <svg
             aria-hidden="true"
-            className="transition-transform group-hover:translate-y-0.5"
+            viewBox="0 0 24 32"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-auto transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover:translate-y-0.5"
           >
-            ↓
-          </span>
+            <path d="M12.4 3c-.6 4.6.5 9.2-.2 13.6-.4 3.1.3 6.6-.1 10.4" />
+            <path d="M5.6 20.4c2.3 2.1 4.4 4.3 6.5 6.8 1.7-2.6 3.6-4.6 6.2-7.3" />
+          </svg>
         </button>
       </div>
 

@@ -1,6 +1,5 @@
 import { getProjectBySlug } from "@/data/projects";
 import Image from "next/image";
-import { ViewTransition } from "react";
 import { Section } from "@/components/ui/Section";
 import { CaseStudyHero } from "@/components/sections/case-studies/CaseStudyHero";
 import { Heading } from "@/components/ui/Heading";
@@ -160,21 +159,16 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ---------------------------------------------------------- HERO */}
       {/* No description here: the Overview heading right below restates it. */}
       <CaseStudyHero data={data} showDescription={false}>
-        {/* Same `project-media-coursepilot` name as the homepage's
-            ProjectPlaceholder — the browser morphs that exact video
-            from its homepage position/size into this hero slot. */}
-        <ViewTransition name="project-media-coursepilot">
-          <CaseStudyVideo
-            video={{
-              src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
-              poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
-              alt: "Walkthrough of the CoursePilot workspace: a three-hour study plan, adjusting it, adding it to a calendar, then a weekly catch-up and a sourced syllabus answer",
-              width: 2000,
-              height: 1420,
-            }}
-            className="mx-auto max-w-5xl"
-          />
-        </ViewTransition>
+        <CaseStudyVideo
+          video={{
+            src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
+            poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
+            alt: "Walkthrough of the CoursePilot workspace: a three-hour study plan, adjusting it, adding it to a calendar, then a weekly catch-up and a sourced syllabus answer",
+            width: 2000,
+            height: 1420,
+          }}
+          className="mx-auto max-w-5xl"
+        />
       </CaseStudyHero>
 
       <CaseStudySectionMobileNav sections={NAV_SECTIONS} />

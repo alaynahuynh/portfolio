@@ -511,7 +511,7 @@ export function PlaygroundBook() {
         }}
         className="relative"
       >
-        {/* Scroll target for the landscape's "Open my sketchbook" button —
+        {/* Scroll target for the landscape's "Flip through my sketchbook" button —
             the exact point where the cream page has finished covering the
             landscape, so scrolling there plays the whole wave on the way. */}
         <div

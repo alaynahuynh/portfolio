@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
@@ -191,7 +192,8 @@ export default function JurneePage() {
           </dl>
         </Reveal>
 
-        <Reveal delay={140}>
+        {/* Shared with the homepage card: morphs in on navigation, so no Reveal. */}
+        <ViewTransition name="project-media-jurnee" share="project-morph">
           <div className="relative mt-14 overflow-hidden rounded-[28px] bg-[#F7F4FB] px-4 pt-12 sm:px-10 sm:pt-16 dark:bg-[#1f1a30]">
             <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#DBD3F0] sm:size-[28rem] dark:bg-[#2c2445]" />
             <span aria-hidden="true" className="absolute top-10 left-[8%] size-16 rounded-full bg-[#F8E8B6] sm:size-24 dark:bg-[#4a4126]" />
@@ -203,7 +205,7 @@ export default function JurneePage() {
             </div>
             <div className="h-6 sm:h-10" />
           </div>
-        </Reveal>
+        </ViewTransition>
       </Section>
 
       {/* ---------------------------------------------------------- INTRO */}

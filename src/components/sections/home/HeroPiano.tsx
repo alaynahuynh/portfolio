@@ -116,7 +116,6 @@ export function HeroPiano({ regular, touched }: HeroPianoProps) {
         onClick={toggle}
         onMouseEnter={() => setHovering(true)}
         onMouseLeave={() => setHovering(false)}
-        data-cursor="turn"
         aria-pressed={playing}
         aria-label={
           playing ? "Pause background music" : "Play background music"

@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -50,16 +51,19 @@ export function NextCaseStudy({ slug }: { slug: string }) {
                 background: `color-mix(in srgb, ${next.dominantColor ?? "var(--color-sage)"} 22%, var(--color-background))`,
               }}
             >
-              <div className="relative aspect-16/10 overflow-hidden rounded-lg ring-1 ring-black/5">
-                <Image
-                  src={cover.src}
-                  alt={cover.alt}
-                  fill
-                  sizes="(min-width: 1024px) 680px, 100vw"
-                  quality={90}
-                  className="object-cover object-top transition-transform duration-(--duration-slow) ease-(--ease-soft) group-hover:scale-[1.03]"
-                />
-              </div>
+              {/* Morphs into the next case study's hero (same name). */}
+              <ViewTransition name={`project-media-${next.slug}`} share="project-morph">
+                <div className="relative aspect-16/10 overflow-hidden rounded-lg ring-1 ring-black/5">
+                  <Image
+                    src={cover.src}
+                    alt={cover.alt}
+                    fill
+                    sizes="(min-width: 1024px) 680px, 100vw"
+                    quality={90}
+                    className="object-cover object-top transition-transform duration-(--duration-slow) ease-(--ease-soft) group-hover:scale-[1.03]"
+                  />
+                </div>
+              </ViewTransition>
             </div>
           )}
         </Link>

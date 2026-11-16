@@ -1,3 +1,4 @@
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
@@ -7,7 +8,8 @@ import type { CaseStudyData } from "@/types/case-study";
 /**
  * The one hero every case study shares, so they all read in the same
  * order: category → title → tagline → status → description → CTA →
- * disclosure → tools → Role / Duration / Platform → media.
+ * disclosure → tools → Role / Duration / Platform → media. The media is
+ * the shared-element target for page transitions (see PageTransition).
  *
  * `children` is the hero media (video, image, desktop/mobile pair), which
  * differs per project. `showDescription` is off for CoursePilot, whose
@@ -101,10 +103,16 @@ export function CaseStudyHero({
         </dl>
       </Reveal>
 
+      {/* Shares `project-media-<slug>` with the homepage card and the
+          "Next project" card, so the browser morphs that image into this
+          slot. Not wrapped in Reveal: a fade-in here would make the morph
+          land on an invisible hero, then fade in a second time. */}
       {children && (
-        <Reveal delay={220}>
-          <div className="mt-14">{children}</div>
-        </Reveal>
+        <div className="mt-14">
+          <ViewTransition name={`project-media-${data.slug}`} share="project-morph">
+            {children}
+          </ViewTransition>
+        </div>
       )}
     </Section>
   );

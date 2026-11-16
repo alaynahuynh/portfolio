@@ -36,7 +36,6 @@ export function SketchbookArtworkLink({
   return (
     <Link
       href={href}
-      data-cursor="explore"
       onClick={rememberBookScrollPosition}
       aria-label={`Take a closer look: open the ${gallery} gallery`}
       className="group/art relative block cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep"

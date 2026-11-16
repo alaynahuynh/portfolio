@@ -5,13 +5,11 @@ import { useEffect, useRef, useState } from "react";
 const CURSOR_LABELS: Record<string, string> = {
   view: "View",
   open: "Open",
-  turn: "Turn",
-  explore: "Explore",
 };
 
 /**
  * Central custom-cursor system. Any element opts in with
- * `data-cursor="view" | "open" | "turn" | "explore"` and this renders a
+ * `data-cursor="view" | "open"` and this renders a
  * small floating label near the pointer while that element is hovered.
  *
  * Only activates for devices with a precise pointer *and* hover support,
@@ -75,30 +73,18 @@ export function CustomCursor() {
 
   if (!enabled) return null;
 
-  // "explore" and "turn" keep the native cursor (see .has-custom-cursor
-  // in globals.css) and just get a small pink tab trailing below it,
-  // rather than replacing the cursor with the full label bubble "view"/
-  // "open" use.
-  const isSmallTab = label === "explore" || label === "turn";
-
   return (
     <div
       ref={dotRef}
       aria-hidden="true"
       className="pointer-events-none fixed top-0 left-0 z-100"
+      // Stays on top of page transitions (see globals.css).
+      style={{ viewTransitionName: "site-cursor" }}
     >
       {label && CURSOR_LABELS[label] && (
-        isSmallTab ? (
-          <span
-            className="absolute top-2.5 left-2.5 rounded-(--radius-pill) bg-blush/90 px-2.5 py-1 text-[11px] font-medium tracking-wide text-foreground shadow-sm backdrop-blur-sm"
-          >
-            {CURSOR_LABELS[label]}
-          </span>
-        ) : (
-          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-blush/90 text-xs font-medium tracking-wide text-foreground shadow-sm backdrop-blur-sm">
-            {CURSOR_LABELS[label]}
-          </span>
-        )
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-blush/90 text-xs font-medium tracking-wide text-foreground shadow-sm backdrop-blur-sm">
+          {CURSOR_LABELS[label]}
+        </span>
       )}
     </div>
   );

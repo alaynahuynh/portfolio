@@ -784,10 +784,8 @@
 /* CustomCursor: native cursor is hidden only on elements that opt in via
    data-cursor, and only once CustomCursor has confirmed (client-side) that
    the device has a precise pointer, hover support, and no reduced-motion
-   preference — see src/components/ui/CustomCursor.tsx. "explore" and
-   "turn" are excluded: they keep the native cursor and add a small pink
-   tab below it instead of replacing the cursor with a full label bubble. */
-.has-custom-cursor [data-cursor]:not([data-cursor="explore"]):not([data-cursor="turn"]) {
+   preference — see src/components/ui/CustomCursor.tsx. */
+.has-custom-cursor [data-cursor] {
   cursor: none;
 }
 
@@ -971,6 +969,87 @@
     animation-duration: 0s !important;
     animation-delay: 0s !important;
   }
+}
+
+/* ── Page transitions ───────────────────────────────────────────────────
+   Driven by React's <ViewTransition> (see PageTransition.tsx and the
+   `project-media-<slug>` shared elements). The old page leaves fast so it
+   doesn't compete; the new one settles in a beat later. Project media
+   morphs from the card to the case-study hero above both. The reduced-
+   motion override above zeroes all of this. */
+:root {
+  --vt-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --vt-exit: 200ms;
+  --vt-enter: 460ms;
+  --vt-morph: 620ms;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: var(--vt-exit);
+}
+
+::view-transition-group(.page-exit),
+::view-transition-group(.page-enter) {
+  z-index: 1;
+}
+::view-transition-old(.page-exit) {
+  animation: var(--vt-exit) cubic-bezier(0.4, 0, 1, 1) both vt-page-out;
+}
+::view-transition-new(.page-enter) {
+  animation: var(--vt-enter) var(--vt-ease-out) calc(var(--vt-exit) * 0.6) both vt-page-in;
+}
+@keyframes vt-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+@keyframes vt-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* Card → hero morph: above the page fades, eased out, with a soft blur
+   mid-flight to hide the crossfade between two different images. */
+::view-transition-group(.project-morph) {
+  z-index: 50;
+  animation-duration: var(--vt-morph);
+  animation-timing-function: var(--vt-ease-out);
+}
+::view-transition-image-pair(.project-morph) {
+  overflow: clip;
+  border-radius: 20px;
+  animation: var(--vt-morph) var(--vt-ease-out) both vt-soften;
+}
+::view-transition-old(.project-morph),
+::view-transition-new(.project-morph) {
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  animation-duration: var(--vt-morph);
+}
+@keyframes vt-soften {
+  40% {
+    filter: blur(2px);
+  }
+}
+
+/* Header and cursor stay put, on top, while content moves under them. */
+::view-transition-group(site-header),
+::view-transition-group(site-cursor) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header),
+::view-transition-old(site-cursor) {
+  display: none;
+}
+::view-transition-new(site-header),
+::view-transition-new(site-cursor) {
+  animation: none;
 }
 
 /* ── Hero theme ─────────────────────────────────────────────────────────

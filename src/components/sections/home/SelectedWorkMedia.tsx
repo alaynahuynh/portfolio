@@ -86,7 +86,7 @@ export function SelectedWorkMedia({ project, media }: { project: Project; media:
       style={{ "--card-bg": media.bgColor } as React.CSSProperties}
     >
       <div className="mx-auto flex justify-center gap-3 md:w-[85%]">
-        <ViewTransition name={`project-media-${project.slug}`}>
+        <ViewTransition name={`project-media-${project.slug}`} share="project-morph">
           <div
             className={cn(
               "relative aspect-video min-w-0 flex-[256_1_0%] overflow-hidden rounded-2xl bg-surface",

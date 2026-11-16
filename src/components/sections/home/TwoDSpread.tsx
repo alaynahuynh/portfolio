@@ -53,7 +53,6 @@ export function TwoDSpread() {
         </p>
         <Link
           href="/creative-practice/2d"
-          data-cursor="explore"
           onClick={rememberBookScrollPosition}
           className="mt-[2.6cqw] inline-flex items-center gap-1.5 text-[length:clamp(0.625rem,1.5cqw,0.875rem)] font-medium text-earth transition-colors hover:text-earth/70"
         >

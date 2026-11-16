@@ -216,7 +216,6 @@ export function HeroDog({
           onClick={handleClick}
           onMouseEnter={handlePointerEnter}
           onMouseLeave={handlePointerLeave}
-          data-cursor="explore"
           aria-label={`Meet ${name}`}
           className="absolute block bg-transparent"
           style={{

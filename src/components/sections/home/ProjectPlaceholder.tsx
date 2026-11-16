@@ -237,7 +237,7 @@ function CoursePilotSpread({ project, index }: { project: Project; index: number
         </Reveal>
 
         <Reveal delay={100} className="order-1 lg:order-2 lg:-mr-10 xl:-mr-24">
-          <ViewTransition name={`project-media-${project.slug}`}>
+          <ViewTransition name={`project-media-${project.slug}`} share="project-morph">
             {project.videoThumbnail ? (
               <video
                 ref={videoRef}

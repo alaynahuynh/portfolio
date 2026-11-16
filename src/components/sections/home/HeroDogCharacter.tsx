@@ -102,7 +102,6 @@ export function HeroDogCharacter({
         ref={wrapperRef}
         type="button"
         onClick={onClick}
-        data-cursor="explore"
         aria-label={`Meet ${name}`}
         className="absolute block"
         style={{ left: body.left, top: body.top, width: body.widthPct }}

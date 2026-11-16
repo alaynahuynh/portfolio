@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Section } from "@/components/ui/Section";
@@ -319,7 +320,8 @@ export default function NudgePage() {
         </Reveal>
 
         {/* Designed hero: the three screens on the deck's own palette. */}
-        <Reveal delay={140}>
+        {/* Shared with the homepage card: morphs in on navigation, so no Reveal. */}
+        <ViewTransition name="project-media-nudge" share="project-morph">
           <div className="relative mt-14 overflow-hidden rounded-[28px] bg-[#f1eff9] px-4 pt-12 sm:px-10 sm:pt-16">
             <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#d8cff7] sm:size-[28rem]" />
             <span aria-hidden="true" className="absolute -bottom-40 -left-20 size-80 rounded-full bg-[#f6d3ee] sm:size-[26rem]" />
@@ -331,7 +333,7 @@ export default function NudgePage() {
             </div>
             <div className="h-6 sm:h-10" />
           </div>
-        </Reveal>
+        </ViewTransition>
       </Section>
 
       {/* ------------------------------------------------- AT A GLANCE */}

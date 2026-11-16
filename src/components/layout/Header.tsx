@@ -200,7 +200,12 @@ export function Header() {
   const activeKey = clickedKey;
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-5 sm:pt-6">
+    // Its own view-transition name keeps the nav fixed and on top while
+    // the page content animates underneath (see globals.css).
+    <header
+      className="pointer-events-none fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-5 sm:pt-6"
+      style={{ viewTransitionName: "site-header" }}
+    >
       <div
         className={cn(
           "nav-shell pointer-events-auto relative w-full max-w-[44rem] rounded-[28px] border border-border/70 bg-background/55 shadow-[0_4px_20px_-12px_rgba(46,50,42,0.22)] backdrop-blur-sm transition-[background-color,box-shadow,backdrop-filter,border-color,padding] duration-(--duration-slow) ease-(--ease-soft) sm:w-[68%] md:w-[88%] lg:w-[66%]",
