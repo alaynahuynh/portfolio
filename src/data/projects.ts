@@ -16,19 +16,15 @@ export const PROJECTS_STATUS = {
 };
 
 /**
- * Three UI/UX case-study entries. All three now have a full case study
- * page (see src/app/projects/[slug]/page.tsx → CaseStudyPage, driven by
- * src/data/case-studies/*), each sourced from real material — nothing
- * invented. `coursepilot` (CoursePilot) is sourced from a real
- * research brief and `vietnamese-noodle-house` (Vietnamese Noodle House) from a
- * completed client redesign — both render via their own bespoke
- * case-study layouts. `mymuseum` (MyMuseum) is a real, built-and-
- * tested product (see data/case-studies/my-museum.ts), now live at
- * https://mymuseum-eta.vercel.app/.
+ * Every project, in homepage display order. Projects with `media` are the
+ * featured case studies; the rest (Pig Lamp) are listed under "Other"
+ * (see FeaturedWork.tsx).
  *
- * Order is the homepage's display order — MyMuseum leads (per the
- * user's direction), followed by CoursePilot then Vietnamese Noodle
- * House.
+ * Order: MyMuseum leads (designed, built and live), then Vietnamese Noodle
+ * House (real client, measured result), CoursePilot (deepest research,
+ * concept stage), Nudge (6-week team jam) and Jurnee (4-hour designathon).
+ * Nudge and Jurnee sit next to each other, so Jurnee's card uses a warm
+ * yellow instead of a second lilac.
  */
 export const projects: Project[] = [
   {
@@ -69,48 +65,6 @@ export const projects: Project[] = [
       tallSrc: "/thumbnails/mymuseum/mymuseum-tall.mp4",
       tallPoster: "/thumbnails/mymuseum/mymuseum-tall-poster.webp",
       tallAlt: "MyMuseum's Grid View on a phone, scrolling from 'My Little World' down to the artwork 'Out of Water'.",
-    },
-  },
-  {
-    slug: "coursepilot",
-    // Homepage thumbnail mat + case-study CTA fill — pale mist blue.
-    matTint: "color-mix(in srgb, var(--color-mist-blue) 60%, var(--color-background))",
-    statusTag: "Figma prototype",
-    title: "CoursePilot",
-    role: "Product Design · User Research · Prototyping",
-    summary: "Designed an AI planning assistant inside Canvas, from 5 student interviews to a Figma prototype tested with 5 students.",
-    credibility:
-      "Designed from student research around deadlines, planning behavior, Canvas friction, and trust in AI.",
-    tags: ["Product Design", "User Research", "Prototyping"],
-    status: "in-progress",
-    accent: "lake-blue-deep",
-    // CoursePilot's dominant color — olive, with earth as a sparse
-    // accent (see ProjectPlaceholder.tsx's CoursePilotSpread) — matches
-    // data/case-studies/course-pilot.ts's `accentColor`.
-    dominantColor: "var(--color-olive)",
-    hasCaseStudy: true,
-    // Homepage card plays the same workspace walkthrough as the case-study
-    // hero, so the shared ViewTransition morphs one clip into itself.
-    videoThumbnail: {
-      src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
-      poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
-      width: 2000,
-      height: 1420,
-    },
-    // Still frame for the "Next project" card — the plan result from the
-    // same walkthrough.
-    cover: {
-      src: "/images/projects/coursepilot/final/workspace-walkthrough-cover.jpg",
-      alt: "CoursePilot's Plan My Night response: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
-      width: 2000,
-      height: 1420,
-    },
-    media: {
-      bgColor: "#DCE4F0",
-      wideSrc: "/thumbnails/coursepilot/coursepilot-wide.mp4",
-      widePoster: "/thumbnails/coursepilot/coursepilot-wide-poster.webp",
-      wideAlt:
-        "CoursePilot's answer to 'I have 3 hours tonight. What should I work on?': prioritized tasks and a 3-hour schedule, which the student adds to their calendar.",
     },
   },
   {
@@ -158,6 +112,48 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: "coursepilot",
+    // Homepage thumbnail mat + case-study CTA fill — pale mist blue.
+    matTint: "color-mix(in srgb, var(--color-mist-blue) 60%, var(--color-background))",
+    statusTag: "Figma prototype",
+    title: "CoursePilot",
+    role: "Product Design · User Research · Prototyping",
+    summary: "Designed an AI planning assistant inside Canvas, from 5 student interviews to a Figma prototype tested with 5 students.",
+    credibility:
+      "Designed from student research around deadlines, planning behavior, Canvas friction, and trust in AI.",
+    tags: ["Product Design", "User Research", "Prototyping"],
+    status: "in-progress",
+    accent: "lake-blue-deep",
+    // CoursePilot's dominant color — olive, with earth as a sparse
+    // accent (see ProjectPlaceholder.tsx's CoursePilotSpread) — matches
+    // data/case-studies/course-pilot.ts's `accentColor`.
+    dominantColor: "var(--color-olive)",
+    hasCaseStudy: true,
+    // Homepage card plays the same workspace walkthrough as the case-study
+    // hero, so the shared ViewTransition morphs one clip into itself.
+    videoThumbnail: {
+      src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
+      poster: "/images/projects/coursepilot/final/workspace-walkthrough-poster.jpg",
+      width: 2000,
+      height: 1420,
+    },
+    // Still frame for the "Next project" card — the plan result from the
+    // same walkthrough.
+    cover: {
+      src: "/images/projects/coursepilot/final/workspace-walkthrough-cover.jpg",
+      alt: "CoursePilot's Plan My Night response: prioritized tasks with due dates and estimated time, a suggested 3-hour plan, and source links.",
+      width: 2000,
+      height: 1420,
+    },
+    media: {
+      bgColor: "#DCE4F0",
+      wideSrc: "/thumbnails/coursepilot/coursepilot-wide.mp4",
+      widePoster: "/thumbnails/coursepilot/coursepilot-wide-poster.webp",
+      wideAlt:
+        "CoursePilot's answer to 'I have 3 hours tonight. What should I work on?': prioritized tasks and a 3-hour schedule, which the student adds to their calendar.",
+    },
+  },
+  {
     slug: "nudge",
     // Homepage thumbnail mat + case-study CTA fill — Nudge's soft lavender.
     matTint: "color-mix(in srgb, #d8cff7 45%, var(--color-background))",
@@ -189,8 +185,9 @@ export const projects: Project[] = [
   },
   {
     slug: "jurnee",
-    // Homepage thumbnail mat + case-study CTA fill — Jurnee's lilac.
-    matTint: "color-mix(in srgb, #DBD3F0 55%, var(--color-background))",
+    // Homepage thumbnail mat + case-study CTA fill — warm yellow (the
+    // 3rd-place badge color), so it doesn't blur into Nudge's lilac.
+    matTint: "color-mix(in srgb, #F8E8B6 55%, var(--color-background))",
     statusTag: "3rd place · Fall 2026 Designathon",
     title: "Jurnee",
     role: "Product Design · Branding · Prototyping",
@@ -198,7 +195,7 @@ export const projects: Project[] = [
       "A weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
     status: "in-progress",
     accent: "mauve",
-    dominantColor: "#DBD3F0",
+    dominantColor: "#F8E8B6",
     hasCaseStudy: true,
     // Standalone page: src/app/projects/jurnee/page.tsx. Images built
     // from the team's final deck PDF.
@@ -209,7 +206,7 @@ export const projects: Project[] = [
       height: 1080,
     },
     media: {
-      bgColor: "#EDE8F7",
+      bgColor: "#F6ECCB",
       widePoster: "/images/projects/jurnee/jurnee-cover-wide.jpg",
       wideAlt:
         "Three Jurnee screens: a weekly leaderboard, the home screen's hand-drawn tree inside a 4-days-left countdown ring above the week's experiences, and the mountain with checkpoints climbing to the summit.",
