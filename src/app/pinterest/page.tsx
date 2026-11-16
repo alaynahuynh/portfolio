@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
  *
  * Unlisted (not in the nav, not indexed) and shared by link. Every claim
  * comes from the résumé or the case studies (src/data/case-studies,
- * src/app/projects/nudge); nothing is invented.
+ * src/app/projects/nudge, src/app/projects/jurnee); nothing is invented.
  */
 export const metadata: Metadata = {
   title: "Hey Pinterest",
@@ -57,27 +57,30 @@ const strengths = [
   {
     title: "Feedback changes my designs.",
     body: "MyMuseum's usability study turned up four problems, and all four became shipped changes.",
-    proof: { label: "MyMuseum", href: "#mymuseum" },
+    proof: [{ label: "MyMuseum", href: "#mymuseum" }],
   },
   {
     title: "I design AI people can check.",
     body: "In CoursePilot, answers show their sources, tasks explain their ranking, and nothing changes until the student approves it.",
-    proof: { label: "CoursePilot", href: "#coursepilot" },
+    proof: [{ label: "CoursePilot", href: "#coursepilot" }],
   },
   {
-    title: "I work well across roles.",
-    body: "On a team with a PM, another designer, and a developer, my interviews reframed what we built. With clients, I design inside the tools they already run on.",
-    proof: { label: "Nudge", href: "#nudge" },
+    title: "I work well across roles, and fast.",
+    body: "On Nudge, my interviews reframed what our PM, designer, and developer built. At a four-hour designathon, I was the UX designer on a team of engineers, designers, and data scientists, and our app placed 3rd.",
+    proof: [
+      { label: "Nudge", href: "#nudge" },
+      { label: "Jurnee", href: "#jurnee" },
+    ],
   },
   {
     title: "I build what I design.",
     body: "Two of these projects are live sites I built myself, so I know what's hard to build and where the details get lost.",
-    proof: { label: "Noodle House", href: "#vietnamese-noodle-house" },
+    proof: [{ label: "Noodle House", href: "#vietnamese-noodle-house" }],
   },
 ];
 
 /** The projects, in the order this page shows them. */
-const work = ["mymuseum", "coursepilot", "vietnamese-noodle-house", "nudge"].map((slug) => pitchWork[slug]);
+const work = ["mymuseum", "coursepilot", "vietnamese-noodle-house", "nudge", "jurnee"].map((slug) => pitchWork[slug]);
 
 /* ------------------------------------------------------------------ */
 /* Pieces                                                              */
@@ -217,18 +220,23 @@ export default function PinterestPage() {
                 <div className="border-t border-border pt-5">
                   <h3 className="font-heading text-xl font-semibold tracking-tight text-foreground">{item.title}</h3>
                   <p className="mt-2 leading-relaxed text-muted-foreground">{item.body}</p>
-                  <a
-                    href={item.proof.href}
-                    className="group mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-sage-deep"
-                  >
-                    See it in {item.proof.label}
-                    <span
-                      aria-hidden="true"
-                      className="transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover:translate-y-0.5"
-                    >
-                      ↓
-                    </span>
-                  </a>
+                  <p className="mt-3 flex flex-wrap items-center gap-x-1.5 text-sm font-medium text-sage-deep">
+                    <span>See it in</span>
+                    {item.proof.map((proof, j) => (
+                      <span key={proof.href} className="inline-flex items-center gap-1.5">
+                        {j > 0 && <span className="text-muted-foreground">and</span>}
+                        <a href={proof.href} className="group inline-flex items-center gap-1.5">
+                          {proof.label}
+                          <span
+                            aria-hidden="true"
+                            className="transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover:translate-y-0.5"
+                          >
+                            ↓
+                          </span>
+                        </a>
+                      </span>
+                    ))}
+                  </p>
                 </div>
               </Reveal>
             ))}

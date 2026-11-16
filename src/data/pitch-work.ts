@@ -1,7 +1,8 @@
 /**
  * Project write-ups shared by the company pitch pages (/pinterest,
  * /duolingo). Every claim comes from the case studies
- * (src/data/case-studies, src/app/projects/nudge); nothing is invented.
+ * (src/data/case-studies, src/app/projects/nudge, src/app/projects/jurnee);
+ * nothing is invented.
  * Each page picks its own projects and order with `pitchWork[slug]`.
  */
 
@@ -219,6 +220,57 @@ export const pitchWork: Record<string, WorkEntry> = Object.fromEntries(
       rows: [
         { heard: "Students had the information, but nothing pushed them to act.", changed: "A planner built around one small step a day" },
         { heard: "Students and parents trust the university most.", changed: "Our employer persona became a study abroad coordinator" },
+      ],
+    },
+  },
+  {
+    slug: "jurnee",
+    year: "2026",
+    type: "Designathon · 3rd place",
+    result: "3rd place, built and pitched in 4 hours",
+    headline: "A few things to go do each week, gone in seven days so you actually do them.",
+    summary:
+      "At the University of Michigan's Fall 2026 Designathon, my team of five had four hours to design and pitch an app, then presented it to a panel of School of Information professors. I was the UX designer on a team of engineers, designers, and data scientists. Our app, Jurnee, placed 3rd.",
+    facts: [
+      { label: "Role", value: "UX designer" },
+      { label: "Team", value: "Engineers, designers, data scientists" },
+    ],
+    did: ["UX design", "Interaction design", "Figma prototyping", "Cross-functional team", "Pitch to judges"],
+    metrics: [
+      { value: "3rd", label: "place, judged by School of Information professors" },
+      { value: "4 hrs", label: "from blank page to final pitch" },
+      { value: "6", label: "screens in the Figma prototype" },
+    ],
+    highlight: {
+      kicker: "Designing for follow-through",
+      title: "One picture for progress, one for time.",
+      shots: {
+        phone: true,
+        before: {
+          src: "/images/projects/jurnee/ascent@3x.webp",
+          alt: "Jurnee's mountain: checkpoints along a trail, two finished in green, the avatar mid-climb, and the pottery class card open with why it was picked.",
+          label: "Progress",
+          caption: "A mountain you climb, one checkpoint per pick",
+          width: 1170,
+          height: 2532,
+          position: "object-top",
+        },
+        after: {
+          src: "/images/projects/jurnee/home@3x.webp",
+          alt: "Jurnee's home screen: a hand-drawn tree inside a countdown ring showing 4 days 6 hours left, then what's up next and what's done.",
+          label: "Time",
+          caption: "A tree that loses leaves as the week runs out",
+          width: 1170,
+          height: 2532,
+          position: "object-top",
+        },
+      },
+      principles: ["Gone in 7 days", "Every pick says why", "Green only means done"],
+      rowsLabel: "The problem → how we designed for it",
+      rows: [
+        { heard: "A list of things you'd like to do someday is easy to keep putting off.", changed: "Picks expire on Saturday night, and a new set arrives Sunday" },
+        { heard: "Progress and time left are two different questions.", changed: "A mountain for what you've done, a tree for the clock" },
+        { heard: "A finished week shouldn't just disappear.", changed: "Each checkpoint is completed with a photo that stays on your profile" },
       ],
     },
   },

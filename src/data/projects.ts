@@ -23,8 +23,8 @@ export const PROJECTS_STATUS = {
  * Order: MyMuseum leads (designed, built and live), then Vietnamese Noodle
  * House (real client, measured result), CoursePilot (deepest research,
  * concept stage), Nudge (6-week team jam) and Jurnee (4-hour designathon).
- * Nudge and Jurnee sit next to each other, so Jurnee's card uses a warm
- * yellow instead of a second lilac.
+ * Nudge and Jurnee sit next to each other, so Jurnee's card uses its
+ * light leaf green instead of a second lilac.
  */
 export const projects: Project[] = [
   {
@@ -185,9 +185,9 @@ export const projects: Project[] = [
   },
   {
     slug: "jurnee",
-    // Homepage thumbnail mat + case-study CTA fill — warm yellow (the
-    // 3rd-place badge color), so it doesn't blur into Nudge's lilac.
-    matTint: "color-mix(in srgb, #F8E8B6 55%, var(--color-background))",
+    // Homepage thumbnail mat + case-study CTA fill — light leaf green
+    // (Jurnee's "done" green), so it doesn't blur into Nudge's lilac.
+    matTint: "color-mix(in srgb, #8AB66C 30%, var(--color-background))",
     statusTag: "3rd place · Fall 2026 Designathon",
     title: "Jurnee",
     role: "Product Design · Branding · Prototyping",
@@ -195,7 +195,7 @@ export const projects: Project[] = [
       "A weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
     status: "in-progress",
     accent: "mauve",
-    dominantColor: "#F8E8B6",
+    dominantColor: "#8AB66C",
     hasCaseStudy: true,
     // Standalone page: src/app/projects/jurnee/page.tsx. Images built
     // from the team's final deck PDF.
@@ -206,7 +206,7 @@ export const projects: Project[] = [
       height: 1080,
     },
     media: {
-      bgColor: "#F6ECCB",
+      bgColor: "#E2EFD6",
       widePoster: "/images/projects/jurnee/jurnee-cover-wide.jpg",
       wideAlt:
         "Three Jurnee screens: a weekly leaderboard, the home screen's hand-drawn tree inside a 4-days-left countdown ring above the week's experiences, and the mountain with checkpoints climbing to the summit.",

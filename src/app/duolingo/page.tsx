@@ -30,7 +30,9 @@ import { cn } from "@/lib/utils";
  *
  * The posting asks for a portfolio of "one to two projects you've
  * independently driven", so MyMuseum and CoursePilot (both solo) lead,
- * then Nudge (it also values a team project) and the client site.
+ * then the two team projects (it also values group work): Nudge, and
+ * Jurnee, whose weekly deadline, leaderboard, and climb are the kind of
+ * motivation design Thrive works on. The client site comes last.
  *
  * Brand nods are limited to a color and a rounded, chunky style: no owl,
  * logo, or Duolingo artwork. Unlisted (not in the nav, not indexed).
@@ -75,6 +77,13 @@ const pitch: Segment[][] = [
   ],
   [
     {
+      text: "I also care about what keeps people coming back. Jurnee, my team's 3rd-place designathon app, uses a seven-day deadline, a weekly leaderboard, and a mountain you climb to ",
+    },
+    { text: "turn \"someday\" into this week", strong: true },
+    { text: "." },
+  ],
+  [
+    {
       text: "I talk to the people I design for, let what they tell me change the plan, and build what I design so the details make it all the way to launch.",
     },
   ],
@@ -108,7 +117,7 @@ const fit = [
   {
     ask: "Experience on a group project",
     answer:
-      "Nudge, with a PM, another designer, and a developer. My interviews reframed what we built.",
+      "Nudge, with a PM, another designer, and a developer, where my interviews reframed what we built. And Jurnee, where I was the UX designer on a team of engineers, designers, and data scientists: we had four hours to design and pitch it, and placed 3rd.",
     href: "#nudge",
   },
 ];
@@ -118,6 +127,7 @@ const work = [
   "mymuseum",
   "coursepilot",
   "nudge",
+  "jurnee",
   "vietnamese-noodle-house",
 ].map((slug) => pitchWork[slug]);
 
