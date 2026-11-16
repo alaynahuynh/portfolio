@@ -174,13 +174,18 @@ export const projects: Project[] = [
       width: 1920,
       height: 1080,
     },
+    // Animated thumbnails: Nudge's screens with Heartie, the mascot,
+    // floating and beating (scripts/thumbnails: nudge_scene.py, then
+    // build_thumbnails.py nudge).
     media: {
       bgColor: "#C38FAD",
-      widePoster: "/images/projects/nudge/nudge-wide.jpg",
+      wideSrc: "/thumbnails/nudge/nudge-wide.mp4",
+      widePoster: "/thumbnails/nudge/nudge-wide-poster.webp",
       wideAlt:
-        "Three Nudge app screens: the trip plan grouped by weeks before departure, today's nudge to book a yellow fever shot with a CDC source, and the logging screen.",
-      tallPoster: "/images/projects/nudge/nudge-tall.jpg",
-      tallAlt: "Nudge's trip plan on a phone: steps to book now, steps coming up, and records already imported from MyChart.",
+        "Two Nudge screens, today's nudge to book a yellow fever shot and the trip plan grouped by weeks before departure, beside a big Heartie, the smiling pink heart mascot, floating and beating on a lavender backdrop.",
+      tallSrc: "/thumbnails/nudge/nudge-tall.mp4",
+      tallPoster: "/thumbnails/nudge/nudge-tall-poster.webp",
+      tallAlt: "Nudge's home screen on a phone, with Heartie floating beside \"Morning, Josh! One thing today keeps your trip on track.\"",
     },
   },
   {
@@ -205,13 +210,18 @@ export const projects: Project[] = [
       width: 1920,
       height: 1080,
     },
+    // Animated thumbnails built like the others (scripts/thumbnails:
+    // jurnee_strip.py, then build_thumbnails.py jurnee).
     media: {
       bgColor: "#B08D46",
-      widePoster: "/images/projects/jurnee/jurnee-cover-wide.jpg",
+      wideSrc: "/thumbnails/jurnee/jurnee-wide.mp4",
+      widePoster: "/thumbnails/jurnee/jurnee-wide-poster.webp",
       wideAlt:
-        "Three Jurnee screens: a weekly leaderboard, the home screen's hand-drawn tree inside a 4-days-left countdown ring above the week's experiences, and the mountain with checkpoints climbing to the summit.",
-      tallPoster: "/images/projects/jurnee/jurnee-cover-tall.jpg",
-      tallAlt: "Jurnee's weekly mountain on a phone: two checkpoints done, the avatar mid-climb, and the pottery class card open with Add photo to complete.",
+        "Jurnee's six screens in order on a lilac mountain backdrop, panning from the 'Would you rather?' onboarding and the Weekly Compass to the home screen's tree countdown, the weekly mountain, the leaderboard, and the profile.",
+      tallSrc: "/thumbnails/jurnee/jurnee-tall.mp4",
+      tallPoster: "/thumbnails/jurnee/jurnee-tall-poster.webp",
+      tallAlt:
+        "Jurnee on a phone: the home screen's 4-days-left tree countdown, then the weekly mountain with the pottery class card and Add photo to complete being tapped, then the profile's photo feed.",
     },
   },
   {

@@ -10,6 +10,7 @@ loop is seamless. Output per clip:
     public/thumbnails/<project>/<project>-<wide|tall>-poster.webp  first frame, full size
 
 Run from the repo root:   python3 scripts/thumbnails/build_thumbnails.py [clip-or-project ...]
+(jurnee-wide reads design-refs/jurnee/flow-strip.png: run jurnee_strip.py first.)
 Needs Pillow (with WebP) + numpy, and ffmpeg with libx264.
 
 The mymuseum-tall clip reads design-refs/mymuseum/recording-tall.mp4, a real
@@ -84,6 +85,13 @@ class Seg:
     # as 0-1 of the source; drawn as one arrow cursor with a click ripple.
     cursor: List[Tuple[float, float, float]] = field(default_factory=list)
     clicks: List[Tuple[float, float, float]] = field(default_factory=list)
+    # Stills with transparent rounded corners (exported phone screens): fill
+    # each transparent pixel with the nearest opaque color in its row, so a
+    # full-bleed frame shows square corners instead of black ones.
+    fill_corners: bool = False
+    # Camera easing between keys: "ease" (sine in-out, a slow camera move)
+    # or "scroll" (fast start, long settle, like a finger flick on a phone).
+    curve: str = "ease"
 
 
 @dataclass
@@ -114,6 +122,13 @@ def recorded_taps(path: Path):
 MM_REC = REFS / "mymuseum/recording-tall.mp4"
 NH_REC = REFS / "noodle-house/recording-tall.mp4"
 NH_DESKTOP = REFS / "noodle-house/recording-wide.mp4"
+JURNEE = IMG / "jurnee"
+JURNEE_STRIP = REFS / "jurnee/flow-strip.png"  # made by jurnee_strip.py
+NUDGE = IMG / "nudge"
+NUDGE_SCENE = REFS / "nudge/scene.png"  # made by nudge_scene.py (with heartie.png, scene.json)
+NUDGE_HEART = (
+    json.loads((REFS / "nudge/scene.json").read_text()) if (REFS / "nudge/scene.json").exists() else {}
+)
 NH_MOUSE = recorded_mouse(NH_DESKTOP.with_suffix(".json")) if NH_DESKTOP.exists() else ([], [])
 
 # --------------------------------------------------------------------------
@@ -220,6 +235,104 @@ CLIPS = [
             ),
         ],
     ),
+    # Jurnee is a phone-only Figma prototype, so the wide clip is one slow
+    # pan across the whole flow (onboarding -> Weekly Compass -> home ->
+    # mountain -> leaderboard -> profile) on the case study's own mist +
+    # mountains backdrop. Run jurnee_strip.py first. The camera shows the
+    # strip's full height; cx runs edge to edge (0.294 / 0.706 are where the
+    # 16:9 window touches each end of the 4538 px strip).
+    Clip(
+        "jurnee-wide",
+        "jurnee",
+        (1600, 900),
+        [
+            Seg(
+                JURNEE_STRIP,
+                8.6,
+                [(0, 1.0, 0.294, 0.5), (0.5, 1.0, 0.294, 0.5), (8.0, 1.0, 0.706, 0.5)],
+            ),
+        ],
+        fps=24,
+    ),
+    # Full-bleed phone screens, like the other tall clips: home -> the
+    # mountain (then a tap on Add photo to complete) -> the profile feed.
+    # Each screen behaves like a phone: still while it fades in, one
+    # flick-and-settle scroll from top to bottom, then still again for the
+    # tap and the fade out, so two moving screens never blend. The screens
+    # are 1170x2532, so a 9:16 window shows the full width and cy 0.41-0.59
+    # is top to bottom.
+    Clip(
+        "jurnee-tall",
+        "jurnee",
+        TALL,
+        [
+            Seg(
+                JURNEE / "home@3x.webp",
+                2.6,
+                [(0, 1.0, 0.5, 0.41), (0.5, 1.0, 0.5, 0.41), (1.7, 1.0, 0.5, 0.59)],
+                fill_corners=True,
+                curve="scroll",
+            ),
+            Seg(
+                JURNEE / "ascent@3x.webp",
+                3.4,
+                [(0, 1.0, 0.5, 0.41), (0.8, 1.0, 0.5, 0.41), (2.0, 1.0, 0.5, 0.59)],
+                taps=[(2.4, 0.50, 0.871)],
+                fill_corners=True,
+                curve="scroll",
+            ),
+            Seg(
+                JURNEE / "profile@3x.webp",
+                3.0,
+                [(0, 1.0, 0.5, 0.41), (0.8, 1.0, 0.5, 0.41), (2.0, 1.0, 0.5, 0.59)],
+                fill_corners=True,
+                curve="scroll",
+            ),
+        ],
+        # 30 fps: a phone-speed scroll is visibly steppy at 20.
+        fps=30,
+    ),
+    # Nudge's wide clip: two phone screens (today's nudge on home, and the
+    # trip plan) with a big Heartie standing beside them, the only thing
+    # that moves: it floats,
+    # sways and beats. Run nudge_scene.py first. 7.8 s is exactly 3 floats
+    # and 6 heartbeats, so the last frame matches the first and the clip
+    # loops on a cut.
+    Clip(
+        "nudge-wide",
+        "nudge",
+        (1600, 900),
+        [
+            Seg(
+                NUDGE_SCENE,
+                7.8,
+                [(0, 1.0, 0.5, 0.5)],
+                effect="mascot",
+                args={"sprite": REFS / "nudge/heartie.png", **NUDGE_HEART},
+            ),
+        ],
+        fps=24,
+        loop_fade=False,
+    ),
+    # Nudge's tall clip: just the home screen, full-bleed and still (no
+    # scrolling or taps, unlike the other tall clips), with Heartie in the
+    # greeting floating and beating. 7.8 s = 3 floats, so it loops on a cut.
+    Clip(
+        "nudge-tall",
+        "nudge",
+        TALL,
+        [
+            Seg(
+                NUDGE / "phone-home.png",
+                7.8,
+                [(0, 1.0, 0.5, 0.408)],
+                fill_corners=True,
+                effect="heartie",
+            ),
+        ],
+        fps=24,
+        loop_fade=False,
+    ),
 ]
 
 
@@ -234,14 +347,40 @@ def ease(t: float) -> float:
     return 0.5 - 0.5 * math.cos(math.pi * t)
 
 
-def camera_at(keys, t):
+def scroll_ease(t: float) -> float:
+    """A scroll that eases in, peaks early, and settles slowly, like a
+    finger flick: smoothstep over an ease-out clock. Zero speed at both
+    ends, so it never starts or stops with a jolt."""
+    t = min(max(t, 0.0), 1.0)
+    u = 1 - (1 - t) ** 2
+    return u * u * (3 - 2 * u)
+
+
+def camera_at(keys, t, curve="ease"):
     if t <= keys[0][0]:
         return keys[0][1:]
+    f = scroll_ease if curve == "scroll" else ease
     for (t0, *a), (t1, *b) in zip(keys, keys[1:]):
         if t <= t1:
-            k = ease((t - t0) / (t1 - t0)) if t1 > t0 else 1.0
+            k = f((t - t0) / (t1 - t0)) if t1 > t0 else 1.0
             return tuple(x + (y - x) * k for x, y in zip(a, b))
     return keys[-1][1:]
+
+
+def fill_transparent_corners(im: Image.Image) -> Image.Image:
+    """Square off rounded corners: each transparent pixel takes the color of
+    the nearest opaque pixel in the same row."""
+    a = np.asarray(im.convert("RGBA")).copy()
+    opaque = a[..., 3] > 200
+    for y in np.where(~opaque.all(axis=1))[0]:
+        xs = np.where(opaque[y])[0]
+        if len(xs) == 0:
+            continue
+        left, right = xs[0], xs[-1]
+        a[y, :left, :3] = a[y, left, :3]
+        a[y, right + 1 :, :3] = a[y, right, :3]
+    a[..., 3] = 255
+    return Image.fromarray(a)
 
 
 class Source:
@@ -270,6 +409,8 @@ class Source:
             self.still = self._prep(Image.open(seg.src))
 
     def _prep(self, im: Image.Image) -> Image.Image:
+        if self.seg.fill_corners and im.mode in ("RGBA", "LA", "P"):
+            im = fill_transparent_corners(im)
         im = im.convert("RGB")
         if self.seg.crop:
             im = im.crop(self.seg.crop)
@@ -340,7 +481,127 @@ def effect_card(im: Image.Image, t: float, seg: Seg) -> Image.Image:
     return canvas
 
 
-EFFECTS = {"sheet-up": effect_sheet_up, "card": effect_card}
+_heart_cache = {}
+
+
+def _components(mask: np.ndarray, min_px: int):
+    """Bounding boxes (x0, y0, x1, y1) of the connected regions of a boolean
+    mask, found on a 4x-downsampled grid (no scipy needed)."""
+    small = mask[::4, ::4]
+    seen = np.zeros_like(small, dtype=bool)
+    boxes = []
+    H, W = small.shape
+    for y, x in zip(*np.nonzero(small)):
+        if seen[y, x]:
+            continue
+        stack, pts = [(y, x)], []
+        seen[y, x] = True
+        while stack:
+            cy, cx = stack.pop()
+            pts.append((cy, cx))
+            for ny, nx in ((cy + 1, cx), (cy - 1, cx), (cy, cx + 1), (cy, cx - 1)):
+                if 0 <= ny < H and 0 <= nx < W and small[ny, nx] and not seen[ny, nx]:
+                    seen[ny, nx] = True
+                    stack.append((ny, nx))
+        if len(pts) * 16 >= min_px:
+            ys, xs = zip(*pts)
+            boxes.append((min(xs) * 4, min(ys) * 4, max(xs) * 4 + 4, max(ys) * 4 + 4))
+    return boxes
+
+
+def _hearties(im: Image.Image):
+    """Find Heartie (the only saturated pink in Nudge's screens), cut each one
+    out as a sprite, and return (base image with the hearts erased, sprites).
+    Each sprite is (RGBA image, center x, center y, height)."""
+    a = np.asarray(im).astype(int)
+    r, g, b = a[..., 0], a[..., 1], a[..., 2]
+    pink = (r > 220) & (g < 170) & (b > 150) & (r - g > 80)
+    base = im.copy()
+    sprites = []
+    for x0, y0, x1, y1 in _components(pink, min_px=1500):
+        pad = round((y1 - y0) * 0.14)
+        box = (max(x0 - pad, 0), max(y0 - pad, 0), min(x1 + pad, im.width), min(y1 + pad, im.height))
+        crop = im.crop(box)
+        # Background = what's connected to the crop's corner, close to its
+        # color; everything else (the heart, its eyes, cheeks) is the sprite.
+        bg = crop.getpixel((1, 1))
+        marked = crop.copy()
+        ImageDraw.floodfill(marked, (0, 0), (255, 0, 255), thresh=40)
+        alpha = Image.fromarray(((np.asarray(marked) != (255, 0, 255)).any(axis=2) * 255).astype(np.uint8))
+        alpha = alpha.filter(ImageFilter.GaussianBlur(0.8))
+        sprite = crop.convert("RGBA")
+        sprite.putalpha(alpha)
+        # Erase the original: a slightly grown mask, filled with the backdrop.
+        grown = alpha.filter(ImageFilter.MaxFilter(5))
+        base.paste(Image.new("RGB", crop.size, bg), box[:2], grown)
+        sprites.append((sprite, (box[0] + box[2]) / 2, (box[1] + box[3]) / 2, y1 - y0))
+    return base, sprites
+
+
+HEART_FLOAT = 2.6  # seconds per float; clips loop on whole multiples of it
+HEART_BEAT = 1.3  # seconds per lub-dub
+
+
+def heart_motion(t: float):
+    """Heartie's motion at time t: (lift 0-1, tilt in degrees, scale). A slow
+    float with a little sway, plus a lub-dub heartbeat pulse."""
+
+    def bump(x, at, width):
+        return math.sin(math.pi * (x - at) / width) if at <= x <= at + width else 0.0
+
+    p = (t % HEART_BEAT) / HEART_BEAT
+    pulse = 1 + 0.075 * bump(p, 0.0, 0.14) + 0.045 * bump(p, 0.2, 0.14)
+    lift = 0.5 - 0.5 * math.cos(2 * math.pi * t / HEART_FLOAT)
+    tilt = 4.0 * math.sin(2 * math.pi * t / HEART_FLOAT + 0.9)
+    return lift, tilt, pulse
+
+
+def place_heart(out: Image.Image, sprite: Image.Image, cx, cy, h, t, rise=0.06):
+    lift, tilt, pulse = heart_motion(t)
+    spr = sprite.resize((round(sprite.width * pulse), round(sprite.height * pulse)), Image.BICUBIC)
+    spr = spr.rotate(tilt, Image.BICUBIC, expand=True)
+    out.paste(spr, (round(cx - spr.width / 2), round(cy - rise * h * lift - spr.height / 2)), spr)
+    return lift
+
+
+def effect_heartie(im: Image.Image, t: float, seg: Seg) -> Image.Image:
+    """Animate Heartie, Nudge's heart mascot, wherever it appears on the
+    screens in the image (see heart_motion)."""
+    key = id(seg)
+    if key not in _heart_cache:
+        _heart_cache[key] = _hearties(im)
+    base, sprites = _heart_cache[key]
+    out = base.copy()
+    for sprite, cx, cy, h in sprites:
+        place_heart(out, sprite, cx, cy, h, t + seg.args.get("phase", 0.0))
+    return out
+
+
+_mascot_cache = {}
+
+
+def effect_mascot(im: Image.Image, t: float, seg: Seg) -> Image.Image:
+    """A big Heartie standing beside the phone (nudge_scene.py): it floats,
+    sways and beats, and its soft floor shadow shrinks as it rises."""
+    a = seg.args
+    if "sprite" not in _mascot_cache:
+        _mascot_cache["sprite"] = Image.open(a["sprite"]).convert("RGBA")
+    sprite = _mascot_cache["sprite"]
+    out = im.copy()
+    lift, _, _ = heart_motion(t)
+    # Shadow first, under the heart: narrower and lighter when it's higher.
+    sw = a["h"] * 0.62 * (1 - 0.22 * lift)
+    sh = a["h"] * 0.075 * (1 - 0.22 * lift)
+    shadow = Image.new("L", out.size, 0)
+    ImageDraw.Draw(shadow).ellipse(
+        (a["cx"] - sw / 2, a["floor"] - sh / 2, a["cx"] + sw / 2, a["floor"] + sh / 2), fill=round(70 * (1 - 0.4 * lift))
+    )
+    out.paste(Image.new("RGB", out.size, (150, 140, 205)), (0, 0), shadow.filter(ImageFilter.GaussianBlur(10)))
+    place_heart(out, sprite, a["cx"], a["cy"], a["h"], t, rise=0.12)
+    return out
+
+
+EFFECTS = {"sheet-up": effect_sheet_up, "card": effect_card, "heartie": effect_heartie, "mascot": effect_mascot}
 
 
 def draw_taps(frame: Image.Image, seg: Seg, t: float, win, src_size) -> Image.Image:
@@ -413,7 +674,7 @@ def render_seg(seg: Seg, src: Source, size, t: float, problems=None, label="") -
     im = src.at(t)
     if seg.effect:
         im = EFFECTS[seg.effect](im, t, seg)
-    z, cx, cy = camera_at(seg.keys, t)
+    z, cx, cy = camera_at(seg.keys, t, seg.curve)
     win = window(im.size, size, z, cx, cy)
     x0, y0, ww, wh = win
     frame = im.resize(size, Image.LANCZOS, box=(x0, y0, x0 + ww, y0 + wh))
