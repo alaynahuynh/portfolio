@@ -87,7 +87,7 @@ export function Hero() {
             className={cn(
               OBJECT_LINK,
               WINDOW_LINK,
-              "absolute top-[30%] -right-[6%] z-10 w-[54%] sm:top-[10%] sm:right-auto sm:left-[62%] sm:w-[38%]",
+              "absolute top-[30%] -right-[6%] z-10 w-[48%] sm:top-[10%] sm:right-auto sm:left-[62%] sm:w-[33%]",
             )}
           >
             <HeroNotepad className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
@@ -100,7 +100,7 @@ export function Hero() {
             className={cn(
               OBJECT_LINK,
               WINDOW_LINK,
-              "absolute top-[58%] -left-[6%] z-10 w-[60%] sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:w-[40%]",
+              "absolute top-[58%] -left-[6%] z-10 w-[56%] sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:w-[37%]",
             )}
           >
             <HeroPlaygroundTab className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
