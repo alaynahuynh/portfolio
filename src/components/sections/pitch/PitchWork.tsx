@@ -136,7 +136,9 @@ function HighlightPanel({ h, tint }: { h: Highlight; tint: string }) {
     <Reveal y={15} duration={500}>
       <div
         className="mt-10 rounded-[24px] bg-(--hl) p-5 sm:p-8 lg:p-10 dark:bg-muted"
-        style={{ "--hl": tint } as React.CSSProperties}
+        // The card colors are strong mid-tones, so the text panel uses a
+        // light tint of them to keep body copy readable.
+        style={{ "--hl": `color-mix(in srgb, ${tint} 16%, var(--color-background))` } as React.CSSProperties}
       >
         <p className={KICKER}>{h.kicker}</p>
         <p className="mt-2 font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-[1.75rem]">

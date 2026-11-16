@@ -23,8 +23,8 @@ export const PROJECTS_STATUS = {
  * Order: MyMuseum leads (designed, built and live), then Vietnamese Noodle
  * House (real client, measured result), CoursePilot (deepest research,
  * concept stage), Nudge (6-week team jam) and Jurnee (4-hour designathon).
- * Nudge and Jurnee sit next to each other, so Jurnee's card uses its
- * light leaf green instead of a second lilac.
+ * Thumbnail card colors (`media.bgColor`) follow one fixed palette in
+ * this order: blue, green, brown, mauve, mustard.
  */
 export const projects: Project[] = [
   {
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     },
     liveUrl: "https://mymuseum-eta.vercel.app/",
     media: {
-      bgColor: "#E4E9DF",
+      bgColor: "#3CB5FC",
       wideSrc: "/thumbnails/mymuseum/mymuseum-wide.mp4",
       widePoster: "/thumbnails/mymuseum/mymuseum-wide-poster.webp",
       wideAlt:
@@ -101,7 +101,7 @@ export const projects: Project[] = [
     // The real, live site — CoursePilot (concept stage) has no live link.
     liveUrl: "https://vietnoodlehouse.com/",
     media: {
-      bgColor: "#EDE3D3",
+      bgColor: "#779F3D",
       wideSrc: "/thumbnails/noodle-house/noodle-house-wide.mp4",
       widePoster: "/thumbnails/noodle-house/noodle-house-wide-poster.webp",
       wideAlt:
@@ -146,7 +146,7 @@ export const projects: Project[] = [
       height: 1420,
     },
     media: {
-      bgColor: "#DCE4F0",
+      bgColor: "#745B36",
       wideSrc: "/thumbnails/coursepilot/coursepilot-wide.mp4",
       widePoster: "/thumbnails/coursepilot/coursepilot-wide-poster.webp",
       wideAlt:
@@ -175,7 +175,7 @@ export const projects: Project[] = [
       height: 1080,
     },
     media: {
-      bgColor: "#EAE6F8",
+      bgColor: "#C38FAD",
       widePoster: "/images/projects/nudge/nudge-wide.jpg",
       wideAlt:
         "Three Nudge app screens: the trip plan grouped by weeks before departure, today's nudge to book a yellow fever shot with a CDC source, and the logging screen.",
@@ -206,7 +206,7 @@ export const projects: Project[] = [
       height: 1080,
     },
     media: {
-      bgColor: "#E2EFD6",
+      bgColor: "#B08D46",
       widePoster: "/images/projects/jurnee/jurnee-cover-wide.jpg",
       wideAlt:
         "Three Jurnee screens: a weekly leaderboard, the home screen's hand-drawn tree inside a 4-days-left countdown ring above the week's experiences, and the mountain with checkpoints climbing to the summit.",
