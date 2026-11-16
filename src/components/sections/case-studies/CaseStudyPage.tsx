@@ -35,23 +35,25 @@ function externalLinkProps(href: string) {
   return /^https?:\/\//.test(href) ? { target: "_blank", rel: "noopener noreferrer" } : {};
 }
 
-function SectionEyebrow({
-  children,
-  accent,
-}: {
-  children: React.ReactNode;
-  accent?: boolean;
-}) {
-  return (
-    <p
-      className={cn(
-        "flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50",
-        accent ? "text-(--project-accent)" : "text-sage-deep",
-      )}
-    >
-      {children}
-    </p>
-  );
+/**
+ * Section labels ("Overview", "Research", "Final thoughts"…) are switched
+ * off site-wide: headings carry each section on their own now. Kept as a
+ * no-op so the call sites stay put; to bring them back, restore the
+ * <p> below.
+ */
+function SectionEyebrow(props: { children: React.ReactNode; accent?: boolean }) {
+  void props;
+  return null;
+  // return (
+  //   <p
+  //     className={cn(
+  //       "flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50",
+  //       props.accent ? "text-(--project-accent)" : "text-sage-deep",
+  //     )}
+  //   >
+  //     {props.children}
+  //   </p>
+  // );
 }
 
 /**
@@ -231,10 +233,11 @@ function CompetitorBreakdown({
         {discovery.opportunityContext && (
           <p className="max-w-2xl text-muted-foreground">{discovery.opportunityContext}</p>
         )}
-        <div className="mt-6 max-w-2xl border-l-2 border-sage-deep pl-6">
-          <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">Opportunity</p>
-          <p className="mt-2 text-xl text-foreground">{discovery.opportunity}</p>
-        </div>
+        {discovery.opportunity && (
+          <p className={cn("max-w-2xl text-lg text-foreground", discovery.opportunityContext && "mt-4")}>
+            {discovery.opportunity}
+          </p>
+        )}
         {discovery.flowSteps.length > 0 && (
           <div className="mt-10">
             {discovery.flowLabel && (
@@ -281,33 +284,38 @@ function CompetitorBlock({
         </div>
       )}
 
-      <div className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10">
-        {columns.map((col) => (
-          <div key={col.label}>
-            <Heading level={4} size={4} className="text-muted-foreground">
-              {col.label}
+      {columns.some((col) => col.items.length > 0) ? (
+        <div className="mt-8 grid gap-8 sm:grid-cols-3 sm:gap-10">
+          {columns.map((col) => (
+            <div key={col.label}>
+              <Heading level={4} size={4} className="text-muted-foreground">
+                {col.label}
+              </Heading>
+              <ul className="mt-3 list-disc space-y-2 pl-4 text-sm text-muted-foreground marker:text-sage-deep">
+                {col.items.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div>
+            <Heading level={4} size={4} className="text-sage-deep">
+              What it meant for {productName}
             </Heading>
-            <ul className="mt-3 list-disc space-y-2 pl-4 text-sm text-muted-foreground marker:text-sage-deep">
-              {col.items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <p className="mt-3 text-sm text-foreground">{competitor.applied}</p>
           </div>
-        ))}
-        <div>
-          <Heading level={4} size={4} className="text-sage-deep">
-            What it meant for {productName}
-          </Heading>
-          <p className="mt-3 text-sm text-foreground">{competitor.applied}</p>
         </div>
-      </div>
+      ) : (
+        // No strengths/limitations lists: `applied` is a plain paragraph.
+        <p className="mt-6 max-w-2xl text-muted-foreground">{competitor.applied}</p>
+      )}
     </Reveal>
   );
 }
 
-/** One key decision: header, then problem + evidence on the left and the
- * decision / tradeoff / outcome on the right, with its real product
- * visual full-width beneath. */
+/** One key decision, told as a short story: a sentence heading, a few
+ * plain paragraphs (what we saw, what I did, what it cost), then its real
+ * product visual full-width beneath. No Problem/Evidence/Tradeoff slots. */
 function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index: number }) {
   return (
     <article
@@ -315,61 +323,15 @@ function DecisionBlock({ decision, index }: { decision: CaseStudyDecision; index
       className={cn("scroll-mt-28", index > 0 && "border-t border-border pt-16 sm:pt-20")}
     >
       <Reveal>
-        <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] text-(--project-accent) uppercase before:h-px before:w-6 before:bg-current before:opacity-50">
-          Decision {String(index + 1).padStart(2, "0")} · {decision.tension}
-        </p>
-        <Heading level={3} className="mt-3 max-w-3xl text-2xl sm:text-4xl">
+        <Heading level={3} className="max-w-3xl text-2xl sm:text-4xl">
           {decision.title}
         </Heading>
+        <div className="mt-6 max-w-[42rem] space-y-4 text-lg leading-relaxed text-muted-foreground">
+          {decision.body.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
       </Reveal>
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
-        <Reveal delay={60}>
-          <Heading level={4} size={4} className="text-muted-foreground">
-            The problem
-          </Heading>
-          <p className="mt-2 text-muted-foreground">{decision.problem}</p>
-
-          <Heading level={4} size={4} className="mt-8 text-muted-foreground">
-            Evidence
-          </Heading>
-          <ul className="mt-3 space-y-4">
-            {decision.evidence.map((item) => (
-              <li key={item.text} className="text-sm text-muted-foreground">
-                <span className="mb-1 block text-xs font-semibold tracking-[0.14em] text-foreground uppercase">
-                  {item.source}
-                </span>
-                {item.text}
-              </li>
-            ))}
-          </ul>
-        </Reveal>
-
-        <Reveal delay={100}>
-          <div className="border-l-2 border-(--project-accent) pl-6">
-            <Heading level={4} size={4} className="text-(--project-accent)">
-              Decision
-            </Heading>
-            <p className="mt-2 text-lg text-foreground">{decision.decision}</p>
-          </div>
-          <dl className="mt-8 space-y-6 pl-6">
-            <div>
-              <dt className="font-medium text-foreground">Tradeoff</dt>
-              <dd className="mt-1 text-muted-foreground">{decision.tradeoff}</dd>
-            </div>
-            <div>
-              <dt className="font-medium text-foreground">Outcome</dt>
-              <dd className="mt-1 text-muted-foreground">{decision.outcome}</dd>
-            </div>
-          </dl>
-          {decision.status && (
-            <p className="mt-6 ml-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-border bg-surface px-3 py-1 text-xs text-muted-foreground">
-              <span className="size-1.5 rounded-full bg-(--project-accent)" aria-hidden="true" />
-              {decision.status}
-            </p>
-          )}
-        </Reveal>
-      </div>
 
       {decision.steps && decision.steps.length > 0 && (
         <Reveal delay={80} className="mt-12 rounded-(--radius-default) border border-border bg-surface p-6 sm:p-8">
@@ -675,28 +637,15 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
                         delay={Math.min(i * 40, 200)}
                         className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
                       >
-                        <div>
-                          <p className="font-heading text-2xl text-sage-deep/50">
-                            {String(i + 1).padStart(2, "0")}
-                          </p>
-                          <Heading level={3} size={4} className="mt-1">
-                            {iteration.title}
-                          </Heading>
+                        <Heading level={3} size={4}>
+                          {iteration.title}
+                        </Heading>
+                        {/* What happened, then what changed: two plain
+                            paragraphs, no "What testing showed" labels. */}
+                        <div className="space-y-2 lg:col-span-2">
+                          <p className="text-muted-foreground">{iteration.feedback}</p>
+                          {iteration.finalIteration && <p className="text-foreground">{iteration.finalIteration}</p>}
                         </div>
-                        <div>
-                          <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                            What testing showed
-                          </p>
-                          <p className="mt-2 text-sm text-muted-foreground">{iteration.feedback}</p>
-                        </div>
-                        {iteration.finalIteration && (
-                          <div>
-                            <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
-                              {t.changedLabel ?? "What I changed"}
-                            </p>
-                            <p className="mt-2 text-sm text-foreground">{iteration.finalIteration}</p>
-                          </div>
-                        )}
                         {iteration.beforeAfter && (
                           <div className="mt-2 lg:col-span-3">
                             <CaseStudyBeforeAfter
@@ -1075,40 +1024,21 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
             <Heading level={3} size={4}>
               Key findings
             </Heading>
-            {/* Same three-column row as the testing iterations: what was
-                heard, then — kept visibly separate — what is and isn't built. */}
+            {/* Same row as the testing iterations: the finding as a plain
+                heading, then what people said, with no slot labels. */}
             <div className="mt-6 border-b border-border">
-              {research.keyFindings.map((finding, i) => (
+              {research.keyFindings.map((finding) => (
                 <div
                   key={finding.title}
                   className="grid gap-4 border-t border-border py-8 lg:grid-cols-3 lg:gap-10"
                 >
-                  <div>
-                    <p className="font-heading text-2xl text-sage-deep/50">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <Heading level={4} size={4} className="mt-1">
-                      {finding.title}
-                    </Heading>
+                  <Heading level={4} size={4}>
+                    {finding.title}
+                  </Heading>
+                  <div className="space-y-2 lg:col-span-2">
+                    <p className="text-muted-foreground">{finding.whatParticipantsSaid}</p>
+                    {finding.designResponse && <p className="text-foreground">{finding.designResponse}</p>}
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                      What artists said
-                    </p>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {finding.whatParticipantsSaid}
-                    </p>
-                  </div>
-                  {finding.designResponse && (
-                    <div>
-                      <p className="text-xs font-semibold tracking-[0.14em] text-sage-deep uppercase">
-                        How the design responded
-                      </p>
-                      <p className="mt-2 text-sm text-foreground">
-                        {finding.designResponse}
-                      </p>
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
@@ -1802,7 +1732,7 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
               {finalProduct.stories.map((story, i) => (
                 <Reveal key={story.title} delay={Math.min(i * 40, 200)}>
                   <Heading level={3} size={3}>
-                    {String(i + 1).padStart(2, "0")} — {story.title}
+                    {story.title}
                   </Heading>
                   <p className="mt-2 max-w-xl text-muted-foreground">
                     {story.description}

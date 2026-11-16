@@ -48,7 +48,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     role: "Solo UX/UI Designer & Developer",
     featuresHeading: "What shipped",
     featuresIntro:
-      "A full rebuild across Home, Menu, Locations, Food Truck, About, and Contact.",
+      "I rebuilt every page: Home, Menu, Locations, Food Truck, About and Contact.",
     features: [
       {
         name: "Two-step location ordering",
@@ -104,7 +104,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
     intro:
       "The old site was live and its problems were easy to see, so I started with an audit instead of a separate research phase: a heuristic review of the desktop experience, and a full pass on mobile, where the failures were worse.",
     participants:
-      "A self-directed UX audit on desktop and mobile, not usability testing with participants.",
+      "",
     swot: { strengths: [], weaknesses: [], opportunities: [], threats: [] },
     swotPlaceholder: true,
     findings: [],
@@ -117,43 +117,43 @@ export const vietnameseNoodleHouse: CaseStudyData = {
         whyItMatters:
           "Each button opens a different location's ordering page, and the owners told me customers were already placing orders at the wrong location.",
         designResponse:
-          "Location cards with address, map, and hours, then a confirmation that repeats the address before handing off to ordering.",
+          "I replaced them with location cards that show the address, a map and hours, plus a confirmation that repeats the address before sending you to order.",
       },
       {
         title: "The menu wasn't part of the website",
         whatParticipantsSaid:
           "View Menu just opened an 11-page PDF in the browser's PDF viewer. On a phone, the text ran off the right edge of the screen, and there was no way to jump to a category except paging through the document.",
         whyItMatters:
-          "The menu is core content for a restaurant site, but as a PDF it couldn't match the site's identity or adapt to a phone screen.",
+          "The menu is the main thing people come to a restaurant site for, and a PDF can't adapt to a phone.",
         designResponse:
-          "Rebuilt the menu as a real page with seven categories and ~50 items, plus a sticky category nav that highlights where you are.",
+          "I rebuilt it as a real page with seven categories and about 50 items, and a category bar that sticks to the top and highlights where you are.",
       },
       {
-        title: "The mobile hero worked against the business priority",
+        title: "Ordering online wasn't the main button",
         whatParticipantsSaid:
           "The heading sat directly on the brightest part of the hero photo with no scrim behind it, and a decorative callout tag crowded the headline. Online ordering, the restaurant's top priority, wasn't the main button.",
         whyItMatters:
-          "Ordering online should be the easiest thing to find on the homepage, and it wasn't.",
+          "",
         designResponse:
-          "Order Online promoted to the primary filled CTA, View Menu made secondary, a scrim added behind the heading, and the callout tag repositioned.",
+          "I made Order Online the main button, moved View Menu to second, added a dark gradient behind the heading so it's readable, and moved the tag out of the way.",
       },
       {
-        title: "Content gaps read as unfinished",
+        title: "Parts of the site looked unfinished",
         whatParticipantsSaid:
           "The About page was text-only with a large empty gap on desktop, and the footer emphasized the abbreviation \"VNH\" over the restaurant's actual name.",
         whyItMatters:
-          "Both made the site look unfinished.",
+          "",
         designResponse:
-          "Added photos of the dining rooms to About and rebalanced the footer around the restaurant's full name.",
+          "I added photos of the dining rooms to About and rebuilt the footer around the restaurant's full name.",
       },
       {
         title: "\"Message sent!\" wasn't true",
         whatParticipantsSaid:
           "The contact form displayed a success message on every submission, but the email was never delivered anywhere.",
         whyItMatters:
-          "That's worse than having no form at all: customers thought their messages went through, and the owners never saw them.",
+          "Customers thought their messages went through, and the owners never saw them.",
         designResponse:
-          "Rebuilt the form to send through Resend, and to show a clear error if it ever stops working.",
+          "I rebuilt the form so it actually sends email through Resend, and shows a clear error if it ever fails.",
       },
     ],
   },
@@ -221,14 +221,14 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   },
 
   finalThoughts: {
-    pullQuote: "The fix added a step instead of removing one.",
+    pullQuote: "Adding a step was the right call here",
     whatILearned:
-      "I usually try to remove steps, but the location flow adds one. An extra tap was worth it to keep orders from going to the wrong kitchen, and the owners noticed the difference.",
+      "I usually try to cut steps, but this flow adds one. One extra tap was worth it to keep orders from going to the wrong kitchen, and the owners noticed.",
     nextStepsHeading: "What's next",
     nextSteps:
       "Add location-level analytics on the ordering hand-off so the owners' count has data behind it, and keep checking in with them as more customers use the new site.",
     proudestOf:
-      "Designing the confirm step twice (inline on desktop, a bottom sheet on mobile) instead of shrinking one layout, all around ordering platforms I couldn't change.",
+      "Designing the confirm step twice, inline on desktop and as a bottom sheet on mobile, instead of squeezing one layout onto both. All of it had to work around ordering platforms I couldn't change.",
     placeholder: false,
   },
 

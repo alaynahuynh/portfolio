@@ -65,7 +65,7 @@ export const projects: Project[] = [
       wideSrc: "/thumbnails/mymuseum/mymuseum-wide.mp4",
       widePoster: "/thumbnails/mymuseum/mymuseum-wide-poster.webp",
       wideAlt:
-        "The MyMuseum landing gallery under the headline 'Create a world for your work', then a visitor's avatar walking up to a framed artwork.",
+        "MyMuseum's landing page, 'Create a world for your work', then the create form being filled in, the 'Your museum is ready' screen with Enter Museum, a 3D gallery room, and the Grid View of the collection, opening Misty Falls.",
       tallSrc: "/thumbnails/mymuseum/mymuseum-tall.mp4",
       tallPoster: "/thumbnails/mymuseum/mymuseum-tall-poster.webp",
       tallAlt: "MyMuseum's Grid View on a phone, scrolling from 'My Little World' down to the artwork 'Out of Water'.",
@@ -165,7 +165,7 @@ export const projects: Project[] = [
     title: "Nudge",
     role: "Product Design · Customer Research · Pitch Design",
     summary:
-      "Designed a travel-health planner for first-time study abroad students, after five interviews showed the real problem was urgency, not information.",
+      "Designed a travel-health planner for first-time study abroad students, after five interviews showed the real problem was that nothing made them start.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "#d8cff7",
@@ -185,6 +185,36 @@ export const projects: Project[] = [
         "Three Nudge app screens: the trip plan grouped by weeks before departure, today's nudge to book a yellow fever shot with a CDC source, and the logging screen.",
       tallPoster: "/images/projects/nudge/nudge-tall.jpg",
       tallAlt: "Nudge's trip plan on a phone: steps to book now, steps coming up, and records already imported from MyChart.",
+    },
+  },
+  {
+    slug: "jurnee",
+    // Homepage thumbnail mat + case-study CTA fill — Jurnee's lilac.
+    matTint: "color-mix(in srgb, #DBD3F0 55%, var(--color-background))",
+    statusTag: "3rd place · Fall 2026 Designathon",
+    title: "Jurnee",
+    role: "Product Design · Branding · Prototyping",
+    summary:
+      "A weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
+    status: "in-progress",
+    accent: "mauve",
+    dominantColor: "#DBD3F0",
+    hasCaseStudy: true,
+    // Standalone page: src/app/projects/jurnee/page.tsx. Images built
+    // from the team's final deck PDF.
+    cover: {
+      src: "/images/projects/jurnee/jurnee-cover-wide.jpg",
+      alt: "Three Jurnee app screens on a lavender background: the leaderboard, the home screen's Tree of Time countdown, and the weekly mountain.",
+      width: 1920,
+      height: 1080,
+    },
+    media: {
+      bgColor: "#EDE8F7",
+      widePoster: "/images/projects/jurnee/jurnee-cover-wide.jpg",
+      wideAlt:
+        "Three Jurnee screens: a weekly leaderboard, the home screen's hand-drawn tree inside a 4-days-left countdown ring above the week's experiences, and the mountain with checkpoints climbing to the summit.",
+      tallPoster: "/images/projects/jurnee/jurnee-cover-tall.jpg",
+      tallAlt: "Jurnee's weekly mountain on a phone: two checkpoints done, the avatar mid-climb, and the pottery class card open with Add photo to complete.",
     },
   },
   {

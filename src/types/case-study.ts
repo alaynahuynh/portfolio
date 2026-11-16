@@ -774,18 +774,11 @@ export interface CompetitorFinding {
 
 /** One key product decision: tension → evidence → decision → tradeoff → outcome. */
 export interface CaseStudyDecision {
+  /** A plain sentence, e.g. "I let the uploads decide the layout". */
   title: string;
-  /** Short "X vs. Y" label for the tension being resolved. */
-  tension: string;
-  problem: string;
-  /** Each piece of evidence names its source (e.g. "Competitive analysis",
-   * "My own testing", "Design intent") so its weight is clear. */
-  evidence: { source: string; text: string }[];
-  decision: string;
-  tradeoff: string;
-  outcome: string;
-  /** Plain status line, e.g. "Built · functionally tested · not yet tested with artists". */
-  status?: string;
+  /** Short first-person paragraphs: what we saw (naming where it came
+   * from in passing), what I did, and what it cost. */
+  body: string[];
   /** Optional step chips shown as this decision's visual. */
   steps?: string[];
   images?: CaseStudyImageSpec[];

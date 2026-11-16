@@ -126,12 +126,31 @@ CLIPS = [
     Clip(
         "mymuseum-wide",
         "mymuseum",
-        WIDE,
+        # A few held screens from the case study's own recordings, with a
+        # locked camera: the only motion is what happens on screen (typing,
+        # clicks, a page change). Moving the camera on top of a moving
+        # recording, or using the 3D walk-around, made this dizzy.
+        #   landing page -> filling in the create form -> "Your museum is
+        #   ready" + Enter Museum -> a still 3D room -> Controls -> Grid View
+        #   -> View artwork.
+        (1600, 900),
         [
-            Seg(VID / "mymuseum/walkthrough.mp4", 4.8, [(0, 1.0, 0.5, 0.5), (4.8, 1.18, 0.5, 0.47)], start=0.0),
-            # Zoomed so the on-screen "Controls" panel (top right) stays out of frame.
-            Seg(VID / "mymuseum/final-walk.mp4", 4.6, [(0, 1.25, 0.43, 0.5), (4.6, 1.45, 0.47, 0.47)], start=0.4),
+            # Landing page: "Create a world for your work."
+            Seg(VID / "mymuseum/walkthrough.mp4", 2.6, [(0, 1.0, 0.5, 0.5)], start=0.0, play=2.6),
+            # Create form: typing a name, then picking the Muted Sage theme.
+            # Zoomed once (not moving) because the form only fills the middle
+            # of the recording.
+            Seg(VID / "mymuseum/final-create.mp4", 3.2, [(0, 1.7, 0.5, 0.45)], start=5.0, play=3.2),
+            # "Your museum is ready" -> Copy museum link -> Enter Museum. Ends
+            # before the cut into 3D.
+            Seg(VID / "mymuseum/final-create.mp4", 2.5, [(0, 1.6, 0.5, 0.45)], start=16.8, play=2.5),
+            # A still 3D room -> Controls -> Switch to accessible grid view ->
+            # scroll -> View artwork on Misty Falls -> the viewer.
+            Seg(VID / "mymuseum/final-inspect.mp4", 6.2, [(0, 1.0, 0.5, 0.5)], start=4.2, play=6.2),
         ],
+        fps=24,
+        max_s=20.0,
+        max_bytes=2_500_000,
     ),
     # A real phone session of the live app (no zoom: the recording is already
     # a 9:16 phone screen): My Little World's grid -> scroll to the first

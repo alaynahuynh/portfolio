@@ -30,7 +30,7 @@ import {
  * Every screen shown is a real state of the Figma prototype (exported
  * frames or stills from its recorded walkthroughs). Anything without a
  * real visual is simply not rendered — never a "coming soon" slot — and
- * `projectStatus` says plainly what is prototyped vs. still future work.
+ * (Scope is stated in the hero disclosure and next steps, not a status box.)
  */
 
 const NAV_SECTIONS: CaseStudyNavSection[] = [
@@ -44,14 +44,6 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "testing", label: "Testing" },
   { id: "reflection", label: "Reflection" },
 ];
-
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50 text-(--project-accent)">
-      {children}
-    </p>
-  );
-}
 
 function Label({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
@@ -82,28 +74,20 @@ function BoundaryNote({ children }: { children: React.ReactNode }) {
  * mapping section that restated the same findings.
  */
 function Finding({
-  index,
   title,
   whatParticipantsSaid,
   designResponse,
-  responseLabel = "What I designed",
 }: {
-  index: number;
   title: string;
   whatParticipantsSaid: string;
   designResponse: string;
-  responseLabel?: string;
 }) {
   return (
-    <div className="grid gap-4 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
-      <p className="text-sm font-medium text-(--project-accent)">0{index}</p>
-      <div>
-        <h3 className="text-xl font-semibold text-foreground sm:text-2xl">{title}</h3>
-        <p className="mt-3 text-muted-foreground">{whatParticipantsSaid}</p>
-      </div>
-      <div className="lg:pt-1">
-        <Label accent>{responseLabel}</Label>
-        <p className="mt-2 text-foreground">{designResponse}</p>
+    <div className="grid gap-3 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-10">
+      <h3 className="text-xl font-semibold text-foreground sm:text-2xl">{title}</h3>
+      <div className="space-y-2">
+        <p className="text-muted-foreground">{whatParticipantsSaid}</p>
+        <p className="text-foreground">{designResponse}</p>
       </div>
     </div>
   );
@@ -123,7 +107,7 @@ function CalloutList({
     <div className={cn("grid gap-6", className)}>
       {items.map((item) => (
         <div key={item.title}>
-          <Label accent>{item.title}</Label>
+          <p className="text-sm font-semibold text-foreground">{item.title}</p>
           <p className="mt-1 text-sm text-muted-foreground">{item.description}</p>
         </div>
       ))}
@@ -198,8 +182,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------- OVERVIEW */}
       <Section id="overview" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Overview</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {hero.description}
           </Heading>
         </Reveal>
@@ -224,29 +207,12 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
           </>
         )}
 
-        {data.projectStatus && (
-          <Reveal delay={160}>
-            <div className="mt-16 grid gap-8 rounded-(--radius-default) border border-border bg-surface p-6 sm:grid-cols-3 sm:p-8">
-              {data.projectStatus.map((group, i) => (
-                <div key={group.label}>
-                  <Label accent={i === 0}>{group.label}</Label>
-                  <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-                    {group.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        )}
       </Section>
 
       {/* -------------------------------------------------------- PROBLEM */}
       <Section id="problem" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>The problem</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {background.heading}
           </Heading>
         </Reveal>
@@ -258,8 +224,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------- RESEARCH */}
       <Section id="research" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Research → product decisions</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             I talked to five students about how they actually get through Canvas.
           </Heading>
         </Reveal>
@@ -271,7 +236,6 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
           {keyFindings.map((finding, i) => (
             <Reveal key={finding.title} delay={i * 30}>
               <Finding
-                index={i + 1}
                 title={finding.title}
                 whatParticipantsSaid={finding.whatParticipantsSaid}
                 designResponse={finding.designResponse}
@@ -290,8 +254,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* --------------------------------------------------- INSIDE CANVAS */}
       <Section id="canvas" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Where it lives</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {platformIntegration?.heading}
           </Heading>
         </Reveal>
@@ -328,8 +291,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {earlyExploration && (
         <Section id="exploration" className="scroll-mt-28">
           <Reveal>
-            <Eyebrow>Early exploration</Eyebrow>
-            <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+            <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
               {earlyExploration.heading}
             </Heading>
           </Reveal>
@@ -360,23 +322,16 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------ ITERATION */}
       <Section id="iteration" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Design evolution</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {design.heading}
           </Heading>
         </Reveal>
 
         {iterationStory && (
           <Reveal delay={40}>
-            <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2 sm:gap-12">
-              <div>
-                <Label>The problem</Label>
-                <p className="mt-3 max-w-lg text-muted-foreground">{iterationStory.problem}</p>
-              </div>
-              <div>
-                <Label accent>The decision</Label>
-                <p className="mt-3 max-w-lg text-xl font-medium text-foreground">{iterationStory.decision}</p>
-              </div>
+            <div className="mt-6 max-w-[45rem] space-y-4 text-lg text-muted-foreground">
+              <p>{iterationStory.problem}</p>
+              <p>{iterationStory.decision}</p>
             </div>
           </Reveal>
         )}
@@ -401,37 +356,12 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
           )}
         </div>
 
-        {iterationStory?.comparisonLabels && (
-          <Reveal delay={120}>
-            <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:gap-6">
-              <ul className="space-y-1 text-sm text-muted-foreground">
-                {iterationStory.comparisonLabels.early.map((label) => (
-                  <li key={label}>— {label}</li>
-                ))}
-              </ul>
-              <ul className="space-y-1 text-sm text-foreground">
-                {iterationStory.comparisonLabels.final.map((label) => (
-                  <li key={label}>+ {label}</li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        )}
-
-        {iterationStory?.takeaway && (
-          <Reveal delay={140}>
-            <p className="mx-auto mt-16 max-w-2xl text-center font-heading text-2xl text-foreground sm:text-3xl">
-              {iterationStory.takeaway}
-            </p>
-          </Reveal>
-        )}
       </Section>
 
       {/* -------------------------------------------------------- FINAL */}
       <Section id="final" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Final experience</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-4xl sm:text-6xl">
+          <Heading level={2} className="max-w-3xl text-4xl sm:text-6xl">
             The final prototype.
           </Heading>
         </Reveal>
@@ -558,8 +488,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------- TESTING */}
       <Section id="testing" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Usability testing</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {testing.heading}
           </Heading>
         </Reveal>
@@ -584,11 +513,9 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             {testing.iterations.map((finding, i) => (
               <Reveal key={finding.title} delay={i * 30}>
                 <Finding
-                  index={i + 1}
                   title={finding.title}
                   whatParticipantsSaid={finding.feedback}
                   designResponse={finding.finalIteration}
-                  responseLabel={testing.changedLabel}
                 />
               </Reveal>
             ))}
@@ -640,9 +567,8 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
       {/* -------------------------------------------------------- REFLECTION */}
       <Section id="reflection" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Reflection</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
-            Students needed to see the reasoning, not just the answer.
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
+            Students wanted to see the reason right on the screen.
           </Heading>
         </Reveal>
         <Reveal delay={40}>

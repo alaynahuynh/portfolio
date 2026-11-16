@@ -136,14 +136,6 @@ function Label({ children, accent }: { children: React.ReactNode; accent?: boole
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] text-mauve-deep uppercase before:h-px before:w-6 before:bg-current before:opacity-50">
-      {children}
-    </p>
-  );
-}
-
 function Caption({ children }: { children: React.ReactNode }) {
   return <p className="mt-3 text-sm text-muted-foreground">{children}</p>;
 }
@@ -225,8 +217,7 @@ export default function PigLampPage() {
       {/* -------------------------------------------------------- CONCEPT */}
       <Section className="cs-band">
         <Reveal>
-          <Eyebrow>01 · Concept</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             The pig&rsquo;s body is the lampshade.
           </Heading>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
@@ -261,8 +252,7 @@ export default function PigLampPage() {
       {/* -------------------------------------------------------- CUT FILES */}
       <Section>
         <Reveal>
-          <Eyebrow>02 · Cut files</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             From pencil to laser-ready lines.
           </Heading>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
@@ -286,8 +276,7 @@ export default function PigLampPage() {
       {/* ------------------------------------------------------ PROTOTYPE */}
       <Section className="cs-band">
         <Reveal>
-          <Eyebrow>03 · Prototyping</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             Getting the pieces to fit took a couple of tries.
           </Heading>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
@@ -317,8 +306,7 @@ export default function PigLampPage() {
       {/* ---------------------------------------------------------- FINAL */}
       <Section>
         <Reveal>
-          <Eyebrow>04 · Final</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             Painted, assembled, and lit.
           </Heading>
         </Reveal>
@@ -349,8 +337,7 @@ export default function PigLampPage() {
       <Section className="cs-band">
         <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] lg:gap-16">
           <Reveal>
-            <Eyebrow>05 · Outcome</Eyebrow>
-            <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+            <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
               &ldquo;The kids absolutely loved it.&rdquo;
             </Heading>
             <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
@@ -376,8 +363,7 @@ export default function PigLampPage() {
       {/* ----------------------------------------------------- REFLECTION */}
       <Section>
         <Reveal>
-          <Eyebrow>Reflection</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             Next time I&rsquo;d test the fit and the size before cutting.
           </Heading>
         </Reveal>
@@ -385,8 +371,8 @@ export default function PigLampPage() {
           <Reveal delay={40}>
             <Label accent>What I learned</Label>
             <p className="mt-3 text-muted-foreground">
-              In a slot-together object, a fraction of a millimeter in the kerf decides whether the pieces hold
-              together.
+              When every piece slots into another, being off by a fraction of a millimeter in the kerf is enough
+              to keep it from holding together.
             </p>
           </Reveal>
           <Reveal delay={60}>

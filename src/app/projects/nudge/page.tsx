@@ -114,7 +114,7 @@ const INSIGHTS = [
     body: "When a program sent a long health packet, students skimmed it and assumed someone would flag anything important.",
   },
   {
-    title: "Trusted means hard to reach.",
+    title: "The people they trust are hard to reach.",
     body: "Students trusted their doctor most but wouldn't book an appointment just to ask about a trip. Google and TikTok were quick, but not trusted.",
   },
 ];
@@ -196,24 +196,20 @@ const MATRIX: [string, Mark[]][] = [
 
 const DECISIONS = [
   {
-    from: "Long packets get skimmed",
-    title: "One step at a time, not a list.",
-    body: "Home shows a single step for today, so there's nothing to skim. The full plan is one tap away.",
+    title: "Just one step for today.",
+    body: "Home only shows what to do today, so there's nothing to skim. The full plan is one tap away.",
   },
   {
-    from: "Nothing forces it",
     title: "Every step has a due date, counted back from the flight.",
     body: "Health prep gets the same kind of deadline as the visa, so it stops slipping to the bottom.",
   },
   {
-    from: "Trusted means hard to reach",
     title: "Every step shows where it came from.",
     body: "A CDC or WHO tag on each step gives the trust of a doctor's answer without booking an appointment.",
   },
   {
-    from: "The records are at home",
     title: "Imported records show up as already done.",
-    body: "Pulling records from MyChart clears steps before Josh even starts, so the plan opens shorter, not longer.",
+    body: "Pulling records from MyChart clears steps before Josh even starts, so the plan starts out shorter.",
   },
 ];
 
@@ -237,24 +233,10 @@ function Label({ children, accent, className }: { children: React.ReactNode; acc
   );
 }
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p
-      className={cn(
-        "flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50",
-        ACCENT,
-      )}
-    >
-      {children}
-    </p>
-  );
-}
-
-function SectionIntro({ eyebrow, title, children }: { eyebrow: string; title: React.ReactNode; children?: React.ReactNode }) {
+function SectionIntro({ title, children }: { title: React.ReactNode; children?: React.ReactNode }) {
   return (
     <Reveal>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+      <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
         {title}
       </Heading>
       {children && <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{children}</p>}
@@ -385,7 +367,7 @@ export default function NudgePage() {
 
       {/* ------------------------------------------------------ INTERVIEWS */}
       <Section className="cs-band">
-        <SectionIntro eyebrow="01 · What I heard" title={<>&ldquo;My mom has a folder.&rdquo;</>}>
+        <SectionIntro title={<>&ldquo;My mom has a folder.&rdquo;</>}>
           We started out designing for every international traveler. Then I ran five customer interviews. All three
           undergraduates said a parent or their program handles health prep, and that they wouldn&rsquo;t know what
           to do on their own. One didn&rsquo;t know his vaccine history because his mom keeps it in a folder.
@@ -405,7 +387,7 @@ export default function NudgePage() {
 
       {/* -------------------------------------------------------- REFRAME */}
       <Section>
-        <SectionIntro eyebrow="02 · Reframing" title="Information wasn’t the problem. Urgency was.">
+        <SectionIntro title="The interviews changed what we thought the problem was">
           We had assumed people skipped health prep because the information was scattered. The interviews showed it
           was really about timing and trust, so we rewrote our problem statement.
         </SectionIntro>
@@ -427,7 +409,7 @@ export default function NudgePage() {
 
       {/* -------------------------------------------------------- PERSONAS */}
       <Section className="cs-band">
-        <SectionIntro eyebrow="03 · Personas" title="Built for the student. Trusted by the people around them.">
+        <SectionIntro title="Josh, and the people helping him">
           The interviews also changed who surrounds Josh. Our employer persona became a study abroad coordinator,
           since students and parents trust their university most. Our caregiver persona gained a need for consent
           and translation.
@@ -467,7 +449,7 @@ export default function NudgePage() {
 
       {/* -------------------------------------------------- NEEDS → MVP */}
       <Section>
-        <SectionIntro eyebrow="04 · Scoping" title="Seven needs, three features.">
+        <SectionIntro title="Seven needs, three features.">
           We turned Josh&rsquo;s pain points into seven needs and a feature for each. For the MVP, we kept the three
           that answer the reasons students stall, and saved the rest for later.
         </SectionIntro>
@@ -523,7 +505,7 @@ export default function NudgePage() {
 
       {/* ---------------------------------------------------- COMPETITION */}
       <Section className="cs-band">
-        <SectionIntro eyebrow="05 · The gap" title="Others give information. Nudge gets you to done.">
+        <SectionIntro title="No existing tool counted down to your flight">
           We compared five existing tools. Several had good information, but none paired a countdown to your flight
           with your own vaccine records. That pairing became our focus.
         </SectionIntro>
@@ -568,7 +550,7 @@ export default function NudgePage() {
 
       {/* ------------------------------------------------------- DESIGN */}
       <Section>
-        <SectionIntro eyebrow="06 · Designing the app" title="Every screen answers: what should Josh do today?">
+        <SectionIntro title="I rebuilt every screen around what Josh should do today">
           I designed the app in Figma. Heartie, its mascot, keeps a health topic friendly instead of clinical. My first
           version was built around everyday health habits. Next to Josh&rsquo;s story, the mismatch was clear: nothing
           on screen was about his trip.
@@ -614,8 +596,7 @@ export default function NudgePage() {
             {DECISIONS.map((d, i) => (
               <Reveal key={d.title} delay={i * 60}>
                 <div className="border-l-2 border-[#6249d6]/40 pl-5 dark:border-[#b8a9ff]/40">
-                  <Label>Because: {d.from.toLowerCase()}</Label>
-                  <h3 className="mt-1.5 text-xl font-semibold text-foreground">{d.title}</h3>
+                  <h3 className="text-xl font-semibold text-foreground">{d.title}</h3>
                   <p className="mt-1.5 text-muted-foreground">{d.body}</p>
                 </div>
               </Reveal>
@@ -649,7 +630,7 @@ export default function NudgePage() {
 
       {/* ------------------------------------------------------------ DECK */}
       <Section className="cs-band">
-        <SectionIntro eyebrow="07 · The pitch" title="Designing a deck for six minutes on stage.">
+        <SectionIntro title="Designing a deck for six minutes on stage.">
           I designed our pitch deck. Judges had six minutes with us, so I kept one idea per slide, told the whole story
           through Josh, and built a visual system around the product: a soft purple and yellow palette, Heartie, and
           handwritten notes like &ldquo;our main guy&rdquo; to keep it human.
@@ -669,7 +650,7 @@ export default function NudgePage() {
 
       {/* ------------------------------------------------------ REFLECTION */}
       <Section>
-        <SectionIntro eyebrow="Reflection" title="Next, I’d put the screens in front of students." />
+        <SectionIntro title="Next, I’d put the screens in front of students." />
         <div className="mt-10 grid gap-10 sm:grid-cols-2">
           <Reveal delay={40}>
             <Label accent>What I learned</Label>

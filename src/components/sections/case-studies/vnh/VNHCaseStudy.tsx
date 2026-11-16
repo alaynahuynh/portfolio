@@ -42,14 +42,6 @@ const NAV_SECTIONS: CaseStudyNavSection[] = [
   { id: "reflection", label: "Reflection" },
 ];
 
-function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="flex items-center gap-3 text-xs font-semibold tracking-[0.16em] uppercase before:h-px before:w-6 before:bg-current before:opacity-50 text-(--project-accent)">
-      {children}
-    </p>
-  );
-}
-
 function Label({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
   return (
     <p
@@ -267,48 +259,23 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------- OVERVIEW */}
       <Section id="overview" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Overview</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {overview.featuresIntro}
           </Heading>
         </Reveal>
         <Reveal delay={60}>
-          <dl className="mt-12 grid gap-8 border-t border-border pt-8 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <dt><Label>Client</Label></dt>
-              <dd className="mt-2 text-sm text-muted-foreground">
-                A family-owned restaurant with two locations (North Syracuse and Camillus) and a food truck.
-              </dd>
-            </div>
-            <div>
-              <dt><Label>My role</Label></dt>
-              <dd className="mt-2 text-sm text-muted-foreground">
-                Solo. I audited the old site, then designed and built the new one across every page, desktop and
-                mobile.
-              </dd>
-            </div>
-            <div>
-              <dt><Label>Constraint</Label></dt>
-              <dd className="mt-2 text-sm text-muted-foreground">
-                Online ordering stays on the restaurant&rsquo;s existing ordering platforms (MenuDrive/Lavu), with a
-                separate link per location, so the site has to send people to the right one.
-              </dd>
-            </div>
-            <div>
-              <dt><Label accent>Status</Label></dt>
-              <dd className="mt-2 text-sm text-muted-foreground">
-                Live at vietnoodlehouse.com.
-              </dd>
-            </div>
-          </dl>
+          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
+            One thing I couldn&rsquo;t change: online ordering runs through the restaurant&rsquo;s existing platforms
+            (MenuDrive and Lavu), with a separate link for each location. So a big part of the site&rsquo;s job is
+            getting people to the right link.
+          </p>
         </Reveal>
       </Section>
 
       {/* -------------------------------------------------------- PROBLEM */}
       <Section id="problem" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>The problem</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {background.heading}
           </Heading>
         </Reveal>
@@ -331,29 +298,24 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* -------------------------------------------------------- PROCESS */}
       <Section id="process" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>Audit</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {research.heading}
           </Heading>
         </Reveal>
         <Reveal delay={40}>
           <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">{research.intro}</p>
-          <p className="mt-2 max-w-[45rem] text-sm text-muted-foreground">{research.participants}</p>
         </Reveal>
 
         <div className="mt-14">
           {keyFindings.map((finding, i) => (
             <Reveal key={finding.title} delay={i * 30}>
-              <div className="grid gap-4 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[3rem_minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-10">
-                <p className="text-sm font-medium text-(--project-accent)">0{i + 1}</p>
-                <div>
-                  <h3 className="text-xl font-semibold text-foreground sm:text-2xl">{finding.title}</h3>
-                  <p className="mt-3 text-muted-foreground">{finding.whatParticipantsSaid}</p>
-                  <p className="mt-2 text-sm text-muted-foreground italic">{finding.whyItMatters}</p>
-                </div>
-                <div className="lg:pt-1">
-                  <Label accent>What I changed</Label>
-                  <p className="mt-2 text-foreground">{finding.designResponse}</p>
+              <div className="grid gap-3 border-t border-border py-8 first:border-t-0 first:pt-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)] lg:gap-10">
+                <h3 className="text-xl font-semibold text-foreground sm:text-2xl">{finding.title}</h3>
+                <div className="space-y-2">
+                  <p className="text-muted-foreground">
+                    {finding.whatParticipantsSaid} {finding.whyItMatters}
+                  </p>
+                  <p className="text-foreground">{finding.designResponse}</p>
                 </div>
               </div>
             </Reveal>
@@ -364,8 +326,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------ LOCATIONS */}
       <Section id="locations" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Centerpiece — interaction design</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-4xl sm:text-6xl">
+          <Heading level={2} className="max-w-3xl text-4xl sm:text-6xl">
             Making sure every order reaches the right kitchen
           </Heading>
         </Reveal>
@@ -438,21 +399,16 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
 
         <Reveal delay={180}>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 sm:grid-cols-2 sm:gap-12">
+            <p className="text-muted-foreground">
+              This adds a tap before ordering, which is the one thing the restaurant most wants people to do. I
+              was fine with that. A wrong-location order costs the customer and the restaurant a lot more than a
+              tap.
+            </p>
             <div>
-              <Label>The tradeoff</Label>
-              <p className="mt-3 text-muted-foreground">
-                The flow adds one confirmation tap in front of ordering, the business&rsquo;s top priority. I
-                accepted it because each wrong-location order costs the customer and the restaurant far more than
-                a tap.
-              </p>
-            </div>
-            <div>
-              <Label accent>What happened</Label>
-              <p className="mt-3 font-heading text-3xl text-foreground">About 8 → about 1</p>
-              <p className="mt-1 text-sm text-muted-foreground">mistaken orders a month since the July launch, by the owners&rsquo; count</p>
-              <p className="mt-4 text-muted-foreground">
-                The owners&rsquo; tally, not analytics, and other pages changed too, but this flow was the change
-                aimed at mistaken orders.
+              <p className="font-heading text-3xl text-foreground">About 8 → about 1</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                mistaken orders a month since the July launch. That&rsquo;s the owners&rsquo; own count, not
+                analytics, and other pages changed at the same time.
               </p>
             </div>
           </div>
@@ -473,8 +429,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ----------------------------------------------------------- MENU */}
       <Section id="menu" className="scroll-mt-28">
         <Reveal>
-          <Eyebrow>From PDF to a real menu</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             From an 11-page PDF to a menu you can scroll
           </Heading>
         </Reveal>
@@ -515,8 +470,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ----------------------------------------------------------- HOME */}
       <Section id="home" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Visual identity</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             A palette taken from the dining rooms
           </Heading>
         </Reveal>
@@ -550,22 +504,11 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
 
         <Reveal delay={40}>
           <p className="mt-16 max-w-[45rem] border-t border-border pt-12 text-lg text-muted-foreground">
-            The same idea carried through every page.
+            The rest follows from that. Headings are a serif and everything else is a simple sans-serif. Photos of
+            the actual food and dining rooms do most of the work. And I designed every page for phones and desktop
+            at the same time, instead of shrinking the desktop version down.
           </p>
         </Reveal>
-        {background.principles && (
-          <Reveal delay={60}>
-            <div className="mt-10 grid gap-8 sm:grid-cols-3">
-              {background.principles.items.map((principle, i) => (
-                <div key={principle.title}>
-                  <p className="text-sm font-semibold text-(--project-accent)">{String(i + 1).padStart(2, "0")}</p>
-                  <p className="mt-2 font-medium text-foreground">{principle.title}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">{principle.description}</p>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-        )}
         <Reveal className="mt-14">
           <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />
         </Reveal>
@@ -574,8 +517,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ------------------------------------------------------ REFLECTION */}
       <Section id="reflection" className="scroll-mt-28 cs-band">
         <Reveal>
-          <Eyebrow>Reflection</Eyebrow>
-          <Heading level={2} className="mt-4 max-w-3xl text-3xl sm:text-5xl">
+          <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             {finalThoughts.pullQuote}
           </Heading>
         </Reveal>

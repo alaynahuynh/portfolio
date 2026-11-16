@@ -31,9 +31,9 @@ export const coursePilot: CaseStudyData = {
   hero: {
     category: "Product Design · UX Research · Interaction Design",
     title: "CoursePilot",
-    tagline: "Turning scattered Canvas information into answers students can act on.",
+    tagline: "An assistant inside Canvas for the question “what should I work on tonight?”",
     description:
-      "I designed an AI assistant inside Canvas that helps students find course information, prioritize work, and build realistic study plans.",
+      "I designed an AI assistant that lives inside Canvas. You ask it what's due, what changed this week, or what the late policy is, and it answers from your own courses.",
     statusLabel: "Interactive prototype",
     ctaLabel: "Explore Prototype",
     ctaHref: FIGMA_PROTOTYPE_URL,
@@ -107,37 +107,37 @@ export const coursePilot: CaseStudyData = {
 
     keyFindings: [
       {
-        title: "Important information gets missed",
+        title: "Announcements were easy to miss",
         whatParticipantsSaid:
           "Students relied heavily on the Canvas calendar, but announcements and other important updates often lived elsewhere.",
         whyItMatters:
           "Students are often unaware of important course updates because information is spread across different areas of Canvas.",
         designResponse:
-          "A Catch Me Up feature combines new announcements and upcoming assignments into one weekly summary.",
+          "So I designed Catch Me Up, which puts new announcements and upcoming assignments into one weekly summary.",
       },
       {
-        title: "Prioritization requires more than a due date",
+        title: "The due date wasn't the only thing that mattered",
         whatParticipantsSaid:
           "Students considered deadline, estimated effort, difficulty, and grade importance when deciding what to work on first.",
         whyItMatters: "Students do not simply complete assignments in chronological order.",
         designResponse:
-          "Plan My Night builds a schedule around deadline and estimated effort rather than listing assignments chronologically.",
+          "Plan My Night ranks work by deadline and how long it'll take, instead of just listing it by date.",
       },
       {
-        title: "Students want answers, not more navigation",
+        title: "Students knew what they were looking for, just not where it was",
         whatParticipantsSaid:
           "Students often knew what they needed to know but had to search across Assignments, Announcements, Modules, Syllabus, Inbox, and other Canvas pages.",
         whyItMatters: "Students spend unnecessary time searching for information instead of completing coursework.",
         designResponse:
-          "Conversational questions return structured answers directly, with a link back to the original Canvas page.",
+          "So you can just ask. The answer shows up right there, with a link to the Canvas page it came from.",
       },
       {
-        title: "AI has to show its work",
+        title: "One wrong answer and they'd stop trusting it",
         whatParticipantsSaid:
           "Students said inaccurate academic information would quickly erode their trust. They wanted to see where answers came from and why tasks were ranked (in a small expandable dropdown, not a paragraph), and to change priorities themselves.",
         whyItMatters: "An AI assistant is only useful if students believe the information is reliable.",
         designResponse:
-          "Sources on every answer, a compact “Why this?” on each recommended task, and Adjust Plan to change a plan before acting on it.",
+          "Every answer shows its sources, every suggested task has a small “Why this?”, and Adjust Plan lets you change a plan before you use it.",
       },
     ],
 
@@ -424,7 +424,7 @@ export const coursePilot: CaseStudyData = {
   },
 
   design: {
-    heading: "From conversational answers to structured decisions",
+    heading: "Long chat answers were hard to read, so each answer got its own layout",
     processNarrative:
       "Early concepts relied heavily on conversational responses. As the questions became more complex, schedules, grade calculations, and course updates became difficult to scan as plain text. I kept conversation as the input model, but shifted CoursePilot's responses toward structured interfaces designed around the task.",
     wireframeScreens: [],
@@ -432,14 +432,14 @@ export const coursePilot: CaseStudyData = {
     placeholder: false,
     iterationStory: {
       problem:
-        "Early CoursePilot concepts relied heavily on conversational, chat-style responses. As I designed more complex tasks like study planning, grade calculations, and weekly summaries, long text responses got hard to scan.",
+        "My early concepts answered everything in chat-style paragraphs. Once I got to study plans, grade calculations and weekly summaries, those paragraphs got long and hard to scan.",
       decision:
-        "Students still ask in plain words, but the answer comes back as a schedule, a summary, or a breakdown instead of a paragraph.",
+        "So students still ask in plain words, but the answer comes back as a schedule, a summary or a breakdown.",
       pairs: [
         {
           task: "Plan My Night",
-          beforeLabel: "Early — conversational response",
-          afterLabel: "Final — structured schedule",
+          beforeLabel: "Early version",
+          afterLabel: "Final version",
           before: {
             src: "/images/projects/coursepilot/iteration/plan-my-night-early.png",
             alt: "Early Plan My Night response: a plain conversational paragraph listing a suggested 3-hour schedule as text.",
@@ -455,8 +455,8 @@ export const coursePilot: CaseStudyData = {
         },
         {
           task: "Grade calculation",
-          beforeLabel: "Early — conversational response",
-          afterLabel: "Final — structured breakdown",
+          beforeLabel: "Early version",
+          afterLabel: "Final version",
           before: {
             src: "/images/projects/coursepilot/iteration/grade-calc-early.png",
             alt: "Early grade calculation response: a plain conversational paragraph stating the required exam score and listing recent grades as text.",
@@ -471,12 +471,6 @@ export const coursePilot: CaseStudyData = {
           },
         },
       ],
-      takeaway:
-        "Each answer gets a layout that fits the task the student is trying to do.",
-      comparisonLabels: {
-        early: ["Harder to scan", "Reasoning buried", "Limited direct action"],
-        final: ["Scannable hierarchy", "Visible reasoning + sources", "Editable/actionable output"],
-      },
     },
     // Once exported, wire the real screens into `beforeAfter` below —
     // CoursePilotCaseStudy.tsx renders it automatically via the shared
@@ -504,44 +498,43 @@ export const coursePilot: CaseStudyData = {
   testing: {
     heading: "Five students, one prototype",
     intro:
-      "I ran task-based sessions with five students on the Figma prototype. Every participant saw value in it, and each turned up a different problem. Each finding comes from one participant, so I treat them as signals, not patterns yet.",
+      "I ran task-based sessions with five students on the Figma prototype. Everyone found it useful, and each person ran into something different. Since each problem came from just one person, I'm not calling any of them a pattern yet.",
     tasks: [],
-    changedLabel: "What I'd change",
     iterations: [
       {
         title: "The task order didn't explain itself",
         feedback:
           "P1, looking at the generated plan: “Wait, why is this assignment first?”",
         finalIteration:
-          "Each task already has a “Why this?” link, but the reason needs to be visible without clicking: show the deciding factor (due date or estimated effort) right on the task row.",
+          "There's already a “Why this?” link, but the reason should be visible without clicking. I'd show the deciding factor, due date or estimated effort, right on the task.",
       },
       {
         title: "Time estimates read as fixed",
         feedback:
           "P2: “It says this assignment should take an hour and a half. I feel like it would take me way longer than that.”",
         finalIteration:
-          "Label estimates as approximate, say where they come from, and put the way to edit them (Adjust Plan) right next to the estimate.",
+          "I'd label estimates as approximate, say where they come from, and put Adjust Plan right next to them.",
       },
       {
         title: "No way to say how much time you actually have",
         feedback:
           "P5, who had a meeting that night: “Is there somewhere I can change how much time I have?”",
         finalIteration:
-          "Adjust Plan changes time per task, not the total. Add a control for available time on the plan itself that regenerates a shorter plan without starting over.",
+          "Adjust Plan only changes the time for each task. I'd add a way to set your total time on the plan itself, so it can make a shorter plan without starting over.",
       },
       {
         title: "Announcements didn't say whether action was needed",
         feedback:
           "P3, reading the Catch Me Up summary: “I'm not sure if I'm supposed to do something for this announcement or if it's just telling us something.”",
         finalIteration:
-          "Mark each announcement as action needed or informational, and keep the direct link back to the original post.",
+          "I'd mark each announcement as either needing action or just FYI, and keep the link back to the original post.",
       },
       {
         title: "A source wasn't enough to trust a grade",
         feedback:
           "P4 found the source, but: “I'd still want to know if it's missing anything. Like if participation isn't graded yet.”",
         finalIteration:
-          "Show the calculation's assumptions and missing inputs, such as ungraded categories, next to the result, not just where the numbers came from.",
+          "I'd show what the calculation assumes and what's missing, like ungraded categories, right next to the result.",
       },
     ],
     whatWorked: [
@@ -559,7 +552,7 @@ export const coursePilot: CaseStudyData = {
 
   finalExperience: {
     subheading:
-      "Three flows from the prototype, each shaped around what the student does next.",
+      "Here are the three main flows.",
     // The old per-feature gallery (one heading + paragraph + full
     // screenshot per screen) is replaced by the story below —
     // `architecture` / `heroMoment` / `secondaryMoments` / `synthesis`.
@@ -570,7 +563,7 @@ export const coursePilot: CaseStudyData = {
 
     heroMoment: {
       heading: "A plan built around the time you have.",
-      copy: "A student describes their evening; CoursePilot ranks what's due and lays out a schedule that fits.",
+      copy: "You say how much time you have, and it ranks what's due and lays out a schedule that fits.",
       prompt: "I have 3 hours tonight. What should I work on?",
       callouts: [
         { title: "Priority", description: "Ranked by due date and estimated effort." },
@@ -584,7 +577,7 @@ export const coursePilot: CaseStudyData = {
     secondaryMoments: [
       {
         name: "Catch Me Up",
-        heading: "Understand what changed without checking every course.",
+        heading: "Everything new this week, in one place.",
         copy: "Assignments and announcements from every course in one summary. Nearly every student I interviewed mentioned missing announcements.",
         image: {
           src: "/images/projects/coursepilot/final/catch-me-up.png",
@@ -601,7 +594,7 @@ export const coursePilot: CaseStudyData = {
       {
         name: "Sourced Q&A",
         heading: "Answers you can check.",
-        copy: "AI can be wrong, so important answers show where they came from. A short answer comes with the original wording and where it came from.",
+        copy: "AI can be wrong, so an answer about something like a late policy comes with the professor's original wording and a link to the syllabus.",
         steps: ["“What's the late work policy?”", "Concise answer", "Source", "View in syllabus"],
         image: {
           src: "/images/projects/coursepilot/final/syllabus-answer.png",
@@ -622,8 +615,8 @@ export const coursePilot: CaseStudyData = {
     // No standalone `trust` block: the trust features are covered once,
     // in the Sourced Q&A moment's callouts.
     interactionDesign: {
-      heading: "Acting without losing context",
-      copy: "Actions such as adjusting a recommendation or adding a calendar event happen in lightweight overlays so students can make changes without losing the original conversation.",
+      heading: "Changing a plan without losing your place",
+      copy: "Adjusting a plan or adding it to your calendar opens a small overlay on top of the conversation, so you don't lose it.",
       images: [
         {
           src: "/images/projects/coursepilot/final/adjust-plan.png",
@@ -648,39 +641,11 @@ export const coursePilot: CaseStudyData = {
 
   finalThoughts: {
     whatILearned:
-      "The hard part was deciding when AI should summarize, when it should recommend, when students needed control, and when an answer needed evidence. Testing showed I'd underestimated the last one: students wanted the reasoning visible, not one click away.",
+      "The hardest part was deciding when the AI should just answer and when it needed to show its reasoning. I thought a “Why this?” link would be enough. In testing, students wanted the reason right there on the screen.",
     nextSteps:
-      "Design the five changes from testing (visible reasons, approximate estimates, available time, action-needed announcements, and stated assumptions) and test them with new students before adding any new AI features.",
+      "Design the five fixes from testing and try them with a new group of students, before adding any new AI features.",
     placeholder: false,
   },
-
-  // Recruiter-facing scope summary — what exists as a Figma prototype vs.
-  // what research called for but hasn't been designed vs. what hasn't
-  // started. Keep in sync with the screens actually shown on the page.
-  projectStatus: [
-    {
-      label: "Prototyped in Figma",
-      items: [
-        "Canvas entry point, popup, and full workspace",
-        "Plan My Night, with Adjust Plan and Add to Calendar",
-        "Catch Me Up",
-        "Sourced syllabus answers",
-        "Grade calculation",
-      ],
-    },
-    {
-      label: "Researched, not yet designed",
-      items: [
-        "Uncertainty and error states",
-        "Privacy and data-access controls",
-        "Academic-integrity refusals",
-      ],
-    },
-    {
-      label: "Not yet done",
-      items: ["Redesign from testing findings", "Canvas API feasibility review", "Engineering (this is a design prototype, not built software)"],
-    },
-  ],
 
   whatIsComplete: [
     { label: "Research plan", done: true },

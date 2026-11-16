@@ -53,7 +53,7 @@ export const myMuseum: CaseStudyData = {
 
   background: {
     heading:
-      "Online portfolios flatten art into grids and feeds, losing the scale, depth, and sequence the work depends on.",
+      "Online portfolios squeeze every piece of art into the same small rectangle.",
     narrative:
       "I wanted to know whether an artist's work could be walked through like a gallery instead. I started by interviewing five artists about how they show their work, built a first prototype around what they needed, put it in front of five people in usability sessions, and reworked it from there.",
     challenge: "",
@@ -68,7 +68,7 @@ export const myMuseum: CaseStudyData = {
 
     keyFindings: [
       {
-        title: "Flat images lose what makes the work matter",
+        title: "A photo of the work isn't the work",
         whatParticipantsSaid:
           "On a phone, P1's six-foot canvas looks the same size as a ten-inch sketch, without its texture or varnish. P3 loses a sculpture's depth and silhouette in a single JPEG. P4 watches feeds scramble a continuous series.",
         whyItMatters: "",
@@ -76,7 +76,7 @@ export const myMuseum: CaseStudyData = {
           "",
       },
       {
-        title: "Immersion can't cost access",
+        title: "Nobody wants to learn game controls to see a painting",
         whatParticipantsSaid:
           "P1 expects older collectors to close the tab if they meet game-style controls. P2 wants no virtual building at all, since an art director gives a portfolio about thirty seconds. Even P3, the strongest case for 3D, worries a slow gallery on a midrange phone makes the work look broken.",
         whyItMatters: "",
@@ -84,7 +84,7 @@ export const myMuseum: CaseStudyData = {
           "",
       },
       {
-        title: "Publishing has to take minutes, not an afternoon",
+        title: "If publishing is slow, it doesn't happen",
         whatParticipantsSaid:
           "P2 hadn't updated their site in about nine months. If publishing takes more than a couple of minutes, it doesn't happen. P5 cancelled a paid site builder; the monthly fee made no sense for occasional pottery sales.",
         whyItMatters: "",
@@ -106,18 +106,15 @@ export const myMuseum: CaseStudyData = {
             width: 3848,
             height: 2712,
           },
-          strengths: [
-            "Built-in chat gives exhibitions a sense of social presence.",
-          ],
-          limitations: [
-            "Open-ended building tools trade visitor navigation for creator freedom, so finding a specific piece can take a lot of wandering.",
-          ],
+          // Told as one paragraph (no strengths/limitations columns).
+          strengths: [],
+          limitations: [],
           applied:
-            "Social, browser-based exhibitions work, but visitors still need to be able to find the work.",
+            "New Art City already puts exhibitions in the browser, and its built-in chat makes a show feel like other people are there. But artists build their spaces by hand, so finding one specific piece can mean a lot of wandering.",
         },
       ],
       opportunity:
-        "Make creating a virtual gallery feel less like designing an exhibition and more like uploading a portfolio.",
+        "I wanted making a museum to feel more like uploading a portfolio than designing an exhibition.",
       // The creator flow is shown with Decision 01 instead (see keyDecisions).
       flowSteps: [],
       placeholder: false,
@@ -140,9 +137,9 @@ export const myMuseum: CaseStudyData = {
     personaSummary:
       "Want people to experience their work as it really is, without building a website to get there.",
     personaNeeds: [
-      "Show scale, surface, and depth (P1, P3)",
-      "Keep a series in sequence (P4)",
-      "Publish in minutes (P2)",
+      "Show the real scale, surface and depth of the work",
+      "Keep a series in order",
+      "Publish in a few minutes",
     ],
     personaPlaceholder: false,
     secondaryPersona: {
@@ -150,9 +147,9 @@ export const myMuseum: CaseStudyData = {
       summary:
         "Want to find the work, take it in, and reach the artist, without learning a game first.",
       needs: [
-        "Get around without game-style controls (P1)",
-        "See every piece without hunting for it (July testing)",
-        "A private way to reach the artist about a piece (P2, July testing)",
+        "Get around without game controls",
+        "See every piece without hunting for it",
+        "A private way to reach the artist about a piece",
       ],
     },
     tensionIntro:
@@ -175,31 +172,15 @@ export const myMuseum: CaseStudyData = {
   },
 
   keyDecisions: {
-    heading: "Three decisions that shaped MyMuseum",
-    intro:
-      "How I reworked the prototype. Each decision answers what the May interviews and July testing showed, and each gave something up.",
+    heading: "What I changed after testing",
     items: [
       {
-        title: "Generate the museum from the uploads",
-        tension: "Freedom vs. structure",
-        problem:
-          "Letting artists arrange rooms freely means they'd have to learn exhibition design, and visitors could get lost.",
-        evidence: [
-          {
-            source: "Competitive analysis",
-            text: "New Art City's open-ended building tools cost visitors navigation and felt like a professional workspace.",
-          },
-          {
-            source: "Usability testing · July",
-            text: "Participants liked having the museum auto-curated instead of building their own environment, but one room size didn't fit every collection (finding 01).",
-          },
+        title: "I let the uploads decide the layout",
+        body: [
+          "Letting artists arrange their own rooms would mean asking them to learn exhibition design. New Art City works that way, and it feels more like a professional tool than a place to share a portfolio. In July, testers liked getting a museum that was already set up for them. The problem was that it only came in one size, so five pieces of art ended up in a huge room.",
+          "Now MyMuseum builds the layout for you. You upload your work, pick a gallery style and fill in the details, and it chooses one of three floor plans based on how many pieces you have. Add or remove a piece and the layout rebuilds itself.",
+          "The cost is that artists can't hang a piece exactly where they want it. I gave that up so every museum stays easy to walk through.",
         ],
-        decision:
-          "Generate the layout automatically, sized to the collection. Creators control their artwork, gallery style, and museum details. Adding or removing a piece re-runs the layout instead of asking them to place it.",
-        tradeoff:
-          "Artists can't hand-place work. I gave up some expressiveness so every museum stays easy to navigate.",
-        outcome:
-          "Built: creators never place anything by hand, and one of three floor plans is picked from the size of the collection (below).",
         videos: [
           {
             src: "/videos/projects/mymuseum/room-small.mp4",
@@ -228,26 +209,12 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Put a Grid View beside the 3D gallery",
-        tension: "Immersion vs. accessibility",
-        problem:
-          "Walking a 3D room is the hook, but in testing it was also how visitors missed work.",
-        evidence: [
-          {
-            source: "Usability testing · July",
-            text: "Participants missed artwork moving through the rooms (finding 02), and the prototype had no other way to view the collection.",
-          },
-          {
-            source: "Artist interviews · May",
-            text: "P1 and P2 had already put clarity ahead of immersion, but the first prototype didn't reflect that yet.",
-          },
+        title: "I added a Grid View next to the 3D gallery",
+        body: [
+          "Walking through the rooms is the fun part, but in testing it was also how people missed work. They'd move through a room and “end up missing some,” and the prototype had no other way to see the collection. P1 and P2 had told me in May that clarity mattered more to them than immersion. I just hadn't designed for it yet.",
+          "Every museum now has a Grid View with the same collection and the same artwork viewer. On a phone, Grid View is where you start, and Enter 3D Gallery is one tap away. Nothing is 3D-only. I checked Grid View at 390px wide and went through the artwork viewer using only a keyboard.",
+          "That means people on phones don't start in 3D, which is the most distinctive part of MyMuseum. Being able to see every piece mattered more to me.",
         ],
-        decision:
-          "Pair the 3D gallery with a Grid View of the same collection and the same artwork viewer. On touch devices, Grid View is the starting point and Enter 3D Gallery stays one tap away.",
-        tradeoff:
-          "Mobile visitors don't start in 3D, the part that makes MyMuseum distinctive. Reaching every piece mattered more.",
-        outcome:
-          "Built: no artwork is 3D-only. Grid View was checked at 390px wide, and the artwork viewer with keyboard only.",
         images: [
           {
             src: "/images/projects/mymuseum/final/grid-view.png",
@@ -266,26 +233,12 @@ export const myMuseum: CaseStudyData = {
         ],
       },
       {
-        title: "Show other visitors, but skip likes and chat",
-        tension: "Social presence vs. social pressure",
-        problem:
-          "Other visitors make a gallery feel occupied, but likes, follower counts, and chat would turn it into another social feed.",
-        evidence: [
-          {
-            source: "Design intent",
-            text: "I wanted artists to share work without likes, follower counts, or pressure to post. In the May interviews, P4 described feeds reducing a series to scroll, double-tap, and forget.",
-          },
-          {
-            source: "Usability testing · July",
-            text: "Participants asked for a way to comment on an artwork privately (finding 04).",
-          },
+        title: "I show other visitors, but there are no likes or chat",
+        body: [
+          "Seeing other people in a gallery makes it feel alive. But I didn't want MyMuseum to turn into another feed, with likes, follower counts and pressure to post. In May, P4 talked about feeds turning a whole series into scroll, double-tap, forget.",
+          "So other visitors show up as labeled avatars with a live count in the corner, and that's it. In July, testers asked for a private way to comment on a piece, so I added Museum Mail. It's a note to the artist that works more like email than chat, and artists can turn it off.",
+          "You can't talk to someone in the room in real time. I'd rather keep the room quiet so the art stays the focus. Presence works across two live sessions, but I haven't made multiplayer public yet.",
         ],
-        decision:
-          "Show other visitors as labeled avatars and a live count, with no chat, likes, or follower counts. For anything more personal, visitors can leave the artist an async note through Museum Mail, which artists can switch off.",
-        tradeoff:
-          "Visitors can't chat in real time. I traded that for a calmer room where the artwork stays the focus.",
-        outcome:
-          "Built: realtime presence, verified across two live sessions, and Museum Mail. Public multiplayer deployment is still to come.",
         images: [
           {
             src: "/images/projects/mymuseum/final/multiplayer-a.png",
@@ -308,7 +261,7 @@ export const myMuseum: CaseStudyData = {
   design: {
     heading: "The final product",
     processNarrative:
-      "Organized around what each screen lets someone do, with mobile versions where the flow carries over.",
+      "Here's what you can do in it now.",
 
     wireframeScreens: [],
     highFidelityScreens: [],
@@ -381,7 +334,7 @@ export const myMuseum: CaseStudyData = {
       {
         title: "Give every visitor an identity",
         description:
-          "Shape characters replaced the humanoid avatars from testing (finding 03), with options for shape, color, expression, and decoration.",
+          "Testers found the humanoid avatars too basic, so I swapped them for simple shape characters. You pick the shape, color, expression and decoration.",
         images: [
           {
             src: "/images/projects/mymuseum/final/avatar-editor-desktop.png",
@@ -394,7 +347,7 @@ export const myMuseum: CaseStudyData = {
       {
         title: "Write to the artist",
         description:
-          "Visitors can send the artist a private note about a museum or a specific piece. It works like email, not chat: artists reply on their own time and can switch notes off.",
+          "Visitors can send the artist a private note about a museum or a specific piece. Artists reply when they want to, and can switch notes off.",
         videos: [
           {
             src: "/videos/projects/mymuseum/mail.mp4",
@@ -431,34 +384,33 @@ export const myMuseum: CaseStudyData = {
         alt: "Early avatar editor: a humanoid character with options for skin tone, hairstyle, hair color, top, bottom, and shoes.",
         width: 2940,
         height: 1520,
-        caption: "Humanoid avatars. Both images are the earliest saved version (August). I didn't save the tested prototype itself, but these still have the same rooms and avatars.",
+        caption: "Humanoid avatars. Both screenshots are from August, the earliest version I saved, which still had the same rooms and avatars as the one I tested.",
       },
     ],
 
-    changedLabel: "What it led to",
     iterations: [
       {
         title: "Museums were the wrong size",
         feedback:
-          "Participants struggled to create a museum that fit their artwork: \"a huge room was given for only 5 pieces of art.\" They asked for more room options.",
-        finalIteration: "Rooms sized to the collection (Decision 01).",
+          "People had trouble making a museum that fit their work: \"a huge room was given for only 5 pieces of art.\" They asked for more room options.",
+        finalIteration: "Rooms now come in three sizes, based on how many pieces you upload.",
       },
       {
         title: "Visitors missed artwork",
         feedback:
-          "Navigating inside the room, participants struggled to see all the artworks and \"would end up missing some.\"",
-        finalIteration: "Grid View (Decision 02).",
+          "Moving around the room, people had trouble seeing everything and \"would end up missing some.\"",
+        finalIteration: "I added a Grid View that shows the whole collection at once.",
       },
       {
         title: "The avatars didn't fit",
         feedback:
-          "Participants felt the avatars looked basic and didn't have a theme of their own.",
-        finalIteration: "Simple geometric shape avatars (see Final product).",
+          "People thought the avatars looked basic and didn't have a style of their own.",
+        finalIteration: "I replaced them with simple shape characters you can customize.",
       },
       {
         title: "No private way to respond",
-        feedback: "Participants wanted a way to comment on an artwork privately.",
-        finalIteration: "Museum Mail (Decision 03).",
+        feedback: "People wanted a way to comment on a piece privately.",
+        finalIteration: "I added Museum Mail, a private note to the artist.",
       },
     ],
 
@@ -466,14 +418,14 @@ export const myMuseum: CaseStudyData = {
   },
 
   finalThoughts: {
-    nextStepsHeading: "Opportunities & next steps",
+    nextStepsHeading: "What's next",
     pullQuote: "",
 
     whatILearned:
-      "Putting a rough prototype in front of five people reshaped the product: the rooms, the avatars, and how visitors reach the work all changed because of those sessions. Making a 3D museum work was the easy part; the harder questions were how visitors reach it on any device, and how presence supports the artwork instead of distracting from it.",
+      "Five people with a rough prototype changed the rooms, the avatars, and how visitors get to the work. Getting 3D running in a browser wasn't the hard part. The hard part was making sure anyone could reach the art on any device, and keeping other visitors from pulling attention away from it.",
 
     nextSteps:
-      "Test the live product with a second round of users to confirm the redesign fixed what July's participants ran into, then add artwork zoom (P2, P3) and a way to show a painting's real-world scale (P1).",
+      "Test the live version with a new group of people to see if the changes fixed what July's testers ran into. Then add artwork zoom, which P2 and P3 asked for, and a way to show a painting's real size, which P1 asked for.",
 
     proudestOf:
       "Getting it to the point where artists come back to their museums, edit them, and share them, instead of trying a 3D demo once.",
