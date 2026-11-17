@@ -9,6 +9,7 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { PageTransition } from "@/components/layout/PageTransition";
 import { siteConfig } from "@/lib/site-config";
 import { THEME_SCRIPT } from "@/lib/theme-script";
+import { HERO_INTRO_SCRIPT } from "@/lib/hero-intro-script";
 import "./globals.css";
 
 /** Body text, captions, labels, and nav. Italic is loaded for the few
@@ -64,6 +65,7 @@ export default function RootLayout({
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: HERO_INTRO_SCRIPT }} />
       </head>
       <body className="flex min-h-full flex-col">
         <MotionConfig reducedMotion="user">

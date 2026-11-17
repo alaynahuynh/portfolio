@@ -24,7 +24,7 @@ export function HeroMonitor({ className }: { className?: string }) {
         {/* Recessed bezel */}
         <div className="absolute inset-x-[8.6%] top-[10.6%] bottom-[13.3%] rounded-[1cqw] bg-linear-to-b from-[#a99f88] to-[#c7bea8] shadow-[inset_0_0.8cqw_1.2cqw_rgba(0,0,0,0.35),inset_0.4cqw_0_0.6cqw_rgba(0,0,0,0.12),inset_-0.4cqw_0_0.6cqw_rgba(0,0,0,0.08),0_0.25cqw_0_rgba(255,255,255,0.55),0_-0.2cqw_0_rgba(0,0,0,0.08)]">
           {/* Screen */}
-          <div className="absolute inset-x-[2.8%] top-[3.4%] bottom-[2.6%] overflow-hidden rounded-[1.6cqw] transition-[filter,box-shadow] duration-(--duration-base) ease-(--ease-soft) brightness-[1.04] saturate-[1.15] group-hover:brightness-[1.1] group-hover:saturate-[1.6] group-focus-visible:brightness-[1.1] group-focus-visible:saturate-[1.6] bg-linear-to-br from-[color-mix(in_srgb,var(--color-mist-blue)_55%,white)] to-mist-blue shadow-[0_0_40px_rgba(180,210,245,0.35),inset_0_0_30px_rgba(255,255,255,0.18)] group-hover:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)] group-focus-visible:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)]">
+          <div className="hero-intro-screen absolute inset-x-[2.8%] top-[3.4%] bottom-[2.6%] overflow-hidden rounded-[1.6cqw] transition-[filter,box-shadow] duration-(--duration-base) ease-(--ease-soft) brightness-[1.04] saturate-[1.15] group-hover:brightness-[1.1] group-hover:saturate-[1.6] group-focus-visible:brightness-[1.1] group-focus-visible:saturate-[1.6] bg-linear-to-br from-[color-mix(in_srgb,var(--color-mist-blue)_55%,white)] to-mist-blue shadow-[0_0_40px_rgba(180,210,245,0.35),inset_0_0_30px_rgba(255,255,255,0.18)] group-hover:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)] group-focus-visible:shadow-[0_0_70px_rgba(190,220,255,0.75),inset_0_0_40px_rgba(255,255,255,0.35)]">
             {/* Photographed CRT texture, rotated to landscape to match the screen */}
             <div
               aria-hidden="true"
@@ -51,6 +51,12 @@ export function HeroMonitor({ className }: { className?: string }) {
                 View selected work <span aria-hidden="true">↓</span>
               </p>
             </div>
+            {/* Power-on intro (first load only, see hero-intro-script.ts):
+                the dark, switched-off glass, and the CRT beam that opens
+                from a line to the full screen. Hidden unless
+                <html data-hero-intro> is set. */}
+            <span aria-hidden="true" className="hero-intro-off pointer-events-none absolute inset-0 z-20 hidden" />
+            <span aria-hidden="true" className="hero-intro-beam pointer-events-none absolute inset-0 z-30 hidden" />
           </div>
         </div>
 
@@ -64,7 +70,7 @@ export function HeroMonitor({ className }: { className?: string }) {
             hover/focus, like the monitor turning on. */}
         <span
           aria-hidden="true"
-          className="absolute right-[18.5%] bottom-[5.5%] size-[1.3cqw] rounded-full border-[0.5px] border-lake-blue-deep bg-lake-blue-deep transition-[background-color,box-shadow] duration-(--duration-base) group-hover:bg-[#aacbe5] group-hover:shadow-[0_0_0.5cqw_#aacbe5] group-focus-visible:bg-[#aacbe5] group-focus-visible:shadow-[0_0_0.5cqw_#aacbe5]"
+          className="hero-intro-led absolute right-[18.5%] bottom-[5.5%] size-[1.3cqw] rounded-full border-[0.5px] border-lake-blue-deep bg-lake-blue-deep transition-[background-color,box-shadow] duration-(--duration-base) group-hover:bg-[#aacbe5] group-hover:shadow-[0_0_0.5cqw_#aacbe5] group-focus-visible:bg-[#aacbe5] group-focus-visible:shadow-[0_0_0.5cqw_#aacbe5]"
         />
         <span
           aria-hidden="true"

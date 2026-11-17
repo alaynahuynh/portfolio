@@ -739,6 +739,111 @@
   }
 }
 
+/* ── Hero power-on intro ─────────────────────────────────────────────────
+   First homepage load of a session only: hero-intro-script.ts sets
+   <html data-hero-intro> before the first paint and removes it when the
+   hint's animation ends. The monitor starts switched off (dark glass, LED
+   off), the LED blinks on, a CRT beam opens from a line to the full
+   screen and fades to reveal the name, then the About and Playground
+   windows pop in and the hint fades in. Every animation ends on the
+   element's normal style, so removing the attribute changes nothing. */
+html[data-hero-intro] .hero-intro-off,
+html[data-hero-intro] .hero-intro-beam {
+  display: block;
+}
+.hero-intro-off {
+  background:
+    linear-gradient(125deg, transparent 38%, rgba(255, 255, 255, 0.07) 46%, transparent 54%),
+    radial-gradient(120% 95% at 35% 25%, #3b413e 0%, #222724 55%, #161917 100%);
+  animation: hero-intro-off 260ms ease-out 820ms both;
+}
+/* The same photographed CRT texture the lit screen has (HeroMonitor.tsx),
+   so the switched-off glass keeps its purple phosphor sheen. Screen blend,
+   not multiply: multiply can only darken, which vanishes on dark glass. */
+.hero-intro-off::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/images/hero/monitor-screen-texture.jpg") center / cover;
+  mix-blend-mode: screen;
+  opacity: 0.15;
+}
+.hero-intro-beam {
+  background: radial-gradient(closest-side, #ffffff 55%, #e8f2ff);
+  box-shadow: 0 0 2.5cqw rgba(235, 245, 255, 0.9);
+  transform-origin: center;
+  animation: hero-intro-beam 760ms cubic-bezier(0.3, 0.7, 0.2, 1) 460ms both;
+}
+html[data-hero-intro] .hero-intro-screen {
+  animation: hero-intro-screen 700ms ease-out 900ms both;
+}
+html[data-hero-intro] .hero-intro-led {
+  animation: hero-intro-led 700ms ease-out 260ms both;
+}
+html[data-hero-intro] .hero-intro-about {
+  animation: hero-intro-pop 520ms cubic-bezier(0.34, 1.45, 0.64, 1) 1120ms both;
+}
+html[data-hero-intro] .hero-intro-playground {
+  animation: hero-intro-pop 520ms cubic-bezier(0.34, 1.45, 0.64, 1) 1280ms both;
+}
+html[data-hero-intro] .hero-intro-hint {
+  animation: hero-intro-hint 500ms ease-out 1650ms both;
+}
+@keyframes hero-intro-off {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes hero-intro-beam {
+  0% {
+    opacity: 0;
+    transform: scale(0, 0.012);
+  }
+  8% {
+    opacity: 1;
+  }
+  38% {
+    opacity: 1;
+    transform: scale(1, 0.012);
+  }
+  62% {
+    opacity: 0.95;
+    transform: scale(1, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1, 1);
+  }
+}
+@keyframes hero-intro-screen {
+  from {
+    filter: brightness(1.5) saturate(0.6);
+  }
+}
+@keyframes hero-intro-led {
+  0%,
+  15% {
+    background-color: #8a8473;
+    border-color: #6f6a5d;
+    box-shadow: none;
+  }
+  45% {
+    background-color: #aacbe5;
+    box-shadow: 0 0 0.9cqw #aacbe5;
+  }
+}
+@keyframes hero-intro-pop {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+  }
+}
+@keyframes hero-intro-hint {
+  from {
+    opacity: 0;
+  }
+}
+
 @keyframes paint-reveal {
   from {
     clip-path: polygon(

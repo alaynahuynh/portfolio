@@ -168,7 +168,7 @@ export function HeroPlaygroundTab({ className }: { className?: string }) {
         {SWATCHES.map((color) => (
           <span
             key={color}
-            className="size-[3.6cqw] border border-[#a89e88]"
+            className="size-[3.6cqw] border border-[#808080]"
             style={{ backgroundColor: color }}
           />
         ))}

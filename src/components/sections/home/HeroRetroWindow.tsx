@@ -13,14 +13,14 @@ interface HeroRetroWindowProps {
   className?: string;
 }
 
-/** Raised bevel in the monitor's warm beige rather than Windows gray, so
- * the windows share the CRT's materials. */
+/** Raised bevel in classic Windows gray (#c0c0c0 face, white and light
+ * gray highlights, mid and dark gray shadows). */
 export const RETRO_BEVEL =
-  "bg-[#ddd5c2] shadow-[inset_-1px_-1px_#5c574b,inset_1px_1px_#f6f1e6,inset_-2px_-2px_#a89e88,inset_2px_2px_#fffcf5]";
+  "bg-[#c0c0c0] shadow-[inset_-1px_-1px_#404040,inset_1px_1px_#dfdfdf,inset_-2px_-2px_#808080,inset_2px_2px_#ffffff]";
 
 /** Sunken well (canvas, text area) — the bevel's inverse. */
 export const RETRO_WELL =
-  "shadow-[inset_1px_1px_#a89e88,inset_-1px_-1px_#fffcf5]";
+  "shadow-[inset_1px_1px_#808080,inset_-1px_-1px_#ffffff]";
 
 /**
  * Shared Windows-98-style window chrome for the hero's Playground and

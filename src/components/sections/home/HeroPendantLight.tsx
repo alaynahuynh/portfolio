@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { prefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +13,9 @@ export type HeroTheme = "light" | "dark";
  * back on. It hangs like a real pendulum: the pointer brushing past pushes
  * it the way the pointer is moving (entering, sweeping across, leaving),
  * a click sets it swinging harder, and every swing dies down on its own.
- * Hover/focus also lowers it a little on its cord.
+ * Hover/focus also lowers it a little on its cord. While the hero is on
+ * screen it also gives a small random shake every so often, so it feels
+ * alive even when nobody touches it.
  *
  * The cord starts above the section's top edge (the section clips it), so
  * lowering the bulb never shows the cord's end.
@@ -33,6 +35,12 @@ const MOVE_KICK = 0.5;
 const MOVE_KICK_MAX = 4;
 /** Push from a click. ≈7° swing, like the old click swing. */
 const CLICK_KICK = 46;
+/** Idle shake while the hero is on screen: every 7-15 s, two quick
+ * opposite nudges (like a draft catching it), ≈2° that settles on its own. */
+const SHAKE_KICK = 14;
+const SHAKE_GAP_MS = 140;
+const SHAKE_MIN_MS = 7000;
+const SHAKE_MAX_MS = 15000;
 export function HeroPendantLight({
   theme,
   onChange,
@@ -48,6 +56,43 @@ export function HeroPendantLight({
   const pendulum = useRef({ angle: 0, velocity: 0, frame: 0, last: 0 });
 
   useEffect(() => () => cancelAnimationFrame(pendulum.current.frame), []);
+
+  /** One idle shake, unless it's already moving (someone's playing with it). */
+  const shake = useEffectEvent(() => {
+    if (Math.abs(pendulum.current.velocity) > 3) return;
+    const dir = Math.random() < 0.5 ? -1 : 1;
+    const k = SHAKE_KICK * (0.75 + Math.random() * 0.5);
+    push(dir * k);
+    window.setTimeout(() => push(-dir * k * 1.3), SHAKE_GAP_MS);
+  });
+
+  // Shake at random moments, only while the bulb is on screen and the tab
+  // is visible (scrolled past the hero, it stays still).
+  useEffect(() => {
+    const el = swingRef.current;
+    if (!el || prefersReducedMotion()) return;
+    let timer = 0;
+    let onScreen = false;
+    const schedule = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(
+        () => {
+          if (onScreen && !document.hidden) shake();
+          schedule();
+        },
+        SHAKE_MIN_MS + Math.random() * (SHAKE_MAX_MS - SHAKE_MIN_MS),
+      );
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      onScreen = entry.isIntersecting;
+    });
+    io.observe(el);
+    schedule();
+    return () => {
+      window.clearTimeout(timer);
+      io.disconnect();
+    };
+  }, []);
 
   /** One animation frame of the damped pendulum (semi-implicit Euler),
    * written straight to the element's transform so nothing re-renders. */

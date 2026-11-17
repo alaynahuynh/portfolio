@@ -14,7 +14,7 @@ import {
 const linkedIn = socialLinks.find((link) => link.label === "LinkedIn");
 
 const BUTTON =
-  "inline-flex items-center gap-1.5 px-3 py-1 font-sans text-xs text-foreground transition-[filter] hover:brightness-105 active:shadow-[inset_1px_1px_#5c574b] focus-visible:outline-2 focus-visible:outline-mauve-deep";
+  "inline-flex items-center gap-1.5 px-3 py-1 font-sans text-xs text-foreground transition-[filter] hover:brightness-105 active:shadow-[inset_1px_1px_#404040] focus-visible:outline-2 focus-visible:outline-mauve-deep";
 
 /**
  * The About page's contact block, framed as a little retro mail window to
@@ -50,10 +50,10 @@ export function AboutContactWindow() {
       title="New Message"
       menu={["File", "Edit", "Insert"]}
       destination="playground"
-      className="bg-[#e3dccb] shadow-[0_2px_10px_rgba(46,50,42,0.08)]"
+      className="bg-[#c0c0c0] shadow-[0_2px_10px_rgba(46,50,42,0.08)]"
     >
       <div className="flex flex-wrap gap-1 px-1 pb-1.5">
-        <a href={mailto} className={cn(BUTTON, RETRO_BEVEL, "bg-[#f3ead6] font-semibold")}>
+        <a href={mailto} className={cn(BUTTON, RETRO_BEVEL, "bg-[#dfdfdf] font-semibold")}>
           <Send aria-hidden="true" className="size-3.5" />
           Send
         </a>

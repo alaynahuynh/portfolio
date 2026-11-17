@@ -94,7 +94,7 @@ export function AboutPhotoBrowser() {
   const photo = photoOrder(soloStart)[index];
 
   return (
-    <HeroRetroWindow title="Photos — try to reload!" menu={["File", "View"]} destination="about" className="bg-[#e3dccb] shadow-[0_2px_10px_rgba(46,50,42,0.08)]">
+    <HeroRetroWindow title="Photos — try to reload!" menu={["File", "View"]} destination="about" className="bg-[#c0c0c0] shadow-[0_2px_10px_rgba(46,50,42,0.08)]">
       <div className="flex items-center gap-1 px-1 pb-1">
         <span aria-hidden="true" className="flex gap-px text-foreground/40">
           <ArrowLeft className="size-3.5" />
@@ -112,9 +112,9 @@ export function AboutPhotoBrowser() {
             onClick={refresh}
             aria-label="Refresh photo"
             className={cn(
-              "relative flex size-6 items-center justify-center text-earth transition-[filter] hover:brightness-105 active:shadow-[inset_1px_1px_#5c574b] focus-visible:outline-2 focus-visible:outline-mauve-deep",
+              "relative flex size-6 items-center justify-center text-earth transition-[filter] hover:brightness-105 active:shadow-[inset_1px_1px_#404040] focus-visible:outline-2 focus-visible:outline-mauve-deep",
               RETRO_BEVEL,
-              "bg-[#f3ead6]",
+              "bg-[#dfdfdf]",
             )}
           >
             <RotateCw

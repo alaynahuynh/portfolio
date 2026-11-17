@@ -90,7 +90,7 @@ export function Hero() {
               "absolute top-[30%] -right-[6%] z-10 w-[48%] sm:top-[10%] sm:right-auto sm:left-[62%] sm:w-[33%]",
             )}
           >
-            <HeroNotepad className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
+            <HeroNotepad className="hero-intro-about shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] outline outline-[#8a8a8a]" />
             <RetroTooltip>About Me</RetroTooltip>
           </Link>
 
@@ -103,7 +103,7 @@ export function Hero() {
               "absolute top-[58%] -left-[6%] z-10 w-[56%] sm:top-[42%] sm:left-0 lg:-left-[2.5%] sm:w-[37%]",
             )}
           >
-            <HeroPlaygroundTab className="shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)]" />
+            <HeroPlaygroundTab className="hero-intro-playground shadow-[0_20px_40px_-10px_rgba(0,0,0,0.5)] outline outline-[#8a8a8a]" />
             <RetroTooltip>Explore Playground</RetroTooltip>
           </Link>
 
@@ -112,7 +112,7 @@ export function Hero() {
               curving up toward the monitor.
               On mobile it sits centered just below the stage. */}
 
-          <p className="pointer-events-none absolute inset-x-0 top-full mt-5 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-(--hero-hint) transition-colors duration-500 select-none sm:inset-x-auto sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start sm:text-[1.1875rem]">
+          <p className="hero-intro-hint pointer-events-none absolute inset-x-0 top-full mt-5 flex -rotate-3 items-center justify-center gap-1.5 font-alayna-handwriting text-[1.125rem] leading-none whitespace-nowrap text-(--hero-hint) transition-colors duration-500 select-none sm:inset-x-auto sm:top-[85%] sm:left-[69%] sm:mt-0 sm:justify-start sm:text-[1.1875rem]">
             <HintArrow className="h-[1.1em] w-auto shrink-0 -translate-y-[0.3em]" />
             Click around to explore
           </p>
