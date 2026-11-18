@@ -809,10 +809,11 @@ html[data-hero-intro] .hero-intro-hint {
   --color-muted-foreground: #b4bac7;
   --color-border: #27324c;
 }
-/* The hero's sky, carried over: each case study opens under a soft wash
-   of the homepage sky that fades into the page, so it reads as the same
-   desktop rather than a separate site. */
-.case-study {
+/* The hero's sky, carried over: each case study (and the About page,
+   via .sky-wash) opens under a soft wash of the homepage sky that fades
+   into the page, so it reads as the same desktop rather than a separate
+   site. */
+:is(.case-study, .sky-wash) {
   background-image: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--color-sky) 18%, #ffffff) 0,
@@ -820,7 +821,7 @@ html[data-hero-intro] .hero-intro-hint {
   );
   background-repeat: no-repeat;
 }
-:root[data-theme="dark"] .case-study {
+:root[data-theme="dark"] :is(.case-study, .sky-wash) {
   background-image: linear-gradient(
     to bottom,
     color-mix(in srgb, var(--color-sky) 12%, #0f1626) 0,
