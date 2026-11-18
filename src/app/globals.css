@@ -294,52 +294,6 @@
   word-spacing: 0.2em;
 }
 
-/* Subtle graph-paper texture used behind the About/gallery sections. */
-.bg-graph-paper {
-  background-image:
-    linear-gradient(
-      to right,
-      color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
-      color-mix(in srgb, var(--color-border) 60%, transparent) 1px,
-      transparent 1px
-    );
-  background-size: 32px 32px;
-}
-
-/* Continuous horizontal scroll used by the painting gallery. Paused on
-   hover/focus in the component; frozen entirely under reduced motion by
-   the rule below. */
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-/* Warm, subtly-grained backdrop for the CreativeDesk section — distinct
-   from the graph-paper sections so it reads as its own "chapter" (the
-   workspace) rather than a continuation of the note/letter paper. */
-.bg-desk {
-  background-color: #efe6d8;
-  background-image:
-    repeating-linear-gradient(
-      100deg,
-      rgba(0, 0, 0, 0.015) 0 2px,
-      transparent 2px 6px
-    ),
-    radial-gradient(
-      ellipse at top,
-      color-mix(in srgb, #efe6d8 92%, white) 0%,
-      #e9dfcd 100%
-    );
-}
-
 /* Full-page version of the sketchbook's paper (same cream and
    paper-texture.jpg as .page-parchment, without the book-page spine and
    edge shading), for the 2D/3D works pages the book links to. The texture
@@ -470,39 +424,6 @@
   mix-blend-mode: multiply;
 }
 
-/* Restrained magical accents: a slow glow pulse for rune marks and a
-   slow drift for ambient dust motes. Both infinite but slow/low-contrast
-   on purpose ("elegant, not overwhelming") — the global reduced-motion
-   rule collapses these to their resting frame instantly. */
-@keyframes rune-glow {
-  0%,
-  100% {
-    opacity: 0.35;
-    filter: drop-shadow(0 0 1px currentColor);
-  }
-  50% {
-    opacity: 0.85;
-    filter: drop-shadow(0 0 5px currentColor);
-  }
-}
-
-@keyframes dust-drift {
-  0% {
-    transform: translate(0, 0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.7;
-  }
-  85% {
-    opacity: 0.5;
-  }
-  100% {
-    transform: translate(6px, -22px);
-    opacity: 0;
-  }
-}
-
 /* Hero flowers layer: a quick, tiny sway (a breeze across the grass),
    distance set via --drift-x/--drift-y so it can share the same
    keyframe as anything else that just needs a small back-and-forth
@@ -514,21 +435,6 @@
   }
   50% {
     transform: translate(var(--drift-x, 16px), var(--drift-y, -6px));
-  }
-}
-
-/* GrassField (CreativePracticeBook's background): each blade cluster
-   skews back and forth around its own base, amplitude set per cluster
-   via --sway so the field reads as uneven gusts rather than one uniform
-   pulse. transform-box: view-box on the `<g>` (see GrassField.tsx) is
-   what makes the origin coordinates line up with the SVG's own units. */
-@keyframes grass-sway {
-  0%,
-  100% {
-    transform: skewX(0deg);
-  }
-  50% {
-    transform: skewX(var(--sway, 4deg));
   }
 }
 
@@ -554,21 +460,6 @@
 @media (prefers-reduced-motion: reduce) {
   .hero-scene-anim {
     animation: none !important;
-  }
-}
-
-/* Hero sky + clouds: the sky and both cloud crops sit in one wrapper
-   (see HeroBackdrop) and share this single animation instance, so they
-   zoom in and back out as one rigid unit — never sliding or skewing,
-   and never able to drift apart into visibly separate layers the way
-   applying the same animation to several sibling elements could. */
-@keyframes hero-sky-zoom {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.035);
   }
 }
 
@@ -649,93 +540,6 @@
   }
   50% {
     filter: brightness(1.18);
-  }
-}
-
-/* Ring that radiates out from the About photo browser's refresh button,
-   hinting that it's clickable. */
-@keyframes refresh-ping {
-  0% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  80%,
-  100% {
-    transform: scale(1.9);
-    opacity: 0;
-  }
-}
-
-/* Periodic half-turn of the refresh icon — a "try me" nudge between
-   long rests. */
-@keyframes refresh-nudge {
-  0%,
-  70% {
-    transform: rotate(0deg);
-  }
-  85% {
-    transform: rotate(200deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* Hero cluster (the Monitor/Playground/About trio) — the small lift +
-   deeper shadow confirming the object itself responded to hover/focus,
-   independent of whatever its destination label is doing. Runs
-   everywhere (not gated to hover-capable devices): :hover simply never
-   sticks on touch, so this is harmless there, and :focus-visible still
-   matters on every input type. */
-.hero-cluster-object {
-  transition:
-    transform var(--duration-base) var(--ease-soft),
-    box-shadow var(--duration-base) var(--ease-soft);
-  box-shadow: 0 2px 8px -4px rgba(46, 50, 42, 0.25);
-}
-.hero-cluster-link:hover .hero-cluster-object,
-.hero-cluster-link:focus-visible .hero-cluster-object {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -10px rgba(46, 50, 42, 0.38);
-}
-
-/* Hero cluster destination label. Devices that can't hover (touch) get
-   a plain, permanently-visible caption below the object — there's no
-   hover to reveal a hidden one, and making someone tap blind just to
-   find out what an object does defeats the point of labeling it at
-   all. Devices with real hover support (checked directly via the
-   feature query, not guessed from viewport width) get the floating
-   dark pill instead, revealed on hover/focus. */
-.hero-cluster-tooltip {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-50%);
-  margin-top: 0.5rem;
-  white-space: nowrap;
-  pointer-events: none;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--color-muted-foreground);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .hero-cluster-tooltip {
-    top: auto;
-    bottom: 100%;
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    background-color: var(--color-foreground);
-    color: var(--color-background);
-    opacity: 0;
-    transition: opacity 150ms ease;
-  }
-
-  .hero-cluster-link:hover .hero-cluster-tooltip,
-  .hero-cluster-link:focus-visible .hero-cluster-tooltip {
-    opacity: 1;
   }
 }
 
@@ -866,48 +670,6 @@ html[data-hero-intro] .hero-intro-hint {
 @keyframes hero-intro-hint {
   from {
     opacity: 0;
-  }
-}
-
-@keyframes paint-reveal {
-  from {
-    clip-path: polygon(
-      0% 0%,
-      2% 0%,
-      -3% 15%,
-      4% 30%,
-      -2% 45%,
-      3% 60%,
-      -4% 75%,
-      2% 90%,
-      0% 100%,
-      0% 100%
-    );
-  }
-  to {
-    clip-path: polygon(
-      0% 0%,
-      102% 0%,
-      97% 15%,
-      104% 30%,
-      98% 45%,
-      103% 60%,
-      96% 75%,
-      102% 90%,
-      100% 100%,
-      0% 100%
-    );
-  }
-}
-
-/* Gentle bob for the hero scroll indicator's paint drip. */
-@keyframes drip {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(6px);
   }
 }
 
@@ -1190,11 +952,6 @@ html[data-hero-intro] .hero-intro-hint {
   --hero-dim: 0.8;
   --hero-hint: #e8e1cf;
   --hero-hint-sky: #e8e1cf;
-  --hero-grid: #c4b2e3;
-  --hero-grid-opacity: 0.6;
-  --hero-dot-1: #a9c8ec;
-  --hero-dot-2: #a9c8ec;
-  --hero-dot-3: #a9c8ec;
   --hero-glow: radial-gradient(
     closest-side,
     rgba(160, 195, 240, 0.42) 0%,
@@ -1219,11 +976,6 @@ html[data-hero-intro] .hero-intro-hint {
   --hero-hint: #ffffff;
   /* The hint on md+ sits in the sky, where white wouldn't read. */
   --hero-hint-sky: #163a66;
-  --hero-grid: var(--color-mauve-deep);
-  --hero-grid-opacity: 0.55;
-  --hero-dot-1: var(--color-lake-blue);
-  --hero-dot-2: color-mix(in srgb, var(--color-sky) 30%, white);
-  --hero-dot-3: color-mix(in srgb, var(--color-sky) 15%, white);
   /* No halo in daylight: a white bloom would just wash out the sky. */
   --hero-glow: transparent;
   /* No cursor light in daylight. */

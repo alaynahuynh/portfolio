@@ -11,7 +11,8 @@ import {
 
 interface HeroRetroWindowProps {
   title: string;
-  menu: string[];
+  /** Menu row labels; omit (or pass none) for a window with no menu row. */
+  menu?: string[];
   /** Which destination this window links to — sets its title-bar accent. */
   destination: HeroDestination;
   children: React.ReactNode;
@@ -20,7 +21,7 @@ interface HeroRetroWindowProps {
 
 /**
  * Shared Windows-98-style window chrome for the hero's Playground and
- * About windows: title bar with min/max/close boxes, a menu row, then
+ * About windows: title bar with min/max/close boxes, an optional menu row, then
  * content. Chrome is identical for both; only the title-bar accent comes
  * from the destination (see hero-destinations.ts), deepening to solid on
  * hover/focus. Sized in container units so the chrome scales with the
@@ -45,17 +46,19 @@ export function HeroRetroWindow({
     <>
       {/* Menu row — dropped on phones, where the windows are small enough
           that it reads as clutter rather than detail. */}
-      <div
-        aria-hidden="true"
-        className="hidden gap-[1em] px-1.5 py-0.5 sm:flex font-sans text-[clamp(0.5rem,2.6cqw,0.6875rem)] text-foreground select-none"
-      >
-        {menu.map((item) => (
-          <span key={item}>
-            <span className="underline">{item[0]}</span>
-            {item.slice(1)}
-          </span>
-        ))}
-      </div>
+      {menu && menu.length > 0 && (
+        <div
+          aria-hidden="true"
+          className="hidden gap-[1em] px-1.5 py-0.5 sm:flex font-sans text-[clamp(0.5rem,2.6cqw,0.6875rem)] text-foreground select-none"
+        >
+          {menu.map((item) => (
+            <span key={item}>
+              <span className="underline">{item[0]}</span>
+              {item.slice(1)}
+            </span>
+          ))}
+        </div>
+      )}
       {children}
     </>
   );

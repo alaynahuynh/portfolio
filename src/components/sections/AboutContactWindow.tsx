@@ -15,7 +15,7 @@ const BUTTON =
 
 /**
  * The About page's contact block, framed as a little retro mail window to
- * match the photo browser above it. The message box is real: Send opens
+ * match the media player above it. The message box is real: Send opens
  * the visitor's mail app with the subject and whatever they typed
  * prefilled. Copy is there for anyone without a mail app set up.
  */
@@ -42,7 +42,7 @@ export function AboutContactWindow() {
 
   return (
     // Sage title bar, so it reads as its own window next to the mauve
-    // photo browser.
+    // media player.
     <HeroRetroWindow
       title="New Message"
       menu={["File", "Edit", "Insert"]}
