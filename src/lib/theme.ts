@@ -10,7 +10,7 @@ import { THEME_STORAGE_KEY } from "@/lib/theme-script";
  * paint by the inline script in app/layout.tsx (see theme-script.ts), so a dark
  * visitor never sees a light flash on load or on any other page.
  *
- * The homepage hero's pendant lamp is the toggle. Light is the default.
+ * The homepage hero's sun/moon is the toggle. Light is the default.
  */
 export type Theme = "light" | "dark";
 
@@ -49,7 +49,7 @@ function subscribe(onChange: () => void) {
 
 /** The current theme. Renders "light" on the server and during hydration,
  * then the real value; colors come from CSS, so only small bits of UI
- * (like the pendant's lit state) depend on this. */
+ * (like the sun/moon's state) depend on this. */
 export function useTheme(): Theme {
   return useSyncExternalStore(subscribe, readTheme, () => "light");
 }

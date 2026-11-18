@@ -1,5 +1,5 @@
 import { Hero } from "@/components/sections/home/Hero";
-import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
+import { FeaturedWork, FeaturedWorkTaskbar } from "@/components/sections/home/FeaturedWork";
 
 /**
  * Hero, then Selected Work. The sketchbook lives on its own /playground
@@ -9,7 +9,14 @@ import { FeaturedWork } from "@/components/sections/home/FeaturedWork";
 export default function Home() {
   return (
     <>
-      <Hero />
+      {/* The hero is sticky inside this wrapper, which ends at the
+          taskbar's bottom edge: scrolling first brings the taskbar up over
+          the held hero, and once it's fully visible the wrapper runs out,
+          so everything scrolls on normally. */}
+      <div>
+        <Hero />
+        <FeaturedWorkTaskbar />
+      </div>
       <FeaturedWork />
     </>
   );

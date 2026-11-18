@@ -4,11 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, RotateCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import {
-  HeroRetroWindow,
-  RETRO_BEVEL,
-  RETRO_WELL,
-} from "@/components/sections/home/HeroRetroWindow";
+import { HeroRetroWindow } from "@/components/sections/home/HeroRetroWindow";
+import { RETRO_BEVEL, RETRO_WELL } from "@/components/sections/home/retro-styles";
 
 /** Photos of Alayna alone — always shown before any group photo. */
 const SOLO_PHOTOS = [
@@ -94,7 +91,7 @@ export function AboutPhotoBrowser() {
   const photo = photoOrder(soloStart)[index];
 
   return (
-    <HeroRetroWindow title="Photos — try to reload!" menu={["File", "View"]} destination="about" className="bg-[#c0c0c0] shadow-[0_2px_10px_rgba(46,50,42,0.08)]">
+    <HeroRetroWindow title="Photos — try to reload!" menu={["File", "View"]} destination="about" className="bg-[#c3c0b8] shadow-[0_2px_10px_rgba(46,50,42,0.08)]">
       <div className="flex items-center gap-1 px-1 pb-1">
         <span aria-hidden="true" className="flex gap-px text-foreground/40">
           <ArrowLeft className="size-3.5" />

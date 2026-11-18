@@ -18,11 +18,8 @@ import {
   YOSHI_HIT_BOX,
   PIANO_REGULAR,
 } from "@/components/sections/home/hero-config";
-import {
-  HeroRetroWindow,
-  RETRO_BEVEL,
-  RETRO_WELL,
-} from "@/components/sections/home/HeroRetroWindow";
+import { HeroRetroWindow } from "@/components/sections/home/HeroRetroWindow";
+import { RETRO_BEVEL, RETRO_WELL } from "@/components/sections/home/retro-styles";
 import { cn } from "@/lib/utils";
 
 const [SKY, CLOUD_1, CLOUD_2, DISTANCE, HILL, FLOWERS] = HERO_BACKDROP_LAYERS;
@@ -168,7 +165,7 @@ export function HeroPlaygroundTab({ className }: { className?: string }) {
         {SWATCHES.map((color) => (
           <span
             key={color}
-            className="size-[3.6cqw] border border-[#808080]"
+            className="size-[3.6cqw] border border-[#84817a]"
             style={{ backgroundColor: color }}
           />
         ))}

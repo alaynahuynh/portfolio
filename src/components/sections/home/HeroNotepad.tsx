@@ -1,9 +1,7 @@
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
-import {
-  HeroRetroWindow,
-  RETRO_WELL,
-} from "@/components/sections/home/HeroRetroWindow";
+import { HeroRetroWindow } from "@/components/sections/home/HeroRetroWindow";
+import { RETRO_WELL } from "@/components/sections/home/retro-styles";
 
 /** The hero's About object: a Notepad-style window (mauve, see
  * hero-destinations.ts) holding the intro line. */

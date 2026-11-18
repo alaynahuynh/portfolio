@@ -5,11 +5,8 @@ import { Check, Copy, Paperclip, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { resumeUrl } from "@/lib/resume";
 import { siteConfig, socialLinks } from "@/lib/site-config";
-import {
-  HeroRetroWindow,
-  RETRO_BEVEL,
-  RETRO_WELL,
-} from "@/components/sections/home/HeroRetroWindow";
+import { HeroRetroWindow } from "@/components/sections/home/HeroRetroWindow";
+import { RETRO_BEVEL, RETRO_WELL } from "@/components/sections/home/retro-styles";
 
 const linkedIn = socialLinks.find((link) => link.label === "LinkedIn");
 
@@ -50,7 +47,7 @@ export function AboutContactWindow() {
       title="New Message"
       menu={["File", "Edit", "Insert"]}
       destination="playground"
-      className="bg-[#c0c0c0] shadow-[0_2px_10px_rgba(46,50,42,0.08)]"
+      className="bg-[#c3c0b8] shadow-[0_2px_10px_rgba(46,50,42,0.08)]"
     >
       <div className="flex flex-wrap gap-1 px-1 pb-1.5">
         <a href={mailto} className={cn(BUTTON, RETRO_BEVEL, "bg-[#dfdfdf] font-semibold")}>

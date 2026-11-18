@@ -6,7 +6,7 @@ import { siteConfig, socialLinks } from "@/lib/site-config";
 // cover (see BackCoverPage) deliberately has no copyright line of its
 // own anymore, exactly so it doesn't repeat this one right above it.
 //
-// White in the light theme; navy in the dark theme (the hero's pendant
+// White in the light theme; navy in the dark theme (the hero's sun/moon
 // lamp toggles it site-wide, see src/lib/theme.ts).
 const LINK = "transition-colors hover:text-foreground dark:hover:text-[#E8E1CF]";
 

@@ -3,17 +3,31 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/ui/Reveal";
 import { SelectedWorkMedia } from "@/components/sections/home/SelectedWorkMedia";
+import { RetroTaskbar, type TaskbarTask } from "@/components/sections/home/RetroTaskbar";
 import { projects } from "@/data/projects";
 import { cn } from "@/lib/utils";
-
-/** Muted traffic-light dots for the browser title bar. */
-const WINDOW_DOTS = ["#d98f80", "#e3c27a", "#9fbf8a"];
 
 /** Projects with Selected Works media get the full-size card, in data
  * order. Smaller projects without media (e.g. Pig Lamp) are listed
  * underneath as compact "Other" rows. */
 const featured = projects.filter((p) => p.media);
 const other = projects.filter((p) => !p.media && p.hasCaseStudy);
+
+/** One taskbar button per featured project, linking to its card. */
+const cardId = (slug: string) => `work-${slug}`;
+/** Each project's taskbar icon (see public/images/home/taskbar). */
+const TASK_ICONS: Record<string, string> = {
+  mymuseum: "/images/home/taskbar/mymuseum.png",
+  "vietnamese-noodle-house": "/images/home/taskbar/vnh.png",
+  coursepilot: "/images/home/taskbar/coursepilot.png",
+  nudge: "/images/home/taskbar/nudge.png",
+  jurnee: "/images/home/taskbar/jurnee.png",
+};
+const tasks: TaskbarTask[] = featured.map((p) => ({
+  id: cardId(p.slug),
+  title: p.title,
+  icon: TASK_ICONS[p.slug],
+}));
 
 function ViewCaseStudy({ className }: { className?: string }) {
   return (
@@ -32,10 +46,10 @@ function ViewCaseStudy({ className }: { className?: string }) {
 }
 
 /**
- * Selected Work: every project inside one retro browser window (blue-gray
- * title bar, window dots, an active "Selected Works" tab) spanning the
- * full viewport width. The tab acts as the visible title, so the heading
- * itself is screen-reader only.
+ * Selected Work: every project under a Windows 98 taskbar spanning the
+ * full viewport width (see RetroTaskbar): its Start button ("Selected
+ * Works") is the visible title, so the heading itself is
+ * screen-reader only, and its task buttons jump to each project.
  *
  * Featured projects follow the motion brief's card: media first (a wide
  * 16:9 loop beside a tall 9:16 one on a soft project color, see
@@ -44,54 +58,37 @@ function ViewCaseStudy({ className }: { className?: string }) {
  * whole card), so everything is clickable with a single tab stop; hover
  * or keyboard focus lifts the media.
  */
+/**
+ * Selected Works' header: the Windows 98 taskbar (see RetroTaskbar). Rendered by the
+ * homepage beside the hero rather than inside FeaturedWork, so the two
+ * share a container: the sticky hero holds while the taskbar rises into
+ * view, and releases once it's fully visible (see app/page.tsx). It
+ * carries the #work anchor so "View selected work" and the nav land here.
+ */
+export function FeaturedWorkTaskbar() {
+  return (
+    <div id="work" className="relative z-10 scroll-mt-28">
+      <RetroTaskbar tasks={tasks} />
+    </div>
+  );
+}
+
 export function FeaturedWork() {
   return (
-    <section id="work" className="scroll-mt-28">
-      <Reveal y={20} duration={500} className="overflow-hidden bg-background">
-        {/* Title bar + active tab */}
-        <div className="flex items-end gap-4 bg-[#e6f2ff] px-4 pt-2.5 sm:gap-6 sm:px-5 dark:bg-[#1a2742]">
-          <div aria-hidden="true" className="flex gap-1.5 self-center pb-2.5 opacity-80">
-            {WINDOW_DOTS.map((color) => (
-              <span
-                key={color}
-                className="size-2.5 rounded-full"
-                style={{ backgroundColor: color }}
-              />
-            ))}
-          </div>
-
-          {/* Active tab — rounded top, with the curved "flare" corners
-              where a real browser tab melts into the page below. */}
-          <div className="relative flex h-9 w-56 min-w-0 items-center gap-2 rounded-t-lg bg-background pr-2.5 pl-4 sm:w-64">
-            <span
-              aria-hidden="true"
-              className="absolute bottom-0 -left-2.5 size-2.5 bg-[radial-gradient(circle_at_0_0,transparent_9.5px,var(--color-background)_10px)]"
-            />
-            <span
-              aria-hidden="true"
-              className="absolute -right-2.5 bottom-0 size-2.5 bg-[radial-gradient(circle_at_100%_0,transparent_9.5px,var(--color-background)_10px)]"
-            />
-            <span className="flex-1 truncate text-[13px] font-medium text-foreground/80">
-              Selected Works
-            </span>
-            <span
-              aria-hidden="true"
-              className="text-sm leading-none text-muted-foreground/60"
-            >
-              ×
-            </span>
-          </div>
-        </div>
-
+    <section aria-labelledby="work-heading" className="bg-background">
+      {/* Opens on a faint warm grey (the taskbar's own grey, lightened)
+          that fades to the page over ~180px, so the grey taskbar settles
+          into the white page instead of stopping on a hard edge. */}
+      <div className="overflow-hidden bg-background bg-[linear-gradient(to_bottom,#ebe8e1,var(--color-background)_180px)] dark:bg-[linear-gradient(to_bottom,#1a2742,var(--color-background)_180px)]">
         <div className="mx-auto w-full max-w-[1600px] px-6 pt-10 pb-16 sm:px-12 sm:pt-14 sm:pb-20 lg:px-20 lg:pt-20 lg:pb-24 xl:px-28">
-          <h2 className="sr-only">Selected Works</h2>
+          <h2 id="work-heading" className="sr-only">Selected Works</h2>
 
           <ol className="space-y-16 sm:space-y-20 md:space-y-[120px]">
             {featured.map((project) => {
               const href = `/projects/${project.slug}`;
               const linkable = project.hasCaseStudy;
               return (
-                <li key={project.slug}>
+                <li key={project.slug} id={cardId(project.slug)} className="scroll-mt-28">
                   <Reveal
                     y={15}
                     duration={500}
@@ -189,7 +186,7 @@ export function FeaturedWork() {
             </div>
           )}
         </div>
-      </Reveal>
+      </div>
     </section>
   );
 }

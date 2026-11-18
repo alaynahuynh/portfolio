@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* `dark:` utilities follow the site theme on <html data-theme> (toggled by
-   the hero's pendant lamp, see src/lib/theme.ts), not the OS setting. */
+   the hero's sun/moon, see src/lib/theme.ts), not the OS setting. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* ------------------------------------------------------------------ */
@@ -111,7 +111,7 @@
 }
 
 /* ── Dark theme ──────────────────────────────────────────────────────────
-   Manual only (the hero's pendant lamp; saved, and applied before paint
+   Manual only (the hero's sun/moon; saved, and applied before paint
    by the script in layout.tsx): no automatic switch from the OS setting.
    The navy matches the dark hero. Re-pointing the tokens here re-themes
    every page; the -deep "accessible on cream" accents become light
@@ -529,6 +529,31 @@
   }
   50% {
     transform: skewX(var(--sway, 4deg));
+  }
+}
+
+/* Hero scene (HeroScene.tsx): a band of wind light sweeps over the
+   grass, and stars twinkle at night. */
+@keyframes hero-wind-sweep {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+@keyframes hero-star-twinkle {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scene-anim {
+    animation: none !important;
   }
 }
 
@@ -1159,11 +1184,12 @@ html[data-hero-intro] .hero-intro-hint {
 
 /* ── Hero theme ─────────────────────────────────────────────────────────
    The homepage hero's colors for each site theme (see HeroSection.tsx):
-   white in the light theme, navy in the dark theme. */
+   a sunny hill in the light theme, the same hill at night in the dark theme. */
 :root[data-theme="dark"] [data-hero] {
-  --hero-navy: 1;
+  --hero-navy: 0.8;
   --hero-dim: 0.8;
   --hero-hint: #e8e1cf;
+  --hero-hint-sky: #e8e1cf;
   --hero-grid: #c4b2e3;
   --hero-grid-opacity: 0.6;
   --hero-dot-1: #a9c8ec;
@@ -1180,24 +1206,27 @@ html[data-hero-intro] .hero-intro-hint {
 }
 
 [data-hero] {
+  /* The hero windows' shadow (Hero.tsx). It replaces RETRO_BEVEL's
+     box-shadow on those windows, so it carries the same Windows 98 bevel
+     (the four insets, from retro-styles.ts) before the drop shadows: a
+     tight contact shadow, a mid shadow, and a deep cool one that lifts the
+     windows off the sky photo. */
+  --hero-window-shadow: inset -1px -1px #413f3a, inset 1px 1px #e2dfd7, inset -2px -2px #84817a,
+    inset 2px 2px #fffdf8, 0 2px 3px rgba(0, 0, 0, 0.35), 0 10px 18px -4px rgba(0, 0, 0, 0.28),
+    0 30px 60px -10px rgba(5, 18, 40, 0.7);
   --hero-navy: 0;
   --hero-dim: 1;
-  --hero-hint: var(--color-sage-deep);
+  --hero-hint: #ffffff;
+  /* The hint on md+ sits in the sky, where white wouldn't read. */
+  --hero-hint-sky: #163a66;
   --hero-grid: var(--color-mauve-deep);
   --hero-grid-opacity: 0.55;
   --hero-dot-1: var(--color-lake-blue);
   --hero-dot-2: color-mix(in srgb, var(--color-sky) 30%, white);
   --hero-dot-3: color-mix(in srgb, var(--color-sky) 15%, white);
-  /* A soft, mostly-white halo: just enough cool tint to show against the
-     white page, held at strong opacity further out than the old blue. */
-  --hero-glow: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--color-mist-blue) 32%, white) 0%,
-    color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 32%, white) 90%, transparent) 45%,
-    color-mix(in srgb, color-mix(in srgb, var(--color-mist-blue) 32%, white) 55%, transparent) 75%,
-    transparent 100%
-  );
-  /* No cursor light on the white hero. */
+  /* No halo in daylight: a white bloom would just wash out the sky. */
+  --hero-glow: transparent;
+  /* No cursor light in daylight. */
   --hero-cursor-core: transparent;
   --hero-cursor-edge: transparent;
 }
@@ -1266,3 +1295,31 @@ html[data-hero-intro] .hero-intro-hint {
   .duo-scene .duo-pop,
   .duo-scene .duo-hop { animation: none; }
 }
+
+/* ── Hero taskbar ───────────────────────────────────────────────────────
+   A minimized or closed hero window's taskbar button slides up into
+   place (HeroDesktop.tsx). */
+.hero-taskbar-chip {
+  animation: hero-taskbar-chip 180ms ease-out both;
+}
+@keyframes hero-taskbar-chip {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-taskbar-chip {
+    animation: none;
+  }
+}
+
+/* ── Hero film grain ────────────────────────────────────────────────────
+   Fine monochrome noise tiled over the hero photo (HeroScene.tsx) so the
+   photographic backdrop shares a little texture with the retro UI. Static
+   on purpose: animated grain would cost repaints for little gain. */
+.hero-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 0 1'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
