@@ -23,8 +23,10 @@ export const PROJECTS_STATUS = {
  * Order: MyMuseum leads (designed, built and live), then Vietnamese Noodle
  * House (real client, measured result), CoursePilot (deepest research,
  * concept stage), Nudge (6-week team jam) and Jurnee (4-hour designathon).
- * Thumbnail card colors (`media.bgColor`) follow one fixed palette in
- * this order: blue, green, brown, mauve, mustard.
+ * Thumbnail card colors (`media.bgColor`) come from the hero's own scene
+ * and windows (see hero-destinations.ts), so the list reads as part of
+ * the desktop above it: sky, grass, the Work window's lake blue, the
+ * About window's mauve, the Playground window's sage.
  */
 export const projects: Project[] = [
   {
@@ -146,7 +148,7 @@ export const projects: Project[] = [
       height: 1420,
     },
     media: {
-      bgColor: "#745B36",
+      bgColor: "#93BAD9",
       wideSrc: "/thumbnails/coursepilot/coursepilot-wide.mp4",
       widePoster: "/thumbnails/coursepilot/coursepilot-wide-poster.webp",
       wideAlt:
@@ -213,7 +215,7 @@ export const projects: Project[] = [
     // Animated thumbnails built like the others (scripts/thumbnails:
     // jurnee_strip.py, then build_thumbnails.py jurnee).
     media: {
-      bgColor: "#B08D46",
+      bgColor: "#9BB27B",
       wideSrc: "/thumbnails/jurnee/jurnee-wide.mp4",
       widePoster: "/thumbnails/jurnee/jurnee-wide-poster.webp",
       wideAlt:

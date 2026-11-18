@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { CaseStudyPage } from "@/components/sections/case-studies/CaseStudyPage";
 import { CoursePilotCaseStudy } from "@/components/sections/case-studies/coursepilot/CoursePilotCaseStudy";
 import { VNHCaseStudy } from "@/components/sections/case-studies/vnh/VNHCaseStudy";
-import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
+import { CaseStudyEnd } from "@/components/sections/case-studies/CaseStudyEnd";
 import { getProjectBySlug, projects } from "@/data/projects";
 import { coursePilot } from "@/data/case-studies/course-pilot";
 import { myMuseum } from "@/data/case-studies/my-museum";
@@ -60,7 +60,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   return (
     <>
       {body}
-      <NextCaseStudy slug={slug} />
+      <CaseStudyEnd slug={slug} />
     </>
   );
 }

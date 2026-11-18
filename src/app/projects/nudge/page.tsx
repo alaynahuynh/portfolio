@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { ViewTransition } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { BackToWork, CaseStudyWindow } from "@/components/sections/case-studies/CaseStudyWindow";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseStudyFullImage } from "@/components/sections/case-studies/media/CaseStudyMedia";
-import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
+import { CaseStudyEnd } from "@/components/sections/case-studies/CaseStudyEnd";
 import type { CaseStudyImageSpec } from "@/types/case-study";
 import { cn } from "@/lib/utils";
 
@@ -278,9 +278,7 @@ export default function NudgePage() {
     <div className="case-study bg-background">
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-          ← Back to Work
-        </Link>
+        <BackToWork />
 
         <Reveal>
           <p className="mt-10 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
@@ -322,17 +320,19 @@ export default function NudgePage() {
         {/* Designed hero: the three screens on the deck's own palette. */}
         {/* Shared with the homepage card: morphs in on navigation, so no Reveal. */}
         <ViewTransition name="project-media-nudge" share="project-morph">
-          <div className="relative mt-14 overflow-hidden rounded-[28px] bg-[#f1eff9] px-4 pt-12 sm:px-10 sm:pt-16">
-            <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#d8cff7] sm:size-[28rem]" />
-            <span aria-hidden="true" className="absolute -bottom-40 -left-20 size-80 rounded-full bg-[#f6d3ee] sm:size-[26rem]" />
-            <span aria-hidden="true" className="absolute right-[18%] -bottom-24 size-56 rounded-full bg-[#dcefeb]" />
-            <div className="relative mx-auto flex max-w-4xl items-start justify-center gap-3 sm:gap-8">
-              <Phone phone={PHONES.trip} className="mt-16 w-[29%] -rotate-3 sm:mt-24" />
-              <Phone phone={PHONES.home} className="w-[33%]" priority />
-              <Phone phone={PHONES.log} className="mt-16 w-[29%] rotate-3 sm:mt-24" />
+          <CaseStudyWindow slug="nudge" bare className="mt-14">
+            <div className="relative overflow-hidden bg-[#f1eff9] px-4 pt-12 sm:px-10 sm:pt-16">
+              <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#d8cff7] sm:size-[28rem]" />
+              <span aria-hidden="true" className="absolute -bottom-40 -left-20 size-80 rounded-full bg-[#f6d3ee] sm:size-[26rem]" />
+              <span aria-hidden="true" className="absolute right-[18%] -bottom-24 size-56 rounded-full bg-[#dcefeb]" />
+              <div className="relative mx-auto flex max-w-4xl items-start justify-center gap-3 sm:gap-8">
+                <Phone phone={PHONES.trip} className="mt-16 w-[29%] -rotate-3 sm:mt-24" />
+                <Phone phone={PHONES.home} className="w-[33%]" priority />
+                <Phone phone={PHONES.log} className="mt-16 w-[29%] rotate-3 sm:mt-24" />
+              </div>
+              <div className="h-6 sm:h-10" />
             </div>
-            <div className="h-6 sm:h-10" />
-          </div>
+          </CaseStudyWindow>
         </ViewTransition>
       </Section>
 
@@ -678,7 +678,7 @@ export default function NudgePage() {
         </div>
       </Section>
 
-      <NextCaseStudy slug="nudge" />
+      <CaseStudyEnd slug="nudge" />
     </div>
   );
 }

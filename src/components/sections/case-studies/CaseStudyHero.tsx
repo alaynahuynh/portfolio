@@ -1,5 +1,5 @@
 import { ViewTransition } from "react";
-import Link from "next/link";
+import { BackToWork, CaseStudyWindow } from "@/components/sections/case-studies/CaseStudyWindow";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -9,7 +9,9 @@ import type { CaseStudyData } from "@/types/case-study";
  * The one hero every case study shares, so they all read in the same
  * order: category → title → tagline → status → description → CTA →
  * disclosure → tools → Role / Duration / Platform → media. The media is
- * the shared-element target for page transitions (see PageTransition).
+ * the shared-element target for page transitions (see PageTransition),
+ * opened in a CaseStudyWindow so it reads as a window on the homepage
+ * desktop.
  *
  * `children` is the hero media (video, image, desktop/mobile pair), which
  * differs per project. `showDescription` is off for CoursePilot, whose
@@ -18,10 +20,13 @@ import type { CaseStudyData } from "@/types/case-study";
 export function CaseStudyHero({
   data,
   showDescription = true,
+  mediaClassName,
   children,
 }: {
   data: CaseStudyData;
   showDescription?: boolean;
+  /** Sizes the hero media's window (e.g. a narrower centered window). */
+  mediaClassName?: string;
   children?: React.ReactNode;
 }) {
   const { hero, overview } = data;
@@ -38,9 +43,7 @@ export function CaseStudyHero({
 
   return (
     <Section className="pt-24 pb-0 sm:pt-32">
-      <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-        ← Back to Work
-      </Link>
+      <BackToWork />
 
       <Reveal>
         <p className="mt-10 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">{hero.category}</p>
@@ -110,7 +113,9 @@ export function CaseStudyHero({
       {children && (
         <div className="mt-14">
           <ViewTransition name={`project-media-${data.slug}`} share="project-morph">
-            {children}
+            <CaseStudyWindow slug={data.slug} className={mediaClassName}>
+              {children}
+            </CaseStudyWindow>
           </ViewTransition>
         </div>
       )}

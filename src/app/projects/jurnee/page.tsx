@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { ViewTransition } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { BackToWork, CaseStudyWindow } from "@/components/sections/case-studies/CaseStudyWindow";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
-import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
+import { CaseStudyEnd } from "@/components/sections/case-studies/CaseStudyEnd";
 import { cn } from "@/lib/utils";
 
 /**
@@ -151,9 +151,7 @@ export default function JurneePage() {
     <div className="case-study bg-background">
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-          ← Back to Work
-        </Link>
+        <BackToWork />
 
         <Reveal>
           <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -194,17 +192,19 @@ export default function JurneePage() {
 
         {/* Shared with the homepage card: morphs in on navigation, so no Reveal. */}
         <ViewTransition name="project-media-jurnee" share="project-morph">
-          <div className="relative mt-14 overflow-hidden rounded-[28px] bg-[#F7F4FB] px-4 pt-12 sm:px-10 sm:pt-16 dark:bg-[#1f1a30]">
-            <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#DBD3F0] sm:size-[28rem] dark:bg-[#2c2445]" />
-            <span aria-hidden="true" className="absolute top-10 left-[8%] size-16 rounded-full bg-[#F8E8B6] sm:size-24 dark:bg-[#4a4126]" />
-            <Mountains className="absolute inset-x-0 bottom-0 h-[38%] w-full opacity-80 dark:opacity-25" />
-            <div className="relative mx-auto flex max-w-4xl items-start justify-center gap-3 sm:gap-8">
-              <Phone screen={SCREENS.compass} className="mt-16 w-[29%] -rotate-3 sm:mt-24" />
-              <Phone screen={SCREENS.home} className="w-[33%]" priority />
-              <Phone screen={SCREENS.ascent} className="mt-16 w-[29%] rotate-3 sm:mt-24" />
+          <CaseStudyWindow slug="jurnee" bare className="mt-14">
+            <div className="relative overflow-hidden bg-[#F7F4FB] px-4 pt-12 sm:px-10 sm:pt-16">
+              <span aria-hidden="true" className="absolute -top-24 -right-16 size-80 rounded-full bg-[#DBD3F0] sm:size-[28rem]" />
+              <span aria-hidden="true" className="absolute top-10 left-[8%] size-16 rounded-full bg-[#F8E8B6] sm:size-24" />
+              <Mountains className="absolute inset-x-0 bottom-0 h-[38%] w-full opacity-80" />
+              <div className="relative mx-auto flex max-w-4xl items-start justify-center gap-3 sm:gap-8">
+                <Phone screen={SCREENS.compass} className="mt-16 w-[29%] -rotate-3 sm:mt-24" />
+                <Phone screen={SCREENS.home} className="w-[33%]" priority />
+                <Phone screen={SCREENS.ascent} className="mt-16 w-[29%] rotate-3 sm:mt-24" />
+              </div>
+              <div className="h-6 sm:h-10" />
             </div>
-            <div className="h-6 sm:h-10" />
-          </div>
+          </CaseStudyWindow>
         </ViewTransition>
       </Section>
 
@@ -416,7 +416,7 @@ export default function JurneePage() {
         </Reveal>
       </Section>
 
-      <NextCaseStudy slug="jurnee" />
+      <CaseStudyEnd slug="jurnee" />
     </div>
   );
 }

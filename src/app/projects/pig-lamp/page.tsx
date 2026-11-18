@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { BackToWork, CaseStudyWindow } from "@/components/sections/case-studies/CaseStudyWindow";
 import { Section } from "@/components/ui/Section";
 import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
@@ -7,7 +7,7 @@ import {
   CaseStudyContentImage,
   CaseStudyFullImage,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
-import { NextCaseStudy } from "@/components/sections/case-studies/NextCaseStudy";
+import { CaseStudyEnd } from "@/components/sections/case-studies/CaseStudyEnd";
 import type { CaseStudyImageSpec } from "@/types/case-study";
 
 export const metadata: Metadata = {
@@ -145,9 +145,7 @@ export default function PigLampPage() {
     <div className="case-study bg-background">
       {/* ---------------------------------------------------------- HERO */}
       <Section className="pt-24 pb-0 sm:pt-32">
-        <Link href="/#work" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-          ← Back to Work
-        </Link>
+        <BackToWork />
 
         <Reveal>
           <p className="mt-10 text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
@@ -186,9 +184,9 @@ export default function PigLampPage() {
         </Reveal>
 
         <Reveal delay={140}>
-          <div className="mt-14">
+          <CaseStudyWindow slug="pig-lamp" className="mt-14">
             <CaseStudyFullImage image={HERO} />
-          </div>
+          </CaseStudyWindow>
         </Reveal>
       </Section>
 
@@ -393,7 +391,7 @@ export default function PigLampPage() {
         </div>
       </Section>
 
-      <NextCaseStudy slug="pig-lamp" />
+      <CaseStudyEnd slug="pig-lamp" />
     </div>
   );
 }

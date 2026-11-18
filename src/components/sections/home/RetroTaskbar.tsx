@@ -2,8 +2,9 @@
 
 import { useSyncExternalStore } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Volume2 } from "lucide-react";
-import { RETRO_BEVEL, RETRO_WELL } from "@/components/sections/home/retro-styles";
+import { RETRO_BEVEL, RETRO_BEVEL_PRESSED, RETRO_WELL } from "@/components/sections/home/retro-styles";
 import { cn } from "@/lib/utils";
 
 /**
@@ -23,6 +24,11 @@ import { cn } from "@/lib/utils";
  *
  * The colors are fixed (not theme tokens), like the hero windows: the
  * taskbar stays Windows grey in the dark theme too.
+ *
+ * Also closes every case study (see CaseStudyEnd): there the tasks are
+ * page links, the Start button links back to the homepage list, and the
+ * project being read shows as the pressed (active) task, as on a real
+ * taskbar.
  */
 
 export interface TaskbarTask {
@@ -31,18 +37,47 @@ export interface TaskbarTask {
   title: string;
   /** The project's logo, shown as the button's program icon. */
   icon?: string;
+  /** Page link; defaults to the in-page anchor `#${id}`. */
+  href?: string;
+  /** The page being viewed: drawn pressed, with aria-current. */
+  current?: boolean;
 }
 
-export function RetroTaskbar({ tasks }: { tasks: TaskbarTask[] }) {
+/** Inverted bevel on a lighter dither, as Windows draws the active task. */
+const TASK_ACTIVE =
+  "bg-[#d6d3cb] font-bold shadow-[inset_-1px_-1px_#fffdf8,inset_1px_1px_#413f3a,inset_-2px_-2px_#e2dfd7,inset_2px_2px_#84817a]";
+
+export function RetroTaskbar({
+  tasks,
+  startHref,
+  label = "Selected projects",
+}: {
+  tasks: TaskbarTask[];
+  /** Makes the Start button a link (e.g. back to the homepage list). */
+  startHref?: string;
+  label?: string;
+}) {
+  const startClass = cn("flex shrink-0 items-center px-3 text-[13px] font-bold sm:text-[14px]", RETRO_BEVEL);
   return (
     <nav
-      aria-label="Selected projects"
+      aria-label={label}
       className="relative flex h-10 items-stretch gap-1 bg-[#c3c0b8] px-1 py-[4px] font-sans text-[12px] text-[#1b1a17] shadow-[inset_0_1px_#e2dfd7,inset_0_2px_#fffdf8,inset_0_-1px_#a9a69e,0_-4px_14px_rgba(0,0,0,0.18),0_3px_6px_-2px_rgba(46,42,32,0.18)] select-none"
     >
       {/* Start button */}
-      <div className={cn("flex shrink-0 items-center px-3 text-[13px] font-bold sm:text-[14px]", RETRO_BEVEL)}>
-        Selected Works
-      </div>
+      {startHref ? (
+        <Link
+          href={startHref}
+          className={cn(
+            startClass,
+            RETRO_BEVEL_PRESSED,
+            "focus-visible:outline-1 focus-visible:-outline-offset-4 focus-visible:outline-[#1b1a17] focus-visible:outline-dotted",
+          )}
+        >
+          Selected Works
+        </Link>
+      ) : (
+        <div className={startClass}>Selected Works</div>
+      )}
 
       {/* Divider grip, as between Start and the tasks on a real taskbar */}
       <span
@@ -54,18 +89,19 @@ export function RetroTaskbar({ tasks }: { tasks: TaskbarTask[] }) {
       <ul className="hidden min-w-0 flex-1 items-stretch gap-1 md:flex">
         {tasks.map((task) => (
           <li key={task.id} className="max-w-40 min-w-0 flex-1">
-            <a
-              href={`#${task.id}`}
+            <TaskLink
+              href={task.href ?? `#${task.id}`}
+              aria-current={task.current ? "page" : undefined}
               className={cn(
                 "flex h-full items-center gap-1.5 px-2 focus-visible:outline-1 focus-visible:-outline-offset-4 focus-visible:outline-[#1b1a17] focus-visible:outline-dotted",
-                RETRO_BEVEL,
+                task.current ? TASK_ACTIVE : cn(RETRO_BEVEL, RETRO_BEVEL_PRESSED),
               )}
             >
               {task.icon && (
                 <Image src={task.icon} alt="" width={48} height={48} className="size-[18px] shrink-0" />
               )}
               <span className="truncate">{task.title}</span>
-            </a>
+            </TaskLink>
           </li>
         ))}
       </ul>
@@ -80,6 +116,12 @@ export function RetroTaskbar({ tasks }: { tasks: TaskbarTask[] }) {
       </div>
     </nav>
   );
+}
+
+/** In-page anchors stay plain <a> (Lenis smooth-scrolls them); page
+ * links go through next/link for client navigation. */
+function TaskLink({ href, ...props }: React.ComponentProps<"a"> & { href: string }) {
+  return href.startsWith("#") ? <a href={href} {...props} /> : <Link href={href} {...props} />;
 }
 
 /** "3:07 PM", ticking each 15 s; empty on the server and first paint. */

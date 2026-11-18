@@ -158,7 +158,7 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
     <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)", "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       {/* No description here: the Overview heading right below restates it. */}
-      <CaseStudyHero data={data} showDescription={false}>
+      <CaseStudyHero data={data} showDescription={false} mediaClassName="mx-auto max-w-5xl">
         <CaseStudyVideo
           video={{
             src: "/videos/projects/coursepilot/workspace-walkthrough.mp4",
@@ -167,7 +167,6 @@ export function CoursePilotCaseStudy({ data }: { data: CaseStudyData }) {
             width: 2000,
             height: 1420,
           }}
-          className="mx-auto max-w-5xl"
         />
       </CaseStudyHero>
 

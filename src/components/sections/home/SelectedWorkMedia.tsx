@@ -78,21 +78,30 @@ function LoopClip({
  * under 768px. Keeps the `project-media-*` view-transition name on the
  * wide panel so CoursePilot's clip still morphs into its case-study hero.
  */
-export function SelectedWorkMedia({ project, media }: { project: Project; media: ProjectMedia }) {
+export function SelectedWorkMedia({
+  project,
+  media,
+  compact = false,
+}: {
+  project: Project;
+  media: ProjectMedia;
+  /** The smaller cards: the wide clip alone, filling the color card. */
+  compact?: boolean;
+}) {
   return (
     <div
       // Dark theme: a quiet tint of the project color on the navy surface.
       className="rounded-[20px] bg-(--card-bg) p-3 sm:p-4 lg:p-5 dark:bg-[color-mix(in_srgb,var(--card-bg)_14%,var(--color-surface))]"
       style={{ "--card-bg": media.bgColor } as React.CSSProperties}
     >
-      <div className="mx-auto flex justify-center gap-3 md:w-[85%]">
+      <div className={cn("mx-auto flex justify-center gap-3", !compact && "md:w-[85%]")}>
         <ViewTransition name={`project-media-${project.slug}`} share="project-morph">
           <div
             className={cn(
               "relative aspect-video min-w-0 flex-[256_1_0%] overflow-hidden rounded-2xl bg-surface",
               // No phone panel: keep the same size as the other cards' wide
               // panels (so all cards match heights), centered on the color.
-              !media.tallPoster && "md:max-w-[calc((100%-12px)*256/337)]",
+              !compact && !media.tallPoster && "md:max-w-[calc((100%-12px)*256/337)]",
               LIFT,
             )}
           >
@@ -104,7 +113,7 @@ export function SelectedWorkMedia({ project, media }: { project: Project; media:
             />
           </div>
         </ViewTransition>
-        {media.tallPoster && (
+        {!compact && media.tallPoster && (
           <div
             className={cn(
               "relative hidden aspect-9/16 min-w-0 flex-[81_1_0%] overflow-hidden rounded-2xl bg-surface md:block",
