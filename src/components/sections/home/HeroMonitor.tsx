@@ -1,13 +1,6 @@
 import { siteConfig } from "@/lib/site-config";
 import { cn } from "@/lib/utils";
 
-/** For the grass and ground shadows: the monitor's link lifts 4px on
- * hover/focus (OBJECT_LINK in Hero.tsx, -translate-y-1); these move back
- * down by the same amount on the same timing, so they stay planted on
- * the ground while only the monitor rises. */
-const STAY_GROUNDED =
-  "transition-transform duration-(--duration-base) ease-(--ease-soft) group-hover:translate-y-1 group-focus-visible:translate-y-1";
-
 /**
  * The hero's centerpiece: a photographed beige CRT (monitor-cutout.webp,
  * cut out with its screen glass punched through) standing in the grass.
@@ -33,14 +26,14 @@ export function HeroMonitor({ className }: { className?: string }) {
       {/* Shadow the monitor casts on the grass around its base */}
       <div
         aria-hidden="true"
-        className={cn("pointer-events-none absolute -inset-x-[9%] top-[83%] -bottom-[5%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(6,26,4,0.62),rgba(6,26,4,0.3)_60%,transparent)] blur-[1.2cqw]", STAY_GROUNDED)}
+        className="pointer-events-none absolute -inset-x-[9%] top-[83%] -bottom-[5%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(6,26,4,0.62),rgba(6,26,4,0.3)_60%,transparent)] blur-[1.2cqw]"
       />
       {/* Contact shadow: the tight, dark line where the base meets the
           ground (the base's own edge is at 98.2% down, 10%–90% across),
           so the monitor sits in the grass instead of hovering on it. */}
       <div
         aria-hidden="true"
-        className={cn("pointer-events-none absolute top-[95.6%] right-[8.6%] -bottom-[1.6%] left-[8.4%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(6,20,3,0.72),rgba(6,20,3,0.35)_55%,transparent)] blur-[0.35cqw]", STAY_GROUNDED)}
+        className="pointer-events-none absolute top-[95.6%] right-[8.6%] -bottom-[1.6%] left-[8.4%] rounded-[50%] bg-[radial-gradient(closest-side,rgba(6,20,3,0.72),rgba(6,20,3,0.35)_55%,transparent)] blur-[0.35cqw]"
       />
 
       {/* Screen, under the photo's punched-out glass */}
@@ -113,13 +106,13 @@ export function HeroMonitor({ className }: { className?: string }) {
           fading into the lawn below, in the scene's own full color... */}
       <div
         aria-hidden="true"
-        className={cn("pointer-events-none absolute top-[93.3%] left-[0.85%] h-[9.5%] w-[98%] bg-[url('/images/hero/monitor-grass.webp')] bg-size-[100%_100%]", STAY_GROUNDED)}
+        className="pointer-events-none absolute top-[93.3%] left-[0.85%] h-[9.5%] w-[98%] bg-[url('/images/hero/monitor-grass.webp')] bg-size-[100%_100%]"
       />
       {/* ...and the same night tint the lawn gets in the dark theme
           (HeroSection.tsx), kept to the blades' shape. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-[93.3%] left-[0.85%] h-[9.5%] w-[98%] bg-[#1A2742] opacity-(--hero-navy) mask-[url('/images/hero/monitor-grass.webp')] mask-size-[100%_100%] [transition:opacity_500ms,transform_var(--duration-base)_var(--ease-soft)] group-hover:translate-y-1 group-focus-visible:translate-y-1"
+        className="pointer-events-none absolute top-[93.3%] left-[0.85%] h-[9.5%] w-[98%] bg-[#1A2742] opacity-(--hero-navy) mask-[url('/images/hero/monitor-grass.webp')] mask-size-[100%_100%] transition-opacity duration-500"
       />
 
       {/* Power LED, over the photo's own — lights up blue on hover/focus,

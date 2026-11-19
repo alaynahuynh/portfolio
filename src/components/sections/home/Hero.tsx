@@ -11,12 +11,13 @@ import { HintArrow } from "@/components/ui/HintArrow";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/site-config";
 
-/** Shared link treatment: a gentle lift + soft drop shadow on hover/focus.
- * Objects rest slightly dimmed and come back to full color when hovered or
+/** The monitor's link: no movement on hover/focus, it just lights up.
+ * It rests slightly dimmed and comes back to full color (plus the
+ * screen glow, aura, and power LED in HeroMonitor) when hovered or
  * focused. The dim only applies on devices that can hover, so touch
- * screens always see full color. */
+ * screens see it at full color. */
 const OBJECT_LINK =
-  "group block rounded-sm transition-[transform,filter] duration-(--duration-base) ease-(--ease-soft) [@media(hover:hover)]:brightness-(--hero-dim) hover:brightness-100 focus-visible:brightness-100 hover:-translate-y-1 hover:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:-translate-y-1 focus-visible:drop-shadow-[0_14px_18px_rgba(46,50,42,0.18)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep";
+  "group block rounded-sm transition-[filter] duration-(--duration-base) ease-(--ease-soft) [@media(hover:hover)]:brightness-(--hero-dim) hover:brightness-100 focus-visible:brightness-100 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-sage-deep";
 
 /**
  * Small Windows-98-style tooltip naming a hero object's destination,
