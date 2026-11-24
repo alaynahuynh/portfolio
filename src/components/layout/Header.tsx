@@ -213,8 +213,9 @@ export function Header() {
             ? "border-[#E8E1CF]/10 bg-[rgba(14,20,36,0.72)] shadow-[0_8px_28px_-12px_rgba(0,0,0,0.6)] backdrop-blur-md"
             : scrolled && "border-border bg-background/85 shadow-[0_6px_22px_-10px_rgba(46,50,42,0.28)] backdrop-blur-md",
           // The pitch pages open on a solid color band (Pinterest red,
-          // Duolingo green); a see-through pill tints over it, so keep it solid.
-          (pathname === "/pinterest" || pathname === "/duolingo") && "border-transparent bg-background",
+          // Duolingo green, McDonald's yellow); a see-through pill tints over it, so keep it solid.
+          (pathname === "/pinterest" || pathname === "/duolingo" || pathname === "/mcdonalds") &&
+            "border-transparent bg-background",
         )}
       >
         {/* One-time entrance flourish: an ink outline traces the pill's own border, then fades. */}

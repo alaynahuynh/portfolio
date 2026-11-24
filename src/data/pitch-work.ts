@@ -1,6 +1,6 @@
 /**
  * Project write-ups shared by the company pitch pages (/pinterest,
- * /duolingo). Every claim comes from the case studies
+ * /duolingo, /mcdonalds). Every claim comes from the case studies
  * (src/data/case-studies, src/app/projects/nudge, src/app/projects/jurnee);
  * nothing is invented.
  * Each page picks its own projects and order with `pitchWork[slug]`.
