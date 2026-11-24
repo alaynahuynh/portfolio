@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Menu, Moon, Sun, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { AnimatedAHLogo } from "@/components/ui/AnimatedAHLogo";
 import { NavItem } from "@/components/layout/NavItem";
 import { ResumeLink } from "@/components/ui/ResumeLink";
 import { navLinks } from "@/lib/site-config";
 import { prefersReducedMotion } from "@/lib/motion";
-import { setTheme, useTheme } from "@/lib/theme";
+import { useTheme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /** Fixed scroll-pixel threshold before the pill firms up — the hero is a
@@ -60,31 +60,6 @@ function isSectionAnchor(href: string) {
  *   indicator, since nothing here actually tracks a "current page" the
  *   rest of the time (the visitor can be scrolled or routed anywhere).
  */
-/**
- * Light/dark switch, in the nav so it's on every page (the homepage hero's
- * sun/moon is the same control, and both stay in sync through
- * setTheme). Shows the mode it switches *to*.
- */
-function ThemeToggle({ dark, className, style }: { dark: boolean; className?: string; style?: React.CSSProperties }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={dark}
-      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-      title={dark ? "Light mode" : "Dark mode"}
-      onClick={() => setTheme(dark ? "light" : "dark")}
-      className={cn(
-        "flex size-9 items-center justify-center rounded-full text-foreground/70 transition-colors duration-(--duration-base) hover:bg-black/5 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage-deep",
-        dark && cn("hover:bg-white/10", CREAM),
-        className,
-      )}
-      style={style}
-    >
-      {dark ? <Sun aria-hidden="true" className="size-[18px]" /> : <Moon aria-hidden="true" className="size-[18px]" />}
-    </button>
-  );
-}
-
 export function Header() {
   const pathname = usePathname();
 
@@ -94,8 +69,7 @@ export function Header() {
   // True while the homepage hero (marked `data-hero`) is behind the pill
   // and set to its dark theme.
   // Navy pill whenever the site is in dark mode (every page).
-  const theme = useTheme();
-  const overHero = theme === "dark";
+  const overHero = useTheme() === "dark";
   const [clickedKey, setClickedKey] = useState<string | null>(null);
 
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -290,7 +264,7 @@ export function Header() {
             </span>
           </Link>
 
-          <div className="hidden items-center gap-6 sm:gap-8 md:flex">
+          <div className="hidden items-center gap-8 sm:gap-10 md:flex">
             <nav aria-label="Primary" className="flex items-center gap-1">
               {navLinks.map((link, i) => {
                 const key = keyOf(link.href);
@@ -327,20 +301,7 @@ export function Header() {
                 )}
               />
             </span>
-
-            <ThemeToggle
-              dark={overHero}
-              className="nav-stagger-item -ml-3 sm:-ml-4"
-              style={{ animationDelay: `${230 + (navLinks.length + 2) * 55}ms` }}
-            />
           </div>
-
-          <div className="flex items-center gap-1 md:hidden">
-            <ThemeToggle
-              dark={overHero}
-              className="nav-stagger-item"
-              style={{ animationDelay: `${230 + navLinks.length * 55}ms` }}
-            />
 
           <button
             ref={toggleRef}
@@ -357,7 +318,6 @@ export function Header() {
           >
             {menuOpen ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
           </button>
-          </div>
         </Container>
 
         {/* Scroll progress: a soft brush stroke along the pill's bottom edge, growing with scroll depth. */}

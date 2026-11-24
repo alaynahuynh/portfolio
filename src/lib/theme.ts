@@ -10,8 +10,7 @@ import { THEME_STORAGE_KEY } from "@/lib/theme-script";
  * paint by the inline script in app/layout.tsx (see theme-script.ts), so a dark
  * visitor never sees a light flash on load or on any other page.
  *
- * Toggled from the nav on every page (and the homepage hero's sun/moon).
- * Light is the default.
+ * The homepage hero's sun/moon is the toggle. Light is the default.
  */
 export type Theme = "light" | "dark";
 
