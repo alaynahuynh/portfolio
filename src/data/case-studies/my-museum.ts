@@ -14,6 +14,7 @@ export const myMuseum: CaseStudyData = {
   navOverride: [
     { id: "discovery", label: "Problem" },
     { id: "research", label: "Interviews" },
+    { id: "approach", label: "Approach" },
     { id: "testing", label: "Usability testing" },
     { id: "decisions", label: "Key decisions" },
     { id: "final-design", label: "Final design" },
@@ -21,8 +22,7 @@ export const myMuseum: CaseStudyData = {
   ],
 
   hero: {
-    category:
-      "Product Design · Interaction Design · 3D Web · Frontend Development",
+    category: "Product Design · 3D Web",
     title: "MyMuseum",
     tagline:
       "Turning online art portfolios into galleries you can walk through.",
@@ -157,11 +157,57 @@ export const myMuseum: CaseStudyData = {
     hmw: "",
   },
 
+  approach: {
+    heading: "From interviews to a working prototype",
+    paragraphs: [
+      "After the interviews, I split the product into two experiences: artists making a museum, and visitors walking through one. They use the same product, but they want different things and aren't equally comfortable with technology. For every part, I asked whether it actually got better in 3D or was better as a familiar 2D screen.",
+      "I moved to a working prototype early. Most of my open questions were about movement, how big a piece feels, and how close you need to be to see it, and a static wireframe couldn't answer those. So the prototype became how I explored the design, not just how I built it. I went back and forth between designing and building the whole way through instead of finishing one before starting the other.",
+    ],
+    tools: [
+      { name: "Figma", use: "User flows, layouts and interactions, worked out before I built them." },
+      { name: "Next.js", use: "The web app itself: creating, editing and sharing museums." },
+      {
+        name: "React Three Fiber",
+        use: "The 3D galleries, running right in the browser so visitors don't have to download anything.",
+      },
+      { name: "Blender", use: "3D assets, and figuring out how a physical gallery translates to a digital one." },
+      {
+        name: "Claude Code",
+        use: "A development partner for building interactions and working through technical problems faster. The design decisions stayed mine.",
+      },
+    ],
+  },
+
   // The three tensions now live in `keyDecisions` below, with their
   // evidence and tradeoffs, instead of as short cards here.
   ideation: {
-    whyThisTitle: "",
-    whyThis: [],
+    whyThisTitle: "Where artists' and visitors' needs pulled apart",
+    whyThis: [
+      {
+        title: "Creative freedom vs. ease of creation",
+        painPoint:
+          "Full control over the layout would let artists say more, but it would also mean learning spatial design.",
+        solution: "MyMuseum lays out the rooms for them, so anyone can publish a museum.",
+      },
+      {
+        title: "Immersion vs. usability",
+        painPoint:
+          "3D shows a piece's scale and presence, but it comes with a learning curve.",
+        solution: "Grid View lets visitors see every piece without learning any controls.",
+      },
+      {
+        title: "Presence vs. comfort",
+        painPoint:
+          "I wanted visitors to feel other people in the room without having to talk to strangers.",
+        solution: "Labeled avatars, no live chat, and Museum Mail as a private, low-pressure note.",
+      },
+      {
+        title: "Realism vs. performance",
+        painPoint:
+          "It all runs in a browser, so every bit of 3D detail costs load time and narrows which devices can run it.",
+        solution: "I weighed added detail against loading and device reach, so the art stays easy to get to.",
+      },
+    ],
     whyThisPlaceholder: false,
 
     // Trimmed for length: the creator/visitor flowcharts repeated what the
@@ -213,6 +259,7 @@ export const myMuseum: CaseStudyData = {
         body: [
           "Walking through the rooms is the fun part, but in testing it was also how people missed work. They'd move through a room and “end up missing some,” and the prototype had no other way to see the collection. P1 and P2 had told me in May that clarity mattered more to them than immersion. I just hadn't designed for it yet.",
           "Every museum now has a Grid View with the same collection and the same artwork viewer. On a phone, Grid View is where you start, and Enter 3D Gallery is one tap away. Nothing is 3D-only. I checked Grid View at 390px wide and went through the artwork viewer using only a keyboard.",
+          "I didn't want the phone version to be a shrunken desktop. A computer has a keyboard, a mouse and a big screen. A phone has a small screen and different habits, and the interviews showed game-style movement puts off people who don't play games. In the 3D room, you can drag with a finger to look around, but walking still takes a keyboard (W A S D or the arrow keys); there are no on-screen movement controls yet. So phones open in Grid View, and Enter 3D Gallery carries a note that the 3D room works best with a keyboard.",
           "That means people on phones don't start in 3D, which is the most distinctive part of MyMuseum. Being able to see every piece mattered more to me.",
         ],
         images: [

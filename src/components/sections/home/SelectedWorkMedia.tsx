@@ -1,25 +1,41 @@
 "use client";
 
-import { useRef, useSyncExternalStore, ViewTransition } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, ViewTransition } from "react";
 import Image from "next/image";
-import { useLazyVideo } from "@/components/sections/home/ProjectPlaceholder";
 import { cn } from "@/lib/utils";
 import type { Project, ProjectMedia } from "@/types";
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
+/** The tall panel only shows from 768px (see `md:block` below). */
+const SHOWS_TALL = "(min-width: 768px)";
 
-function subscribeReducedMotion(onChange: () => void) {
-  const query = window.matchMedia(REDUCED_MOTION);
-  query.addEventListener("change", onChange);
-  return () => query.removeEventListener("change", onChange);
-}
-
-function usePrefersReducedMotion() {
+function useMediaQuery(query: string) {
   return useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(REDUCED_MOTION).matches,
+    (onChange) => {
+      const list = window.matchMedia(query);
+      list.addEventListener("change", onChange);
+      return () => list.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
     () => false,
   );
+}
+
+/** Whether the element is on screen; `seen` latches true the first time,
+ * so the clip only starts downloading once it's been scrolled to. */
+function useInView(ref: React.RefObject<HTMLElement | null>) {
+  const [state, setState] = useState({ inView: false, seen: false });
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setState((prev) => ({ inView: entry.isIntersecting, seen: prev.seen || entry.isIntersecting })),
+      { threshold: 0.1 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref]);
+  return state;
 }
 
 /** Lift + soft shadow on card hover / keyboard focus (300ms). */
@@ -39,16 +55,38 @@ function LoopClip({
   poster,
   alt,
   sizes,
+  turn,
 }: {
   /** Omit to show the poster as a plain still. */
   src?: string;
   poster: string;
   alt: string;
   sizes: string;
+  /** Set when this clip takes turns with another one: it plays only while
+   * `active`, once through, then calls `onDone` to hand over. Unset, it
+   * loops on its own. */
+  turn?: { active: boolean; onDone: () => void };
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const inView = useLazyVideo(videoRef);
-  const reducedMotion = usePrefersReducedMotion();
+  const { inView, seen } = useInView(videoRef);
+  const reducedMotion = useMediaQuery(REDUCED_MOTION);
+  const active = turn ? turn.active : true;
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !seen) return;
+    if (inView && active) {
+      void video.play().catch(() => {});
+    } else {
+      video.pause();
+    }
+  }, [inView, seen, active]);
+
+  // Each turn starts the clip from its first frame.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && turn?.active) video.currentTime = 0;
+  }, [turn?.active]);
 
   return (
     <>
@@ -56,11 +94,11 @@ function LoopClip({
       {src && !reducedMotion && (
         <video
           ref={videoRef}
-          src={inView ? src : undefined}
+          src={seen ? src : undefined}
           poster={poster}
           muted
-          loop
-          autoPlay
+          loop={!turn}
+          onEnded={turn?.onDone}
           playsInline
           preload="none"
           aria-hidden="true"
@@ -73,7 +111,9 @@ function LoopClip({
 
 /**
  * Selected Works media: a wide 16:9 panel beside a tall 9:16 one on the
- * project's soft card color. Flex ratios 256:81 make both panels exactly
+ * project's soft card color. When both show, they take turns (wide, then
+ * tall, and around again) rather than moving at once, so the eye can
+ * follow one view and then the other. Flex ratios 256:81 make both panels exactly
  * the same height (wide ≈ 3.16× the tall's width). The tall panel hides
  * under 768px. Keeps the `project-media-*` view-transition name on the
  * wide panel so CoursePilot's clip still morphs into its case-study hero.
@@ -88,6 +128,10 @@ export function SelectedWorkMedia({
   /** The smaller cards: the wide clip alone, filling the color card. */
   compact?: boolean;
 }) {
+  const showsTall = useMediaQuery(SHOWS_TALL);
+  const pairs = !compact && !!media.tallPoster && !!media.tallSrc && showsTall;
+  const [playing, setPlaying] = useState<"wide" | "tall">("wide");
+
   return (
     <div
       // Dark theme: a quiet tint of the project color on the navy surface.
@@ -110,6 +154,7 @@ export function SelectedWorkMedia({
               poster={media.widePoster}
               alt={media.wideAlt}
               sizes="(min-width: 1600px) 960px, (min-width: 768px) 62vw, 100vw"
+              turn={pairs ? { active: playing === "wide", onDone: () => setPlaying("tall") } : undefined}
             />
           </div>
         </ViewTransition>
@@ -125,6 +170,7 @@ export function SelectedWorkMedia({
               poster={media.tallPoster}
               alt={media.tallAlt ?? ""}
               sizes="(min-width: 1600px) 300px, 20vw"
+              turn={pairs ? { active: playing === "tall", onDone: () => setPlaying("wide") } : undefined}
             />
           </div>
         )}

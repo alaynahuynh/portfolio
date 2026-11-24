@@ -538,6 +538,15 @@ export interface CaseStudyData {
     sketchImages?: CaseStudyImageSpec[];
   };
 
+  /** Optional "approach" section between who it's for and testing: how
+   * the work went from research to a first prototype, and the tools used
+   * along the way (each with what it was used for). */
+  approach?: {
+    heading: string;
+    paragraphs: string[];
+    tools?: { name: string; use: string }[];
+  };
+
   /** Optional "key decisions" section — the few product decisions the
    * case study is really about, each tied to the evidence behind it, the
    * tradeoff it accepted, and an honest status line. */

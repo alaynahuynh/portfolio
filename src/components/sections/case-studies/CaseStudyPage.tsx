@@ -1454,6 +1454,38 @@ export function CaseStudyPage({ data }: { data: CaseStudyData }) {
         </Section>
       )}
 
+      {data.approach && (
+        <Section id="approach" className="scroll-mt-28 cs-band">
+          <Reveal>
+            <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
+              {data.approach.heading}
+            </Heading>
+          </Reveal>
+          <div className="mt-8 grid gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-16">
+            <Reveal delay={40} className="max-w-[45rem] space-y-4 text-lg text-muted-foreground">
+              {data.approach.paragraphs.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </Reveal>
+            {data.approach.tools && data.approach.tools.length > 0 && (
+              <Reveal delay={80}>
+                <p className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                  Tools, and what each was for
+                </p>
+                <dl className="mt-4 divide-y divide-border border-y border-border">
+                  {data.approach.tools.map((tool) => (
+                    <div key={tool.name} className="py-3.5">
+                      <dt className="font-medium text-foreground">{tool.name}</dt>
+                      <dd className="mt-1 text-sm text-muted-foreground">{tool.use}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </Reveal>
+            )}
+          </div>
+        </Section>
+      )}
+
       {!flowsLate && ideation.flows.length > 0 && flowsSection}
 
       {testing.placement === "before-decisions" && testingMain}

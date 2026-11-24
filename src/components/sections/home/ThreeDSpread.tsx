@@ -9,6 +9,8 @@ import { rememberBookScrollPosition } from "@/lib/book-return";
 
 const bySize = Object.fromEntries(threeDObjects.map((o) => [o.size, o]));
 const featured = bySize.large;
+/** The object on this page, so its own page in the book skips this photo. */
+export const THREE_D_FEATURED = featured;
 
 /**
  * "3D Works" spread — a single featured photo (Eye Table), which links
@@ -40,7 +42,7 @@ export function ThreeDSpread() {
           onClick={rememberBookScrollPosition}
           className="mt-[2.6cqw] inline-flex items-center gap-1.5 text-[length:clamp(0.625rem,1.5cqw,0.875rem)] font-medium text-earth transition-colors hover:text-earth/70"
         >
-          Explore 3D Works →
+          See them all at once →
         </Link>
       </div>
 

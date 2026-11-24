@@ -29,7 +29,7 @@ export const coursePilot: CaseStudyData = {
   accentColor: "var(--color-earth)",
 
   hero: {
-    category: "Product Design · UX Research · Interaction Design",
+    category: "Product Design · UX Research",
     title: "CoursePilot",
     tagline: "An assistant inside Canvas for the question “what should I work on tonight?”",
     description:

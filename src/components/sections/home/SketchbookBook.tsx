@@ -8,6 +8,12 @@ import { BookHoverTilt } from "@/components/sections/home/BookHoverTilt";
 import { TwoDSpread } from "@/components/sections/home/TwoDSpread";
 import { ThreeDSpread } from "@/components/sections/home/ThreeDSpread";
 import { BackCoverPage } from "@/components/sections/home/BackCoverPage";
+import {
+  ObjectPage,
+  PAINTING_PAIRS,
+  PaintingsPage,
+  SKETCHBOOK_OBJECTS,
+} from "@/components/sections/home/SketchbookWorkPages";
 
 const OPEN_ANGLE = 160; // degrees a leaf rotates through when "opened"
 
@@ -42,11 +48,25 @@ interface BookPageSpec {
 // duplicating this list. About and Contact used to live here as book
 // pages — they're now a real /about route and a plain homepage section,
 // respectively (see AboutBridge.tsx and Contact.tsx), so the book itself
-// is just the sketchbook proper: cover, 2D work, 3D work, back cover.
+// is just the sketchbook proper: cover, the 2D work, the 3D work, back
+// cover. The work itself is in the book (see SketchbookWorkPages), so
+// flipping through it shows every piece.
+
+/** Every inner (parchment) page, in order — also rendered as a plain
+ * stack by PlaygroundBook under reduced motion. */
+export const INNER_PAGES: { key: string; content: ReactNode }[] = [
+  { key: "2d", content: <TwoDSpread /> },
+  ...PAINTING_PAIRS.map((pair, i) => ({ key: `2d-${i + 1}`, content: <PaintingsPage pair={pair} /> })),
+  { key: "3d", content: <ThreeDSpread /> },
+  ...SKETCHBOOK_OBJECTS.map((object) => ({ key: `3d-${object.slug}`, content: <ObjectPage object={object} /> })),
+];
+
 const PAGES: BookPageSpec[] = [
   { key: "cover", front: <BookCover />, transparentFront: true, coverBack: true },
-  { key: "2d", front: <SketchbookPageContent><TwoDSpread /></SketchbookPageContent> },
-  { key: "3d", front: <SketchbookPageContent><ThreeDSpread /></SketchbookPageContent> },
+  ...INNER_PAGES.map(({ key, content }) => ({
+    key,
+    front: <SketchbookPageContent>{content}</SketchbookPageContent>,
+  })),
   { key: "back-cover", front: <BackCoverPage />, transparentFront: true },
 ];
 export const STAGE_COUNT = PAGES.length;

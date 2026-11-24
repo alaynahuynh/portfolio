@@ -8,6 +8,8 @@ import { paintings } from "@/data/creative-practice";
 import { rememberBookScrollPosition } from "@/lib/book-return";
 
 const featured = paintings.find((p) => p.size === "large") ?? paintings[0];
+/** The painting on this page, so the book's later pages skip it. */
+export const TWO_D_FEATURED = featured;
 
 /**
  * "2D Works" spread — a single featured painting, which links into the
@@ -56,7 +58,7 @@ export function TwoDSpread() {
           onClick={rememberBookScrollPosition}
           className="mt-[2.6cqw] inline-flex items-center gap-1.5 text-[length:clamp(0.625rem,1.5cqw,0.875rem)] font-medium text-earth transition-colors hover:text-earth/70"
         >
-          Explore 2D Works →
+          See them all at once →
         </Link>
       </div>
     </div>

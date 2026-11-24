@@ -10,11 +10,8 @@ import { cn } from "@/lib/utils";
  * media, so it isn't featured here (its case study is linked from the
  * Playground's 3D page). */
 const featured = projects.filter((p) => p.media);
-/** The two strongest projects keep the full-size card; the rest sit
- * below as a row of smaller cards, so the list has a clear lead. */
-const LEAD_COUNT = 2;
-const leads = featured.slice(0, LEAD_COUNT);
-const supporting = featured.slice(LEAD_COUNT);
+/** Every featured project gets the same full-size card. */
+const leads = featured;
 
 /** One taskbar button per featured project, linking to its card. */
 const cardId = (slug: string) => `work-${slug}`;
@@ -32,8 +29,7 @@ const tasks: TaskbarTask[] = featured.map((p) => ({
  *
  * Featured projects follow the motion brief's card: media first (a wide
  * 16:9 loop beside a tall 9:16 one on a soft project color, see
- * SelectedWorkMedia), then title and one-line result on the left with
- * role + meta on the right (stacked under 768px). Each card is one link (the title's anchor is stretched over the
+ * SelectedWorkMedia), then title and one-line result. Each card is one link (the title's anchor is stretched over the
  * whole card), so everything is clickable with a single tab stop; hover
  * or keyboard focus lifts the media.
  */
@@ -78,82 +74,34 @@ export function FeaturedWork() {
                   >
                     <SelectedWorkMedia project={project} media={project.media!} />
 
-                    {/* Two columns from 768px: story on the left (~60%),
-                        role + meta top-aligned on the right (~40%). */}
-                    <div className="mt-6 grid gap-4 sm:mt-7 md:grid-cols-[3fr_2fr] md:gap-10 lg:gap-16">
-                      <div>
-                        <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
-                          {linkable ? (
-                            // Stretched over the whole card: media, copy and
-                            // role are one link with one tab stop.
-                            <Link
-                              href={href}
-                              prefetch={project.videoThumbnail ? false : undefined}
-                              className="after:absolute after:inset-0 after:z-10 after:rounded-[20px] focus-visible:outline-none"
-                            >
-                              {project.title}
-                            </Link>
-                          ) : (
-                            project.title
-                          )}
-                        </h3>
-                        <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-                          {project.summary}
-                        </p>
-                      </div>
-                      <div className="md:pt-3 lg:pt-4">
-                        <p className="text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase md:whitespace-nowrap lg:text-[13px]">
-                          {project.role}
-                        </p>
-                        {project.meta && (
-                          <p className="mt-2 text-sm text-muted-foreground">{project.meta}</p>
+                    {/* No discipline tags here: each case study lists its
+                        own, and repeating a shorter set on the card only
+                        disagreed with them. */}
+                    <div className="mt-6 max-w-3xl sm:mt-7">
+                      <h3 className="font-heading text-3xl font-semibold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem]">
+                        {linkable ? (
+                          // Stretched over the whole card: media and copy
+                          // are one link with one tab stop.
+                          <Link
+                            href={href}
+                            prefetch={project.videoThumbnail ? false : undefined}
+                            className="after:absolute after:inset-0 after:z-10 after:rounded-[20px] focus-visible:outline-none"
+                          >
+                            {project.title}
+                          </Link>
+                        ) : (
+                          project.title
                         )}
-                      </div>
+                      </h3>
+                      <p className="mt-3 text-base text-muted-foreground sm:text-lg">
+                        {project.summary}
+                      </p>
                     </div>
                   </Reveal>
                 </li>
               );
             })}
           </ol>
-
-          {/* Supporting projects: same color card, type and hover, at a
-              smaller scale with the wide clip only. Three across from
-              768px, stacked on phones; the role is pinned to each card's
-              foot so the three line up whatever the summary length. */}
-          {supporting.length > 0 && (
-            <ul className="mt-16 grid gap-12 sm:mt-20 md:mt-[120px] md:grid-cols-3 md:gap-x-6 lg:gap-x-10">
-              {supporting.map((project) => (
-                <li key={project.slug} id={cardId(project.slug)} className="scroll-mt-28">
-                  <Reveal
-                    y={15}
-                    duration={500}
-                    className="group/card relative flex h-full flex-col rounded-[20px] outline-offset-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-mauve-deep"
-                  >
-                    <SelectedWorkMedia project={project} media={project.media!} compact />
-                    <h3 className="mt-5 font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-                      {project.hasCaseStudy ? (
-                        <Link
-                          href={`/projects/${project.slug}`}
-                          prefetch={project.videoThumbnail ? false : undefined}
-                          className="after:absolute after:inset-0 after:z-10 after:rounded-[20px] focus-visible:outline-none"
-                        >
-                          {project.title}
-                        </Link>
-                      ) : (
-                        project.title
-                      )}
-                    </h3>
-                    <p className="mt-2 text-base text-muted-foreground">{project.summary}</p>
-                    <div className="mt-auto pt-4">
-                      <p className="text-xs font-medium tracking-[0.12em] text-foreground/60 uppercase lg:text-[13px]">
-                        {project.role}
-                      </p>
-                    </div>
-                  </Reveal>
-                </li>
-              ))}
-            </ul>
-          )}
         </div>
       </div>
     </section>

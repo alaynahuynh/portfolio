@@ -6,12 +6,14 @@ import { Reveal } from "@/components/ui/Reveal";
 import type { CaseStudyData } from "@/types/case-study";
 
 /**
- * The one hero every case study shares, so they all read in the same
- * order: category → title → tagline → status → description → CTA →
- * disclosure → tools → Role / Duration / Platform → media. The media is
- * the shared-element target for page transitions (see PageTransition),
- * opened in a CaseStudyWindow so it reads as a window on the homepage
- * desktop.
+ * The one hero every case study shares. Kept short above the media so the
+ * work itself shows without scrolling: category → title → tagline →
+ * status + CTA, then the media, then the description and a compact
+ * Role / Duration / Platform / Tools row beneath it. One typeface size
+ * step per line, and the details sit under the visual rather than
+ * stacking up in front of it. The media is the shared-element target for
+ * page transitions (see PageTransition), opened in a CaseStudyWindow so
+ * it reads as a window on the homepage desktop.
  *
  * `children` is the hero media (video, image, desktop/mobile pair), which
  * differs per project. `showDescription` is off for CoursePilot, whose
@@ -39,7 +41,9 @@ export function CaseStudyHero({
     { label: "Role", value: overview.role },
     { label: "Duration", value: duration },
     { label: "Platform", value: hero.platform },
+    { label: "Tools", value: hero.tools?.join(", ") },
   ].filter((item) => item.value);
+  const description = showDescription ? hero.description : undefined;
 
   return (
     <Section className="pt-24 pb-0 sm:pt-32">
@@ -53,57 +57,25 @@ export function CaseStudyHero({
       </Reveal>
 
       <Reveal delay={60}>
-        <p className="mt-6 max-w-2xl text-xl text-foreground sm:text-2xl">{hero.tagline}</p>
+        <p className="mt-5 max-w-2xl text-xl text-foreground sm:text-2xl">{hero.tagline}</p>
       </Reveal>
 
       <Reveal delay={100}>
-        <span className="mt-6 inline-flex items-center gap-1.5 rounded-(--radius-pill) bg-mist-blue px-3 py-1 text-xs font-medium text-sage-deep">
-          <span className="size-1.5 rounded-full bg-sage-deep" />
-          {hero.statusLabel}
-        </span>
-      </Reveal>
-
-      {showDescription && hero.description && (
-        <Reveal delay={140}>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">{hero.description}</p>
-        </Reveal>
-      )}
-
-      {ctaHref && (
-        <Reveal delay={160}>
-          <a
-            href={ctaHref}
-            {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="mt-6 inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
-          >
-            {hero.ctaLabel} →
-          </a>
-        </Reveal>
-      )}
-
-      {hero.disclosure && (
-        <Reveal delay={180}>
-          <p className="mt-4 max-w-xl text-xs text-muted-foreground/80">{hero.disclosure}</p>
-        </Reveal>
-      )}
-
-      {hero.tools && hero.tools.length > 0 && (
-        <Reveal delay={180}>
-          <p className="mt-5 text-sm text-muted-foreground">
-            <span className="text-foreground">Tools:</span> {hero.tools.join(", ")}
-          </p>
-        </Reveal>
-      )}
-
-      <Reveal delay={200}>
-        <dl className="mt-10 grid max-w-3xl gap-6 border-t border-border pt-6 sm:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1fr)] sm:gap-10">
-          {meta.map((item) => (
-            <div key={item.label}>
-              <dt className="text-xs font-semibold tracking-[0.14em] text-muted-foreground uppercase">{item.label}</dt>
-              <dd className="mt-1.5 text-foreground">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+          {ctaHref && (
+            <a
+              href={ctaHref}
+              {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              className="inline-flex items-center gap-2 rounded-(--radius-default) bg-(--project-mat) px-5 py-2.5 text-sm font-medium text-foreground transition-[filter] hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--project-accent)"
+            >
+              {hero.ctaLabel} →
+            </a>
+          )}
+          <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
+            <span className="size-1.5 rounded-full bg-sage-deep" />
+            {hero.statusLabel}
+          </span>
+        </div>
       </Reveal>
 
       {/* Shares `project-media-<slug>` with the homepage card and the
@@ -111,7 +83,7 @@ export function CaseStudyHero({
           slot. Not wrapped in Reveal: a fade-in here would make the morph
           land on an invisible hero, then fade in a second time. */}
       {children && (
-        <div className="mt-14">
+        <div className="mt-10 sm:mt-12">
           <ViewTransition name={`project-media-${data.slug}`} share="project-morph">
             <CaseStudyWindow slug={data.slug} className={mediaClassName}>
               {children}
@@ -119,6 +91,40 @@ export function CaseStudyHero({
           </ViewTransition>
         </div>
       )}
+
+      <Reveal delay={children ? 0 : 140}>
+        <div
+          className={
+            description
+              ? "mt-12 grid gap-8 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] md:gap-14"
+              : "mt-12"
+          }
+        >
+          {description && (
+            <div>
+              <p className="text-lg text-muted-foreground">{description}</p>
+              {hero.disclosure && <p className="mt-4 text-sm text-muted-foreground/80">{hero.disclosure}</p>}
+            </div>
+          )}
+          <dl
+            className={
+              description
+                ? "grid gap-4 text-sm"
+                : "grid gap-6 border-t border-border pt-6 text-sm sm:grid-cols-2 lg:grid-cols-4"
+            }
+          >
+            {meta.map((item) => (
+              <div key={item.label} className={description ? "grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3" : undefined}>
+                <dt className="font-medium text-foreground">{item.label}</dt>
+                <dd className="text-muted-foreground">{item.value}</dd>
+              </div>
+            ))}
+          </dl>
+          {!description && hero.disclosure && (
+            <p className="mt-4 text-sm text-muted-foreground/80">{hero.disclosure}</p>
+          )}
+        </div>
+      </Reveal>
     </Section>
   );
 }

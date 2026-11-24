@@ -29,7 +29,7 @@ export const vietnameseNoodleHouse: CaseStudyData = {
   accentColor: "var(--color-earth)",
 
   hero: {
-    category: "Product Design · UX Audit · Website Redesign",
+    category: "Client Work · Website Redesign",
     title: "Vietnamese Noodle House",
     tagline:
       "Rebuilding a family restaurant's website so customers can find the menu and order from the right location.",

@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { TwoDSpread } from "@/components/sections/home/TwoDSpread";
-import { ThreeDSpread } from "@/components/sections/home/ThreeDSpread";
 import { BackCoverPage } from "@/components/sections/home/BackCoverPage";
 import { BookCover } from "@/components/sections/home/BookCover";
 import { PlaygroundLandscape } from "@/components/sections/home/PlaygroundLandscape";
 import { SketchbookDoodles } from "@/components/sections/home/SketchbookDoodles";
 import {
   SketchbookBook,
+  INNER_PAGES,
   SketchbookPageContent,
   STAGE_COUNT,
   type SketchbookBookHandle,
@@ -483,12 +482,12 @@ export function PlaygroundBook() {
             <div className="mt-16 flex flex-col gap-24 sm:gap-32">
               {/* Same page shape as the animated book, since the spreads
                   size themselves against the page (SketchbookPageContent). */}
-              {[<TwoDSpread key="2d" />, <ThreeDSpread key="3d" />].map((spread) => (
+              {INNER_PAGES.map(({ key, content }) => (
                 <div
-                  key={spread.key}
+                  key={key}
                   className="page-parchment page-edge-stack mx-auto aspect-4/3 w-full max-w-[58rem] rounded-lg"
                 >
-                  <SketchbookPageContent>{spread}</SketchbookPageContent>
+                  <SketchbookPageContent>{content}</SketchbookPageContent>
                 </div>
               ))}
               <div className="mx-auto aspect-4/3 w-full max-w-md">

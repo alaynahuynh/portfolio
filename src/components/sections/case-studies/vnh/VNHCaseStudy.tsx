@@ -5,9 +5,11 @@ import { Heading } from "@/components/ui/Heading";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
 import type { CaseStudyData, CaseStudyImageSpec } from "@/types/case-study";
+import Image from "next/image";
 import {
   CaseStudyContentImage,
   CaseStudyFullImage,
+  CaseStudyVideo,
 } from "@/components/sections/case-studies/media/CaseStudyMedia";
 import {
   CaseStudySectionMobileNav,
@@ -77,6 +79,48 @@ const HERO_MOBILE = img(
   780,
   1688,
 );
+
+/** The homepage card's clip, reused as the hero so the case study opens
+ * on the same motion visitors clicked on. */
+const HERO_CLIP = {
+  src: "/thumbnails/noodle-house/noodle-house-wide.mp4",
+  poster: "/thumbnails/noodle-house/noodle-house-wide-poster.webp",
+  alt: "The Vietnamese Noodle House homepage hero zooms in on Order Online, then the Locations page shows Camillus selected and ready to order.",
+  width: 1600,
+  height: 900,
+};
+
+/** Every page of the rebuilt site, top of each page on desktop, for the
+ * one-glance overview of the full scope. */
+const ALL_PAGES: { label: string; image: CaseStudyImageSpec }[] = [
+  { label: "Home", image: img("home/desktop-hero.png", "Home: food photography under the heading, with Order Online and View Menu.", 1440, 900) },
+  { label: "Menu", image: img("menu/desktop-top.png", "Menu: the top of the single-page menu with its category bar.", 1440, 950) },
+  { label: "Locations", image: img("locations/desktop-cards.png", "Locations: a card for each restaurant with its address, hours, and ordering link.", 1440, 1061) },
+  { label: "Food Truck", image: img("food-truck/desktop-top.png", "Food Truck: the top of the food truck page.", 1440, 1500) },
+  { label: "About", image: img("about/desktop.png", "About: the top of the restaurant's story page.", 1440, 1159) },
+  { label: "Contact", image: img("contact/desktop.png", "Contact: the top of the contact page.", 1440, 1651) },
+];
+
+function AllPagesOverview() {
+  return (
+    <ul className="grid grid-cols-2 gap-x-4 gap-y-6 sm:gap-x-6 lg:grid-cols-3 lg:gap-y-10">
+      {ALL_PAGES.map(({ label, image }) => (
+        <li key={label}>
+          <div className="relative aspect-16/10 overflow-hidden rounded-md bg-surface ring-1 ring-black/5 dark:ring-white/10">
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              sizes="(min-width: 1024px) 33vw, 50vw"
+              className="object-cover object-top"
+            />
+          </div>
+          <p className="mt-2.5 text-sm font-medium text-foreground">{label}</p>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 const BEFORE_MOBILE = img(
   "before/old-site-mobile.png",
@@ -251,7 +295,7 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
     <div className="case-study bg-background" style={{ "--project-accent": data.accentColor ?? "var(--color-sage-deep)", "--project-mat": getProjectBySlug(data.slug)?.matTint ?? "var(--color-muted)" } as React.CSSProperties}>
       {/* ---------------------------------------------------------- HERO */}
       <CaseStudyHero data={data}>
-        <DesktopMobilePair desktop={HERO_DESKTOP} mobile={HERO_MOBILE} />
+        <CaseStudyVideo video={HERO_CLIP} />
       </CaseStudyHero>
 
       <CaseStudySectionMobileNav sections={NAV_SECTIONS} />
@@ -269,6 +313,21 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             (MenuDrive and Lavu), with a separate link for each location. So a big part of the site&rsquo;s job is
             getting people to the right link.
           </p>
+        </Reveal>
+        <Reveal delay={70}>
+          <p className="mt-4 max-w-[45rem] text-lg text-muted-foreground">
+            I didn&rsquo;t try to replace them. The restaurant already had an ordering system, a recognizable
+            identity and regular customers, and rebuilding ordering would have changed how the owners run things
+            every day. So I worked on everything a customer does before they reach the ordering platform, for new
+            customers finding the restaurant and for regulars who just want the menu, the hours and the order
+            button.
+          </p>
+        </Reveal>
+        <Reveal delay={80} className="mt-14">
+          <Label accent>Every page I redesigned and built</Label>
+          <div className="mt-4">
+            <AllPagesOverview />
+          </div>
         </Reveal>
       </Section>
 
@@ -400,9 +459,11 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
         <Reveal delay={180}>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 sm:grid-cols-2 sm:gap-12">
             <p className="text-muted-foreground">
-              This adds a tap before ordering, which is the one thing the restaurant most wants people to do. I
-              was fine with that. A wrong-location order costs the customer and the restaurant a lot more than a
-              tap.
+              This was the decision I had to make the case for. It adds a tap before ordering, the one thing the
+              restaurant most wants people to do, and online ordering usually tries to cut steps. But a
+              wrong-location order costs the customer and the restaurant far more than a tap. I cared more about
+              people placing the right order than the fastest one. Cutting friction doesn&rsquo;t always mean
+              cutting clicks.
             </p>
             <div>
               <p className="font-heading text-3xl text-foreground">About 8 → about 1</p>
@@ -470,6 +531,29 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
       {/* ----------------------------------------------------------- HOME */}
       <Section id="home" className="scroll-mt-28 cs-band">
         <Reveal>
+          <Label accent>Two directions I weighed</Label>
+          <div className="mt-4 grid gap-6 sm:grid-cols-2">
+            <div className="rounded-(--radius-default) border border-border bg-surface p-6">
+              <h3 className="text-lg font-semibold text-foreground">Brand first</h3>
+              <p className="mt-2 text-muted-foreground">
+                Lead with Vietnamese culture, food photography and the family&rsquo;s story. Warm and memorable,
+                but pushed far enough, the menu, hours and ordering get harder to find.
+              </p>
+            </div>
+            <div className="rounded-(--radius-default) border border-border bg-surface p-6">
+              <h3 className="text-lg font-semibold text-foreground">Utility first</h3>
+              <p className="mt-2 text-muted-foreground">
+                Lead with the menu, ordering, locations and hours. Fast, but it could look like any restaurant
+                template and lose what makes this one different.
+              </p>
+            </div>
+          </div>
+          <p className="mt-6 max-w-[45rem] text-lg text-muted-foreground">
+            I combined them: the restaurant&rsquo;s warmth and identity in the look, with a clear hierarchy
+            underneath so the things customers come for are always easy to reach.
+          </p>
+        </Reveal>
+        <Reveal className="mt-16 border-t border-border pt-14">
           <Heading level={2} className="max-w-3xl text-3xl sm:text-5xl">
             A palette taken from the dining rooms
           </Heading>
@@ -508,6 +592,9 @@ export function VNHCaseStudy({ data }: { data: CaseStudyData }) {
             the actual food and dining rooms do most of the work. And I designed every page for phones and desktop
             at the same time, instead of shrinking the desktop version down.
           </p>
+        </Reveal>
+        <Reveal className="mt-14">
+          <DesktopMobilePair desktop={HERO_DESKTOP} mobile={HERO_MOBILE} />
         </Reveal>
         <Reveal className="mt-14">
           <CaseStudyFullImage image={HOME_DESKTOP_FAVORITES} />
