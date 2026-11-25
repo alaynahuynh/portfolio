@@ -6,8 +6,6 @@ import { cn } from "@/lib/utils";
 import type { Project, ProjectMedia } from "@/types";
 
 const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
-/** The tall panel only shows from 768px (see `md:block` below). */
-const SHOWS_TALL = "(min-width: 768px)";
 
 function useMediaQuery(query: string) {
   return useSyncExternalStore(
@@ -55,38 +53,26 @@ function LoopClip({
   poster,
   alt,
   sizes,
-  turn,
 }: {
   /** Omit to show the poster as a plain still. */
   src?: string;
   poster: string;
   alt: string;
   sizes: string;
-  /** Set when this clip takes turns with another one: it plays only while
-   * `active`, once through, then calls `onDone` to hand over. Unset, it
-   * loops on its own. */
-  turn?: { active: boolean; onDone: () => void };
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { inView, seen } = useInView(videoRef);
   const reducedMotion = useMediaQuery(REDUCED_MOTION);
-  const active = turn ? turn.active : true;
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !seen) return;
-    if (inView && active) {
+    if (inView) {
       void video.play().catch(() => {});
     } else {
       video.pause();
     }
-  }, [inView, seen, active]);
-
-  // Each turn starts the clip from its first frame.
-  useEffect(() => {
-    const video = videoRef.current;
-    if (video && turn?.active) video.currentTime = 0;
-  }, [turn?.active]);
+  }, [inView, seen]);
 
   return (
     <>
@@ -97,8 +83,7 @@ function LoopClip({
           src={seen ? src : undefined}
           poster={poster}
           muted
-          loop={!turn}
-          onEnded={turn?.onDone}
+          loop
           playsInline
           preload="none"
           aria-hidden="true"
@@ -111,9 +96,8 @@ function LoopClip({
 
 /**
  * Selected Works media: a wide 16:9 panel beside a tall 9:16 one on the
- * project's soft card color. When both show, they take turns (wide, then
- * tall, and around again) rather than moving at once, so the eye can
- * follow one view and then the other. Flex ratios 256:81 make both panels exactly
+ * project's soft card color. Both clips loop at the same time, each on its
+ * own. Flex ratios 256:81 make both panels exactly
  * the same height (wide ≈ 3.16× the tall's width). The tall panel hides
  * under 768px. Keeps the `project-media-*` view-transition name on the
  * wide panel so CoursePilot's clip still morphs into its case-study hero.
@@ -128,10 +112,6 @@ export function SelectedWorkMedia({
   /** The smaller cards: the wide clip alone, filling the color card. */
   compact?: boolean;
 }) {
-  const showsTall = useMediaQuery(SHOWS_TALL);
-  const pairs = !compact && !!media.tallPoster && !!media.tallSrc && showsTall;
-  const [playing, setPlaying] = useState<"wide" | "tall">("wide");
-
   return (
     <div
       // Dark theme: a quiet tint of the project color on the navy surface.
@@ -154,7 +134,6 @@ export function SelectedWorkMedia({
               poster={media.widePoster}
               alt={media.wideAlt}
               sizes="(min-width: 1600px) 960px, (min-width: 768px) 62vw, 100vw"
-              turn={pairs ? { active: playing === "wide", onDone: () => setPlaying("tall") } : undefined}
             />
           </div>
         </ViewTransition>
@@ -170,7 +149,6 @@ export function SelectedWorkMedia({
               poster={media.tallPoster}
               alt={media.tallAlt ?? ""}
               sizes="(min-width: 1600px) 300px, 20vw"
-              turn={pairs ? { active: playing === "tall", onDone: () => setPlaying("wide") } : undefined}
             />
           </div>
         )}

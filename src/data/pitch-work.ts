@@ -230,7 +230,7 @@ export const pitchWork: Record<string, WorkEntry> = Object.fromEntries(
     result: "3rd place, built and pitched in 4 hours",
     headline: "A few things to go do each week, gone in seven days so you actually do them.",
     summary:
-      "At the University of Michigan's Fall 2026 Designathon, my team of five had four hours to design and pitch an app, then presented it to a panel of School of Information professors. I was the UX designer on a team of engineers, designers, and data scientists. Our app, Jurnee, placed 3rd.",
+      "At the University of Michigan's Fall 2026 Designathon, my team of five had four hours to design and pitch something whose value comes from being temporary, then presented it to a panel of School of Information professors. I was the UX designer on a team of engineers, designers, and data scientists. Our app, Jurnee, placed 3rd.",
     facts: [
       { label: "Role", value: "UX designer" },
       { label: "Team", value: "Engineers, designers, data scientists" },

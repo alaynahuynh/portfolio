@@ -60,10 +60,12 @@ export const projects: Project[] = [
     liveUrl: "https://mymuseum-eta.vercel.app/",
     media: {
       bgColor: "#3CB5FC",
-      wideSrc: "/thumbnails/mymuseum/mymuseum-wide.mp4",
-      widePoster: "/thumbnails/mymuseum/mymuseum-wide-poster.webp",
+      // The live site's hero (first 9s of the case-study walkthrough,
+      // before the camera turns into a wall), cropped to 16:9.
+      wideSrc: "/thumbnails/mymuseum/mymuseum-hero-wide.mp4",
+      widePoster: "/thumbnails/mymuseum/mymuseum-hero-wide-poster.webp",
       wideAlt:
-        "MyMuseum's landing page, 'Create a world for your work', then the create form being filled in, the 'Your museum is ready' screen with Enter Museum, a 3D gallery room, and the Grid View of the collection, opening Misty Falls.",
+        "MyMuseum's landing page: 'Create a world for your work' over a 3D gallery, with shape avatars gathered around a sculpture.",
       tallSrc: "/thumbnails/mymuseum/mymuseum-tall.mp4",
       tallPoster: "/thumbnails/mymuseum/mymuseum-tall-poster.webp",
       tallAlt: "MyMuseum's Grid View on a phone, scrolling from 'My Little World' down to the artwork 'Out of Water'.",
@@ -199,7 +201,7 @@ export const projects: Project[] = [
     title: "Jurnee",
     role: "Product Design · Branding · Prototyping",
     summary:
-      "A weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
+      "Asked to design something whose value comes from being temporary, we made a weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "#8AB66C",

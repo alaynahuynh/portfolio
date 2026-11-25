@@ -10,8 +10,11 @@ import { cn } from "@/lib/utils";
  * media, so it isn't featured here (its case study is linked from the
  * Playground's 3D page). */
 const featured = projects.filter((p) => p.media);
-/** Every featured project gets the same full-size card. */
-const leads = featured;
+/** The two strongest projects keep the full-size card; the rest sit
+ * below as a row of smaller cards, so the list has a clear lead. */
+const LEAD_COUNT = 2;
+const leads = featured.slice(0, LEAD_COUNT);
+const supporting = featured.slice(LEAD_COUNT);
 
 /** One taskbar button per featured project, linking to its card. */
 const cardId = (slug: string) => `work-${slug}`;
@@ -102,6 +105,39 @@ export function FeaturedWork() {
               );
             })}
           </ol>
+
+          {/* Supporting projects: same color card, type and hover, at a
+              smaller scale with the wide clip only. Three across from
+              768px, stacked on phones. */}
+          {supporting.length > 0 && (
+            <ul className="mt-16 grid gap-12 sm:mt-20 md:mt-[120px] md:grid-cols-3 md:gap-x-6 lg:gap-x-10">
+              {supporting.map((project) => (
+                <li key={project.slug} id={cardId(project.slug)} className="scroll-mt-28">
+                  <Reveal
+                    y={15}
+                    duration={500}
+                    className="group/card relative flex h-full flex-col rounded-[20px] outline-offset-8 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:outline-mauve-deep"
+                  >
+                    <SelectedWorkMedia project={project} media={project.media!} compact />
+                    <h3 className="mt-5 font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                      {project.hasCaseStudy ? (
+                        <Link
+                          href={`/projects/${project.slug}`}
+                          prefetch={project.videoThumbnail ? false : undefined}
+                          className="after:absolute after:inset-0 after:z-10 after:rounded-[20px] focus-visible:outline-none"
+                        >
+                          {project.title}
+                        </Link>
+                      ) : (
+                        project.title
+                      )}
+                    </h3>
+                    <p className="mt-2 text-base text-muted-foreground">{project.summary}</p>
+                  </Reveal>
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     </section>

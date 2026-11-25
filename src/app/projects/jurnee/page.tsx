@@ -11,7 +11,8 @@ import { cn } from "@/lib/utils";
 /**
  * Jurnee: team entry for the Fall 2026 Designathon, placed 3rd.
  *
- * Sources: the team's final deck ("Jurnee — Find Your Jurnee", 11 slides)
+ * Sources: the designathon prompt (quoted in full in the intro, and
+ * referenced where each design choice answers it), the team's final deck ("Jurnee — Find Your Jurnee", 11 slides)
  * and the Figma file's six "Screens" frames (exported at 3x, 1170×2532,
  * corners rounded to match the phone shape). The Figma screens are newer
  * than the deck's: Home shows Up next / Completed, checkpoints complete
@@ -221,6 +222,47 @@ export default function JurneePage() {
               scientists. When time was up, every team presented its slides to a panel of judges, professors from the
               School of Information.
             </p>
+          </Prose>
+        </Reveal>
+
+        {/* The brief and our answer, side by side: prompt → answer. */}
+        <Reveal delay={60}>
+          <div className="mt-12 grid max-w-5xl items-stretch gap-3 md:grid-cols-[minmax(0,1.15fr)_auto_minmax(0,1fr)] md:gap-5">
+            <figure className="rounded-[24px] border border-[#DBD3F0] bg-[#F7F4FB] p-6 sm:p-8 dark:border-[#3a3156] dark:bg-[#1f1a30]">
+              <figcaption>
+                <Label>The designathon prompt</Label>
+              </figcaption>
+              <blockquote>
+                <p className="mt-4 font-heading text-2xl leading-snug text-foreground sm:text-[1.75rem]">
+                  &ldquo;What if the best design was something that eventually disappeared?&rdquo;
+                </p>
+                <p className="mt-4 leading-relaxed text-muted-foreground">
+                  Design something whose value comes from being temporary, where disappearing is a core feature, not a
+                  limitation.
+                </p>
+              </blockquote>
+            </figure>
+
+            <span
+              aria-hidden="true"
+              className="flex items-center justify-center text-2xl text-[#7A66B9] md:text-3xl dark:text-[#A38DD9]"
+            >
+              <span className="md:hidden">↓</span>
+              <span className="hidden md:inline">→</span>
+            </span>
+
+            <div className="rounded-[24px] bg-[#DBD3F0] p-6 text-[#29213E] sm:p-8 dark:bg-[#2c2445] dark:text-foreground">
+              <p className="text-xs font-semibold tracking-[0.14em] text-[#5F4B9E] uppercase dark:text-[#C9BDEA]">Our answer</p>
+              <p className="mt-4 font-heading text-2xl leading-snug sm:text-[1.75rem]">A to-do list that expires.</p>
+              <p className="mt-4 leading-relaxed text-[#29213E]/80 dark:text-muted-foreground">
+                A few things to go do each week. Whatever you don&rsquo;t get to disappears on Saturday night.
+              </p>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal>
+          <Prose className="mt-12">
             <p>
               Every Sunday you get three to five things to do that week, picked from your interests, where you live,
               and what you&rsquo;ve done before. A sunrise at the park, a pottery class, pickup basketball. You do them
@@ -237,8 +279,9 @@ export default function JurneePage() {
           <H2>We gave the list an expiration date</H2>
           <Prose>
             <p>
-              The deadline is why it works. A list of things you&rsquo;d like to do someday is easy to keep putting
-              off. A list that&rsquo;s gone in seven days isn&rsquo;t.
+              The prompt asked for impermanence as a core feature, not a limitation. In Jurnee, the expiration is the
+              whole point. A list of things you&rsquo;d like to do someday is easy to keep putting off. A list
+              that&rsquo;s gone in seven days isn&rsquo;t.
             </p>
             <p>
               Before your first week, a short onboarding asks a few &ldquo;Would you rather?&rdquo; questions to get a
@@ -280,7 +323,8 @@ export default function JurneePage() {
             </p>
             <p>
               The tree shows how much time is left. Its leaves fall with the clock, not with your progress, so it keeps
-              counting down whether or not you&rsquo;ve done anything yet.
+              counting down whether or not you&rsquo;ve done anything yet. It turns the disappearing the prompt asked
+              for into something you can watch happen.
             </p>
           </Prose>
         </Reveal>
@@ -311,6 +355,9 @@ export default function JurneePage() {
                 It was hand-drawn in Procreate. The J grows into a tree with spring and summer leaves on one side, fall
                 leaves on the other, and bare winter branches at the edges. The hook at the bottom curves back up, the
                 way one week ends and the next one starts.
+              </p>
+              <p>
+                Seasons fit the prompt: nothing on the tree lasts, but it always grows back.
               </p>
               <p>The same tree sits inside the countdown ring on the home screen.</p>
             </Prose>
@@ -387,7 +434,7 @@ export default function JurneePage() {
               </p>
               <p>
                 To mark it done, you add a photo. That photo goes to the feed on your profile, so the week leaves
-                something behind.
+                something behind. The plans disappear, but what you actually did turns into a memory you keep.
               </p>
             </Prose>
           </Reveal>
