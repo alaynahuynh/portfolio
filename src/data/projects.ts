@@ -165,7 +165,7 @@ export const projects: Project[] = [
     title: "Nudge",
     role: "Product Design · Customer Research · Pitch Design",
     summary:
-      "Designed a travel-health planner for first-time study abroad students, after five interviews showed the real problem was that nothing made them start.",
+      "A travel-health planner for study abroad students, reframed after my five interviews showed they needed urgency, not information.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "#d8cff7",
@@ -201,7 +201,7 @@ export const projects: Project[] = [
     title: "Jurnee",
     role: "Product Design · Branding · Prototyping",
     summary:
-      "Asked to design something whose value comes from being temporary, we made a weekly set of experiences picked just for you, gone in seven days, so you actually go do them. Placed 3rd at the Fall 2026 Designathon.",
+      "A to-do list that expires, designed in four hours for a prompt about impermanence. 3rd place at the Fall 2026 Designathon.",
     status: "in-progress",
     accent: "mauve",
     dominantColor: "#8AB66C",
