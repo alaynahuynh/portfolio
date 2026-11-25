@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PlaygroundBook } from "@/components/sections/home/PlaygroundBook";
+import { PageSunMoon } from "@/components/ui/PageSunMoon";
 
 export const metadata: Metadata = {
   title: "Playground",
@@ -15,5 +16,10 @@ export const metadata: Metadata = {
  * 2D/3D work pages link back here.
  */
 export default function PlaygroundPage() {
-  return <PlaygroundBook />;
+  return (
+    <div className="relative">
+      <PageSunMoon />
+      <PlaygroundBook />
+    </div>
+  );
 }
